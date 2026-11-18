@@ -1199,21 +1199,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
 }
 .staff-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); }
-.staff-mono {
-  flex: none;
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: var(--blue-dark);
-  background: var(--band);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-}
 .staff-photo img {
   width: 56px;
   height: 56px;
@@ -1224,8 +1209,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .staff-card h3 { margin: 0; font-size: 1.05rem; }
 .staff-card p { margin: 2px 0 0; color: var(--ink-mute); font-size: 0.95rem; }
 
-/* Leadership: portrait cards. The Principal's card uses his real
-   photograph; the others hold a monogram panel until portraits arrive. */
+/* Leadership: portrait cards. */
 .leader-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
 .leader-card {
   background: var(--paper);
@@ -1237,14 +1221,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .leader-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-2); border-color: var(--line-strong); }
 .leader-visual { display: block; aspect-ratio: 4 / 5; overflow: clip; background: var(--band); }
 .leader-visual img { width: 100%; height: 100%; object-fit: cover; }
-.leader-card .staff-mono {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  border-radius: 0;
-  font-size: 2.6rem;
-  background: linear-gradient(160deg, var(--band) 0%, var(--band-2) 100%);
-}
 .leader-body { padding: var(--space-4) var(--space-5) var(--space-5); }
 .leader-body h3 { margin: 0; font-size: 1.2rem; }
 .leader-body p { margin: 2px 0 0; color: var(--ink-mute); font-size: 0.95rem; }
