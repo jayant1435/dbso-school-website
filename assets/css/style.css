@@ -949,6 +949,16 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   padding: var(--space-1) var(--space-3);
   white-space: nowrap;
 }
+/* Posters: same-height frames so the two mismatched poster ratios sit level. */
+.poster-pair { align-items: stretch; }
+.poster-pair figure { display: flex; flex-direction: column; }
+.poster-pair .rounded-img {
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--line), var(--shadow-1);
+}
+.poster-pair figcaption { margin-top: var(--space-3); }
 
 /* ---------- Forms ---------- */
 
