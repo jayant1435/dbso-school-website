@@ -48,6 +48,17 @@
     });
   }
 
+  /* Staggered entrances: children of [data-stagger] reveal one after
+     another. Runs before the reveal setup below, so the observer and
+     the sweep pick the children up like any other reveal. */
+  document.querySelectorAll("[data-stagger]").forEach(function (grid) {
+    var kids = grid.children;
+    for (var i = 0; i < kids.length; i++) {
+      kids[i].classList.add("reveal");
+      kids[i].style.setProperty("--d", Math.min(i * 55, 440) + "ms");
+    }
+  });
+
   /* Reveals: observer plus a sweep, so a fast scroll cannot leave a section hidden. */
   var revealEls = document.querySelectorAll(".reveal");
   function revealSweep() {
@@ -82,6 +93,17 @@
   } else {
     revealEls.forEach(function (el) { el.classList.add("in"); });
   }
+
+  /* Once a reveal finishes, drop the reveal classes so hover transforms
+     on cards and photos are not overridden by the reveal end-state. */
+  document.addEventListener("transitionend", function (e) {
+    var el = e.target;
+    if (el.classList && el.classList.contains("reveal") && el.classList.contains("in")) {
+      el.classList.remove("reveal");
+      el.classList.remove("in");
+      el.style.removeProperty("--d");
+    }
+  });
 
   /* Counters. Final values are in the HTML. */
   var counters = document.querySelectorAll("[data-count]");
