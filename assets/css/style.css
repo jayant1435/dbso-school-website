@@ -1129,8 +1129,12 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   border-radius: 16px;
   padding: var(--space-6);
 }
-.anthem h3 { margin: var(--space-5) 0 var(--space-2); font-size: 1rem; }
-.anthem h3:first-child { margin-top: 0; }
+.anthem h3 { margin: 0 0 var(--space-2); font-size: 1rem; }
+.anthem-verse + .anthem-verse { margin-top: var(--space-5); }
+@media (min-width: 861px) {
+  .anthem { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-8); row-gap: var(--space-5); }
+  .anthem-verse + .anthem-verse { margin-top: 0; }
+}
 .anthem p {
   font-family: var(--font-display);
   font-size: 1.15rem;
