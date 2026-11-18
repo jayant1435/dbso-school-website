@@ -162,6 +162,23 @@
     });
   }
 
+  /* Album nav: on small screens show the first few pills, expand on tap. */
+  var albumNav = document.querySelector(".album-nav");
+  var albumToggle = document.querySelector(".album-nav-toggle");
+  if (albumNav && albumToggle) {
+    var albumCount = albumNav.querySelectorAll("a").length;
+    function setAlbumToggle() {
+      var open = albumNav.classList.contains("expanded");
+      albumToggle.textContent = open ? "Show fewer albums" : "Show all " + albumCount + " albums";
+      albumToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    albumToggle.addEventListener("click", function () {
+      albumNav.classList.toggle("expanded");
+      setAlbumToggle();
+    });
+    setAlbumToggle();
+  }
+
   /* Gallery lightbox */
   var lightbox = document.getElementById("lightbox");
   if (lightbox) {
