@@ -556,6 +556,7 @@ figcaption {
 /* ---------- Toppers ---------- */
 
 .toppers-figure { max-width: 880px; margin-inline: auto; }
+.notice-figure { max-width: 400px; margin-inline: auto; }
 .toppers-figure img { box-shadow: 0 0 0 1px var(--line), var(--shadow-1); }
 .toppers-list { border-top: 1px solid var(--line-strong); margin-top: var(--space-6); }
 .topper-row {
