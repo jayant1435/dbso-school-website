@@ -131,6 +131,7 @@
 .mobile-menu.open nav li:nth-child(9) { transition-delay: 0.32s; }
 .mobile-menu.open nav li:nth-child(10) { transition-delay: 0.35s; }
 .mobile-menu.open nav li:nth-child(11) { transition-delay: 0.38s; }
+.mobile-menu.open nav li:nth-child(12) { transition-delay: 0.41s; }
 .mobile-menu.open .btn {
   opacity: 1;
   transform: translateY(0);
