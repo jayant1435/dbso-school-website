@@ -146,15 +146,15 @@
     <div class="container numbers" data-stagger>
       <div class="number-item">
         <div class="number-figure">2007</div>
-        <div class="number-label">Established, as a bifurcation of the Don Bosco Siliguri campus</div>
+        <div class="number-label">Don Bosco Siliguri branch</div>
       </div>
       <div class="number-item">
         <div class="number-figure" data-count="57">57</div>
-        <div class="number-label">Named teaching staff listed by the school</div>
+        <div class="number-label">Named teaching staff</div>
       </div>
       <div class="number-item">
         <div class="number-figure" data-count="20">20</div>
-        <div class="number-label">Clubs, from art and dance to science and scouts</div>
+        <div class="number-label">Clubs across art, sport and science</div>
       </div>
       <div class="number-item">
         <div class="number-figure" data-count="4">4</div>
@@ -165,7 +165,10 @@
         <div class="number-label">Seats in the school auditorium</div>
       </div>
     </div>
-    <p class="container numbers-more reveal">Meet the <a href="staff.html">57 teachers and 4 leaders</a>, or see the <a href="facilities.html">1,500-seat auditorium and the rest of the campus</a>.</p>
+    <div class="container numbers-more reveal">
+      <a class="btn btn-ghost btn-small" href="staff.html">Meet the 57 teachers and 4 leaders</a>
+      <a class="btn btn-ghost btn-small" href="facilities.html">See the 1,500-seat auditorium</a>
+    </div>
   </section>
 
   <section class="section" aria-label="Clubs, houses and values">
@@ -177,38 +180,42 @@
       </div>
       <div class="reveal">
         <h3 class="home-subhead">Twenty clubs</h3>
-        <ul class="chip-list home-clubs">
-          <li>Literary</li>
-          <li>Debating</li>
-          <li>Science</li>
-          <li>Maths</li>
-          <li>Computer</li>
-          <li>Nature</li>
-          <li>Social Service</li>
-          <li>Karate</li>
-          <li>Taekwondo</li>
-          <li>Yoga</li>
-          <li>Aerobics</li>
-          <li>Gymnastics</li>
-          <li>Football</li>
-          <li>Cricket</li>
-          <li>Basketball</li>
-          <li>Volleyball</li>
-          <li>Badminton</li>
-          <li>Kabaddi</li>
-          <li>Chess</li>
-          <li>Music</li>
-        </ul>
-        <p class="home-more"><a href="life.html">See sport, clubs and celebrations</a></p>
+        <p class="tile-hint">Tap a club to highlight it.</p>
+        <div class="tile-grid" role="group" aria-label="Twenty clubs">
+          <button class="tile" type="button" data-club="Literary" aria-pressed="false">Literary</button>
+          <button class="tile" type="button" data-club="Debating" aria-pressed="false">Debating</button>
+          <button class="tile" type="button" data-club="Science" aria-pressed="false">Science</button>
+          <button class="tile" type="button" data-club="Maths" aria-pressed="false">Maths</button>
+          <button class="tile" type="button" data-club="Computer" aria-pressed="false">Computer</button>
+          <button class="tile" type="button" data-club="Nature" aria-pressed="false">Nature</button>
+          <button class="tile" type="button" data-club="Social Service" aria-pressed="false">Social Service</button>
+          <button class="tile" type="button" data-club="Karate" aria-pressed="false">Karate</button>
+          <button class="tile" type="button" data-club="Taekwondo" aria-pressed="false">Taekwondo</button>
+          <button class="tile" type="button" data-club="Yoga" aria-pressed="false">Yoga</button>
+          <button class="tile" type="button" data-club="Aerobics" aria-pressed="false">Aerobics</button>
+          <button class="tile" type="button" data-club="Gymnastics" aria-pressed="false">Gymnastics</button>
+          <button class="tile" type="button" data-club="Football" aria-pressed="false">Football</button>
+          <button class="tile" type="button" data-club="Cricket" aria-pressed="false">Cricket</button>
+          <button class="tile" type="button" data-club="Basketball" aria-pressed="false">Basketball</button>
+          <button class="tile" type="button" data-club="Volleyball" aria-pressed="false">Volleyball</button>
+          <button class="tile" type="button" data-club="Badminton" aria-pressed="false">Badminton</button>
+          <button class="tile" type="button" data-club="Kabaddi" aria-pressed="false">Kabaddi</button>
+          <button class="tile" type="button" data-club="Chess" aria-pressed="false">Chess</button>
+          <button class="tile" type="button" data-club="Music" aria-pressed="false">Music</button>
+        </div>
+        <p class="tile-detail" id="club-detail" aria-live="polite">Twenty clubs — tap one above to highlight it.</p>
+        <div class="home-links"><a class="btn btn-ghost btn-small" href="life.html">See sport, clubs and celebrations</a></div>
         <h3 class="home-subhead">Four houses</h3>
-        <ul class="house-list">
-          <li><span class="house-dot house-red" aria-hidden="true"></span>Red</li>
-          <li><span class="house-dot house-blue" aria-hidden="true"></span>Blue</li>
-          <li><span class="house-dot house-green" aria-hidden="true"></span>Green</li>
-          <li><span class="house-dot house-yellow" aria-hidden="true"></span>Yellow</li>
-        </ul>
+        <p class="tile-hint">Tap a house to highlight it.</p>
+        <div class="house-grid" role="group" aria-label="Four houses">
+          <button class="house-tile" type="button" data-house="Red" aria-pressed="false"><span class="house-swatch house-swatch-red" aria-hidden="true"></span><span class="house-name">Red</span></button>
+          <button class="house-tile" type="button" data-house="Blue" aria-pressed="false"><span class="house-swatch house-swatch-blue" aria-hidden="true"></span><span class="house-name">Blue</span></button>
+          <button class="house-tile" type="button" data-house="Green" aria-pressed="false"><span class="house-swatch house-swatch-green" aria-hidden="true"></span><span class="house-name">Green</span></button>
+          <button class="house-tile" type="button" data-house="Yellow" aria-pressed="false"><span class="house-swatch house-swatch-yellow" aria-hidden="true"></span><span class="house-name">Yellow</span></button>
+        </div>
+        <p class="tile-detail" id="house-detail" aria-live="polite">Four houses — tap one above to highlight it.</p>
         <h3 class="home-subhead">Seven core values</h3>
-        <dl class="meaning-grid">
+        <dl class="meaning-grid home-values">
           <div class="meaning"><dt>Integrity</dt><dd>Truth, honesty, fairness</dd></div>
           <div class="meaning"><dt>Compassion</dt><dd>Empathy, kindness, generosity</dd></div>
           <div class="meaning"><dt>Self-discipline</dt><dd>Self-control, perseverance, respect for authority</dd></div>
@@ -232,28 +239,38 @@
           <figcaption>Learning together, in the classroom and beyond it.</figcaption>
         </figure>
       </div>
-      <div class="pillars reveal" style="--d: 90ms">
-        <div class="pillar">
+      <div class="pillars pillars-slider reveal" style="--d: 90ms">
+        <div class="pillar reveal" style="--d: 0ms">
           <div class="pillar-numeral" aria-hidden="true">I</div>
           <div>
             <h3>Reason</h3>
             <p>Students are helped to understand the why behind every rule, lesson and choice. Dialogue replaces diktat, so discipline becomes something a young person owns, not something imposed on them.</p>
           </div>
         </div>
-        <div class="pillar">
+        <div class="pillar reveal" style="--d: 120ms">
           <div class="pillar-numeral" aria-hidden="true">II</div>
           <div>
             <h3>Relationship</h3>
             <p>Educators stay close to the young, in class, on the field and at assembly. Loving-kindness and friendly presence build the trust in which character quietly takes root.</p>
           </div>
         </div>
-        <div class="pillar">
+        <div class="pillar reveal" style="--d: 240ms">
           <div class="pillar-numeral" aria-hidden="true">III</div>
           <div>
             <h3>Religion</h3>
             <p>Faith and values are part of daily school life, forming conscience, compassion and a sense of purpose that outlasts the school years.</p>
           </div>
         </div>
+      </div>
+      <div class="pillar-nav" aria-label="Preventive System pillars">
+        <button class="pillar-arrow" type="button" id="pillar-prev" aria-label="Previous pillar">‹</button>
+        <div class="pillar-dots">
+          <button class="pillar-dot is-active" type="button" data-i="0" aria-label="Reason"></button>
+          <button class="pillar-dot" type="button" data-i="1" aria-label="Relationship"></button>
+          <button class="pillar-dot" type="button" data-i="2" aria-label="Religion"></button>
+        </div>
+        <span class="pillar-count" id="pillar-count">1 of 3</span>
+        <button class="pillar-arrow" type="button" id="pillar-next" aria-label="Next pillar">›</button>
       </div>
     </div>
   </section>
@@ -279,7 +296,10 @@
           <figcaption>Girls basketball team on the school court</figcaption>
         </figure>
       </div>
-      <p class="reveal" style="margin-top: var(--space-6)"><a href="life.html">See sport, clubs and celebrations</a> and <a href="gallery.html">see all photographs</a>.</p>
+      <div class="home-links reveal">
+        <a class="btn btn-ghost btn-small" href="life.html">See sport, clubs and celebrations</a>
+        <a class="btn btn-ghost btn-small" href="gallery.html">See all photographs</a>
+      </div>
     </div>
   </section>
 
@@ -321,13 +341,13 @@
         <h2>News and notices</h2>
         <p>What is happening at the school, as published on the school homepage.</p>
       </div>
-      <div class="news-list reveal">
+      <div class="news-list news-cards reveal">
         <article class="news-item">
           <div>
             <h3>Admissions open for 2027–28, UKG and Class XI</h3>
-            <p>Forms close 10 December 2026. Entrance examination, interaction and counselling on 17 and 18 December, with the merit list on 18 December.</p>
+            <p>Forms close 10 December 2026. Entrance, interaction and counselling 17–18 December.</p>
           </div>
-          <span class="news-tag">Admission notice, 24 Sep 2026</span>
+          <span class="news-tag">24 Sep 2026</span>
         </article>
         <article class="news-item">
           <div>
@@ -344,7 +364,7 @@
           <span class="news-tag">School homepage</span>
         </article>
       </div>
-      <p class="reveal" style="margin-top: var(--space-6)"><a href="news.html">See all news and notices</a></p>
+      <div class="home-links reveal"><a class="btn btn-ghost btn-small" href="news.html">See all news and notices</a></div>
     </div>
   </section>
 
