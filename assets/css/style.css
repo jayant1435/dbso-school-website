@@ -12,8 +12,6 @@
   --line-strong: #b9c2ca;
   --red: #b3202e;
   --red-dark: #931a26;
-  --blue: #1d6fa5;
-  --blue-dark: #16567f;
   --gold: #c9a227;
   --gold-soft: #e8d9a8;
   --footer-bg: #16232f;
@@ -40,8 +38,9 @@
   --radius-card: 20px;
   --radius-pill: 999px;
   --radius-btn: 10px; /* every button, site-wide — one radius decision (v7) */
+  --radius-soft: 16px; /* v24: tiles, rows, small panels — was only in details.css, so pages without it rendered square corners */
   --container: 1180px;
-  --header-h: 60px; /* v23: header a little slimmer with five nav links */
+  --header-h: 72px; /* v24: header a little thicker — Jayant: 60px was too thin */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -75,11 +74,11 @@ html { scrollbar-color: var(--line-strong) var(--paper); }
 
 img { max-width: 100%; height: auto; display: block; }
 
-a { color: var(--blue); transition: color 0.15s var(--ease-out); text-underline-offset: 3px; }
-a:hover { color: var(--blue-dark); }
+a { color: var(--red); transition: color 0.15s var(--ease-out); text-underline-offset: 3px; }
+a:hover { color: var(--red-dark); }
 
 :focus-visible {
-  outline: 3px solid var(--blue);
+  outline: 3px solid var(--red);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -145,25 +144,41 @@ figcaption {
 .skip-link:focus { top: var(--space-3); color: var(--paper); }
 
 /* ---------- Announcement bar ---------- */
+/* v24: one line, always moving — a Shopify-style marquee. The whole bar is
+   a link to admissions (a moving link is un-tappable on a phone). The track
+   repeats the message twice so the -50% loop is seamless. Hover pauses;
+   reduced motion shows it still. */
 
 .announce {
+  display: block;
   background: var(--ink);
   color: var(--paper);
   font-size: 0.9rem;
   line-height: 1.45;
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
 }
-.announce .container {
+.announce-track {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  padding-top: var(--space-2);
-  padding-bottom: var(--space-2);
-  text-align: center;
+  width: max-content;
+  animation: announce-scroll 30s linear infinite;
 }
-.announce a { color: var(--gold-soft); font-weight: 600; white-space: nowrap; }
-.announce a:hover { color: var(--paper); }
+.announce-track span {
+  display: inline-flex;
+  align-items: center;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  white-space: nowrap;
+}
+.announce-track span + span::before {
+  content: "\2022";
+  margin: 0 18px;
+  color: var(--gold);
+}
+.announce-track b { font-weight: 700; color: var(--paper); }
+@keyframes announce-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.announce:hover .announce-track { animation-play-state: paused; }
 
 /* ---------- Header ---------- */
 
@@ -193,15 +208,15 @@ figcaption {
   flex-shrink: 0;
 }
 .brand-crest {
-  width: 46px;
-  height: 46px;
+  width: 52px;
+  height: 52px;
   object-fit: contain;
   flex-shrink: 0;
 }
 .brand-name {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.18rem;
+  font-size: 1.25rem;
   line-height: 1.1;
   letter-spacing: -0.01em;
   white-space: nowrap;
@@ -289,6 +304,27 @@ figcaption {
    inline text that wraps mid-phrase (v22). */
 .home-links { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
 .home-links .btn { white-space: nowrap; }
+/* v24: the one "see more" style, site-wide. A text link, not a button —
+   red, underlined, arrow slides on hover. Every see-more link on the site
+   uses .text-link, so they all look the same. */
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--red);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
+.text-link:hover { color: var(--red-dark); }
+.text-link .arrow { transition: transform 0.2s var(--ease-out); }
+.text-link:hover .arrow { transform: translateX(3px); }
+/* Outline button for light backgrounds (the hero/CTA-band .btn-outline is
+   white-on-dark only). */
+.btn-outline-dark { background: transparent; border-color: var(--ink); color: var(--ink); }
+.btn-outline-dark:hover { border-color: var(--red); color: var(--red); box-shadow: var(--shadow-1); }
 
 /* ---------- Mobile menu ---------- */
 
@@ -476,6 +512,8 @@ figcaption {
 .js .reveal.in .gold-rule { transform: scaleX(1); }
 
 /* ---------- Numbers ---------- */
+/* v24: labels are single words (Teachers / Clubs / Houses / Auditorium
+   seats), so nothing can ever be cut to "..." again. The clamp is gone. */
 
 .numbers {
   display: grid;
@@ -491,7 +529,7 @@ figcaption {
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
-.number-label { margin-top: var(--space-2); color: var(--ink-soft); font-size: 0.95rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.number-label { margin-top: var(--space-2); color: var(--ink-soft); font-size: 0.95rem; line-height: 1.45; }
 
 /* ---------- Pillars ---------- */
 
@@ -702,20 +740,6 @@ button.tile {
 }
 button.tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-1); border-color: var(--ink-mute); background: var(--paper-warm); }
 button.tile[aria-pressed="true"] { border-color: var(--red); background: var(--paper-warm); box-shadow: var(--shadow-1); }
-/* The line under a tile grid: what tapping a tile does, and its answer. */
-.tile-detail {
-  margin-top: var(--space-4);
-  padding: var(--space-3) var(--space-4);
-  background: var(--band);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-soft);
-  color: var(--ink-soft);
-  min-height: calc(2 * 1.65em + var(--space-3) * 2);
-  display: flex;
-  align-items: center;
-}
-.tile-detail strong { color: var(--ink); }
-
 /* ---------- Steps (admissions process) ---------- */
 
 .steps { list-style: none; padding: 0; margin: 0; counter-reset: step; }
@@ -771,7 +795,7 @@ button.tile[aria-pressed="true"] { border-color: var(--red); background: var(--p
 }
 .switcher-tab:hover { border-color: var(--ink); transform: translateY(-1px); box-shadow: var(--shadow-1); }
 .switcher-tab:active { transform: translateY(0); box-shadow: none; }
-.switcher-tab[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.switcher-tab[aria-selected="true"] { background: var(--ink); border-color: var(--red); color: var(--paper); box-shadow: 0 0 0 1px var(--red); } /* v24: the selected tab keeps a visible edge — ink-on-ink hid it */
 .switcher-panel { display: none; }
 .switcher-panel.active { display: block; animation: panel-in 0.35s var(--ease-out); }
 @keyframes panel-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -899,7 +923,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .gallery-item button { transition: box-shadow 0.3s var(--ease-out); }
 .gallery-item button:hover img { transform: scale(1.04); }
 .gallery-item button:hover { box-shadow: var(--shadow-2); }
-.gallery-item button:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+.gallery-item button:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
 .gallery-item figcaption { font-size: 0.88rem; }
 
 .lightbox {
@@ -925,6 +949,10 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   background: var(--ink);
 }
 .lightbox figcaption { color: var(--footer-ink); text-align: center; margin-top: var(--space-3); }
+/* v24: the viewer detail line (teacher role / photo detail) had no rule —
+   a bare <p> renders black text on the dark overlay, invisible. Same light
+   ink as the caption, a touch dimmer. */
+.lightbox-detail { color: var(--footer-ink); opacity: 0.85; text-align: center; margin: var(--space-2) 0 0; }
 .lightbox-btn {
   position: absolute;
   width: 48px;
@@ -1003,7 +1031,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   border-bottom: 1px solid var(--line);
   align-items: start;
 }
-.news-item h3 { margin: 0 0 var(--space-2); font-size: 1.35rem; line-height: 1.3; }
+.news-item h3 { margin: 0 0 var(--space-2); font-size: 1.35rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 .news-item p { color: var(--ink-soft); margin: 0; max-width: 64ch; }
 .news-tag {
   font-size: 0.85rem;
@@ -1050,9 +1078,9 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .field input:hover, .field select:hover, .field textarea:hover { border-color: var(--ink-mute); }
 .field textarea { min-height: 140px; resize: vertical; }
 .field input:focus, .field select:focus, .field textarea:focus {
-  outline: 3px solid var(--blue);
+  outline: 3px solid var(--red);
   outline-offset: 1px;
-  border-color: var(--blue);
+  border-color: var(--red);
 }
 .field .hint { font-size: 0.88rem; color: var(--ink-mute); min-height: 1lh; }
 .field .error-text { font-size: 0.88rem; color: var(--red); min-height: 1lh; font-weight: 600; }
@@ -1096,8 +1124,8 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   position: absolute;
   right: -70px;
   bottom: -90px;
-  width: 380px;
-  height: 380px;
+  width: 300px;
+  height: 300px;
   background: url('../img/crest-transparent-512.png') center / contain no-repeat;
   opacity: 0.07;
   pointer-events: none;
@@ -1106,22 +1134,21 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .footer-inner {
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 3fr) minmax(0, 4fr);
-  gap: var(--space-7);
-  padding-top: var(--space-8);
-  padding-bottom: var(--space-7);
+  gap: var(--space-6);
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-6);
 }
 .footer-brand { display: flex; gap: var(--space-4); align-items: flex-start; }
 .footer-brand img { width: 72px; height: 72px; object-fit: contain; flex-shrink: 0; }
 .footer-brand-name { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; line-height: 1.15; }
 .footer-brand-sub { color: var(--footer-mute); font-size: 0.92rem; margin-top: var(--space-1); }
-.footer-about { color: var(--footer-mute); font-size: 0.95rem; margin-top: var(--space-4); max-width: 46ch; }
 .footer-motto {
   font-family: var(--font-display);
   /* No font-style: italic — dead declaration, Bricolage has no italic (v7). */
   font-weight: 600;
-  font-size: 1.15rem;
+  font-size: 1rem;
   color: var(--gold-soft);
-  margin: var(--space-5) 0 0;
+  margin: var(--space-3) 0 0;
 }
 .footer-dates { color: var(--footer-mute); font-size: 0.92rem; margin-top: var(--space-4); }
 .footer-cta { margin-top: var(--space-4); }
@@ -1213,7 +1240,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   font-weight: 500;
   transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out), border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
 }
-.album-nav a:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); transform: translateY(-1px); }
+.album-nav a:hover { background: var(--ink); border-color: var(--red); color: var(--paper); transform: translateY(-1px); } /* v24: same visible-edge fix as the stream tabs */
 .album-nav-toggle { display: none; }
 
 /* ---------- Anthem, lineage, awards ---------- */
@@ -1377,7 +1404,15 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   .pillar-numeral { font-size: 1.9rem; }
   .summary-grid { grid-template-columns: minmax(0, 1fr); }
   .lineage-wide { grid-template-columns: minmax(0, 1fr); }
-  .topper-row { grid-template-columns: 56px minmax(0, 1fr) auto; gap: var(--space-3); }
+  /* v24: the name column was 117px against a ~117px name — one rounding
+     pixel wrapped it to two lines. Narrower position + padding + gap and a
+     1rem name give every topper ~20px of slack at 360px. */
+  .topper-row { grid-template-columns: 48px minmax(0, 1fr) auto; gap: var(--space-2); padding: var(--space-3) var(--space-4); }
+  .topper-name { font-size: 1rem; }
+  /* v24: at 1.35rem the longest news heading truncated to "2027–…" on a
+     360px phone — a heading with an ellipsis is not a heading. 1.15rem
+     fits every title whole at 360px (longest ≈ 249px vs ~288px content). */
+  .news-item h3 { font-size: 1.15rem; }
   .footer-inner { grid-template-columns: minmax(0, 1fr); }
   .news-item { grid-template-columns: minmax(0, 1fr); }
   .news-tag { justify-self: start; }
@@ -1415,6 +1450,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 /* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
+  .announce-track { animation: none; }
   html { scroll-behavior: auto; }
   .hero-media img { animation: none; transform: none; }
   .js .reveal { opacity: 1; transform: none; transition: none; }
@@ -1423,3 +1459,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
     transition-duration: 0.01ms !important;
   }
 }
+
+/* v24: staff and leader cards open the viewer — the pointer says so. */
+.staff-card.js-viewer, .leader-card.js-viewer { cursor: pointer; }
+.photo-card.js-viewer { cursor: pointer; }
