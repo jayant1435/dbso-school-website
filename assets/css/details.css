@@ -1,0 +1,146 @@
+/* DBSO v6 — detail polish for the ten non-home pages.
+   Loaded after style.css on about / academics / admissions / facilities /
+   life / gallery / fees / news / staff / contact only. Never on index.html.
+   Rules: one generous radius scale, spacing rhythm, hover micro-interactions,
+   richer verified detail. No header / nav / footer, no fonts, no new images.
+   RADIUS SCALE — MGM (mgmschool.co.in, browser inspection 19 Nov 2026):
+   cards 20px, buttons 8–10px (soft, NOT pill), icon buttons fully round,
+   shadows extremely soft and faint, flat colours, lots of whitespace. */
+
+/* ---- One radius scale, MGM-matched ---- */
+:root {
+  --radius-img: 20px;   /* photos, gallery tiles, lightbox — matches card scale */
+  --radius-card: 20px;  /* cards, tables, bands, panels — MGM cards ≈20px */
+  --radius-soft: 16px;  /* inputs, form notes, small panels */
+  --radius-btn: 10px;   /* body buttons — MGM buttons 8–10px, never pill */
+  --shadow-soft: 0 1px 2px rgba(18, 30, 42, 0.04), 0 6px 20px rgba(18, 30, 42, 0.05);
+  --shadow-soft-lg: 0 2px 4px rgba(18, 30, 42, 0.05), 0 12px 28px rgba(18, 30, 42, 0.06);
+}
+
+/* ---- Body buttons: soft 10px corners, never pill (header/footer untouched) ---- */
+.cta-band .btn,
+#enquiry-form .btn { border-radius: var(--radius-btn); }
+.switcher-tab { border-radius: var(--radius-btn); }
+
+/* ---- Depth: extremely soft and faint, MGM-style ---- */
+.cta-band { box-shadow: var(--shadow-soft-lg); }
+.anthem { box-shadow: var(--shadow-soft); }
+.table-card { box-shadow: var(--shadow-soft); }
+.notice-panel { box-shadow: var(--shadow-soft); }
+.card:hover,
+.summary-card:hover,
+.staff-card:hover,
+.leader-card:hover { box-shadow: var(--shadow-soft-lg); }
+.photo-row img:hover,
+.gallery-item button:hover { box-shadow: var(--shadow-soft-lg); }
+
+/* ---- Lists that answer a hover: rows tint, nothing moves ---- */
+.topper-row,
+.news-item,
+.lineage-row {
+  border-radius: var(--radius-soft);
+  transition: background-color 0.2s var(--ease-out);
+}
+.topper-row { padding-inline: var(--space-3); margin-inline: calc(-1 * var(--space-3)); }
+.topper-row:hover { background: var(--band); }
+.news-item { padding-inline: var(--space-4); margin-inline: calc(-1 * var(--space-4)); }
+.news-item:hover { background: var(--paper-warm); }
+.lineage-row { padding-inline: var(--space-3); margin-inline: calc(-1 * var(--space-3)); }
+.lineage-row:hover { background: var(--band); }
+
+/* ---- News tags: a soft fill so the date reads as a label, not a border ---- */
+.news-tag { background: var(--paper-warm); }
+
+/* ---- Chips: a quiet lift on hover, no fake affordance beyond the border ---- */
+.chip-list li {
+  transition: background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out),
+    transform 0.2s var(--ease-out);
+}
+.chip-list li:hover {
+  background: var(--band);
+  border-color: var(--ink);
+  transform: translateY(-1px);
+}
+
+/* ---- Tick and contact icons: a soft disc behind the mark ---- */
+.tick-list svg {
+  width: 16px;
+  height: 16px;
+  padding: 4px;
+  box-sizing: content-box;
+  background: var(--band);
+  border-radius: 50%;
+  margin-top: 1px;
+}
+.contact-lines svg {
+  width: 20px;
+  height: 20px;
+  padding: 9px;
+  box-sizing: content-box;
+  background: var(--band);
+  border-radius: 50%;
+  margin-top: 0;
+}
+
+/* ---- Admissions steps: the number disc deepens on hover ---- */
+.steps li::before { transition: background-color 0.2s var(--ease-out); }
+.steps li:hover::before { background: var(--red-dark); }
+
+/* ---- Admissions plain lists: gold-dot markers, same voice as awards ---- */
+.check-list { list-style: none; padding: 0; margin: 0 0 var(--space-4); }
+.check-list li {
+  position: relative;
+  padding: 0 0 var(--space-2) var(--space-5);
+  margin: 0;
+}
+.check-list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.62em;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+}
+
+/* ---- Stream switcher: the active tab carries a little weight ---- */
+.switcher-tab[aria-selected="true"] { box-shadow: var(--shadow-1); }
+
+/* ---- Staff: bigger portrait thumbs, portraits that breathe on hover ---- */
+.staff-photo img {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+}
+.leader-visual img { transition: transform 0.6s var(--ease-out); }
+.leader-card:hover .leader-visual img { transform: scale(1.03); }
+
+/* ---- Contact form: a quiet card of its own, rounder fields ---- */
+#enquiry-form {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-soft);
+}
+.field input,
+.field select,
+.field textarea { border-radius: var(--radius-soft); }
+.form-note { border-radius: var(--radius-soft); }
+
+/* ---- Gallery: the album jump bar stays put on desktop, under the header ---- */
+@media (min-width: 861px) {
+  .album-nav {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 50;
+  }
+}
+.album-head h2 { margin-bottom: var(--space-2); }
+
+/* ---- Small screens: keep the new radii and the form card comfortable ---- */
+@media (max-width: 600px) {
+  #enquiry-form { padding: var(--space-5); }
+  .news-item { padding-inline: var(--space-3); margin-inline: calc(-1 * var(--space-3)); }
+}
