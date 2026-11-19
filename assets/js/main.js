@@ -12,28 +12,40 @@
   /* Header shadow on scroll */
   var header = document.querySelector(".site-header");
   var albumNav = document.querySelector(".album-nav");
-  /* The jump bar's natural position, cached while it sits in normal flow.
-     (offsetTop lies once the bar sticks — a sticky element's offset moves
-     with the scroll — so the threshold is measured once, not per scroll.) */
-  var albumNavTop = 0;
-  function measureAlbumNav() {
-    if (!albumNav) return;
-    if (window.scrollY <= 10) albumNavTop = albumNav.getBoundingClientRect().top + window.scrollY;
-  }
-  measureAlbumNav();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureAlbumNav);
-  window.addEventListener("resize", measureAlbumNav);
+  /* Gallery jump bar: collapse to one scrollable row once it sticks.
+     Stuck is read live from the bar's own position — the old cached
+     threshold raced font loading and sometimes never fired (v8 probe:
+     same click, compact true once, false the next time). */
+  var jumpUntil = 0; /* while an album jump is animating, never un-collapse */
   function onScroll() {
     if (header) header.classList.toggle("scrolled", window.scrollY > 8);
     var top = document.querySelector(".to-top");
     if (top) top.classList.toggle("show", window.scrollY > 1200);
     /* Gallery jump bar: once it sticks (desktop only), collapse to one
        scrollable row of pills — the full 35-pill grid is ~300px tall when
-       pinned. The toggle expands it back to the grid. */
+       pinned. The toggle expands it back to the grid. Stuck = the bar's
+       top is pinned at the header's height (~59-66px). */
     if (albumNav) {
       var wide = window.matchMedia("(min-width: 861px)").matches;
-      albumNav.classList.toggle("compact", wide && window.scrollY > albumNavTop + 10);
+      var stuck = albumNav.getBoundingClientRect().top <= 70;
+      if (Date.now() < jumpUntil) {
+        if (stuck) albumNav.classList.add("compact");
+      } else {
+        albumNav.classList.toggle("compact", wide && stuck);
+      }
     }
+  }
+  /* Pill click: collapse the bar BEFORE the browser measures the anchor
+     jump — otherwise the mid-scroll collapse shifts content up ~230px and
+     the landing overshoots past the album heading. The native jump then
+     runs against the already-collapsed layout. */
+  if (albumNav) {
+    albumNav.addEventListener("click", function (e) {
+      var a = e.target.closest ? e.target.closest("a[href^='#']") : null;
+      if (!a || !document.querySelector(a.getAttribute("href"))) return;
+      albumNav.classList.add("compact");
+      jumpUntil = Date.now() + 1500;
+    });
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
