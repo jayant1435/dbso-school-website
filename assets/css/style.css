@@ -19,8 +19,8 @@
   --footer-bg: #16232f;
   --footer-ink: #e8edf1;
   --footer-mute: #a7b4bf;
-  --scrim-top: rgba(18, 30, 42, 0.38);
-  --scrim-bottom: rgba(18, 30, 42, 0.78);
+  --scrim-top: rgba(18, 30, 42, 0.48);
+  --scrim-bottom: rgba(18, 30, 42, 0.85);
   --overlay: rgba(18, 30, 42, 0.92);
   --shadow-1: 0 1px 2px rgba(18, 30, 42, 0.08), 0 4px 16px rgba(18, 30, 42, 0.07);
   --shadow-2: 0 2px 4px rgba(18, 30, 42, 0.1), 0 12px 32px rgba(18, 30, 42, 0.12);
