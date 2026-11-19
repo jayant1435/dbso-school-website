@@ -1,9 +1,22 @@
-/* Self-hosted fonts: Alegreya + Hanken Grotesk (Google Fonts, OFL). Latin subsets only. */
-@font-face { font-family: 'Alegreya'; font-style: italic; font-weight: 500; font-display: swap; src: url('../fonts/Alegreya-500italic.woff2') format('woff2'); }
-@font-face { font-family: 'Alegreya'; font-style: normal; font-weight: 500; font-display: swap; src: url('../fonts/Alegreya-500.woff2') format('woff2'); }
-@font-face { font-family: 'Alegreya'; font-style: normal; font-weight: 700; font-display: swap; src: url('../fonts/Alegreya-700.woff2') format('woff2'); }
-@font-face { font-family: 'Alegreya'; font-style: normal; font-weight: 800; font-display: swap; src: url('../fonts/Alegreya-800.woff2') format('woff2'); }
-@font-face { font-family: 'Hanken Grotesk'; font-style: normal; font-weight: 400; font-display: swap; src: url('../fonts/HankenGrotesk-400.woff2') format('woff2'); }
-@font-face { font-family: 'Hanken Grotesk'; font-style: normal; font-weight: 500; font-display: swap; src: url('../fonts/HankenGrotesk-500.woff2') format('woff2'); }
-@font-face { font-family: 'Hanken Grotesk'; font-style: normal; font-weight: 600; font-display: swap; src: url('../fonts/HankenGrotesk-600.woff2') format('woff2'); }
-@font-face { font-family: 'Hanken Grotesk'; font-style: normal; font-weight: 700; font-display: swap; src: url('../fonts/HankenGrotesk-700.woff2') format('woff2'); }
+/* Self-hosted fonts: Fraunces (display serif, variable) + Inter Tight (body sans, variable). Google Fonts, OFL. Latin subsets only. */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../fonts/Fraunces-Variable.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../fonts/Fraunces-Italic-Variable.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter Tight';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../fonts/InterTight-Variable.woff2') format('woff2');
+}
