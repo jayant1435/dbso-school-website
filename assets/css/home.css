@@ -118,7 +118,11 @@
 }
 .pillar:last-child { margin-bottom: 0; }
 .pillar:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); }
-.pillar p { min-height: calc(5 * 1.65em); }
+/* v23: no reserved height. The paragraph is capped at four lines (five at
+   tablet width) — longer ones end with "..." instead of leaving a blank gap
+   below the shorter text. Religion is three lines, so its card stays one
+   line shorter; that is the honest height, not a padded one. */
+.pillar p { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .pillar-numeral {
   width: 64px;
   height: 64px;
@@ -132,7 +136,7 @@
 .pillar-nav { display: none; }
 
 @media (max-width: 1080px) {
-  .pillar p { min-height: calc(6 * 1.65em); }
+  .pillar p { -webkit-line-clamp: 5; }
 }
 
 @media (max-width: 860px) {
@@ -152,7 +156,8 @@
     flex-direction: column;
     align-items: flex-start;
   }
-  .pillars-slider .pillar p { min-height: 0; }
+  /* Slides show the whole paragraph — no cap when one card fills the screen. */
+  .pillars-slider .pillar p { display: block; -webkit-line-clamp: unset; overflow: visible; }
   .pillar-nav { display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-4); }
   .pillar-arrow {
     width: 44px;
@@ -206,7 +211,7 @@
    Three cards in a row on desktop, one column on a phone. Every card is
    the same height: heading reserves two lines, description three, and
    the tag sits pinned to the bottom edge of every card. */
-.news-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: var(--space-4); border-top: 0; }
+.news-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: var(--space-4); border-top: 0; }
 .news-cards .news-item {
   display: flex;
   flex-direction: column;
@@ -217,8 +222,8 @@
   transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
 }
 .news-cards .news-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); }
-.news-cards .news-item h3 { min-height: calc(2 * 1.3em); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.news-cards .news-item p { min-height: calc(3 * 1.65em); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: var(--space-4); }
+.news-cards .news-item h3 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.news-cards .news-item p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: var(--space-4); }
 .news-cards .news-item .news-tag { margin-top: auto; align-self: flex-start; }
 
 /* ---------- CTA band: softer corners, two actions ---------- */
