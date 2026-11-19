@@ -12,14 +12,13 @@
   --radius-img: 20px;   /* photos, gallery tiles, lightbox — matches card scale */
   --radius-card: 20px;  /* cards, tables, bands, panels — MGM cards ≈20px */
   --radius-soft: 16px;  /* inputs, form notes, small panels */
-  --radius-btn: 10px;   /* body buttons — MGM buttons 8–10px, never pill */
+  /* --radius-btn (10px) now lives in style.css :root — one token, one decision (v7). */
   --shadow-soft: 0 1px 2px rgba(18, 30, 42, 0.04), 0 6px 20px rgba(18, 30, 42, 0.05);
   --shadow-soft-lg: 0 2px 4px rgba(18, 30, 42, 0.05), 0 12px 28px rgba(18, 30, 42, 0.06);
 }
 
-/* ---- Body buttons: soft 10px corners, never pill (header/footer untouched) ---- */
-.cta-band .btn,
-#enquiry-form .btn { border-radius: var(--radius-btn); }
+/* ---- Body buttons: the base .btn is already 10px site-wide (style.css, v7).
+   Only the stream tabs need a local radius here. ---- */
 .switcher-tab { border-radius: var(--radius-btn); }
 
 /* ---- Depth: extremely soft and faint, MGM-style ---- */
@@ -136,6 +135,38 @@
     top: var(--header-h);
     z-index: 50;
   }
+}
+/* Once the page is scrolled past the jump bar (JS adds .compact), it
+   collapses to one horizontally-scrollable row of pills, so the pinned
+   bar stops eating ~40% of the viewport (v7). The toggle expands it back
+   to the full grid. Desktop only — below 861px the bar is not sticky and
+   the small-screen 8-pill + toggle pattern applies instead. */
+@media (min-width: 861px) {
+  .album-nav.compact .container { flex-wrap: nowrap; }
+  .album-nav.compact ul {
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    padding-bottom: 2px;
+  }
+  .album-nav.compact ul li { flex-shrink: 0; }
+  .album-nav.compact .album-nav-toggle {
+    display: inline-block;
+    flex-shrink: 0;
+    margin-top: 0;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-pill);
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  /* Expanded in compact mode: back to the full wrapped grid. */
+  .album-nav.compact.expanded ul { flex-wrap: wrap; overflow: visible; }
 }
 .album-head h2 { margin-bottom: var(--space-2); }
 
