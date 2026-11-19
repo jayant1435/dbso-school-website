@@ -36,12 +36,30 @@
 .main-nav { position: relative; }
 .main-nav a {
   position: relative;
-  padding: 11px 10px; /* 44px+ touch target; 10-link row still fits at 1440 */
+  padding: 11px 8px; /* 44px+ touch target; 8px sides keep the 10-link row
+    + brand + CTA inside the viewport at 1366px (measured v7) */
   color: var(--ink);
   font-weight: 600;
   transition: color 0.25s var(--ease-out);
 }
-/* Hover: text turns blue. No underline, no background — MGM cue. */
+/* The underline lives on every link, drawn in on hover and on the active
+   page. Hover: text turns blue + the same 3px underline draws in. */
+.main-nav a::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: -3px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s var(--ease-out);
+  pointer-events: none;
+}
+.main-nav a:hover::after { transform: scaleX(1); }
+/* Hover: text turns blue. No background pill — MGM cue. */
 .main-nav a:hover {
   background: transparent;
   color: var(--blue);
@@ -54,18 +72,7 @@
   font-weight: 700;
 }
 .main-nav a[aria-current="page"]::after {
-  content: "";
-  position: absolute;
-  left: 10px;
-  right: 10px;
-  bottom: -3px;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--blue);
-  transform: scaleX(0);
-  transform-origin: center;
   animation: nav-underline-in 0.45s var(--ease-out) 0.15s forwards;
-  pointer-events: none;
 }
 @keyframes nav-underline-in {
   to { transform: scaleX(1); }
@@ -131,10 +138,12 @@
 .mobile-menu:not(.open) nav li,
 .mobile-menu:not(.open) .btn { transition-delay: 0s; }
 
-/* ---------- Breakpoint: the 10-link row + brand + CTA needs ~1260px.
-   Below 1400px the desktop nav would clip the CTA, so the hamburger
-   takes over (style.css hides it only below 1200px — this extends it). */
-@media (max-width: 1400px) {
+/* ---------- Breakpoint: measured v7 — the header row is ~1231px wide
+   (brand 219 + 10 links 768 + CTA 216 + gaps 28) inside a 1180px container.
+   The CTA keeps ≥24px from the viewport edge down to 1330px; below that
+   the hamburger takes over. style.css no longer hides the nav — this
+   media query is the single source of truth. */
+@media (max-width: 1330px) {
   .main-nav { display: none; }
   .menu-toggle { display: flex; }
   .header-cta { display: none; }
