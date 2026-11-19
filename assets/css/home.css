@@ -9,6 +9,7 @@
   --home-r-img: 20px;
   --home-r-row: 16px;
   --home-green: #2e7d46;
+  --house-blue: #1d6fa5; /* the Blue house's own colour — not a UI blue */
 }
 
 /* ---------- Dates strip: three rounded cards ---------- */
@@ -87,16 +88,57 @@
 .house-tile[aria-pressed="true"] { border-color: var(--ink); box-shadow: var(--shadow-1); }
 .house-swatch { height: 12px; flex-shrink: 0; }
 .house-swatch-red { background: var(--red); }
-.house-swatch-blue { background: var(--blue); }
+.house-swatch-blue { background: var(--house-blue); }
 .house-swatch-green { background: var(--home-green); }
 .house-swatch-yellow { background: var(--gold); }
 .house-name { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.05rem; color: var(--ink); }
 
-/* ---------- Values: seven equal cards, not seven ragged rows ----------
-   Four across on desktop (the seventh spans two, so the last row fills
-   the grid exactly); two across on a phone (the seventh spans both). */
-.home-values { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.home-values .meaning:last-child { grid-column: span 2; }
+/* ---------- Values: six single-word tiles, no descriptions ----------
+   v24: Jayant — seven cards with glosses looked bad, and the names were too
+   long. Six values, thoughtfully picked from the school's own seven plus the
+   Salesian lists (see BUILD-LOG): Integrity, Compassion, Discipline,
+   Respect, Faith, Nature. One word each, so every tile is one line at every
+   width. The container is different from the club tiles on purpose: a tall
+   card with a big red numeral and the word in the display face, so the row
+   reads as a statement, not a list. 3 across desktop, 2 across on a phone
+   (six fills the grid exactly at every width). */
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.value-tile {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--red);
+  border-radius: var(--home-r-card);
+  padding: var(--space-5) var(--space-4);
+  min-height: 132px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-2);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+.value-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); border-top-color: var(--red); }
+.value-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--red);
+  letter-spacing: 0.08em;
+}
+.value-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.45rem;
+  line-height: 1.15;
+  color: var(--ink);
+  white-space: nowrap;
+}
 
 /* ---------- Pillars: three equal cards, numeral in a gold disc ----------
    Desktop: stacked cards, numeral left. The paragraph reserves the same
@@ -118,16 +160,18 @@
 }
 .pillar:last-child { margin-bottom: 0; }
 .pillar:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); }
-/* v23: no reserved height. The paragraph is capped at four lines (five at
-   tablet width) — longer ones end with "..." instead of leaving a blank gap
-   below the shorter text. Religion is three lines, so its card stays one
-   line shorter; that is the honest height, not a padded one. */
-.pillar p { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+/* v24: no cap at all. The three texts were rewritten to the same length
+   (Reason 165, Relationship 167, Religion 167 chars), so every card takes
+   the same number of lines — four at desktop and tablet — honestly, with no
+   reserve and no "...". If a future edit unbalances them, the probe's
+   pillar-line check will catch it. */
+.pillar p { max-width: 62ch; }
 .pillar-numeral {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: var(--gold-soft);
+  background: var(--red);
+  color: var(--paper);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,29 +179,33 @@
 }
 .pillar-nav { display: none; }
 
-@media (max-width: 1080px) {
-  .pillar p { -webkit-line-clamp: 5; }
-}
-
 @media (max-width: 860px) {
+  /* v24: the active card sits CENTRED. flex-basis % resolves against the
+     CONTENT box (track minus padding), so the card is 100% of the content
+     box — 78% of the track with 11% padding on each side — and its centre
+     is the track's centre. Both neighbours peek by the same ~27px. The
+     native scrollbar is hidden (the arrows + dots are the control);
+     scroll-snap-align: center does the centring, and JS scrolls to the
+     centre of the target slide. */
   .pillars-slider {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     gap: var(--space-3);
+    padding-inline: 11%;
     padding-bottom: var(--space-2);
-    scrollbar-width: thin;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
+  .pillars-slider::-webkit-scrollbar { display: none; }
   .pillars-slider .pillar {
-    flex: 0 0 86%;
-    scroll-snap-align: start;
+    flex: 0 0 100%;
+    scroll-snap-align: center;
     margin-bottom: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
   }
-  /* Slides show the whole paragraph — no cap when one card fills the screen. */
-  .pillars-slider .pillar p { display: block; -webkit-line-clamp: unset; overflow: visible; }
   .pillar-nav { display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-4); }
   .pillar-arrow {
     width: 44px;
@@ -191,6 +239,18 @@
   box-shadow: 0 0 0 1px var(--line), var(--shadow-1);
   transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
 }
+/* v24: the whole card is a button — tap it and the photograph opens full
+   size with its caption and a line of detail. */
+button.photo-card {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+button.photo-card figcaption { text-align: left; }
 .photo-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); }
 .photo-card img { border-radius: 0; }
 .photo-card img:hover { box-shadow: none; }
@@ -222,7 +282,7 @@
   transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
 }
 .news-cards .news-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); }
-.news-cards .news-item h3 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.news-cards .news-item h3 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 .news-cards .news-item p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: var(--space-4); }
 .news-cards .news-item .news-tag { margin-top: auto; align-self: flex-start; }
 
@@ -240,8 +300,9 @@
   .news-item { padding: var(--space-4) var(--space-5); }
   .quote-inline { padding: var(--space-4) var(--space-5); }
   .house-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .home-values { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .home-values .meaning:last-child { grid-column: span 2; }
+  .values-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .value-tile { min-height: 112px; }
+  .value-name { font-size: 1.25rem; }
   /* Narrower cards, slightly smaller labels, so every stat label still
      fits its two-line budget on a small phone. */
   .numbers .number-item { padding: var(--space-4); }
@@ -258,3 +319,62 @@
 @media (max-width: 860px) {
   .news-cards { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ---------- House modal (v24): tap a house, it opens — colour band, name,
+   one verified line, and a link onward. Slides up, backdrop fades. ---------- */
+
+.house-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  background: var(--overlay);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  padding: var(--space-4);
+}
+.house-modal.open { display: flex; animation: lb-fade 0.25s var(--ease-out); }
+.house-modal-card {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background: var(--paper);
+  border-radius: var(--home-r-card);
+  overflow: clip;
+  padding: var(--space-6);
+  animation: lb-in 0.3s var(--ease-out);
+}
+.house-modal-band { height: 10px; border-radius: 5px; margin-bottom: var(--space-5); }
+.house-modal-band-red { background: var(--red); }
+.house-modal-band-blue { background: var(--house-blue); }
+.house-modal-band-green { background: var(--home-green); }
+.house-modal-band-yellow { background: var(--gold); }
+.house-modal-card h3 { margin: 0 0 var(--space-2); font-size: 1.6rem; }
+.house-modal-card p { color: var(--ink-soft); margin-bottom: var(--space-5); }
+.house-modal-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--ink);
+  cursor: pointer;
+}
+.house-modal-close:hover { border-color: var(--ink); }
+@media (min-width: 861px) {
+  .house-modal { align-items: center; }
+}
+
+/* Viewer detail line: the caption is the title, this is the fact below it. */
+.lightbox-detail {
+  color: var(--footer-ink);
+  text-align: center;
+  margin-top: var(--space-2);
+  font-size: 0.95rem;
+}
+.lightbox-detail a { color: var(--paper); }
