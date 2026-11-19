@@ -178,3 +178,6 @@
 
 /* ---- Syllabus 2026-27 (v11): 13 class buttons, wrapping row ---- */
 .syllabus-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* Linked card media (videos page): the anchor must fill the media box so the thumbnail's height: 100% resolves. */
+.card-media a { display: block; height: 100%; }
