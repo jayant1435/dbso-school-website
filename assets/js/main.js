@@ -293,6 +293,85 @@
     });
   }
 
+  /* Uniform tiles (v22): tapping a club or house highlights it and says
+     what it is in the detail line below the grid. No facts are invented:
+     the line only names the tile and its count, then links onward. */
+  document.querySelectorAll(".tile-grid, .house-grid").forEach(function (grid) {
+    var detail = null;
+    var sib = grid.nextElementSibling;
+    while (sib && !detail) {
+      if (sib.classList && sib.classList.contains("tile-detail")) detail = sib;
+      sib = sib.nextElementSibling;
+    }
+    if (!detail) return;
+    var defaultText = detail.textContent;
+    var tiles = Array.prototype.slice.call(grid.querySelectorAll("button[data-club], button[data-house]"));
+    tiles.forEach(function (tile) {
+      tile.addEventListener("click", function () {
+        var wasPressed = tile.getAttribute("aria-pressed") === "true";
+        tiles.forEach(function (t) { t.setAttribute("aria-pressed", "false"); });
+        if (wasPressed) {
+          detail.textContent = defaultText;
+          return;
+        }
+        tile.setAttribute("aria-pressed", "true");
+        /* One span child: the bar is a flex box, and several flex children
+           (strong, text, link) would lay out as separate boxes and overlap
+           when the line wraps. A single span wraps normally inside it. */
+        if (tile.hasAttribute("data-club")) {
+          detail.innerHTML = "<span><strong>" + tile.getAttribute("data-club") + "</strong> — one of the school's 20 clubs. <a href=\"life.html\">See clubs on the Life at Bosco page</a>.</span>";
+        } else {
+          detail.innerHTML = "<span><strong>" + tile.getAttribute("data-house") + " House</strong> — one of the school's four houses. The four houses compete through the year. <a href=\"life.html\">See sport on the Life at Bosco page</a>.</span>";
+        }
+      });
+    });
+  });
+
+  /* Pillars slider (v22, phones only): arrows, dots and a counter. On
+     desktop the nav is hidden and the cards stack, so this only matters
+     where the slider layout is active. */
+  var slider = document.querySelector(".pillars-slider");
+  if (slider) {
+    var slides = Array.prototype.slice.call(slider.querySelectorAll(".pillar"));
+    var dots = Array.prototype.slice.call(document.querySelectorAll(".pillar-dot"));
+    var countEl = document.getElementById("pillar-count");
+    var prevBtn = document.getElementById("pillar-prev");
+    var nextBtn = document.getElementById("pillar-next");
+    var current = 0;
+    function sync(i) {
+      current = i;
+      dots.forEach(function (d, j) { d.classList.toggle("is-active", j === i); });
+      if (countEl) countEl.textContent = (i + 1) + " of " + slides.length;
+    }
+    function goTo(i) {
+      var n = (i + slides.length) % slides.length;
+      var target = slides[n];
+      var left = target.getBoundingClientRect().left - slider.getBoundingClientRect().left + slider.scrollLeft;
+      slider.scrollTo({ left: left, behavior: reduceMotion ? "auto" : "smooth" });
+      sync(n);
+    }
+    if (prevBtn) prevBtn.addEventListener("click", function () { goTo(current - 1); });
+    if (nextBtn) nextBtn.addEventListener("click", function () { goTo(current + 1); });
+    dots.forEach(function (dot, i) {
+      dot.addEventListener("click", function () { goTo(i); });
+    });
+    var slideTicking = false;
+    slider.addEventListener("scroll", function () {
+      if (slideTicking) return;
+      slideTicking = true;
+      requestAnimationFrame(function () {
+        var sRect = slider.getBoundingClientRect();
+        var best = 0, bestDist = Infinity;
+        slides.forEach(function (slide, i) {
+          var d = Math.abs(slide.getBoundingClientRect().left - sRect.left);
+          if (d < bestDist) { bestDist = d; best = i; }
+        });
+        sync(best);
+        slideTicking = false;
+      });
+    }, { passive: true });
+  }
+
   /* Back to top */
   var toTop = document.querySelector(".to-top");
   if (toTop) {
