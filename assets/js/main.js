@@ -57,12 +57,14 @@
   var lastFocus = null;
   function openMenu() {
     lastFocus = document.activeElement;
+    if (header) header.classList.add("menu-open");
     menu.classList.add("open");
     toggle.setAttribute("aria-expanded", "true");
     document.body.style.overflow = "hidden";
     if (closeBtn) closeBtn.focus();
   }
   function closeMenu() {
+    if (header) header.classList.remove("menu-open");
     menu.classList.remove("open");
     toggle.setAttribute("aria-expanded", "false");
     document.body.style.overflow = "";
@@ -293,39 +295,93 @@
     });
   }
 
-  /* Uniform tiles (v22): tapping a club or house highlights it and says
-     what it is in the detail line below the grid. No facts are invented:
-     the line only names the tile and its count, then links onward. */
-  document.querySelectorAll(".tile-grid, .house-grid").forEach(function (grid) {
-    var detail = null;
-    var sib = grid.nextElementSibling;
-    while (sib && !detail) {
-      if (sib.classList && sib.classList.contains("tile-detail")) detail = sib;
-      sib = sib.nextElementSibling;
-    }
-    if (!detail) return;
-    var defaultText = detail.textContent;
-    var tiles = Array.prototype.slice.call(grid.querySelectorAll("button[data-club], button[data-house]"));
+  /* Tiles (v24): a club tile just highlights — no detail bar below the
+     grid any more. A house tile opens the house modal instead. */
+  document.querySelectorAll(".tile-grid").forEach(function (grid) {
+    var tiles = Array.prototype.slice.call(grid.querySelectorAll("button[data-club]"));
     tiles.forEach(function (tile) {
       tile.addEventListener("click", function () {
         var wasPressed = tile.getAttribute("aria-pressed") === "true";
         tiles.forEach(function (t) { t.setAttribute("aria-pressed", "false"); });
-        if (wasPressed) {
-          detail.textContent = defaultText;
-          return;
-        }
-        tile.setAttribute("aria-pressed", "true");
-        /* One span child: the bar is a flex box, and several flex children
-           (strong, text, link) would lay out as separate boxes and overlap
-           when the line wraps. A single span wraps normally inside it. */
-        if (tile.hasAttribute("data-club")) {
-          detail.innerHTML = "<span><strong>" + tile.getAttribute("data-club") + "</strong> — one of the school's 20 clubs. <a href=\"life.html\">See clubs on the Life at Bosco page</a>.</span>";
-        } else {
-          detail.innerHTML = "<span><strong>" + tile.getAttribute("data-house") + " House</strong> — one of the school's four houses. The four houses compete through the year. <a href=\"life.html\">See sport on the Life at Bosco page</a>.</span>";
-        }
+        if (!wasPressed) tile.setAttribute("aria-pressed", "true");
       });
     });
   });
+
+  /* House modal (v24): tap a house and it opens — colour band, name, one
+     verified line, link onward. Esc, backdrop or the X closes it. */
+  var houseModal = document.getElementById("house-modal");
+  if (houseModal) {
+    var hmBand = document.getElementById("house-modal-band");
+    var hmName = document.getElementById("house-modal-name");
+    var hmLastFocus = null;
+    function openHouse(name) {
+      hmLastFocus = document.activeElement;
+      hmName.textContent = name + " House";
+      hmBand.className = "house-modal-band house-modal-band-" + name.toLowerCase();
+      houseModal.classList.add("open");
+      houseModal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      houseModal.querySelector(".house-modal-close").focus();
+    }
+    function closeHouse() {
+      houseModal.classList.remove("open");
+      houseModal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if (hmLastFocus && hmLastFocus.focus) hmLastFocus.focus();
+    }
+    document.querySelectorAll(".house-tile").forEach(function (tile) {
+      tile.addEventListener("click", function () {
+        document.querySelectorAll(".house-tile").forEach(function (t) { t.setAttribute("aria-pressed", "false"); });
+        tile.setAttribute("aria-pressed", "true");
+        openHouse(tile.getAttribute("data-house"));
+      });
+    });
+    houseModal.querySelector(".house-modal-close").addEventListener("click", closeHouse);
+    houseModal.addEventListener("click", function (e) { if (e.target === houseModal) closeHouse(); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && houseModal.classList.contains("open")) closeHouse();
+    });
+  }
+
+  /* Viewer (v24): one modal for home photo cards and staff/leader cards.
+     Full-size image, name/caption, one precise line below it. */
+  var viewer = document.getElementById("viewer");
+  if (viewer) {
+    var vImg = viewer.querySelector("img");
+    var vCap = document.getElementById("viewer-caption");
+    var vDet = document.getElementById("viewer-detail");
+    var vLastFocus = null;
+    function openViewer(el) {
+      vLastFocus = document.activeElement;
+      vImg.src = el.getAttribute("data-full");
+      vImg.alt = el.getAttribute("data-caption") || "";
+      vCap.textContent = el.getAttribute("data-caption") || "";
+      vDet.textContent = el.getAttribute("data-detail") || "";
+      vDet.style.display = vDet.textContent ? "" : "none";
+      viewer.classList.add("open");
+      viewer.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      viewer.querySelector(".lightbox-close").focus();
+    }
+    function closeViewer() {
+      viewer.classList.remove("open");
+      viewer.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      if (vLastFocus && vLastFocus.focus) vLastFocus.focus();
+    }
+    document.querySelectorAll(".js-viewer").forEach(function (el) {
+      el.addEventListener("click", function () { openViewer(el); });
+      el.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openViewer(el); }
+      });
+    });
+    viewer.querySelector(".lightbox-close").addEventListener("click", closeViewer);
+    viewer.addEventListener("click", function (e) { if (e.target === viewer) closeViewer(); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && viewer.classList.contains("open")) closeViewer();
+    });
+  }
 
   /* Pillars slider (v22, phones only): arrows, dots and a counter. On
      desktop the nav is hidden and the cards stack, so this only matters
@@ -346,7 +402,10 @@
     function goTo(i) {
       var n = (i + slides.length) % slides.length;
       var target = slides[n];
-      var left = target.getBoundingClientRect().left - slider.getBoundingClientRect().left + slider.scrollLeft;
+      /* v24: centre the slide in the track — the track has 7% side padding
+         and the active card is 86% wide, so centring shows both neighbours
+         peeking by the same amount. */
+      var left = target.getBoundingClientRect().left - slider.getBoundingClientRect().left + slider.scrollLeft - (slider.clientWidth - target.offsetWidth) / 2;
       slider.scrollTo({ left: left, behavior: reduceMotion ? "auto" : "smooth" });
       sync(n);
     }
@@ -363,7 +422,8 @@
         var sRect = slider.getBoundingClientRect();
         var best = 0, bestDist = Infinity;
         slides.forEach(function (slide, i) {
-          var d = Math.abs(slide.getBoundingClientRect().left - sRect.left);
+          /* v24: the slide whose CENTRE is nearest the track's centre. */
+          var d = Math.abs((slide.getBoundingClientRect().left + slide.offsetWidth / 2) - (sRect.left + sRect.width / 2));
           if (d < bestDist) { bestDist = d; best = i; }
         });
         sync(best);
