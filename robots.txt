@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dbso-school-website.pages.dev/sitemap.xml
