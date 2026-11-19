@@ -175,3 +175,6 @@
   #enquiry-form { padding: var(--space-5); }
   .news-item { padding-inline: var(--space-3); margin-inline: calc(-1 * var(--space-3)); }
 }
+
+/* ---- Syllabus 2026-27 (v11): 13 class buttons, wrapping row ---- */
+.syllabus-grid { display: flex; flex-wrap: wrap; gap: 12px; }
