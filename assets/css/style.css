@@ -1037,7 +1037,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   bottom: -90px;
   width: 380px;
   height: 380px;
-  background: url('../img/crest-transparent.png') center / contain no-repeat;
+  background: url('../img/crest-transparent-512.png') center / contain no-repeat;
   opacity: 0.07;
   pointer-events: none;
 }
