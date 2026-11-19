@@ -1,22 +1,15 @@
-/* Self-hosted fonts: Fraunces (display serif, variable) + Inter Tight (body sans, variable). Google Fonts, OFL. Latin subsets only. */
+/* Self-hosted fonts: Bricolage Grotesque (display, variable opsz 12-96 + wght 200-800) + DM Sans (body, variable opsz 9-40 + wght 100-1000). Same pairing as mgmschool.co.in. Google Fonts, OFL. Latin subsets only. */
 @font-face {
-  font-family: 'Fraunces';
+  font-family: 'Bricolage Grotesque';
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 200 800;
   font-display: swap;
-  src: url('../fonts/Fraunces-Variable.woff2') format('woff2');
+  src: url('../fonts/BricolageGrotesque-Variable.woff2') format('woff2');
 }
 @font-face {
-  font-family: 'Fraunces';
-  font-style: italic;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url('../fonts/Fraunces-Italic-Variable.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Inter Tight';
+  font-family: 'DM Sans';
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 100 1000;
   font-display: swap;
-  src: url('../fonts/InterTight-Variable.woff2') format('woff2');
+  src: url('../fonts/DMSans-Variable.woff2') format('woff2');
 }
