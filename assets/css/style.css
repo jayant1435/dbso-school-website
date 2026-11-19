@@ -39,6 +39,7 @@
   --radius-img: 16px;
   --radius-card: 20px;
   --radius-pill: 999px;
+  --radius-btn: 10px; /* every button, site-wide — one radius decision (v7) */
   --container: 1180px;
   --header-h: 66px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -262,7 +263,7 @@ figcaption {
   gap: var(--space-2);
   min-height: 48px;
   padding: var(--space-3) var(--space-5);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-btn);
   font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 600;
@@ -432,7 +433,7 @@ figcaption {
 
 /* ---------- Sections ---------- */
 
-.section { padding-top: var(--space-9); padding-bottom: var(--space-9); }
+.section { padding-top: var(--space-8); padding-bottom: var(--space-8); }
 .section-tight { padding-top: var(--space-8); padding-bottom: var(--space-8); }
 .section-band { background: var(--band); }
 .section-warm { background: var(--paper-warm); }
@@ -559,8 +560,8 @@ figcaption {
   grid-template-columns: 72px minmax(0, 1fr) auto;
   gap: var(--space-4);
   align-items: baseline;
-  padding-top: var(--space-4);
-  padding-bottom: var(--space-4);
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--line);
 }
 .topper-pos {
@@ -585,7 +586,8 @@ figcaption {
   font-size: clamp(1.4rem, 2.6vw, 1.9rem);
   line-height: 1.35;
   font-weight: 500;
-  font-style: italic;
+  /* No font-style: italic — Bricolage ships no italic face and the
+     declaration was dead code (v7). The slant is Jayant's call. */
   max-width: 30ch;
   text-wrap: balance;
 }
@@ -597,7 +599,7 @@ figcaption {
   padding-top: var(--space-4);
   border-top: 1px solid var(--line);
   font-family: var(--font-display);
-  font-style: italic;
+  /* No font-style: italic — dead declaration, Bricolage has no italic (v7). */
   font-weight: 500;
   font-size: 1.3rem;
   line-height: 1.45;
@@ -1023,7 +1025,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .site-footer {
   background: var(--footer-bg);
   color: var(--footer-ink);
-  margin-top: var(--space-9);
+  margin-top: var(--space-8);
   position: relative;
   overflow: clip;
 }
@@ -1054,7 +1056,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .footer-about { color: var(--footer-mute); font-size: 0.95rem; margin-top: var(--space-4); max-width: 46ch; }
 .footer-motto {
   font-family: var(--font-display);
-  font-style: italic;
+  /* No font-style: italic — dead declaration, Bricolage has no italic (v7). */
   font-weight: 600;
   font-size: 1.15rem;
   color: var(--gold-soft);
@@ -1104,8 +1106,8 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   right: var(--space-4);
   bottom: var(--space-4);
   z-index: 90;
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1px solid var(--line);
   background: var(--paper);
@@ -1123,7 +1125,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 }
 .to-top.show { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out), box-shadow 0.2s var(--ease-out), background-color 0.2s var(--ease-out); }
 .to-top:hover { background: var(--band); }
-.to-top svg { width: 20px; height: 20px; }
+.to-top svg { width: 18px; height: 18px; }
 
 /* ---------- Gallery albums ---------- */
 
@@ -1264,15 +1266,11 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1200px) {
-  .main-nav { display: none; }
-  .menu-toggle { display: flex; }
-  .header-cta { display: none; }
+  /* Nav visibility is owned by nav.css (breakpoint 1330px) — not here. */
 }
 
 @media (max-width: 1080px) {
-  .main-nav { display: none; }
-  .menu-toggle { display: flex; }
-  .header-cta { display: none; }
+  /* Nav visibility is owned by nav.css (breakpoint 1330px) — not here. */
   .numbers { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: var(--space-6); }
   .number-item:nth-child(4) { border-left: 0; padding-left: 0; }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1296,7 +1294,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 @media (max-width: 600px) {
   body { font-size: 16.5px; }
   .container { padding-inline: var(--space-4); }
-  .section { padding-top: var(--space-8); padding-bottom: var(--space-8); }
   .hero { min-height: 72svh; }
   .hero-content { padding-bottom: var(--space-6); }
   .hero-content p { font-size: 1.05rem; }
