@@ -34,6 +34,9 @@
 /* ---------- Desktop nav: colour change only, no pill ---------- */
 
 .main-nav { position: relative; }
+/* The nav list is a horizontal flex row — the global li bottom margin
+   (style.css) would centre the last item 4px lower than its siblings. */
+.main-nav li { margin-bottom: 0; }
 .main-nav a {
   position: relative;
   padding: 11px 8px; /* 44px+ touch target; 8px sides keep the 10-link row
@@ -138,12 +141,13 @@
 .mobile-menu:not(.open) nav li,
 .mobile-menu:not(.open) .btn { transition-delay: 0s; }
 
-/* ---------- Breakpoint: measured v7 — the header row is ~1231px wide
-   (brand 219 + 10 links 768 + CTA 216 + gaps 28) inside a 1180px container.
-   The CTA keeps ≥24px from the viewport edge down to 1330px; below that
+/* ---------- Breakpoint: measured v17 — the header row is ~1420px wide
+   (brand 219 + 11 links ~837 + CTA 216 + gaps 28) inside a 1180px container.
+   The CTA keeps ≥24px from the viewport edge down to ~1470px; below that
    the hamburger takes over. style.css no longer hides the nav — this
-   media query is the single source of truth. */
-@media (max-width: 1330px) {
+   media query is the single source of truth. (v16 regression: adding Videos
+   as the 11th link widened the row ~69px and clipped the CTA at 1366px.) */
+@media (max-width: 1470px) {
   .main-nav { display: none; }
   .menu-toggle { display: flex; }
   .header-cta { display: none; }
