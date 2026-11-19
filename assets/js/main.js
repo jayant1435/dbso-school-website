@@ -11,10 +11,29 @@
 
   /* Header shadow on scroll */
   var header = document.querySelector(".site-header");
+  var albumNav = document.querySelector(".album-nav");
+  /* The jump bar's natural position, cached while it sits in normal flow.
+     (offsetTop lies once the bar sticks — a sticky element's offset moves
+     with the scroll — so the threshold is measured once, not per scroll.) */
+  var albumNavTop = 0;
+  function measureAlbumNav() {
+    if (!albumNav) return;
+    if (window.scrollY <= 10) albumNavTop = albumNav.getBoundingClientRect().top + window.scrollY;
+  }
+  measureAlbumNav();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureAlbumNav);
+  window.addEventListener("resize", measureAlbumNav);
   function onScroll() {
     if (header) header.classList.toggle("scrolled", window.scrollY > 8);
     var top = document.querySelector(".to-top");
-    if (top) top.classList.toggle("show", window.scrollY > 700);
+    if (top) top.classList.toggle("show", window.scrollY > 1200);
+    /* Gallery jump bar: once it sticks (desktop only), collapse to one
+       scrollable row of pills — the full 35-pill grid is ~300px tall when
+       pinned. The toggle expands it back to the grid. */
+    if (albumNav) {
+      var wide = window.matchMedia("(min-width: 861px)").matches;
+      albumNav.classList.toggle("compact", wide && window.scrollY > albumNavTop + 10);
+    }
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
