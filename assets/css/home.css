@@ -1,0 +1,170 @@
+/* Home page polish (v6). Loaded on index.html only, after style.css.
+   Radius system (MGM scale, per Jayant's steer): cards and images 20px,
+   buttons and chips 10px, rows 16px, icon buttons round. No pill shapes.
+   All colours and fonts come from the tokens in style.css. */
+
+:root {
+  --home-r-card: 20px;
+  --home-r-img: 20px;
+  --home-r-row: 16px;
+  --home-r-btn: 10px;
+  --home-green: #2e7d46;
+}
+
+/* Buttons on the home page: soft 10px corners, not pill.
+   Scoped to main so the header and footer buttons are untouched. */
+main .btn { border-radius: var(--home-r-btn); }
+
+/* ---------- Dates strip: three rounded cards ---------- */
+
+.dates-strip .container { align-items: stretch; }
+.date-item {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--home-r-img);
+  padding: var(--space-4) var(--space-5);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+.dates-strip .date-item + .date-item { border-left: 1px solid var(--line); padding-left: var(--space-5); }
+.date-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); }
+
+/* ---------- Welcome and Preventive System figures: soft frame, gentle zoom ---------- */
+
+.split figure {
+  border-radius: var(--home-r-img);
+  overflow: clip;
+  background: var(--paper);
+  box-shadow: 0 0 0 1px var(--line), var(--shadow-1);
+}
+.split figure img { transition: transform 0.6s var(--ease-out); }
+.split figure:hover img { transform: scale(1.03); }
+.split figure figcaption { padding: var(--space-3) var(--space-4) var(--space-4); }
+
+/* ---------- Principal's quote: warm rounded card ---------- */
+
+.quote-inline {
+  background: var(--paper-warm);
+  border-top: 0;
+  border-radius: var(--home-r-img);
+  padding: var(--space-5) var(--space-6);
+}
+
+/* ---------- Numbers: five rounded cards ---------- */
+
+.numbers .number-item {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--home-r-card);
+  padding: var(--space-5);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+.numbers .number-item + .number-item { border-left: 1px solid var(--line); padding-left: var(--space-5); }
+.number-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-2); border-color: var(--line-strong); }
+.numbers-more { margin-top: var(--space-6); color: var(--ink-soft); }
+.numbers-more a { font-weight: 600; }
+
+/* ---------- Clubs, houses and values ---------- */
+
+.home-subhead { margin: var(--space-7) 0 var(--space-4); }
+.home-subhead:first-of-type { margin-top: 0; }
+.home-clubs li { border-radius: var(--home-r-btn); transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out), background-color 0.2s var(--ease-out); }
+.home-clubs li:hover { transform: translateY(-2px); box-shadow: var(--shadow-1); border-color: var(--ink-mute); background: var(--paper-warm); }
+.home-more { margin-top: var(--space-5); color: var(--ink-soft); }
+.home-more a { font-weight: 600; }
+
+.house-list { display: flex; flex-wrap: wrap; gap: var(--space-3); list-style: none; padding: 0; margin: 0; }
+.house-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-2) var(--space-4) var(--space-2) var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--home-r-btn);
+  font-weight: 600;
+  background: var(--paper);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+.house-list li:hover { transform: translateY(-2px); box-shadow: var(--shadow-1); }
+.house-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.house-red { background: var(--red); }
+.house-blue { background: var(--blue); }
+.house-green { background: var(--home-green); }
+.house-yellow { background: var(--gold); }
+
+/* ---------- Pillars: three rounded cards, numeral in a gold disc ---------- */
+
+.pillars { border-top: 0; }
+.pillar {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--home-r-card);
+  padding: var(--space-5) var(--space-6);
+  margin-bottom: var(--space-4);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+.pillar:last-child { margin-bottom: 0; }
+.pillar:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); }
+.pillar-numeral {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--gold-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+}
+
+/* ---------- Life at Bosco: captioned photo cards ---------- */
+
+.photo-card {
+  margin: 0;
+  border-radius: var(--home-r-img);
+  overflow: clip;
+  background: var(--paper);
+  box-shadow: 0 0 0 1px var(--line), var(--shadow-1);
+  transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
+}
+.photo-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); }
+.photo-card img { border-radius: 0; }
+.photo-card img:hover { box-shadow: none; }
+.photo-card figcaption { padding: var(--space-3) var(--space-4) var(--space-4); }
+
+/* ---------- Toppers: hoverable rows, softer figure ---------- */
+
+.toppers-figure img { border-radius: var(--home-r-img); }
+.topper-row {
+  border-bottom: 0;
+  border-radius: var(--home-r-row);
+  padding: var(--space-4) var(--space-5);
+  transition: background-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+}
+.topper-row:hover { background: var(--band); transform: translateX(4px); }
+
+/* ---------- News: rounded cards on the band ---------- */
+
+.news-list { border-top: 0; gap: var(--space-4); }
+.news-item {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--home-r-img);
+  padding: var(--space-5) var(--space-6);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+.news-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); }
+
+/* ---------- CTA band: softer corners, two actions ---------- */
+
+.cta-band { border-radius: var(--home-r-card); box-shadow: var(--shadow-2); }
+.cta-actions { display: flex; flex-direction: column; gap: var(--space-3); }
+.cta-actions .btn { width: 100%; }
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 600px) {
+  .pillar { padding: var(--space-4) var(--space-5); }
+  .pillar-numeral { width: 52px; height: 52px; font-size: 1.5rem; }
+  .news-item { padding: var(--space-4) var(--space-5); }
+  .quote-inline { padding: var(--space-4) var(--space-5); }
+}
