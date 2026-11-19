@@ -1129,7 +1129,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 
 /* ---------- Gallery albums ---------- */
 
-.album { scroll-margin-top: 84px; }
+.album { scroll-margin-top: 160px; } /* v8: sticky stack is header ~59px + compact jump bar ~83px = ~142px; 84px hid album headings under the bars on pill click (150px left the heading flush, 160px clears it) */
 .album + .album { margin-top: var(--space-9); }
 .album-head { margin-bottom: var(--space-5); }
 .album-head h2 { margin-top: 0; }
