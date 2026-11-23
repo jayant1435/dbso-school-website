@@ -56,7 +56,13 @@
     menu.classList.add("open");
     if (backdrop) backdrop.classList.add("show");
     toggle.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden";
+    /* Scroll-lock on <html>, NOT <body>: overflow:hidden on <body> makes
+       the body the scroll container, which un-sticks the sticky header —
+       after scrolling, opening the drawer sent the header (and school
+       name) to top ≈ -scrollY, i.e. off-screen (v31 W-A, measured
+       390/768/834: header top -755px at scrollY 800). Locking <html>
+       freezes background scroll and the header stays stuck at top 0. */
+    document.documentElement.style.overflow = "hidden";
     var firstLink = menu.querySelector("nav a");
     if (firstLink) firstLink.focus();
   }
@@ -66,7 +72,7 @@
     menu.style.top = "";
     if (backdrop) backdrop.classList.remove("show");
     toggle.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
   if (toggle && menu) {
@@ -240,68 +246,10 @@
     });
   }
 
-  /* Album nav: slim bar + grouped panel (v29/B3-C). The panel holds four
-     <details> groups and a live search. Without JS the panel is visible
-     (CSS hides it only under html.js) and the search stays hidden. */
-  var albumNav = document.querySelector(".album-nav");
-  var albumToggle = document.querySelector(".album-nav-toggle");
-  var albumPanel = document.getElementById("album-panel");
-  if (albumNav && albumToggle && albumPanel) {
-    function setAlbumToggle() {
-      var open = albumNav.classList.contains("expanded");
-      albumToggle.textContent = open ? "Hide albums" : "All albums (36)";
-      albumToggle.setAttribute("aria-expanded", open ? "true" : "false");
-    }
-    albumToggle.addEventListener("click", function () {
-      albumNav.classList.toggle("expanded");
-      setAlbumToggle();
-    });
-    setAlbumToggle();
-    /* Pill click: close the panel — the landing is below it, so an open
-       panel would sit above the album the visitor just jumped to. */
-    albumPanel.addEventListener("click", function (e) {
-      var a = e.target.closest ? e.target.closest("a[href^='#']") : null;
-      if (!a) return;
-      albumNav.classList.remove("expanded");
-      setAlbumToggle();
-    });
-    /* Search: filter pills by name; open groups that hold a match. */
-    var albumSearch = document.getElementById("album-search");
-    if (albumSearch) {
-      var albumEmpty = albumPanel.querySelector(".album-panel-empty");
-      var albumEmptyTerm = albumEmpty ? albumEmpty.querySelector("span") : null;
-      albumSearch.addEventListener("input", function () {
-        var q = albumSearch.value.trim().toLowerCase();
-        var matches = 0;
-        albumPanel.querySelectorAll(".album-group").forEach(function (group) {
-          var groupMatches = 0;
-          group.querySelectorAll("li").forEach(function (li) {
-            var hay = li.textContent + " " + (li.getAttribute("data-search") || "");
-            var hit = !q || hay.toLowerCase().indexOf(q) !== -1;
-            li.style.display = hit ? "" : "none";
-            if (hit) groupMatches++;
-          });
-          group.style.display = groupMatches ? "" : "none";
-          if (q && groupMatches) group.open = true;
-          matches += groupMatches;
-        });
-        if (albumEmpty) {
-          albumEmpty.hidden = matches !== 0;
-          if (albumEmptyTerm) albumEmptyTerm.textContent = albumSearch.value.trim();
-        }
-        if (q && !albumNav.classList.contains("expanded")) {
-          albumNav.classList.add("expanded");
-          setAlbumToggle();
-        }
-      });
-    }
-  }
-
   /* Gallery lightbox */
   var lightbox = document.getElementById("lightbox");
   if (lightbox) {
     var lbImg = lightbox.querySelector("img");
-    var lbCap = lightbox.querySelector("figcaption");
     lightbox.setAttribute("aria-modal", "true");
     var items = Array.prototype.slice.call(document.querySelectorAll(".gallery-item button"));
     var current = 0;
@@ -311,7 +259,6 @@
       var btn = items[current];
       lbImg.src = btn.getAttribute("data-full");
       lbImg.alt = btn.getAttribute("data-alt") || "";
-      lbCap.textContent = btn.getAttribute("data-caption") || "";
     }
     var lbTimer = null;
     function openLb(i) {
@@ -371,6 +318,43 @@
       if (Math.abs(dx) > 48) show(current + (dx < 0 ? 1 : -1));
     }, { passive: true });
   }
+
+  /* Gallery sliders (v31): on phones each event is a scroll-snap slider.
+     Prev/next move one photo; the counter follows the scroll position.
+     Keyboard: ArrowLeft/ArrowRight work from any photo button in the event
+     (the event bubbles to the grid); the buttons themselves are native
+     <button>s, so Tab reaches them. No autoplay, no auto-advance. */
+  document.querySelectorAll(".event").forEach(function (section) {
+    var grid = section.querySelector(".gallery-grid");
+    var prev = section.querySelector(".event-prev");
+    var next = section.querySelector(".event-next");
+    var count = section.querySelector(".event-count");
+    if (!grid || !prev || !next) return;
+    var items = grid.querySelectorAll(".gallery-item");
+    if (!items.length) return;
+    function step() {
+      var w = items[0].getBoundingClientRect().width;
+      return w + 12; /* flex gap, var(--space-3) */
+    }
+    function update() {
+      var i = Math.round(grid.scrollLeft / step());
+      i = Math.max(0, Math.min(items.length - 1, i));
+      if (count) count.textContent = (i + 1) + " / " + items.length;
+      prev.disabled = i === 0;
+      next.disabled = i === items.length - 1;
+    }
+    function move(dir) {
+      grid.scrollBy({ left: dir * step(), behavior: reduceMotion ? "auto" : "smooth" });
+    }
+    prev.addEventListener("click", function () { move(-1); });
+    next.addEventListener("click", function () { move(1); });
+    grid.addEventListener("scroll", function () { requestAnimationFrame(update); }, { passive: true });
+    grid.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") { e.preventDefault(); move(-1); }
+      if (e.key === "ArrowRight") { e.preventDefault(); move(1); }
+    });
+    update();
+  });
 
   /* Enquiry form: validate, then hand off to the visitor's email app. Nothing is sent from this page. */
   var form = document.getElementById("enquiry-form");
