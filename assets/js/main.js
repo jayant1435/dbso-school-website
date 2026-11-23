@@ -382,7 +382,7 @@
         var err = document.getElementById(field.getAttribute("aria-describedby"));
         var bad = !field.value.trim() || (field.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value));
         field.setAttribute("aria-invalid", bad ? "true" : "false");
-        if (err) err.textContent = bad ? "This field is needed before the enquiry can be composed." : "";
+        if (err) err.textContent = bad ? "Fill this in to continue." : "";
         if (bad) valid = false;
       });
       if (!valid) {
@@ -405,7 +405,7 @@
         "&body=" + encodeURIComponent(body);
       var note = document.getElementById("form-note");
       if (note) {
-        note.textContent = "Your email app should now open with this enquiry addressed to the school. Nothing was sent from this page; press send in your email app to send it.";
+        note.textContent = "Your email app opens with the enquiry addressed to the school. Nothing sent until you press send.";
         note.focus();
       }
     });
