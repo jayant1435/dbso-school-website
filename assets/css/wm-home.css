@@ -324,6 +324,63 @@
 @media (prefers-reduced-motion: reduce) {
   .js .wm-value-slide { transition: none; }
 }
+/* W-H3 (wave 10, HOME #3): the values slider becomes a REAL swipeable
+   rail on the Life-strip pattern (main.js lifeStripDrag + clubs rail):
+   one flex track, translated with transform only, neighbours peeking
+   at both edges at rest and during the swipe. The track wrapper is
+   display: contents with scripting off, so the no-JS 3-column grid
+   above still lays the seven slides out directly (Hallmark floor 7:
+   content visible with scripting off). All animated rules live under
+   .wm-values--animated, a class main.js adds ONLY when motion is
+   allowed — under prefers-reduced-motion the class is never added and
+   the stacked opacity pager above stands (transition: none there).
+   Motion (12-principles: 150–400ms, one easing curve, transform +
+   opacity only): track translateX 0.32s var(--ease-out) — the site's
+   single easing token (design-system: tokens only, Hallmark floor 1).
+   Peek: --values-peek 28px on phones, 48px at >=601px — the same
+   601px breakpoint main.js reads, so the JS step math and this CSS
+   can never drift apart. Stage max 656px = 560px card + 2 x 48px
+   peek, so the card keeps its settled 560px desktop width. */
+.wm-values-track { display: contents; }
+.js .wm-values-stage.wm-values--animated {
+  --values-peek: 28px;
+  display: block;
+  max-width: 656px;
+  margin-inline: auto;
+  overflow: clip;
+  cursor: grab;
+}
+@media (min-width: 601px) {
+  .js .wm-values-stage.wm-values--animated { --values-peek: 48px; }
+}
+.js .wm-values-stage.wm-values--animated:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.js .wm-values-stage.wm-values--animated.wm-grabbing { cursor: grabbing; }
+.js .wm-values-stage.wm-values--animated .wm-values-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  transition: transform 0.32s var(--ease-out);
+}
+/* While a pointer drags, the track follows the pointer with no
+   transition at all (Life-strip pattern); releasing re-enables the
+   0.32s ease-out settle. */
+.js .wm-values-stage.wm-values--animated.wm-dragging .wm-values-track { transition: none; }
+.js .wm-values-stage.wm-values--animated .wm-value-slide {
+  /* Card width is set by JS as --values-card-w (stage width minus
+     2 x --values-peek); the 12px margin is the Life-strip/clubs
+     pattern — the gap lives on every card, so every step is exactly
+     card + gap and the wrap lands precisely. */
+  flex: 0 0 var(--values-card-w, 560px);
+  width: var(--values-card-w, 560px);
+  margin-right: 12px;
+  grid-area: auto;
+  opacity: 1;
+  visibility: visible;
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .wm-values-stage.wm-values--animated .wm-values-track { transition: none; }
+}
 
 /* =====================================================================
    ITEM 5 — PREVENTIVE SYSTEM ORDER: image first, then the big line,
