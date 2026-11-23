@@ -631,6 +631,41 @@ figcaption {
   color: var(--blue);
 }
 
+/* ---------- Core values (W-C, v33): logo + word, no descriptions ----------
+   One icon language: every logo 32px, same gap, same row rhythm.
+   Scoped to .value-list so the Leadership .tick-list is untouched. */
+.value-list { list-style: none; padding: 0; margin: 0; }
+.value-list li {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line);
+  margin: 0;
+}
+.value-list li:last-child { border-bottom: 0; }
+.value-logo {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.value-word {
+  font-family: var(--font-display);
+  font-size: 1.25rem; /* 20px, was 17px body — the bigger value word */
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.015em; /* site h-rule */
+  color: var(--ink);
+}
+/* Core values main text: the "Core values" heading, one step up. */
+section[aria-label="Vision and values"] h3 { font-size: 1.6rem; /* 25.6px, was 1.45rem */ }
+
+@media (max-width: 640px) {
+  .value-logo { width: 28px; height: 28px; }
+  .value-word { font-size: 1.15rem; /* 18.4px */ }
+}
+
 .chip-list {
   display: flex;
   flex-wrap: wrap;
