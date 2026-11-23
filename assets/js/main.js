@@ -50,29 +50,43 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  /* Mobile menu */
+  /* Mobile menu: a right-side drawer. The header stays above it, so the
+     round toggle (morphing to an X) is the one close control; the dimmed
+     backdrop also closes it. Focus goes to the first link on open. */
   var toggle = document.querySelector(".menu-toggle");
   var menu = document.getElementById("mobile-menu");
-  var closeBtn = document.querySelector(".menu-close");
+  var backdrop = document.getElementById("menu-backdrop");
   var lastFocus = null;
   function openMenu() {
     lastFocus = document.activeElement;
     if (header) header.classList.add("menu-open");
+    /* The drawer starts exactly below the header, wherever the header
+       sits right now: at the top of the page the announcement bar sits
+       above it, scrolled it sits at the viewport top. A fixed padding
+       cannot know that, so the top is measured live on every open. */
+    if (header) menu.style.top = Math.round(header.getBoundingClientRect().bottom) + "px";
     menu.classList.add("open");
+    if (backdrop) backdrop.classList.add("show");
     toggle.setAttribute("aria-expanded", "true");
     document.body.style.overflow = "hidden";
-    if (closeBtn) closeBtn.focus();
+    var firstLink = menu.querySelector("nav a");
+    if (firstLink) firstLink.focus();
   }
   function closeMenu() {
     if (header) header.classList.remove("menu-open");
     menu.classList.remove("open");
+    menu.style.top = "";
+    if (backdrop) backdrop.classList.remove("show");
     toggle.setAttribute("aria-expanded", "false");
     document.body.style.overflow = "";
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
   if (toggle && menu) {
-    toggle.addEventListener("click", openMenu);
-    if (closeBtn) closeBtn.addEventListener("click", closeMenu);
+    toggle.addEventListener("click", function () {
+      if (menu.classList.contains("open")) closeMenu();
+      else openMenu();
+    });
+    if (backdrop) backdrop.addEventListener("click", closeMenu);
     menu.querySelectorAll("a").forEach(function (a) {
       a.addEventListener("click", closeMenu);
     });
