@@ -139,3 +139,48 @@
   .event-next { transition: none; }
   .gallery-grid { scroll-behavior: auto; }
 }
+
+/* ---- W-L (wave 6, 23 Nov 2026): strict collage grid + heading padding ----
+   Skills + rules: no-ai-design-slop compact gates (Composition — alignment,
+   balance and negative space intentional at every width; System — tokens
+   only, no new colour/font/radius); impeccable craft-floor (Spacing — more
+   space above a heading than below it, computed values read; Type —
+   balanced headings, real copy at every breakpoint); better-ui (4px spacing
+   scale; one grid, no element a few px off it); typography (heading
+   line-height 1.0–1.3x; type scale kept, no new size); design-system
+   (component tokens only: --space-5/--space-6); interaction-design
+   (tapped photo opens its own content — untouched: lightbox resolves its
+   index from the live DOM node, no JS change).
+   ROOT CAUSE (measured before-measure.json, confirmed by screenshot):
+   aspect-ratio on a grid item defeats align-self: stretch, so in the 4+2
+   row the 4-col tile (16/9) stood 37–55px taller than its 2-col neighbour
+   (1/1) at every width — 24 ragged rows @1536/1440, 24 @834, 23 @768.
+   FIX: the shorter tile drops its ratio and stretches to the row height
+   set by the wide tile; its photo fills via object-fit: cover (img
+   height:100% already in this file). No cycle change, no new spans.
+   HEADINGS (Jayant's brief 23 Nov): h2:first-child zeroes the h2 top
+   margin (style.css:114), so the gap above every event heading was 0px
+   at every width; below was 16px. Now 32px above / 24px below. */
+@media (min-width: 768px) {
+  /* 4+2 row: the 2-col tile stretches to the 4-col tile's height. */
+  .gallery-grid > .gallery-item:nth-child(8n+8) { aspect-ratio: auto; }
+  /* Final row when a section ends 5 into the cycle (2+2 row, last tile
+     stretched to span 4): the 2-col tile before it stretches the same way.
+     :nth-last-child(2) is exact — 8n+4 second-to-last means the section
+     ends at 8n+5, no other count matches. */
+  .gallery-grid > .gallery-item:nth-child(8n+4):nth-last-child(2) { aspect-ratio: auto; }
+  /* Portrait photo in a stretched tile: its 3:4 content inflates the row
+     track (max-content contribution) past the 4-col tile's height —
+     measured +67px @1536 on childrens-day-2024 #8, the only ragged row
+     left after the aspect-ratio fix. Taking the button out of flow
+     (absolute, inset 0) zeroes that contribution: the row height is set
+     by the 4-col tile alone, the stretched tile fills it, and the photo
+     crops with object-fit: cover exactly like the landscape tiles.
+     Same treatment for the final-row 2-col tile. */
+  .gallery-grid > .gallery-item:nth-child(8n+8),
+  .gallery-grid > .gallery-item:nth-child(8n+4):nth-last-child(2) { position: relative; }
+  .gallery-grid > .gallery-item:nth-child(8n+8) > button,
+  .gallery-grid > .gallery-item:nth-child(8n+4):nth-last-child(2) > button { position: absolute; inset: 0; height: auto; }
+}
+/* Every gallery section heading: real padding above and below. */
+.event-head { padding-top: var(--space-6); margin-bottom: var(--space-5); }
