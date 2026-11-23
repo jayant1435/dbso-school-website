@@ -34,14 +34,14 @@
 .gallery-item button:hover { box-shadow: var(--shadow-soft-lg); }
 
 /* ---- Lists that answer a hover: rows tint, nothing moves ---- */
-.topper-row,
+.result-row,
 .news-item,
 .lineage-row {
   border-radius: var(--radius-soft);
   transition: background-color 0.2s var(--ease-out);
 }
-.topper-row { padding-inline: var(--space-3); margin-inline: calc(-1 * var(--space-3)); }
-.topper-row:hover { background: var(--band); }
+.result-row { padding-inline: var(--space-3); margin-inline: calc(-1 * var(--space-3)); }
+.result-row:hover { background: var(--band); }
 .news-item { padding-inline: var(--space-4); margin-inline: calc(-1 * var(--space-4)); }
 .news-item:hover { background: var(--paper-warm); }
 .lineage-row { padding-inline: var(--space-3); margin-inline: calc(-1 * var(--space-3)); }
@@ -176,9 +176,51 @@
   .news-item { padding-inline: var(--space-3); margin-inline: calc(-1 * var(--space-3)); }
 }
 
-/* ---- Syllabus 2026-27 (v11): 13 class buttons, wrapping row ---- */
-.syllabus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; }
-.syllabus-grid .btn { width: 100%; }
+/* ---- Syllabus 2026-27 (v11, v27): 13 class buttons, centred rows ----
+   13 is prime, so no column count divides it evenly — a grid always leaves
+   an orphan row. Flex with centred wrapping instead: every button the same
+   width, and the short last row sits centred instead of leaving a hole.
+   (7 + 6 at desktop, 5 + 5 + 3 at tablet, 2s + 1 at mobile.) */
+.syllabus-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.syllabus-grid .btn { flex: 0 1 140px; }
+
+/* ---- ICSE 2026 results (v27): academics has its own results component.
+   Home keeps .toppers-list / .topper-row (figure stacked above the rows);
+   here the graphic sits beside the rows in the page's usual .split, so the
+   two pages no longer share one component. ---- */
+.results-figure { margin: 0; }
+.results-figure img { box-shadow: 0 0 0 1px var(--line), var(--shadow-1); }
+.results-board { display: grid; gap: var(--space-3); align-content: start; }
+.result-row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-3) var(--space-5);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-soft);
+}
+.result-pos {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--blue);
+}
+.result-name { font-weight: 600; font-size: 1.1rem; min-width: 0; line-height: 1.3; }
+.result-score {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.4rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+/* Small screens: narrower position + padding + gap, same as the home rows
+   at this width, so the longest name still fits on one line. */
+@media (max-width: 600px) {
+  .result-row { grid-template-columns: 48px minmax(0, 1fr) auto; gap: var(--space-2); padding: var(--space-3) var(--space-4); }
+  .result-name { font-size: 1rem; }
+}
 
 /* Linked card media (videos page): the anchor must fill the media box so the thumbnail's height: 100% resolves. */
 .card-media a { display: block; height: 100%; }
