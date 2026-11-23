@@ -182,3 +182,35 @@
 
 /* Linked card media (videos page): the anchor must fill the media box so the thumbnail's height: 100% resolves. */
 .card-media a { display: block; height: 100%; }
+
+/* ---- Videos (v26): the two grids never divide evenly — 11 long cards in
+   3 cols leaves one card alone on the last row, 4 shorts in 3 cols leaves
+   two columns short. Balance by grid, never by min-height reserves. ---- */
+
+/* Both videos grids stretch cards to the row height, so rows end even.
+   (The base .card-grid uses align-items: start; that is what leaves the
+   ragged bottoms.) */
+.videos-long,
+.videos-shorts { align-items: stretch; }
+
+/* Long: the last card spans the rest of its row as a wide card. Its media
+   runs cinematic 21 / 9, so the wide card stays about as tall as its
+   row-mate instead of towering over it or shrinking to a strip.
+   (min-height: 0 matters: without it the flex item's content-based minimum
+   — the thumbnail's own 4:3 — clamps the media back to 4:3.) */
+.videos-long .card:last-child { grid-column: span 2; }
+.videos-long .card:last-child .card-media { aspect-ratio: 21 / 9; min-height: 0; }
+
+/* Shorts: four columns on wide desktop — one even row of four. */
+@media (min-width: 1201px) {
+  .videos-shorts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+/* 861–1200px: two columns — two even rows of two, no spanning needed. */
+@media (min-width: 861px) and (max-width: 1200px) {
+  .videos-shorts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+/* 1 col: no spanning — span 2 in a 1-col grid would open a phantom column. */
+@media (max-width: 600px) {
+  .videos-long .card:last-child { grid-column: auto; }
+  .videos-long .card:last-child .card-media { aspect-ratio: 16 / 10; }
+}
