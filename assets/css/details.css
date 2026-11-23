@@ -1393,3 +1393,30 @@ html.js .awards-nav {
   html.js .awards-nav,
   .awards-hint { display: none; }
 }
+
+/* ===== v59+ W-AB6 (task 121): About CTA white gap below the band =====
+   CAUSE (measured BEFORE, all widths): 128px of page-background white
+   below the band = the CTA section's own 64px bottom padding
+   (.section, style.css:416, --space-8) PLUS the footer's 64px top margin
+   (.site-footer, style.css:1119, --space-8), stacked. No min-height
+   reserve, no removed element, no reveal artefact — a plain spacing
+   stack. About does not load home.css, so home's identical W4 fix
+   (home.css:532-538, same 128px stack -> 32px total) never reached it.
+   FIX (mirrors home exactly, so the CTA keeps one rhythm site-wide):
+   section padding 64/64 -> 32 top / 16 bottom; footer margin-top
+   64 -> 16. Below-band total: 16 + 16 = 32px. Above-band total:
+   64 (awards section padding-bottom) + 32 = 96px, down from 128px.
+   Scoped to body.page-about (about.html only) — the CTA section and
+   .site-footer rules are shared by 8 detail pages, so an unscoped rule
+   would move every page's footer. Tokens only, 4px steps, no negative
+   margin, no new colour, no layout change. Skills: better-ui (one
+   spacing system, 4px steps); design-system (token-only values);
+   impeccable craft-floor (spacing: generous separation kept, tight
+   groups kept — 32px still reads as separation, not crowding);
+   no-ai-design-slop (removal test: the 96px removed performed no job —
+   it was two defaults stacking, not authored breathing room). */
+body.page-about section[aria-label="Admissions call to action"] {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-4);
+}
+body.page-about .site-footer { margin-top: var(--space-4); }
