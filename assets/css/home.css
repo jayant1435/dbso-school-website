@@ -728,7 +728,10 @@ section[aria-label="Admissions call to action"] {
    Literal values where a token holds the same number. */
 .pillar-dots { gap: var(--space-2); }
 .mobile-menu { padding: var(--space-4) var(--space-5) var(--space-6); }
-.mobile-menu nav a { padding: 14px var(--space-1); }
+/* v37 B3-F: 14px 4px -> 14px 0, matching nav.css — the numerals are gone,
+   so link text now shares one left edge with the panel brand + footer
+   (taste: equal edges). */
+.mobile-menu nav a { padding: 14px 0; }
 .mobile-menu nav a:hover { padding-left: var(--space-3); }
 /* B3-E v36 (P3-1): .main-nav a padding deleted here — nav.css already
    carries 8px 12px; the duplicate misled the next editor. */
@@ -738,7 +741,8 @@ section[aria-label="Admissions call to action"] {
 
 /* ---------- Untracked labels: Hallmark floor 9 / 67 ----------
    Numerals only, but tracked 0.08em; labels stay untracked. */
-.value-num, .mobile-menu .menu-num { letter-spacing: 0; }
+/* v37 B3-F: .mobile-menu .menu-num removed with the numerals. */
+.value-num { letter-spacing: 0; }
 
 /* ---------- One edge or one shadow, not both: sloplint F24 ----------
    Back-to-top carried a hairline border under a soft shadow. */
