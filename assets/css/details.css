@@ -1072,3 +1072,76 @@ section[aria-label="Celebrations and events"] .tick-list li span {
 @media (max-width: 860px) {
   .award-slide figcaption { min-height: calc(3 * 1.45em); }
 }
+
+/* ===== W-Z5 (wave 9, 23 Nov 2026) =====
+   Hallmark · patch: three structure/uniformity fixes · system: incumbent
+   DBSO tokens, blue + gold, Bricolage Grotesque + DM Sans · scope:
+   academics.html results board + stream switcher, fees.html summary
+   cards only, append-only, no redesign, no copy change, no new motion. */
+
+/* ---- FIX 1 (P2): results-board rows uneven at phone widths ----
+   Measured BEFORE (academics.html, 390px, Range-rect counts): the 1st
+   name "Anubhab Ghosh Choudhury" wraps to 2 lines in the 202px name
+   column, so row 1 is 68px while rows 2-3 are 63px. At 768/834/1440/1536
+   all three names fit 1 line and every row is 63px. The <=600px comment
+   above ("so the longest name still fits on one line") is wrong at 390px
+   — the name does not fit.
+   better-ui (one spacing system; accidental inconsistency in spacing) +
+   audit-ai-design-slop (accidental inconsistency, P2) +
+   no-ai-design-slop (smallest correction, existing system reused): the
+   name reserves 2 lines at <=600px, the same min-height reserve the
+   about-page committee cards already carry (details.css, W-Z2 FIX 1:
+   min-height calc(2 * 1.3em) on the name). All three rows are 68px at
+   390px. Scoped to <=600px: above that the names fit 1 line, so the
+   reserve switches off where it would only add dead space. No name is
+   shortened, no font size changes. .result-name line-height is 1.3
+   (details.css), so the reserve is calc(2 * 1.3em). */
+@media (max-width: 600px) {
+  .result-name { min-height: calc(2 * 1.3em); }
+}
+
+/* ---- FIX 2 (P2): stream-switcher panels jump height between tabs ----
+   Measured BEFORE (academics.html, Range-rect counts): Science and
+   Commerce panels are exactly equal (208px @390, 184px @768/834) but
+   Humanities is 35-36px taller (243px @390, 220px @768/834), so switching
+   to Humanities shoves "How learning works here" down by that much. The
+   only driver is the subject list: at <=860px it is 1 column
+   (style.css:1383), so 3 subjects = 3 rows (98px @390, 100px @768/834)
+   and 4 subjects = 4 rows (133px @390, 136px @768/834); the entry
+   paragraph is the same line count in all three panels at each width
+   (2 lines @390, 1 line @768/834) and every subject is 1 line.
+   better-ui (align everything to a single grid; accidental inconsistency)
+   + audit-ai-design-slop (established UI failure: a control that moves
+   the content below it, P2) + no-ai-design-slop (smallest correction,
+   existing system): the list reserves the tallest panel's height —
+   min-height 136px at <=860px, the measured 4-row height. All three
+   panels become 246px @390 and 220px @768/834; switching tabs moves
+   nothing below. Scoped to the streams switcher and to <=860px: above
+   that the list is 2 columns (2 rows for every stream) and the panels
+   already match (148/148/152px @1440, the 4px remainder is the entry
+   paragraph's wrap, not the list). No copy change, no font change. */
+@media (max-width: 860px) {
+  section[aria-label="ISC streams"] .subject-list { min-height: 136px; }
+}
+
+/* ---- FIX 3 (P2): fees summary cards skip a heading level ----
+   Measured BEFORE (fees.html): the outline is H1 "Fee structure, 2026-27"
+   straight to eight H3 card titles, then H2 "Monthly fee table" and H2
+   "Payment rules" — the cards skip H2 entirely, so a screen reader (or
+   any outline tool) sees the eight fee groups as subordinate to nothing.
+   Academics, admissions and contact all step H1 -> H2 -> H3 cleanly;
+   fees is the only page that skips.
+   design-taste-frontend (checklist: headings one level at a time) +
+   audit-ai-design-slop (established UI failure: heading-order skip, P2)
+   + no-ai-design-slop (smallest correction, existing system): the eight
+   card titles become H2 (fees.html) with this rule restating the card
+   title's exact computed style — 1.15rem / 1.2 / margin 0 0 12px /
+   2-line reserve — so nothing visual changes. The outline is now
+   H1 -> H2 x10 with no skips. The footer H3s are untouched: H2 sections
+   precede them, so they do not skip. */
+.summary-card h2 {
+  margin: 0 0 var(--space-3);
+  font-size: 1.15rem;
+  line-height: 1.2;
+  min-height: 2.4em;
+}
