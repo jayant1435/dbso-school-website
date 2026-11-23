@@ -3,8 +3,8 @@
    (style.css no longer carries toggle or mobile-menu rules).
    Loaded after style.css. Overrides only header / nav / mobile-menu rules.
    MGM cue (mgmschool.co.in): bold dark-navy links, generous spacing, hover
-   is a plain colour change to blue — NO underline, NO background pill,
-   NO dropdown. Active page: blue text + a 2-3px blue underline offset
+   is a plain colour change to red — NO underline, NO background pill,
+   NO dropdown. Active page: red text + a 2-3px red underline offset
    below. On scroll the header gains a faint hairline divider.
    Jayant's order kept: sticky header that compacts on scroll, smooth
    animated mobile menu, focus-visible states, reduced-motion support.
@@ -23,7 +23,7 @@
 }
 .site-header.scrolled {
   --header-h: 64px; /* v24: thicker header — scrolled is 64px, resting 72px */
-  box-shadow: 0 1px 2px rgba(18, 30, 42, 0.05), 0 8px 24px rgba(18, 30, 42, 0.08);
+  box-shadow: var(--shadow-header);
   border-bottom: 1px solid var(--line); /* faint hairline divider, MGM cue */
 }
 .site-header.scrolled .brand-crest {
@@ -51,7 +51,7 @@
   transition: color 0.25s var(--ease-out);
 }
 /* The underline lives on every link, drawn in on hover and on the active
-   page. Hover: text turns blue + the same 3px underline draws in. */
+   page. Hover: text turns red + the same 3px underline draws in. */
 .main-nav a::after {
   content: "";
   position: absolute;
@@ -132,7 +132,7 @@
   position: fixed;
   inset: 0;
   z-index: 140;
-  background: rgba(18, 30, 42, 0.45);
+  background: var(--backdrop);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   opacity: 0;
@@ -156,7 +156,7 @@
   padding: 16px var(--space-5) var(--space-6);
   overflow-y: auto;
   background: var(--paper);
-  box-shadow: -16px 0 48px rgba(18, 30, 42, 0.18);
+  box-shadow: var(--shadow-drawer);
   visibility: hidden;
   transform: translateX(102%);
   transition: transform 0.38s var(--ease-out), visibility 0s linear 0.38s;
