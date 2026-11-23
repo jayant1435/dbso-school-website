@@ -1,0 +1,4 @@
+/* Hallmark: W-G1 F4 — cap the portrait principal photo where the split stacks (≤860px); object-position keeps the face in frame (Brief 3 face rule). */
+@media (max-width: 860px) {
+  .principal-figure img { max-height: 620px; object-fit: cover; object-position: 50% 18%; }
+}
