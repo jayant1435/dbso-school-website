@@ -271,13 +271,12 @@
    watched. The v33 value PNG (transparent blue line icon + gold dot,
    navy #1d6fa5 / gold #c9a227) sits large above the name, with the
    numeral carried over from the old tiles. Paging is by arrows, dots,
-   swipe or keyboard. No-JS fallback: all six visible in a grid.
+   swipe or keyboard. No-JS fallback: all seven visible in a grid.
    PNG mapping (home name → v33 file, made for the About-page names):
    Integrity → value-integrity · Compassion → value-compassion ·
    Discipline → value-self-discipline · Respect → value-respect-for-others ·
-   Faith → value-love-of-god · Nature → value-love-for-nature.
-   Spirituality has no home slot (home shows six, per the brief) and its
-   PNG is unused here.
+   Faith → value-love-of-god · Nature → value-love-for-nature ·
+   Spirituality → value-spirituality (7th slide + 7th dot, added v49).
    ===================================================================== */
 
 .wm-values-stage { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
