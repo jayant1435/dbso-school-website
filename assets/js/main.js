@@ -37,22 +37,24 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  /* Mobile menu: a right-side drawer. The header stays above it, so the
-     round toggle (morphing to an X) is the one close control; the dimmed
-     backdrop also closes it. Focus goes to the first link on open. */
+  /* Mobile menu: a full-width TOP drop-down panel (v37 B3-F, Jayant
+     17:53 IST — replaces the v25 side drawer). The panel drops from
+     top: 0 and covers the announcement bar + header entirely, so it IS
+     the top area when open; its own top row carries the crest + school
+     name + the X close control. Focus goes to the close button on open
+     (the panel's first control); Esc, the X, the backdrop, or any link
+     closes it, and focus returns to the hamburger. The focus trap
+     covers the panel ONLY — the hamburger is covered by the panel while
+     open, so trapping to it would hand keyboard users an invisible
+     control (interaction-design: keyboard path first). */
   var toggle = document.querySelector(".menu-toggle");
   var menu = document.getElementById("mobile-menu");
   var backdrop = document.getElementById("menu-backdrop");
+  var closeBtn = menu ? menu.querySelector(".menu-close") : null;
   var lastFocus = null;
-  if (menu) { menu.setAttribute("role", "dialog"); menu.setAttribute("aria-modal", "true"); }
+  if (menu) { menu.setAttribute("role", "dialog"); menu.setAttribute("aria-modal", "true"); menu.setAttribute("aria-label", "Site menu"); }
   function openMenu() {
     lastFocus = document.activeElement;
-    if (header) header.classList.add("menu-open");
-    /* The drawer starts exactly below the header, wherever the header
-       sits right now: at the top of the page the announcement bar sits
-       above it, scrolled it sits at the viewport top. A fixed padding
-       cannot know that, so the top is measured live on every open. */
-    if (header) menu.style.top = Math.round(header.getBoundingClientRect().bottom) + "px";
     menu.classList.add("open");
     if (backdrop) backdrop.classList.add("show");
     toggle.setAttribute("aria-expanded", "true");
@@ -61,15 +63,33 @@
        after scrolling, opening the drawer sent the header (and school
        name) to top ≈ -scrollY, i.e. off-screen (v31 W-A, measured
        390/768/834: header top -755px at scrollY 800). Locking <html>
-       freezes background scroll and the header stays stuck at top 0. */
+       freezes background scroll. (Conflict 26: Hallmark floor 4
+       overflow-x: clip does NOT lock scrolling — the verified html-lock
+       wins and is kept unchanged for the panel.) No top measurement is
+       needed any more: the panel is fixed at top: 0, so the v32
+       getBoundingClientRect().bottom measurement is deleted. */
     document.documentElement.style.overflow = "hidden";
-    var firstLink = menu.querySelector("nav a");
-    if (firstLink) firstLink.focus();
+    /* Focus the close button two frames later, not synchronously: a
+       synchronous focus() here is a no-op under reduced motion — the
+       button still computes visibility: hidden in the same task that
+       adds .open (probed 23 Nov: btnVis "hidden" at call time, panel
+       "visible"), and Chrome ignores focus on a hidden element. Under
+       normal motion the same call happened to work. One rAF is NOT
+       enough either (probed: still "hidden" inside the first rAF
+       callback — the inherited visibility flip lands in the frame's
+       style pass, which runs after rAF callbacks). A nested second rAF
+       runs after that style pass, so the button computes visible and
+       the focus lands in both modes. The guard skips it if the panel
+       was already closed again in the meantime. */
+    var focusClose = function () {
+      if (menu.classList.contains("open") && closeBtn) closeBtn.focus();
+    };
+    if ("requestAnimationFrame" in window) {
+      requestAnimationFrame(function () { requestAnimationFrame(focusClose); });
+    } else if (closeBtn) closeBtn.focus();
   }
   function closeMenu() {
-    if (header) header.classList.remove("menu-open");
     menu.classList.remove("open");
-    menu.style.top = "";
     if (backdrop) backdrop.classList.remove("show");
     toggle.setAttribute("aria-expanded", "false");
     document.documentElement.style.overflow = "";
@@ -80,13 +100,14 @@
       if (menu.classList.contains("open")) closeMenu();
       else openMenu();
     });
+    if (closeBtn) closeBtn.addEventListener("click", closeMenu);
     if (backdrop) backdrop.addEventListener("click", closeMenu);
     menu.querySelectorAll("a").forEach(function (a) {
       a.addEventListener("click", closeMenu);
     });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && menu.classList.contains("open")) closeMenu();
-      if (menu.classList.contains("open")) trapTab(e, [toggle, menu]);
+      if (menu.classList.contains("open")) trapTab(e, [menu]);
     });
   }
 
