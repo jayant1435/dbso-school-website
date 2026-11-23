@@ -1229,3 +1229,76 @@ section[aria-label="Celebrations and events"] .tick-list li span {
 @media (min-width: 601px) and (max-width: 860px) {
   .page-head + .dates-strip .date-item:first-child { border-top: 1px solid transparent; padding-top: var(--space-4); }
 }
+
+/* ---- W-AB3 (task 115): awards strip manual scroll ----
+   interaction-design (support swipe/drag where users expect it AND
+   offer buttons as well; keyboard path first; 44px+ targets, 8px+
+   gaps; feedback within 100ms) + 12-principles (transform only, one
+   easing curve, reduced-motion fallback) + better-ui (one radius /
+   one shadow language, tokens only, visible focus) + design-system
+   (component tokens: --blue/--paper/--line-strong, --space-* steps):
+   the strip keeps its settled 36s auto-scroll, and the visitor can
+   also drive it by hand — pointer drag, prev/next buttons, or arrow
+   keys — exactly like the Life at Bosco strip (home.css .photo-strip
+   + main.js lifeStripDrag). Drag freezes the animation at its current
+   offset (JS reads the computed transform first, so there is no
+   jump); release resumes it from the dragged spot via a negative
+   animation-delay. Focus-within pauses it (keyboard users never
+   fight the motion); hover does NOT pause it. Buttons reuse the
+   gallery .event-prev/.event-next treatment (48px circles, blue on
+   hover) and show at every width, because the strip auto-scrolls at
+   every width; with JS off they stay hidden (html.js gate) and the
+   CSS auto-scroll still runs. Reduced motion: static 3-card grid,
+   nav + hint hidden, cursor back to default — still fully
+   navigable as a plain grid. */
+.awards-slider { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.awards-slider.wm-grabbing { cursor: grabbing; }
+.awards-slider:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.awards-track.wm-dragging { animation: none; }
+.awards-slider:focus-within .awards-track { animation-play-state: paused; }
+.awards-nav { display: none; }
+html.js .awards-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+.awards-prev,
+.awards-next {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out), transform 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+.awards-prev svg,
+.awards-next svg { width: 20px; height: 20px; }
+.awards-prev:hover,
+.awards-next:hover { background: var(--blue); border-color: var(--blue); color: var(--paper); }
+.awards-prev:active,
+.awards-next:active { transform: scale(0.96); }
+.awards-prev:focus-visible,
+.awards-next:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.awards-hint {
+  margin: var(--space-3) 0 0;
+  text-align: center;
+  color: var(--ink-mute);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+@media (prefers-reduced-motion: reduce) {
+  .awards-slider { cursor: default; }
+  /* html.js qualifier: the flex rule above is html.js .awards-nav
+     (0,2,1) and beats a bare .awards-nav here — without it the
+     buttons stayed visible over the static grid as dead controls. */
+  html.js .awards-nav,
+  .awards-hint { display: none; }
+}
