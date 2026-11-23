@@ -3,8 +3,8 @@
    (style.css no longer carries toggle or mobile-menu rules).
    Loaded after style.css. Overrides only header / nav / mobile-menu rules.
    MGM cue (mgmschool.co.in): bold dark-navy links, generous spacing, hover
-   is a plain colour change to red — NO underline, NO background pill,
-   NO dropdown. Active page: red text + a 2-3px red underline offset
+   is a plain colour change to blue — NO underline, NO background pill,
+   NO dropdown. Active page: blue text + a 2-3px blue underline offset
    below. On scroll the header gains a faint hairline divider.
    Jayant's order kept: sticky header that compacts on scroll, smooth
    animated mobile menu, focus-visible states, reduced-motion support.
@@ -51,7 +51,7 @@
   transition: color 0.25s var(--ease-out);
 }
 /* The underline lives on every link, drawn in on hover and on the active
-   page. Hover: text turns red + the same 3px underline draws in. */
+   page. Hover: text turns blue + the same 3px underline draws in. */
 .main-nav a::after {
   content: "";
   position: absolute;
@@ -60,23 +60,23 @@
   bottom: -3px;
   height: 3px;
   border-radius: 2px;
-  background: var(--red);
+  background: var(--blue);
   transform: scaleX(0);
   transform-origin: center;
   transition: transform 0.3s var(--ease-out);
   pointer-events: none;
 }
 .main-nav a:hover::after { transform: scaleX(1); }
-/* Hover: text turns red. No background pill — MGM cue. */
+/* Hover: text turns blue. No background pill — MGM cue. */
 .main-nav a:hover {
   background: transparent;
-  color: var(--red);
+  color: var(--blue);
 }
-/* Active page: red text + a 3px red underline offset below the link.
+/* Active page: blue text + a 3px blue underline offset below the link.
    The underline draws in once on page load — the nav's one quiet moment. */
 .main-nav a[aria-current="page"] {
   background: transparent;
-  color: var(--red);
+  color: var(--blue);
   font-weight: 700;
 }
 .main-nav a[aria-current="page"]::after {
@@ -89,7 +89,7 @@
 /* ---------- Hamburger: one round button, three honest bars ----------
    v25: 48px round button on a warm tint; the middle bar runs short so
    the three lines read as a designed mark, not a wireframe. Hover and
-   the open state turn the button red with white bars. */
+   the open state turn the button blue with white bars. */
 .menu-toggle {
   display: none;
   margin-left: auto;
@@ -108,16 +108,16 @@
     color 0.25s var(--ease-out), transform 0.15s var(--ease-out);
 }
 .menu-toggle:hover,
-.menu-toggle:focus-visible { background: var(--red); border-color: var(--red); color: var(--paper); }
+.menu-toggle:focus-visible { background: var(--blue); border-color: var(--blue); color: var(--paper); }
 .menu-toggle:active { transform: scale(0.94); }
 /* The bars stack in a column (flex-direction above) — without it the row
    flex laid them out side by side, shrunk and stepping diagonally, which
    is exactly why the three lines looked wrong. */
 .menu-toggle .bar { display: block; width: 22px; height: 3px; background: currentColor; border-radius: 3px; margin: 0; transition: transform 0.3s var(--ease-out), opacity 0.2s var(--ease-out), width 0.25s var(--ease-out); }
 .menu-toggle .bar:nth-child(2) { width: 15px; }
-/* Open: red button, white bars, the top and bottom bars cross into an X
+/* Open: blue button, white bars, the top and bottom bars cross into an X
    (8px is the bar pitch: 3px bar + 5px gap). */
-.site-header.menu-open .menu-toggle { background: var(--red); border-color: var(--red); color: var(--paper); }
+.site-header.menu-open .menu-toggle { background: var(--blue); border-color: var(--blue); color: var(--paper); }
 .site-header.menu-open .menu-toggle .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
 .site-header.menu-open .menu-toggle .bar:nth-child(2) { opacity: 0; transform: scaleX(0.4); }
 .site-header.menu-open .menu-toggle .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
@@ -126,7 +126,7 @@
    v25: the menu slides in from the right over a dimmed backdrop, and
    the header stays above it — so the round toggle morphing into an X
    is the one close control (the in-menu top bar is gone). Links carry
-   small red numerals; the active page gets a short red rule under its
+   small blue numerals; the active page gets a short blue rule under its
    name. The footer pins contact + motto to the bottom. */
 .menu-backdrop {
   position: fixed;
@@ -192,7 +192,7 @@
 .mobile-menu:not(.open) nav li,
 .mobile-menu:not(.open) .btn,
 .mobile-menu:not(.open) .mobile-menu-foot { transition-delay: 0s; }
-/* Link rows: red numeral + display name, hairline between rows. */
+/* Link rows: blue numeral + display name, hairline between rows. */
 .mobile-menu nav ul { list-style: none; margin: 0; padding: 0; }
 .mobile-menu nav a {
   display: flex;
@@ -208,16 +208,16 @@
   border-bottom: 1px solid var(--line);
   transition: color 0.2s var(--ease-out), padding-left 0.2s var(--ease-out);
 }
-.mobile-menu nav a:hover { color: var(--red); padding-left: 12px; }
+.mobile-menu nav a:hover { color: var(--blue); padding-left: 12px; }
 .mobile-menu .menu-num {
   font-family: var(--font-body);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: var(--red);
+  color: var(--blue);
   flex-shrink: 0;
 }
-.mobile-menu nav a[aria-current="page"] .menu-name { color: var(--red); box-shadow: inset 0 -3px 0 var(--red); }
+.mobile-menu nav a[aria-current="page"] .menu-name { color: var(--blue); box-shadow: inset 0 -3px 0 var(--blue); }
 .mobile-menu .btn { margin-top: var(--space-6); width: 100%; }
 /* Footer: pinned to the bottom, contact + motto, no dead space. */
 .mobile-menu-foot {
@@ -232,7 +232,7 @@
   color: var(--ink);
   text-decoration: none;
 }
-.mobile-menu-foot a:hover { color: var(--red); }
+.mobile-menu-foot a:hover { color: var(--blue); }
 .mobile-menu-foot p {
   margin: var(--space-3) 0 0;
   font-size: 0.85rem;
