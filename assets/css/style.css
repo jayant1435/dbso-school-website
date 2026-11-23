@@ -1428,7 +1428,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   .footer-inner { grid-template-columns: minmax(0, 1fr); }
   .news-item { grid-template-columns: minmax(0, 1fr); }
   .news-tag { justify-self: start; }
-  .scroll-hint { display: block; }
   .brand-sub { display: none; }
   .lightbox-prev { left: var(--space-2); }
   .lightbox-next { right: var(--space-2); }
@@ -1443,6 +1442,18 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   .committee-grid .meaning:last-child { grid-column: auto; }
   .tick-list.two-col { columns: 1; }
   .lineage-row { grid-template-columns: 104px minmax(0, 1fr); }
+}
+
+/* W-Z3 (wave 8): the fees table still scrolls sideways up to ~1146px
+   (measured: wrap scrollW 1097 > clientW 1050 at 1100px, no scroll at
+   1150px), but the scroll hint only showed at <=600px — tablet readers
+   got no cue that the later months and the year total sit off-screen.
+   Show the hint wherever the table can scroll.
+   [better-ui: feedback next to the control it belongs to;
+   audit-ai-design-slop: missing state, P3; no-ai-design-slop: smallest
+   correction, existing system, tokens untouched] */
+@media (max-width: 1140px) {
+  .scroll-hint { display: block; }
 }
 
 /* Life page: each chip grid uses a column count its count divides by —
