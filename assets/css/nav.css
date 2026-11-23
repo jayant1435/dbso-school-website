@@ -278,3 +278,41 @@
   .mobile-menu.open .btn,
   .mobile-menu.open .mobile-menu-foot { transition-delay: 0s; }
 }
+
+/* ===== v29 assembly: w1-anim-nav.css ===== */
+/* W1 animations patch — nav.css-owned rules (qa-v29, wave 3).
+   Appended after nav.css. Audit found the nav animation complete — the
+   underline draw, drawer slide, staggered links, toggle morph and
+   backdrop fade all have transitions — except one gap below. */
+
+/* ---------- Drawer footer links: hover changed colour instantly ----------
+   Every other nav link eases its colour; these popped. */
+.mobile-menu-foot a { transition: color 0.2s var(--ease-out); }
+
+/* ===== v29 assembly: w5-nav.css ===== */
+/* W5 (wave 3, fix 3): Gallery joins the nav — patch for nav.css.
+   Append AFTER nav.css so these rules win at equal specificity.
+   No red, no new colours, no font changes. */
+
+/* ---------- Breakpoint: re-measured with six links ----------
+   Measured on the test copy (Playwright, real fonts, 23 Nov 2026):
+   brand 236px + nav 537px (was 464 with five links, +73 for Gallery)
+   + CTA 180px + gaps/margins = 985px of header content. The container
+   carries 24px padding each side, so the row fits exactly at a 1050px
+   viewport (CTA right edge meets the content edge, zero slack) and at
+   1025 the CTA already pushes 20px into the right padding. v24's
+   1024px breakpoint is therefore 26px too low for six links.
+   New breakpoint 1060px: 10px of margin over the exact-fit 1050. */
+@media (max-width: 1060px) {
+  .main-nav { display: none; }
+  .menu-toggle { display: flex; }
+  .header-cta { display: none; }
+}
+
+/* ---------- Mobile-menu cascade: one more link ----------
+   The drawer now has 7 items (Home 01 … Gallery 06, Contact 07), so the
+   stagger gains one step and the CTA + footer shift one step later.
+   Same 0.03s step as the existing rules. */
+.mobile-menu.open nav li:nth-child(7) { transition-delay: 0.24s; }
+.mobile-menu.open .btn { transition-delay: 0.27s; }
+.mobile-menu.open .mobile-menu-foot { transition-delay: 0.30s; }
