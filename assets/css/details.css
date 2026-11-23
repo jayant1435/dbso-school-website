@@ -1012,3 +1012,12 @@ section[aria-label="Celebrations and events"] .tick-list li span {
 @media (min-width: 601px) and (max-width: 860px) {
   section[aria-label="Sports grounds and courts"] .photo-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+/* W-X1 (wave 7): lineage 2-col grid — the 2022–2025 row stretched to the
+   97px thumb row (measured 97 vs 53 @1440), leaving ~44px of empty space
+   under "Fr. Tijo Thomas". Start-align the grid items so each row is only
+   as tall as its own content. Below 861px the grid is 1 column, where
+   this rule changes nothing. */
+@media (min-width: 861px) {
+  section[aria-label="Our story"] .lineage-wide { align-items: start; }
+}
