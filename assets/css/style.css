@@ -1165,6 +1165,21 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .to-top.show { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out), box-shadow 0.2s var(--ease-out), background-color 0.2s var(--ease-out); }
 .to-top:hover { background: var(--band); }
 .to-top svg { width: 18px; height: 18px; }
+/* Back to top: fade out over the last stretch of the page, so the button
+   is already gone before the footer bottom reaches it — at 390px it sat
+   square on the copyright line. Scroll-driven; where unsupported the
+   button simply stays visible (no breakage, same as before). */
+@supports (animation-timeline: scroll()) {
+  .to-top.show {
+    animation: to-top-hide linear both;
+    animation-timeline: scroll(root);
+    animation-range: calc(100% - 160px) calc(100% - 70px);
+  }
+  @keyframes to-top-hide {
+    from { opacity: 1; visibility: visible; }
+    to { opacity: 0; visibility: hidden; }
+  }
+}
 
 /* ---------- Gallery albums ---------- */
 
@@ -1344,7 +1359,10 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   .staff-card { padding: var(--space-3); gap: var(--space-3); }
   .staff-photo img { width: 48px; height: 48px; }
   .leader-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .tile-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* Four columns, not three: 20 clubs divide by 4 (five even rows) but
+     not by 3 — three left a 2-tile ragged last row at 834px. Life grids
+     keep their own counts (later min-width rule wins over this one). */
+  .tile-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 @media (max-width: 600px) {
@@ -1422,6 +1440,8 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   .tile-grid--clubs { grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .tile-grid--cocurr { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
+/* v29 assembly: W3's 601-700px 2-col cocurr rule reverted — Elocution is
+   now one word (W2a), so 4 cols fits that band; verified at 650px. */
 
 /* ---------- Reduced motion ---------- */
 
@@ -1439,3 +1459,136 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 /* v24: staff and leader cards open the viewer — the pointer says so. */
 .staff-card.js-viewer, .leader-card.js-viewer { cursor: pointer; }
 .photo-card.js-viewer { cursor: pointer; }
+
+/* ===== v29 assembly: w1-anim-style.css ===== */
+/* W1 animations patch — style.css-owned rules (qa-v29, wave 3).
+   Appended after style.css; nothing here edits an existing rule, it only
+   adds what the audit found missing. Palette: blue + gold tokens only. */
+
+/* ---------- Coat-of-arms / committee cards: the site's card language ----------
+   .card, .summary-card, .number-item and .date-item all lift on hover;
+   .meaning cards were the one grid that sat dead. Same lift, same timing. */
+.meaning {
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+.meaning:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-1);
+  border-color: var(--line-strong);
+}
+
+/* ---------- Focus: the ring fades in instead of snapping on ----------
+   The global :focus-visible rule sets the ring; this adds the transition
+   so keyboard focus moves smoothly between controls. */
+:focus-visible {
+  transition: outline-color 0.15s var(--ease-out), outline-offset 0.15s var(--ease-out);
+}
+
+/* ---------- Album jump-bar toggle: hover was a dead instant change ----------
+   Same ink-to-blue hover as the other small pill controls. Covers both the
+   mobile toggle (style.css) and the compact desktop one (details.css). */
+.album-nav-toggle {
+  transition: background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+}
+.album-nav-toggle:hover {
+  background: var(--blue-dark);
+  border-color: var(--blue-dark);
+  transform: translateY(-1px);
+}
+
+/* ---------- Lightbox / viewer: a closing fade to match the open ----------
+   main.js adds .closing and removes .open 180ms later; the open keyframes
+   (lb-fade / lb-in) run on the way in, these run on the way out. */
+@keyframes lb-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes lb-out {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to { opacity: 0; transform: scale(0.97) translateY(8px); }
+}
+.lightbox.closing { animation: lb-fade-out 0.18s var(--ease-out) forwards; }
+.lightbox.closing figure { animation: lb-out 0.18s var(--ease-out) forwards; }
+
+/* ---------- Reduced motion: the new exit animations rest too ----------
+   The global reduced-motion block already forces 0.01ms durations, so
+   this is belt-and-braces — and main.js skips the 180ms wait entirely
+   when reduced motion is on, so the overlay never lingers. */
+@media (prefers-reduced-motion: reduce) {
+  .lightbox.closing, .lightbox.closing figure { animation: none; }
+}
+
+/* ===== v29 assembly: w4-style.css ===== */
+/* W4 — footer, final (23 Nov, brief 3). Site-wide: appended after style.css.
+   Brand + Explore (5 links) + Admissions (3 links + Apply button) + Contact.
+   The "Forms close…" line is deleted by w4-footer-trim.py, not hidden.
+   Palette: footer tokens only, no red. Fonts: Bricolage + DM Sans.
+   Spacing: space-* tokens only. Touch: Apply button is 44px tall. */
+
+/* Four columns, tighter top/bottom than the old four-column footer. */
+.footer-inner {
+  grid-template-columns: minmax(0, 4fr) minmax(0, 3fr) minmax(0, 3fr) minmax(0, 4fr);
+  padding-top: var(--space-5);
+  padding-bottom: var(--space-4);
+}
+/* The crest carries the identity now the columns are fewer — slightly larger. */
+.footer-brand img { width: var(--space-8); height: var(--space-8); }
+/* Five links in one column: single list again, not the old two-column
+   Explore grid built for eight links. */
+.footer-inner > .footer-col:nth-child(2) ul { display: block; }
+.footer-inner > .footer-col:nth-child(2) li { margin-bottom: var(--space-2); }
+.footer-col li { margin-bottom: var(--space-2); }
+.footer-col li:last-child { margin-bottom: 0; }
+/* Apply button: breathing room above it, 44px touch target. */
+.footer-cta { margin-top: var(--space-3); min-height: 44px; }
+/* Watermark crest: smaller and fainter, it was competing with the columns. */
+.site-footer::after {
+  width: 240px;
+  height: 240px;
+  right: -40px;
+  bottom: -60px;
+  opacity: 0.06;
+}
+.footer-bottom {
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+/* Guard only: the script deletes the dates line; if a page was missed it
+   never shows. (The Apply button is NOT hidden — it stays.) */
+.footer-dates { display: none; }
+
+@media (max-width: 1080px) {
+  /* Two columns, two rows: brand + Explore, Admissions + Contact. */
+  .footer-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+@media (max-width: 600px) {
+  /* Compact mobile footer. Brand on top, then Explore's links in one
+     wrapping row and Admissions' links + Apply in one wrapping row — the
+     label stays inline with its links, each link stays on one line
+     (nowrap) and the ROW wraps between links, never inside one. Contact
+     stays a tight block; copyright one short line. */
+  .footer-inner {
+    display: block;
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
+  }
+  .footer-brand-col { margin-bottom: var(--space-4); }
+  .footer-brand img { width: var(--space-7); height: var(--space-7); }
+  .footer-col {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+  .footer-col h3 { margin: 0; }
+  .footer-inner > .footer-col:nth-child(2) ul,
+  .footer-inner > .footer-col:nth-child(3) ul { display: contents; }
+  .footer-inner > .footer-col:nth-child(2) li,
+  .footer-inner > .footer-col:nth-child(3) li { margin-bottom: 0; }
+  .footer-col li { margin-bottom: 0; white-space: nowrap; }
+  .footer-col a { white-space: nowrap; }
+  .footer-cta { margin-top: 0; }
+  /* Contact keeps its block shape, just tighter. */
+  .footer-inner > .footer-col:last-child { display: block; }
+  .footer-inner > .footer-col:last-child p { margin-bottom: var(--space-2); }
+  .footer-inner > .footer-col:last-child p:last-child { margin-bottom: 0; }
+}
