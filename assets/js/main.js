@@ -696,7 +696,8 @@
      easing curve, transform + opacity only, reduced motion rests.
      - Clubs: infinite rail, JS rAF engine, one card per ~3.2s.
      - Houses: crossfading stage, 5s timer, pause on hover/focus.
-     - Values: paging card, no auto-motion (values are read).
+     - Values: a swipeable rail (W-H3 rebuild), transform-only, clones
+       at both ends so neighbours peek; no auto-motion (values are read).
      - Life strip: its settled 32s CSS animation, frozen + resumed
        around a drag (no hover pause — Jayant's words, conflict 17).
      A drag that moves more than 6px suppresses the click that follows
@@ -910,39 +911,166 @@
     start();
   })();
 
-  /* ---------- ITEM 4: values pager ---------- */
+  /* ---------- ITEM 4: values slider (W-H3 rebuild, wave 10) ----------
+     A REAL swipeable rail on the Life-strip pattern (lifeStripDrag) +
+     the clubs rail's clone trick: the track holds the 7 real slides
+     plus one clone at each end, so a neighbour always peeks at both
+     edges — at rest and mid-swipe. The card follows the pointer while
+     dragging (transform only, no transition), and releasing settles
+     with one 0.32s var(--ease-out) move (12-principles: 150–400ms,
+     one easing curve, transform + opacity only). Wrapping animates
+     onto the clone, then snaps to the matching real slide with no
+     transition — same offset on screen, so no visible jump.
+     Track positions: 0 = last clone, 1..7 = real slides, 8 = first
+     clone. Reduced motion: no track, no clones, no transform — the
+     stacked opacity pager stands (its transition is removed by the
+     reduced-motion CSS), and arrows/dots/keyboard/drag-threshold
+     still work. Copy, icons and order are untouched. */
   (function valuesPager() {
     var stage = document.getElementById("wm-values-stage");
-    if (!stage) return;
-    var slides = Array.prototype.slice.call(stage.querySelectorAll(".wm-value-slide"));
+    var track = document.getElementById("wm-values-track");
+    if (!stage || !track) return;
+    var slides = Array.prototype.slice.call(track.querySelectorAll(".wm-value-slide"));
     var dots = Array.prototype.slice.call(document.querySelectorAll("#wm-values-dots .wm-dot"));
     var countEl = document.getElementById("wm-values-count");
     var prevBtn = document.getElementById("wm-values-prev");
     var nextBtn = document.getElementById("wm-values-next");
     var current = 0;
+    var N = slides.length;
     stage.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
-    function show(i) {
-      current = (i + slides.length) % slides.length;
-      slides.forEach(function (s, j) { s.classList.toggle("is-active", j === current); });
+    function updateChrome() {
+      slides.forEach(function (s, j) {
+        s.classList.toggle("is-active", j === current);
+        /* Off-screen slides are still in the layout (translated
+           away), so hide them from assistive tech; the active one
+           stays exposed. In the stacked fade path visibility:hidden
+           does this already — aria-hidden is harmless there. */
+        s.setAttribute("aria-hidden", j === current ? "false" : "true");
+      });
       dots.forEach(function (d, j) { d.classList.toggle("is-active", j === current); });
-      if (countEl) countEl.textContent = (current + 1) + " of " + slides.length;
+      if (countEl) countEl.textContent = (current + 1) + " of " + N;
     }
-    if (prevBtn) prevBtn.addEventListener("click", function () { show(current - 1); });
-    if (nextBtn) nextBtn.addEventListener("click", function () { show(current + 1); });
+    function show(i) {
+      current = ((i % N) + N) % N;
+      updateChrome();
+    }
+    if (reduceMotion) {
+      if (prevBtn) prevBtn.addEventListener("click", function () { show(current - 1); });
+      if (nextBtn) nextBtn.addEventListener("click", function () { show(current + 1); });
+      dots.forEach(function (d, i) {
+        d.addEventListener("click", function () { show(i); });
+      });
+      stage.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft") { e.preventDefault(); show(current - 1); }
+        if (e.key === "ArrowRight") { e.preventDefault(); show(current + 1); }
+      });
+      armDrag(stage,
+        function () {},
+        function () {},
+        function (dx) {
+          if (Math.abs(dx) > 48) show(current + (dx < 0 ? 1 : -1));
+        });
+      show(0);
+      return;
+    }
+    /* Animated rail. Clones are inert: no tab stop, hidden from
+       assistive tech (the clubs pattern). */
+    stage.classList.add("wm-values--animated");
+    function makeClone(src) {
+      var c = src.cloneNode(true);
+      c.classList.add("wm-value-slide--clone");
+      c.classList.remove("is-active");
+      c.setAttribute("aria-hidden", "true");
+      return c;
+    }
+    var lastClone = makeClone(slides[N - 1]);
+    var firstClone = makeClone(slides[0]);
+    track.insertBefore(lastClone, slides[0]);
+    track.appendChild(firstClone);
+    var GAP = 12; /* must match the slide margin-right in wm-home.css */
+    var PEEK_BP = 601; /* must match the min-width breakpoint in wm-home.css */
+    var cardW = 0, step = 0, pos = 1;
+    var snapTimer = null, snapPending = false;
+    function peek() { return window.innerWidth >= PEEK_BP ? 48 : 28; }
+    function offsetFor(p) { return peek() - p * step; }
+    function render(animate) {
+      if (!animate) stage.classList.add("wm-dragging");
+      track.style.transform = "translateX(" + offsetFor(pos) + "px)";
+      if (!animate) { void track.offsetWidth; stage.classList.remove("wm-dragging"); }
+    }
+    function clearSnap() {
+      if (snapTimer) { clearTimeout(snapTimer); snapTimer = null; }
+      snapPending = false;
+    }
+    function snapToReal() {
+      /* The track is showing a clone; jump to the matching real
+         slide with no transition — same offset on screen. */
+      clearSnap();
+      pos = current + 1;
+      render(false);
+    }
+    function armSnap() {
+      snapPending = true;
+      snapTimer = setTimeout(snapToReal, 360); /* 0.32s move + margin */
+    }
+    track.addEventListener("transitionend", function (e) {
+      if (e.propertyName === "transform" && snapPending) snapToReal();
+    });
+    function measure() {
+      var stageW = stage.getBoundingClientRect().width;
+      cardW = Math.max(200, Math.floor(stageW - 2 * peek()));
+      stage.style.setProperty("--values-card-w", cardW + "px");
+      step = cardW + GAP;
+      render(false);
+    }
+    /* i is the UNWRAPPED target: arrows/drag pass current +/- 1
+       (N or -1 at the ends = wrap), dots pass their own index. A wrap
+       animates onto the clone, then snaps; a distant dot jump sweeps
+       across the cards in the one 0.32s move. */
+    function goTo(i, animate) {
+      var target = ((i % N) + N) % N;
+      var wrapped = (i !== target);
+      current = target;
+      updateChrome();
+      if (!animate) { pos = current + 1; render(false); return; }
+      clearSnap();
+      if (wrapped && i > current) { pos = N + 1; render(true); armSnap(); }
+      else if (wrapped) { pos = 0; render(true); armSnap(); }
+      else { pos = current + 1; render(true); }
+    }
+    if (prevBtn) prevBtn.addEventListener("click", function () { goTo(current - 1, true); });
+    if (nextBtn) nextBtn.addEventListener("click", function () { goTo(current + 1, true); });
     dots.forEach(function (d, i) {
-      d.addEventListener("click", function () { show(i); });
+      d.addEventListener("click", function () { goTo(i, true); });
     });
     stage.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowLeft") { e.preventDefault(); show(current - 1); }
-      if (e.key === "ArrowRight") { e.preventDefault(); show(current + 1); }
+      if (e.key === "ArrowLeft") { e.preventDefault(); goTo(current - 1, true); }
+      if (e.key === "ArrowRight") { e.preventDefault(); goTo(current + 1, true); }
     });
+    var dragStartX = 0;
     armDrag(stage,
-      function () {},
-      function () {},
+      function () {
+        /* Freeze the track exactly where it is (Life-strip pattern:
+           read the computed transform first, so a grab mid-settle
+           never jumps); finish a pending clone snap first so the
+           drag starts from a real slide. */
+        if (snapPending) snapToReal();
+        var m = new DOMMatrixReadOnly(window.getComputedStyle(track).transform);
+        dragStartX = m.e;
+        stage.classList.add("wm-dragging", "wm-grabbing");
+      },
       function (dx) {
-        if (Math.abs(dx) > 48) show(current + (dx < 0 ? 1 : -1));
+        track.style.transform = "translateX(" + (dragStartX + dx) + "px)";
+      },
+      function (dx) {
+        stage.classList.remove("wm-dragging", "wm-grabbing");
+        if (Math.abs(dx) > 48) goTo(current + (dx < 0 ? 1 : -1), true);
+        else render(true); /* snap back to the current card */
       });
+    measure();
+    window.addEventListener("resize", measure);
     show(0);
+    render(false);
   })();
 
   /* ---------- ITEM 7: Life at Bosco strip — drag interrupts the
