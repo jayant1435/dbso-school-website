@@ -974,6 +974,19 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 }
 .back-link:hover { text-decoration: underline; transform: translateX(-2px); }
 
+/* ---- C2-1: .back-link reaches the 44px target ----
+   interaction-design ("Make touch targets at least 44 by 44 pixels"):
+   the generic .back-link ("Home", above every detail-page title) measured
+   25px tall at 390px — a standalone navigation control, not running text.
+   better-ui ("one spacing system", "4px steps"): reuses the contact
+   page's own solved pattern (.page-contact .back-link, details.css:465) —
+   12px block padding inside a -12px block margin, so the visible gap
+   above/below the link does not move: before, 25px box + 20px bottom
+   margin = 45px total; after, -12px margin + 49px box + 8px margin = 45px
+   total. The H1 below does not move. Token values only; hover transform
+   and underline behaviour untouched. */
+.back-link { padding-block: var(--space-3); margin-block: calc(-1 * var(--space-3)) var(--space-2); }
+
 /* ---------- Call to action band ---------- */
 
 .cta-band {
@@ -1216,34 +1229,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   }
 }
 
-/* ---------- Gallery albums ---------- */
-
-.album { scroll-margin-top: 84px; } /* mobile: only the ~59px header covers the top (jump bar is static), so 84px lands the heading just under it */
-@media (min-width: 861px) { .album { scroll-margin-top: 160px; } } /* v8 desktop: sticky stack is header ~59px + compact jump bar ~83px = ~142px; 84px hid album headings under the bars on pill click (150px left the heading flush, 160px clears it). v10: the 160px margin is desktop-only — on mobile it left ~99px of dead space above every album heading. */
-.album + .album { margin-top: var(--space-9); }
-.album-head { margin-bottom: var(--space-5); }
-.album-head h2 { margin-top: 0; }
-.album-head p { color: var(--ink-mute); margin: 0; }
-
-.album-nav { background: var(--band); border-bottom: 1px solid var(--line); padding-top: var(--space-4); padding-bottom: var(--space-4); }
-.album-nav .container { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-4); }
-.album-nav-label { font-weight: 700; font-size: 0.95rem; white-space: nowrap; }
-.album-nav ul { display: flex; flex-wrap: wrap; gap: var(--space-2); list-style: none; margin: 0; padding: 0; }
-.album-nav a {
-  display: inline-block;
-  padding: var(--space-1) var(--space-3);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-pill);
-  background: var(--paper);
-  color: var(--ink-soft);
-  text-decoration: none;
-  font-size: 0.88rem;
-  font-weight: 500;
-  transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out), border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
-}
-.album-nav a:hover { background: var(--ink); border-color: var(--blue); color: var(--paper); transform: translateY(-1px); } /* v24: same visible-edge fix as the stream tabs */
-.album-nav-toggle { display: none; }
-
 /* ---------- Anthem, lineage, awards ---------- */
 
 .anthem {
@@ -1448,22 +1433,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   .committee-grid .meaning:last-child { grid-column: auto; }
   .tick-list.two-col { columns: 1; }
   .lineage-row { grid-template-columns: 104px minmax(0, 1fr); }
-  /* Album nav: first few pills only, expand on tap. Scoped to html.js
-     so the full list stays visible when scripts are off. */
-  html.js .album-nav-toggle {
-    display: inline-block;
-    margin-top: var(--space-2);
-    padding: var(--space-1) var(--space-3);
-    border: 1px solid var(--ink);
-    border-radius: var(--radius-pill);
-    background: var(--ink);
-    color: var(--paper);
-    font-size: 0.88rem;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  html.js .album-nav ul li:nth-child(n+9) { display: none; }
-  html.js .album-nav.expanded ul li:nth-child(n+9) { display: block; }
 }
 
 /* Life page: each chip grid uses a column count its count divides by —
@@ -1517,18 +1486,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
    so keyboard focus moves smoothly between controls. */
 :focus-visible {
   transition: outline-color 0.15s var(--ease-out), outline-offset 0.15s var(--ease-out);
-}
-
-/* ---------- Album jump-bar toggle: hover was a dead instant change ----------
-   Same ink-to-blue hover as the other small pill controls. Covers both the
-   mobile toggle (style.css) and the compact desktop one (details.css). */
-.album-nav-toggle {
-  transition: background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
-}
-.album-nav-toggle:hover {
-  background: var(--blue-dark);
-  border-color: var(--blue-dark);
-  transform: translateY(-1px);
 }
 
 /* ---------- Lightbox / viewer: a closing fade to match the open ----------
