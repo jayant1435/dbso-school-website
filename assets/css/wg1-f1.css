@@ -1,0 +1,5 @@
+/* Hallmark: W-G1 F1 — Notices items are h2 (heading order H1 → H2); same size as the h3 rule it mirrors (style.css:1028, 1.15rem at ≤600px per the v24 note there). */
+.news-item h2 { margin: 0 0 var(--space-2); font-size: 1.35rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+@media (max-width: 600px) {
+  .news-item h2 { font-size: 1.15rem; }
+}
