@@ -183,7 +183,9 @@ figcaption {
   padding-bottom: 9px;
   white-space: nowrap;
 }
-.announce-track span + span::before {
+.announce-track span::after {
+  /* One bullet per half, trailing — both halves stay identical width, so
+     the -50% loop point lands exactly on the second copy. */
   content: "\2022";
   margin: 0 18px;
   color: var(--gold);
