@@ -1617,3 +1617,20 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   .footer-motto { display: none; }
   .footer-inner > .footer-col:last-child p:first-of-type { display: none; }
 }
+
+/* ---------- W-K FIX 2 (v41): anchor targets clear the sticky header ----------
+   Measured BEFORE: zero scroll-margin-top anywhere in the CSS; an anchor
+   jump to #visiting-schools (gallery.html) lands the section top at
+   viewport -8..0px while the sticky header bottom sits at 65px — the
+   section heading is covered by 65-73px at 834px AND 390px (hash nav and
+   scrollIntoView agree; the same jump covers the #main skip-link target).
+   At rest and during normal scrolling the header covers 0px of content
+   (main top = header bottom at every width) — that part is correct and
+   untouched. interaction-design (keyboard path first: the skip link and
+   any hash link must land visibly) + design-taste-frontend (nothing lies
+   under a fixed bar): every id'd target gets 88px of scroll margin —
+   var(--header-h) 72px resting + var(--space-4) 16px breathing room.
+   When scrolled the header compacts to 64px, so the clearance is 24px
+   then. Tokens only, no new values; no visual change except where an
+   anchor lands. */
+[id] { scroll-margin-top: calc(var(--header-h) + var(--space-4)); }
