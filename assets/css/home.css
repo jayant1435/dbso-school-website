@@ -85,7 +85,7 @@
 .house-tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-1); }
 .house-tile[aria-pressed="true"] { border-color: var(--ink); box-shadow: var(--shadow-1); }
 .house-swatch { height: 12px; flex-shrink: 0; }
-.house-swatch-red { background: var(--red); }
+.house-swatch-red { background: var(--house-red); } /* Red House colour: content, not UI */
 .house-swatch-blue { background: var(--house-blue); }
 .house-swatch-green { background: var(--house-green); }
 .house-swatch-yellow { background: var(--house-yellow); }
@@ -97,7 +97,7 @@
    Salesian lists (see BUILD-LOG): Integrity, Compassion, Discipline,
    Respect, Faith, Nature. One word each, so every tile is one line at every
    width. The container is different from the club tiles on purpose: a tall
-   card with a big red numeral and the word in the display face, so the row
+   card with a big blue numeral and the word in the display face, so the row
    reads as a statement, not a list. 3 across desktop, 2 across on a phone
    (six fills the grid exactly at every width). */
 .values-grid {
@@ -111,7 +111,7 @@
 .value-tile {
   background: var(--paper);
   border: 1px solid var(--line);
-  border-top: 3px solid var(--red);
+  border-top: 3px solid var(--blue);
   border-radius: var(--home-r-card);
   padding: var(--space-5) var(--space-4);
   min-height: 132px;
@@ -121,12 +121,12 @@
   gap: var(--space-2);
   transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
 }
-.value-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); border-top-color: var(--red); }
+.value-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); border-top-color: var(--blue); }
 .value-num {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.95rem;
-  color: var(--red);
+  color: var(--blue);
   letter-spacing: 0.08em;
 }
 .value-name {
@@ -168,7 +168,7 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: var(--red);
+  background: var(--blue);
   color: var(--paper);
   display: flex;
   align-items: center;
@@ -223,7 +223,7 @@
   .pillar-arrow:hover { border-color: var(--ink); box-shadow: var(--shadow-1); }
   .pillar-dots { display: flex; gap: 8px; flex: 1; justify-content: center; }
   .pillar-dot { width: 10px; height: 10px; border-radius: 50%; border: 0; background: var(--line-strong); padding: 0; cursor: pointer; transition: width 0.2s var(--ease-out), background-color 0.2s var(--ease-out); }
-  .pillar-dot.is-active { width: 26px; border-radius: 5px; background: var(--red); }
+  .pillar-dot.is-active { width: 26px; border-radius: 5px; background: var(--blue); }
   .pillar-count { font-size: 0.9rem; color: var(--ink-soft); font-weight: 600; white-space: nowrap; }
 }
 
@@ -343,7 +343,7 @@ button.photo-card figcaption { text-align: left; }
   animation: lb-in 0.3s var(--ease-out);
 }
 .house-modal-band { height: 10px; border-radius: 5px; margin-bottom: var(--space-5); }
-.house-modal-band-red { background: var(--red); }
+.house-modal-band-red { background: var(--house-red); } /* Red House colour: content, not UI */
 .house-modal-band-blue { background: var(--house-blue); }
 .house-modal-band-green { background: var(--house-green); }
 .house-modal-band-yellow { background: var(--house-yellow); }
