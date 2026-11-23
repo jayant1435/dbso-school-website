@@ -416,9 +416,11 @@
     });
   }
 
-  /* Tiles (v24): a club tile just highlights — no detail bar below the
-     grid any more. A house tile opens the house modal instead. */
-  document.querySelectorAll(".tile-grid").forEach(function (grid) {
+  /* Tiles (v24, W-M: the home club tiles are now the clubs slider):
+     a club slide just highlights — no detail bar below the grid any
+     more. The binding is scoped to #wm-clubs so the Life page's
+     non-button .tile-grid list is untouched. */
+  document.querySelectorAll("#wm-clubs").forEach(function (grid) {
     var tiles = Array.prototype.slice.call(grid.querySelectorAll("button[data-club]"));
     tiles.forEach(function (tile) {
       tile.addEventListener("click", function () {
@@ -463,7 +465,7 @@
       document.body.style.overflow = "";
       if (hmLastFocus && hmLastFocus.focus) hmLastFocus.focus();
     }
-    document.querySelectorAll(".house-tile").forEach(function (tile) {
+    document.querySelectorAll(".house-tile, .wm-house-slide").forEach(function (tile) {
       tile.addEventListener("click", function () {
         document.querySelectorAll(".house-tile").forEach(function (t) { t.setAttribute("aria-pressed", "false"); });
         tile.setAttribute("aria-pressed", "true");
@@ -530,32 +532,109 @@
     });
   }
 
-  /* Pillars slider (v22, phones only): arrows, dots and a counter. On
-     desktop the nav is hidden and the cards stack, so this only matters
-     where the slider layout is active. */
+  /* Pillars slider (v22, phones only) + W-M infinite loop: arrows, dots
+     and a counter, and the track now wraps seamlessly in both
+     directions. The track carries clones of the last pillar before the
+     first and of the first pillar after the last, so at Reason the
+     left peek is Religion (a real card) instead of blank padding, and
+     at Religion the right peek is Reason. When a swipe, arrow or dot
+     lands on a clone, the track jumps silently to the matching real
+     card (same visible card, different scroll position — no visual
+     jump). Clones are built only while the flex slider layout is
+     active (≤600px); at 601px+ the pillars stack and the clones are
+     removed, so no phantom cards ever appear in the stacked list. */
   var slider = document.querySelector(".pillars-slider");
   if (slider) {
-    var slides = Array.prototype.slice.call(slider.querySelectorAll(".pillar"));
+    var slides = Array.prototype.slice.call(slider.querySelectorAll(".pillar:not(.pillar-clone)"));
     var dots = Array.prototype.slice.call(document.querySelectorAll(".pillar-dot"));
     var countEl = document.getElementById("pillar-count");
     if (countEl) countEl.setAttribute("aria-live", "polite");
     var prevBtn = document.getElementById("pillar-prev");
     var nextBtn = document.getElementById("pillar-next");
     var current = 0;
+    var jumping = false;
+    var settleTimer = null;
+    function sliderActive() { return window.getComputedStyle(slider).display === "flex"; }
+    function cloneCount() { return slider.querySelectorAll(".pillar-clone").length; }
+    function buildClones() {
+      if (cloneCount()) return;
+      var first = slides[0], last = slides[slides.length - 1];
+      if (!first || !last) return;
+      var pre = last.cloneNode(true), post = first.cloneNode(true);
+      [pre, post].forEach(function (c) {
+        c.classList.add("pillar-clone");
+        /* Clones are never observed by the reveal system (it captured
+           its list before this ran), so strip the reveal classes or a
+           clone would sit at opacity 0 forever. They carry no controls
+           and no focusables, so aria-hidden is the whole story. */
+        c.classList.remove("reveal", "in");
+        c.style.removeProperty("--d");
+        c.setAttribute("aria-hidden", "true");
+      });
+      slider.insertBefore(pre, slider.firstChild);
+      slider.appendChild(post);
+    }
+    function removeClones() {
+      slider.querySelectorAll(".pillar-clone").forEach(function (c) { c.remove(); });
+    }
+    function allSlides() { return Array.prototype.slice.call(slider.querySelectorAll(".pillar")); }
+    function realIndex(pos) { return (pos + slides.length - 1) % slides.length; }
     function sync(i) {
       current = i;
       dots.forEach(function (d, j) { d.classList.toggle("is-active", j === i); });
       if (countEl) countEl.textContent = (i + 1) + " of " + slides.length;
     }
+    function scrollToPos(pos, behavior) {
+      var list = allSlides();
+      var target = list[pos];
+      if (!target) return;
+      var left = target.getBoundingClientRect().left - slider.getBoundingClientRect().left + slider.scrollLeft - (slider.clientWidth - target.offsetWidth) / 2;
+      slider.scrollTo({ left: left, behavior: behavior });
+    }
+    function jumpToReal(i) {
+      /* Silent jump: same visible card, real scroll position. */
+      jumping = true;
+      scrollToPos(i + 1, "auto");
+      requestAnimationFrame(function () { jumping = false; });
+    }
     function goTo(i) {
       var n = (i + slides.length) % slides.length;
-      var target = slides[n];
-      /* v24: centre the slide in the track — the track has 7% side padding
-         and the active card is 86% wide, so centring shows both neighbours
-         peeking by the same amount. */
-      var left = target.getBoundingClientRect().left - slider.getBoundingClientRect().left + slider.scrollLeft - (slider.clientWidth - target.offsetWidth) / 2;
-      slider.scrollTo({ left: left, behavior: reduceMotion ? "auto" : "smooth" });
+      if (!sliderActive() || !cloneCount()) {
+        /* Stacked layout (or clones not built yet): centre the real card. */
+        var list = allSlides();
+        var t = list[n];
+        if (t) {
+          var left = t.getBoundingClientRect().left - slider.getBoundingClientRect().left + slider.scrollLeft - (slider.clientWidth - t.offsetWidth) / 2;
+          slider.scrollTo({ left: left, behavior: reduceMotion ? "auto" : "smooth" });
+        }
+        sync(n);
+        return;
+      }
+      /* Step through the clone when wrapping, so the motion stays
+         continuous: prev from 0 goes to clone-of-last (pos 0), next
+         from last goes to clone-of-first (pos N+1); the settle handler
+         then jumps silently to the matching real card. */
+      var from = current, to = n;
+      var via = null;
+      if (from === 0 && to === slides.length - 1) via = 0;
+      else if (from === slides.length - 1 && to === 0) via = slides.length + 1;
       sync(n);
+      if (via !== null) scrollToPos(via, reduceMotion ? "auto" : "smooth");
+      else scrollToPos(n + 1, reduceMotion ? "auto" : "smooth");
+      if (reduceMotion) jumpToReal(n);
+    }
+    function settleCheck() {
+      if (jumping || !sliderActive() || !cloneCount()) return;
+      var list = allSlides();
+      var sRect = slider.getBoundingClientRect();
+      var best = 0, bestDist = Infinity;
+      list.forEach(function (slide, i) {
+        var d = Math.abs((slide.getBoundingClientRect().left + slide.offsetWidth / 2) - (sRect.left + sRect.width / 2));
+        if (d < bestDist) { bestDist = d; best = i; }
+      });
+      var real = realIndex(best);
+      sync(real);
+      if (best === 0 || best === list.length - 1) jumpToReal(real);
     }
     if (prevBtn) prevBtn.addEventListener("click", function () { goTo(current - 1); });
     if (nextBtn) nextBtn.addEventListener("click", function () { goTo(current + 1); });
@@ -567,17 +646,39 @@
       if (slideTicking) return;
       slideTicking = true;
       requestAnimationFrame(function () {
-        var sRect = slider.getBoundingClientRect();
-        var best = 0, bestDist = Infinity;
-        slides.forEach(function (slide, i) {
-          /* v24: the slide whose CENTRE is nearest the track's centre. */
-          var d = Math.abs((slide.getBoundingClientRect().left + slide.offsetWidth / 2) - (sRect.left + sRect.width / 2));
-          if (d < bestDist) { bestDist = d; best = i; }
-        });
-        sync(best);
+        if (!jumping) {
+          var list = allSlides();
+          var sRect = slider.getBoundingClientRect();
+          var best = 0, bestDist = Infinity;
+          list.forEach(function (slide, i) {
+            /* v24: the slide whose CENTRE is nearest the track's centre. */
+            var d = Math.abs((slide.getBoundingClientRect().left + slide.offsetWidth / 2) - (sRect.left + sRect.width / 2));
+            if (d < bestDist) { bestDist = d; best = i; }
+          });
+          sync(realIndex(best));
+        }
         slideTicking = false;
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(settleCheck, 140);
       });
     }, { passive: true });
+    slider.addEventListener("scrollend", settleCheck);
+    /* Build/remove clones as the layout crosses the 600px boundary. */
+    var resizeTimer = null;
+    function refreshLoop() {
+      if (sliderActive()) {
+        var had = cloneCount() > 0;
+        buildClones();
+        if (!had) jumpToReal(current);
+      } else {
+        removeClones();
+      }
+    }
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(refreshLoop, 200);
+    });
+    refreshLoop();
   }
 
   /* Back to top */
@@ -587,4 +688,338 @@
       window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
     });
   }
+
+  /* ================================================================
+     W-M home sliders (wave 6): three different treatments, one shared
+     interaction contract — drag/swipe interrupts auto-motion, arrows +
+     dots + keyboard always work, every transition 150–400ms on one
+     easing curve, transform + opacity only, reduced motion rests.
+     - Clubs: infinite rail, JS rAF engine, one card per ~3.2s.
+     - Houses: crossfading stage, 5s timer, pause on hover/focus.
+     - Values: paging card, no auto-motion (values are read).
+     - Life strip: its settled 32s CSS animation, frozen + resumed
+       around a drag (no hover pause — Jayant's words, conflict 17).
+     A drag that moves more than 6px suppresses the click that follows
+     it (capture phase, on the container), so dragging never opens a
+     modal, a viewer, or toggles a highlight by accident.
+     ================================================================ */
+
+  /* Shared: suppress the click after a drag. Returns a setter the drag
+     code calls with true when a drag happened. */
+  function armClickSuppress(container) {
+    var suppress = false;
+    container.addEventListener("click", function (e) {
+      if (!suppress) return;
+      suppress = false;
+      e.preventDefault();
+      e.stopPropagation();
+    }, true);
+    return function (v) { suppress = v; };
+  }
+
+  /* Shared: pointer-drag helper. onMove(dx) while dragging, onEnd(dx,
+     moved) on release. Move/up are tracked on window (pointer-id
+     checked), NOT via setPointerCapture: capture retargets the
+     pointerup to the container, so the click after a plain press
+     fires on the container instead of the button/figure under the
+     pointer — and slide toggles, the house modal and the Life viewer
+     never open. Window listeners track the drag just as well (even
+     off-element) and leave plain clicks intact. touch-action: pan-y
+     (CSS) keeps vertical page scroll native. */
+  function armDrag(container, onStart, onMove, onEnd) {
+    var startX = 0, moved = 0, activeId = null;
+    function onMoveWin(e) {
+      if (e.pointerId !== activeId) return;
+      moved = e.clientX - startX;
+      onMove(moved);
+    }
+    function finish(e) {
+      if (e.pointerId !== activeId) return;
+      activeId = null;
+      window.removeEventListener("pointermove", onMoveWin);
+      window.removeEventListener("pointerup", finish);
+      window.removeEventListener("pointercancel", finish);
+      onEnd(moved);
+    }
+    container.addEventListener("pointerdown", function (e) {
+      if (e.button !== undefined && e.button !== 0) return;
+      activeId = e.pointerId;
+      moved = 0;
+      startX = e.clientX;
+      window.addEventListener("pointermove", onMoveWin);
+      window.addEventListener("pointerup", finish);
+      window.addEventListener("pointercancel", finish);
+      onStart();
+    });
+  }
+
+  /* ---------- ITEM 2: clubs rail ---------- */
+  (function clubsRail() {
+    var viewport = document.getElementById("wm-clubs-viewport");
+    var track = document.getElementById("wm-clubs-track");
+    if (!viewport || !track) return;
+    var realSlides = Array.prototype.slice.call(track.querySelectorAll(".wm-club-slide:not(.wm-club-slide--clone)"));
+    var N = realSlides.length;
+    var countEl = document.getElementById("wm-clubs-count");
+    var prevBtn = document.getElementById("wm-clubs-prev");
+    var nextBtn = document.getElementById("wm-clubs-next");
+    /* Second identical half, so the loop has no seam. Clones are
+       inert: no toggle, no tab stop, hidden from assistive tech. */
+    realSlides.forEach(function (s) {
+      var c = s.cloneNode(true);
+      c.classList.add("wm-club-slide--clone");
+      c.removeAttribute("data-club");
+      c.setAttribute("aria-hidden", "true");
+      c.tabIndex = -1;
+      c.setAttribute("aria-pressed", "false");
+      track.appendChild(c);
+    });
+    var suppressClick = armClickSuppress(viewport);
+    /* Native image dragging would fight pointer dragging (ghost image);
+       the slides are buttons, not drag sources. */
+    track.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
+    if (reduceMotion) return; /* static grid (CSS); no engine, no drag. */
+    var offset = 0, dragging = false, paused = false, raf = null, lastTs = null;
+    var HALF = 64; /* seconds for one half-loop (20 cards). */
+    var half = 0, lastCount = "";
+    function measureHalf() { half = track.scrollWidth / 2; }
+    function halfWidth() { return half || track.scrollWidth / 2; }
+    function step() {
+      var first = track.querySelector(".wm-club-slide");
+      if (!first) return 288;
+      var cs = window.getComputedStyle(first);
+      return first.getBoundingClientRect().width + (parseFloat(cs.marginRight) || 0);
+    }
+    function wrap(o) {
+      var h = halfWidth();
+      if (!h) return 0;
+      o = o % h;
+      if (o > 0) o -= h;
+      return o;
+    }
+    function render() { track.style.transform = "translateX(" + offset + "px)"; }
+    function showCount() {
+      if (!countEl) return;
+      var i = Math.floor((-offset / step()) % N);
+      if (i < 0) i += N;
+      var t = (i + 1) + " of " + N;
+      if (t !== lastCount) { lastCount = t; countEl.textContent = t; }
+    }
+    function tick(ts) {
+      raf = null;
+      if (lastTs === null) lastTs = ts;
+      var dt = Math.min((ts - lastTs) / 1000, 0.1);
+      lastTs = ts;
+      if (!dragging && !paused && !document.hidden) {
+        offset = wrap(offset - (halfWidth() / HALF) * dt);
+        render();
+        showCount();
+      }
+      raf = requestAnimationFrame(tick);
+    }
+    function nudge(dir) {
+      offset = wrap(offset + dir * step());
+      render();
+      showCount();
+    }
+    if (prevBtn) prevBtn.addEventListener("click", function () { nudge(1); });
+    if (nextBtn) nextBtn.addEventListener("click", function () { nudge(-1); });
+    /* Focus pauses the rail — but only keyboard focus. A mouse/touch
+       drag focuses the slide under the pointer on the way in; if that
+       counted as "focus", the rail would stay frozen after every drag
+       (probed: it never resumed). pointerdown marks the focus as
+       pointer-made, so the following focusin is ignored and the rail
+       resumes after the drag. Tab focus still pauses it. */
+    var pointerFocus = false;
+    viewport.addEventListener("pointerdown", function () { pointerFocus = true; paused = false; });
+    viewport.addEventListener("focusin", function () { if (!pointerFocus) paused = true; pointerFocus = false; });
+    viewport.addEventListener("focusout", function () { paused = false; });
+    viewport.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") { e.preventDefault(); nudge(1); }
+      if (e.key === "ArrowRight") { e.preventDefault(); nudge(-1); }
+    });
+    var dragStart = 0;
+    armDrag(viewport,
+      function () { dragging = true; dragStart = offset; viewport.classList.add("wm-grabbing"); },
+      function (dx) { offset = dragStart + dx; render(); },
+      function (dx) {
+        dragging = false;
+        viewport.classList.remove("wm-grabbing");
+        offset = wrap(offset);
+        render();
+        showCount();
+        suppressClick(Math.abs(dx) > 6);
+      });
+    measureHalf();
+    window.addEventListener("resize", function () { measureHalf(); });
+    raf = requestAnimationFrame(tick);
+  })();
+
+  /* ---------- ITEM 3: houses stage ---------- */
+  (function housesStage() {
+    var stage = document.getElementById("wm-houses-stage");
+    if (!stage) return;
+    var slides = Array.prototype.slice.call(stage.querySelectorAll(".wm-house-slide"));
+    var dots = Array.prototype.slice.call(document.querySelectorAll("#wm-houses-dots .wm-dot"));
+    var countEl = document.getElementById("wm-houses-count");
+    var prevBtn = document.getElementById("wm-houses-prev");
+    var nextBtn = document.getElementById("wm-houses-next");
+    var current = 0, timer = null;
+    var DELAY = 5000;
+    stage.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
+    function show(i) {
+      current = (i + slides.length) % slides.length;
+      slides.forEach(function (s, j) { s.classList.toggle("is-active", j === current); });
+      dots.forEach(function (d, j) { d.classList.toggle("is-active", j === current); });
+      if (countEl) countEl.textContent = (current + 1) + " of " + slides.length;
+    }
+    function start() {
+      if (reduceMotion || timer) return;
+      timer = setInterval(function () { show(current + 1); }, DELAY);
+    }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    function restart() { stop(); start(); }
+    if (prevBtn) prevBtn.addEventListener("click", function () { show(current - 1); restart(); });
+    if (nextBtn) nextBtn.addEventListener("click", function () { show(current + 1); restart(); });
+    dots.forEach(function (d, i) {
+      d.addEventListener("click", function () { show(i); restart(); });
+    });
+    stage.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") { e.preventDefault(); show(current - 1); restart(); }
+      if (e.key === "ArrowRight") { e.preventDefault(); show(current + 1); restart(); }
+    });
+    /* Hover / focus pauses the timer (this is a new showcase slider,
+       not the Life strip — Jayant's no-pause order covers the strip).
+       Keyboard focus pauses; pointer focus does not (same reason as
+       the clubs rail: a mouse click must not freeze the timer). */
+    var pointerFocus = false;
+    stage.addEventListener("pointerdown", function () { pointerFocus = true; });
+    stage.addEventListener("focusin", function () { if (pointerFocus) { pointerFocus = false; return; } stop(); });
+    stage.addEventListener("focusout", function () { start(); });
+    stage.addEventListener("mouseenter", stop);
+    stage.addEventListener("mouseleave", start);
+    var suppressClick = armClickSuppress(stage);
+    armDrag(stage,
+      function () {},
+      function () {},
+      function (dx) {
+        if (Math.abs(dx) > 48) { show(current + (dx < 0 ? 1 : -1)); restart(); }
+        suppressClick(Math.abs(dx) > 6);
+      });
+    show(0);
+    start();
+  })();
+
+  /* ---------- ITEM 4: values pager ---------- */
+  (function valuesPager() {
+    var stage = document.getElementById("wm-values-stage");
+    if (!stage) return;
+    var slides = Array.prototype.slice.call(stage.querySelectorAll(".wm-value-slide"));
+    var dots = Array.prototype.slice.call(document.querySelectorAll("#wm-values-dots .wm-dot"));
+    var countEl = document.getElementById("wm-values-count");
+    var prevBtn = document.getElementById("wm-values-prev");
+    var nextBtn = document.getElementById("wm-values-next");
+    var current = 0;
+    stage.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
+    function show(i) {
+      current = (i + slides.length) % slides.length;
+      slides.forEach(function (s, j) { s.classList.toggle("is-active", j === current); });
+      dots.forEach(function (d, j) { d.classList.toggle("is-active", j === current); });
+      if (countEl) countEl.textContent = (current + 1) + " of " + slides.length;
+    }
+    if (prevBtn) prevBtn.addEventListener("click", function () { show(current - 1); });
+    if (nextBtn) nextBtn.addEventListener("click", function () { show(current + 1); });
+    dots.forEach(function (d, i) {
+      d.addEventListener("click", function () { show(i); });
+    });
+    stage.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") { e.preventDefault(); show(current - 1); }
+      if (e.key === "ArrowRight") { e.preventDefault(); show(current + 1); }
+    });
+    armDrag(stage,
+      function () {},
+      function () {},
+      function (dx) {
+        if (Math.abs(dx) > 48) show(current + (dx < 0 ? 1 : -1));
+      });
+    show(0);
+  })();
+
+  /* ---------- ITEM 7: Life at Bosco strip — drag interrupts the
+     32s CSS auto-scroll, then it resumes from the dragged spot. ----------
+     Freeze: read the computed transform, pin it inline, then switch the
+     animation off (inline transform set FIRST, so nothing jumps).
+     Resume: wrap the offset into one half-loop and restart the
+     animation with a negative delay equal to the dragged position, so
+     the strip continues exactly where the drag left it. Focus-within
+     already pauses it (b3d patch, CSS); hover does NOT pause it. */
+  (function lifeStripDrag() {
+    var strip = document.querySelector(".photo-row.photo-strip");
+    var track = document.querySelector(".photo-track");
+    if (!strip || !track || reduceMotion) return;
+    track.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
+    var DUR = 32; /* seconds; must match the life-scroll keyframes. */
+    var suppressClick = armClickSuppress(strip);
+    var startOffset = 0, dragging = false;
+    function halfWidth() { return track.scrollWidth / 2; }
+    function currentX() {
+      var m = new DOMMatrixReadOnly(window.getComputedStyle(track).transform);
+      return m.e;
+    }
+    function wrap(o) {
+      var h = halfWidth();
+      if (!h) return 0;
+      o = o % h;
+      if (o > 0) o -= h;
+      return o;
+    }
+    function cardStep() {
+      var card = track.querySelector(".photo-card");
+      if (!card) return 356;
+      var cs = window.getComputedStyle(card);
+      return card.getBoundingClientRect().width + (parseFloat(cs.marginRight) || 0);
+    }
+    function nudge(dir) {
+      /* Keyboard nudge: freeze, shift one card, resume. */
+      var x = wrap(currentX() + dir * cardStep());
+      track.style.transform = "translateX(" + x + "px)";
+      track.classList.add("wm-dragging");
+      resume(x);
+    }
+    function resume(x) {
+      var h = halfWidth();
+      var frac = h ? (-wrap(x) / h) : 0;
+      track.style.animationDelay = (-frac * DUR) + "s";
+      track.style.transform = "";
+      track.classList.remove("wm-dragging");
+    }
+    strip.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") { e.preventDefault(); nudge(1); }
+      if (e.key === "ArrowRight") { e.preventDefault(); nudge(-1); }
+    });
+    armDrag(strip,
+      function () {
+        dragging = true;
+        startOffset = currentX();
+        track.style.transform = "translateX(" + startOffset + "px)";
+        track.classList.add("wm-dragging");
+        strip.classList.add("wm-grabbing");
+      },
+      function (dx) {
+        track.style.transform = "translateX(" + (startOffset + dx) + "px)";
+      },
+      function (dx) {
+        dragging = false;
+        strip.classList.remove("wm-grabbing");
+        resume(startOffset + dx);
+        /* The pointer left focus on the card under it, and the settled
+           :focus-within rule would keep the strip paused on that focus
+           forever after a mouse drag (probed: it never resumed). A
+           pointer drag is not keyboard focus, so release it and let
+           the strip resume; keyboard focus still pauses it. */
+        var ae = document.activeElement;
+        if (ae && strip.contains(ae)) ae.blur();
+        suppressClick(Math.abs(dx) > 6);
+      });
+  })();
 })();
