@@ -184,3 +184,34 @@
 }
 /* Every gallery section heading: real padding above and below. */
 .event-head { padding-top: var(--space-6); margin-bottom: var(--space-5); }
+
+/* ---- W-Z6 (wave 9, 23 Nov 2026): portrait heroes whose faces miss the top slice ----
+   no-ai-design-slop (Composition — alignment/balance intentional at every width;
+   Product truth — imagery honest, faces in frame) + audit-ai-design-slop
+   (established UI failure: cropped subject, P1) + impeccable craft-floor
+   (Type/Spacing — real copy and real photos at every breakpoint).
+   ROOT CAUSE (measured from the rendered 1440px tiles + the source files):
+   a portrait hero is a 21/9 letterbox over a 3:4 photo, so only the top
+   ~29% of the photo shows, and the blanket rule above crops it from the
+   top (object-position: top). Three heroes have no faces in that band:
+   - kabaddi-team #1 (960x1280): faces at 37-48% height; the top slice
+     shows trees and sky only, zero people.
+   - picnic-1-2 #9 (480x720): faces at 39-69% height; the top slice shows
+     the school building only, visibly blurry at 2.36x upscale.
+   - fancy-dress #1 (540x720): the Durga child's face spans 24-40% height;
+     the top slice cuts her face at the chin.
+   FIX: per-photo crop positions, the same --pos-* modifier pattern the
+   file already uses (--pos-bottom). Each percentage was computed from the
+   face band in the source photo so the 29%-tall window lands on faces:
+   40% -> window 364-735 of 1280 (kabaddi faces 470-620); 55% -> window
+   283-492 of 720 (picnic teachers 280-380 + centre boy 400-492); 20% ->
+   window 103-312 of 720 (Durga face 175-285). Scoped to the collage
+   (>=768px) like the rule they override; the <768px slider keeps the top
+   crop, where the taller 4/3 window already shows the faces. No other
+   hero changes: the other 33 heroes are landscape, or portraits whose
+   faces sit in the top band. */
+@media (min-width: 768px) {
+  .gallery-grid > .gallery-item--pos-20:nth-child(8n+1) img { object-position: center 20%; }
+  .gallery-grid > .gallery-item--pos-40:nth-child(8n+1) img { object-position: center 40%; }
+  .gallery-grid > .gallery-item--pos-55:nth-child(8n+1) img { object-position: center 55%; }
+}
