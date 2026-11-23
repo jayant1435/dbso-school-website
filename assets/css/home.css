@@ -689,10 +689,6 @@ section[aria-label="Admissions call to action"] {
 /* ---------- 44px targets, 8px gaps: interaction-design, taste tap-size ----------
    .btn-small was 42px; album pills + toggles 26-33px; footer links 20px. */
 .btn-small { min-height: 44px; }
-.album-nav a { min-height: 44px; display: inline-flex; align-items: center; }
-html.js .album-nav-toggle, .album-nav.compact .album-nav-toggle {
-  display: inline-flex; align-items: center; min-height: 44px;
-}
 /* ASSEMBLY EDIT 23 Nov (v30): footer-link 44px rule REMOVED — B3-D's
    `.footer-col a { display: block; padding: var(--space-3) 0; }` rebuilt
    footer text links to ~44px rows and inflated the footer to 385/654/641px
