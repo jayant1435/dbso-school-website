@@ -253,6 +253,79 @@ button.photo-card figcaption { text-align: left; }
 .photo-card img { border-radius: 0; }
 .photo-card img:hover { box-shadow: none; }
 .photo-card figcaption { padding: var(--space-3) var(--space-4) var(--space-4); }
+/* W2 PATCH — Life at Bosco infinite scroll (qa-v28).
+   INSERT INTO: site/assets/css/home.css, directly after the
+   ".photo-card figcaption { ... }" rule at the end of the
+   "Life at Bosco: captioned photo cards" block (home.css ~line 255).
+   No existing rule is changed; everything below is scoped to
+   .photo-row.photo-strip, so the shared .photo-row grid on the other
+   pages is untouched. Colours: blue + gold tokens only, no red. */
+
+/* ---------- Life at Bosco: infinite photo scroll ---------- */
+
+/* The row becomes the viewport; the track inside carries two identical
+   halves and slides -50%, so the loop has no seam. No pause on hover —
+   the strip scrolls continuously. */
+.photo-row.photo-strip {
+  display: block;
+  overflow: clip;
+}
+.photo-track {
+  display: flex;
+  width: max-content;
+  animation: life-scroll 32s linear infinite;
+  will-change: transform;
+}
+@keyframes life-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+/* Uniform card width, and the gap lives as a margin on EVERY card (not a
+   track gap): each half is then exactly half the track, so -50% lands
+   precisely on the seam between the halves. */
+.photo-strip .photo-card {
+  flex: 0 0 340px;
+  width: 340px;
+  margin-right: var(--space-4);
+}
+
+@media (max-width: 860px) {
+  .photo-strip .photo-card {
+    flex-basis: 300px;
+    width: 300px;
+  }
+}
+@media (max-width: 600px) {
+  .photo-strip .photo-card {
+    flex-basis: 264px;
+    width: 264px;
+    margin-right: var(--space-3);
+  }
+}
+
+/* Reduced motion: a static 3-card grid, duplicates hidden. */
+@media (prefers-reduced-motion: reduce) {
+  .photo-row.photo-strip { overflow: visible; }
+  .photo-track {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+    width: auto;
+    animation: none;
+  }
+  .photo-strip .photo-card {
+    flex: none;
+    width: auto;
+    margin-right: 0;
+  }
+  .photo-strip .photo-card[aria-hidden="true"] { display: none; }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 860px) {
+  .photo-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 600px) {
+  .photo-track { grid-template-columns: minmax(0, 1fr); }
+}
 
 /* ---------- Toppers: hoverable rows, softer figure ---------- */
 
@@ -376,3 +449,49 @@ button.photo-card figcaption { text-align: left; }
   font-size: 0.95rem;
 }
 .lightbox-detail a { color: var(--paper); }
+
+/* W3 — Preventive System pillars on tablet (worker 3, wave 2)
+   =====================================================================
+   INSERTION: append at the very END of site/assets/css/home.css, after
+   the "@media (max-width: 600px)" block. These rules must come after the
+   "@media (max-width: 860px)" slider block above — same specificity,
+   later in the file wins.
+
+   DIAGNOSIS (measured 23 Nov, probe qa-v28/pillars/baseline-*.png):
+   At 768/834px the phone slider is active: one 562/613px card centred,
+   the next card sliced mid-word at the screen edge ("Rel…"), two of the
+   three pillars hidden behind a swipe, and the numeral jumps from left
+   (desktop) to on top of the card. A tablet has room for all three, so
+   the swipe hides the section's own content and the sliced neighbour
+   reads as a broken layout. Desktop 1440 (4 lines, 189px cards) and
+   1024 (5 lines, 217px cards) are clean and untouched; phone ≤600 keeps
+   the slider. No markup change, no JS change, no red anywhere.
+
+   FIX: at 601–860px the slider switches off — the pillars stack as
+   numeral-left cards, exactly the desktop language, nav hidden. The
+   three texts are equal length (165/167/167 chars), so at ~568px of
+   text width each paragraph takes 3 lines and the cards come out equal
+   with no min-height reserve anywhere. */
+
+/* ---------- Tablet pillars: stacked list, slider off ---------- */
+
+@media (min-width: 601px) and (max-width: 860px) {
+  /* The phone slider hid two pillars behind a swipe and sliced the
+     neighbour card at the screen edge — on a tablet that reads as a
+     bug, not a carousel. Show all three, stacked like desktop. */
+  .pillars-slider {
+    display: block;
+    overflow-x: visible;
+    padding-inline: 0;
+    padding-bottom: 0;
+  }
+  .pillars-slider .pillar {
+    display: grid; /* restore the numeral-left card from style.css */
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: var(--space-5);
+    align-items: start;
+    margin-bottom: var(--space-4);
+  }
+  .pillars-slider .pillar:last-child { margin-bottom: 0; }
+  .pillar-nav { display: none; }
+}
