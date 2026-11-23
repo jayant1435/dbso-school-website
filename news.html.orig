@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>News and notices — Don Bosco School Oodlabari</title>
+<meta name="description" content="News and notices from Don Bosco School Oodlabari: the 2027–28 admission notice, and items announced on the school homepage.">
+<link rel="canonical" href="https://dbso.jayantjaiswal.com/news">
+<meta property="og:title" content="News and notices — Don Bosco School Oodlabari">
+<meta property="og:description" content="News and notices from Don Bosco School Oodlabari: the 2027–28 admission notice, and items announced on the school homepage.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dbso.jayantjaiswal.com/news">
+<meta property="og:image" content="https://dbso.jayantjaiswal.com/assets/img/aerial-campus.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1d6fa5">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/nav.css">
+<link rel="stylesheet" href="assets/css/details.css">
+  <link rel="stylesheet" href="assets/css/wg1-f1.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<a class="announce" href="admissions.html">
+  <span class="announce-track">
+    <span>Admissions open for 2027–28 · UKG to Class 11 · Forms close 10 December 2026 · <b>See admissions&nbsp;→</b></span>
+    <span aria-hidden="true">Admissions open for 2027–28 · UKG to Class 11 · Forms close 10 December 2026 · <b>See admissions&nbsp;→</b></span>
+  </span>
+</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="Don Bosco School Oodlabari, home">
+      <img class="brand-crest" src="assets/img/crest-transparent-128.png" alt="Crest of Don Bosco School Oodlabari" width="46" height="46">
+      <span><span class="brand-name">Don Bosco School</span><br><span class="brand-sub">Oodlabari, est. 2007</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Main">
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="academics.html">Academics</a></li>
+        <li><a href="admissions.html">Admissions</a></li>
+        <li><a href="life.html">Life at Bosco</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-primary btn-small header-cta" href="admissions.html">Admissions 2027–28</a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+      <span class="bar" aria-hidden="true"></span><span class="bar" aria-hidden="true"></span><span class="bar" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
+
+<noscript>
+<style>
+/* v31 L3: scripting off — the hamburger is a dead control and the drawer
+   can never open, so hide all three; the strip below is the navigation. */
+.menu-toggle, .mobile-menu, .menu-backdrop { display: none; }
+</style>
+<nav class="nojs-nav" aria-label="Main">
+  <div class="container">
+    <ul>
+      <li><a href="about.html">About</a></li>
+      <li><a href="academics.html">Academics</a></li>
+      <li><a href="admissions.html">Admissions</a></li>
+      <li><a href="life.html">Life at Bosco</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a class="btn btn-primary btn-small" href="admissions.html">Admissions 2027–28</a></li>
+    </ul>
+  </div>
+</nav>
+</noscript>
+
+<div class="menu-backdrop" id="menu-backdrop" aria-hidden="true"></div>
+
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu-top">
+    <a class="mobile-menu-brand" href="index.html" aria-label="Don Bosco School Oodlabari, home">
+      <img src="assets/img/crest-transparent-128.png" alt="" width="44" height="44">
+      <span>Don Bosco School</span>
+    </a>
+    <button class="menu-close" type="button" aria-label="Close menu">
+      <span class="x-bar" aria-hidden="true"></span><span class="x-bar" aria-hidden="true"></span>
+    </button>
+  </div>
+  <nav aria-label="Mobile">
+    <ul>
+      <li><a href="index.html"><span class="menu-name">Home</span></a></li>
+      <li><a href="about.html"><span class="menu-name">About</span></a></li>
+      <li><a href="academics.html"><span class="menu-name">Academics</span></a></li>
+      <li><a href="admissions.html"><span class="menu-name">Admissions</span></a></li>
+      <li><a href="life.html"><span class="menu-name">Life at Bosco</span></a></li>
+      <li><a href="gallery.html"><span class="menu-name">Gallery</span></a></li>
+      <li><a href="contact.html"><span class="menu-name">Contact</span></a></li>
+    </ul>
+  </nav>
+  <a class="btn btn-primary" href="admissions.html">Admissions 2027–28</a>
+  <div class="mobile-menu-foot">
+    <a href="tel:+917047343645">70473 43645</a>
+    <a href="mailto:dbsoodlabari@gmail.com">dbsoodlabari@gmail.com</a>
+    <p>Virtue and Knowledge &middot; est. 2007</p>
+  </div>
+</div>
+
+<main id="main">
+  <div class="page-head">
+    <div class="container">
+      <a class="back-link" href="index.html">Home</a>
+      <h1>News and notices</h1>
+      <p>What the school has published: the admission notice for 2027–28, and items announced on the school homepage. For the latest notices, contact the school office.</p>
+    </div>
+  </div>
+
+  <section class="section" aria-label="Notices">
+    <div class="container">
+      <div class="news-list reveal">
+        <article class="news-item">
+          <div>
+            <h2>Admissions open, 2027–28</h2>
+            <p>Forms close 10 December 2026. Entrance examination, interaction and counselling on 17 and 18 December, with the merit list on 18 December. Form fee Rs 1,000, non-refundable. <a href="admissions.html">See the full admission details</a>.</p>
+          </div>
+          <span class="news-tag">Admission notice, 24 Sep 2026</span>
+        </article>
+        <article class="news-item">
+          <div>
+            <h2>Photography competition</h2>
+            <p>Announced on the school homepage for students of Classes VI to XII.</p>
+          </div>
+          <span class="news-tag">School homepage</span>
+        </article>
+        <article class="news-item">
+          <div>
+            <h2>Assembly 6B, "Festivala"</h2>
+            <p>Announced on the school homepage: a class assembly by 6B.</p>
+          </div>
+          <span class="news-tag">School homepage</span>
+        </article>
+        <article class="news-item">
+          <div>
+            <h2>Bosco Mic Masters, Episode 6</h2>
+            <p>Announced on the school homepage: the sixth episode of the school's speaking series, by Class XI A.</p>
+          </div>
+          <span class="news-tag">School homepage</span>
+        </article>
+        <article class="news-item">
+          <div>
+            <h2>Quiz contest, Classes III–V</h2>
+            <p>Announced on the school homepage for students of Classes III to V.</p>
+          </div>
+          <span class="news-tag">School homepage</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-warm" aria-label="School posters">
+    <div class="container">
+      <div class="section-head reveal">
+        <hr class="gold-rule" aria-hidden="true">
+        <h2>From the school's pages</h2>
+        <p>Two graphics published by the school itself: its Bosco Jayanti poster and its Diwali greeting.</p>
+      </div>
+      <div class="split poster-pair reveal">
+        <figure>
+          <img class="rounded-img" src="assets/img/bosco-jayanti-poster.jpg" alt="Happy Bosco Jayanti poster for the 211th birth anniversary of St. John Bosco" width="1080" height="1350" loading="lazy">
+          <figcaption>Bosco Jayanti: the 211th birth anniversary of St. John Bosco, from the school's Facebook page.</figcaption>
+        </figure>
+        <figure>
+          <img class="rounded-img" src="assets/img/diwali-graphic.jpg" alt="Happy Diwali graphic showing the school building at night with diyas" width="640" height="700" loading="lazy">
+          <figcaption>The school's Diwali greeting, from its Instagram page.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Watch the school">
+    <div class="container">
+      <div class="section-head reveal">
+        <hr class="gold-rule" aria-hidden="true">
+        <h2>Watch the school</h2>
+        <p>The school's YouTube channel, @DonBoscoOodlabari, joined 19 December 2023, with about 600 subscribers and 15 videos — from the fest stage to the classroom. <a href="https://www.youtube.com/@DonBoscoOodlabari" target="_blank" rel="noopener">Visit the channel</a>.</p>
+      </div>
+      <div class="news-list reveal">
+        <article class="news-item">
+          <div>
+            <h3>Glimpses of Bosco Fizza 2026</h3>
+            <p>The inter-school fest on stage. <a href="https://www.youtube.com/watch?v=lGf0GyNdqLA" target="_blank" rel="noopener">Watch on YouTube</a>.</p>
+          </div>
+          <span class="news-tag">4:15</span>
+        </article>
+        <article class="news-item">
+          <div>
+            <h3>Telegraph School Awards 2026</h3>
+            <p>The school's awards day, in under a minute. <a href="https://www.youtube.com/watch?v=0PN73iEaCd0" target="_blank" rel="noopener">Watch on YouTube</a>.</p>
+          </div>
+          <span class="news-tag">0:53</span>
+        </article>
+        <article class="news-item">
+          <div>
+            <h3>Investiture Ceremony 2024–25</h3>
+            <p>The student leaders take their oath. <a href="https://www.youtube.com/watch?v=3NmM7Ab7ns0" target="_blank" rel="noopener">Watch on YouTube</a>.</p>
+          </div>
+          <span class="news-tag">1:02</span>
+        </article>
+        <article class="news-item">
+          <div>
+            <h3>Inter House Competition</h3>
+            <p>A short from the school channel. <a href="https://www.youtube.com/watch?v=acJ7wrq9wKY" target="_blank" rel="noopener">Watch on YouTube</a>.</p>
+          </div>
+          <span class="news-tag">Short</span>
+        </article>
+        <article class="news-item">
+          <div>
+            <h3>Annual Magazine 2025–26</h3>
+            <p>A short from the school channel. <a href="https://www.youtube.com/watch?v=wAcaJ8NsX7k" target="_blank" rel="noopener">Watch on YouTube</a>.</p>
+          </div>
+          <span class="news-tag">Short</span>
+        </article>
+        <article class="news-item">
+          <div>
+            <h3>Flower Show 2025–26</h3>
+            <p>A short from the school channel. <a href="https://www.youtube.com/watch?v=7wbVRboAFeU" target="_blank" rel="noopener">Watch on YouTube</a>.</p>
+          </div>
+          <span class="news-tag">Short</span>
+        </article>
+        <article class="news-item">
+          <div>
+            <h3>Rector's &amp; Parents' Day</h3>
+            <p>A short from the school channel. <a href="https://www.youtube.com/watch?v=rv75WKguzsk" target="_blank" rel="noopener">Watch on YouTube</a>.</p>
+          </div>
+          <span class="news-tag">Short</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Admissions call to action">
+    <div class="container">
+      <div class="cta-band reveal">
+        <div>
+          <h2>Admissions open for UKG to Class 11</h2>
+          <p>Forms close 10 December 2026. See the dates, the process and the documents needed.</p>
+        </div>
+        <a class="btn btn-primary" href="admissions.html">See admissions</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand-col">
+      <div class="footer-brand">
+        <img src="assets/img/crest-transparent-128.png" alt="" width="72" height="72" loading="lazy">
+        <div>
+          <div class="footer-brand-name">Don Bosco School</div>
+          <div class="footer-brand-sub">Oodlabari, Jalpaiguri</div>
+        </div>
+      </div>
+      <p class="footer-motto">Virtue and Knowledge</p>
+    </div>
+    <div class="footer-col">
+      <h3>Explore</h3>
+      <ul>
+        <li><a href="about.html">About the school</a></li>
+        <li><a href="admissions.html">Admissions 2027–28</a></li>
+        <li><a href="academics.html">Academics</a></li>
+        <li><a href="life.html">Life at Bosco</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Admissions</h3>
+      <ul>
+        <li><a href="admissions.html">Admissions 2027–28</a></li>
+        <li><a href="fees.html">Fee structure</a></li>
+        <li><a href="news.html">News and notices</a></li>
+      </ul>
+      <a class="btn btn-primary btn-small footer-cta" href="admissions.html">Apply for 2027–28</a>
+    </div>
+    <div class="footer-col">
+      <h3>Contact</h3>
+      <p>Oodlabari, Kranti Road, P.O. Manabari,<br>Dist. Jalpaiguri, West Bengal 735222</p>
+      <p>Phone: <a href="tel:+917047343645">70473 43645</a><br>Email: <a href="mailto:dbsoodlabari@gmail.com">dbsoodlabari@gmail.com</a></p>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© <span data-year>2026</span> Don Bosco School Oodlabari</span>
+  </div>
+</footer>
+
+<button class="to-top" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<script src="assets/js/main.js" defer></script>
+<script src="assets/js/nav.js" defer></script>
+</body>
+</html>
