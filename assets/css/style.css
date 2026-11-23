@@ -1072,42 +1072,46 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .footer-inner, .footer-bottom { position: relative; z-index: 1; }
 .footer-inner {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 3fr) minmax(0, 4fr);
-  gap: var(--space-6);
-  padding-top: var(--space-7);
-  padding-bottom: var(--space-6);
+  grid-template-columns: minmax(0, 4fr) minmax(0, 4fr) minmax(0, 3fr) minmax(0, 4fr);
+  gap: var(--space-5);
+  padding-top: var(--space-5);
+  padding-bottom: var(--space-5);
 }
-.footer-brand { display: flex; gap: var(--space-4); align-items: flex-start; }
-.footer-brand img { width: 72px; height: 72px; object-fit: contain; flex-shrink: 0; }
-.footer-brand-name { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; line-height: 1.15; }
-.footer-brand-sub { color: var(--footer-mute); font-size: 0.92rem; margin-top: var(--space-1); }
+.footer-brand { display: flex; gap: var(--space-3); align-items: flex-start; }
+.footer-brand img { width: 56px; height: 56px; object-fit: contain; flex-shrink: 0; }
+.footer-brand-name { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; line-height: 1.15; }
+.footer-brand-sub { color: var(--footer-mute); font-size: 0.9rem; margin-top: var(--space-1); }
 .footer-motto {
   font-family: var(--font-display);
   /* No font-style: italic — dead declaration, Bricolage has no italic (v7). */
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--footer-ink);
-  margin: var(--space-3) 0 0;
+  margin: var(--space-2) 0 0;
 }
-.footer-dates { color: var(--footer-mute); font-size: 0.92rem; margin-top: var(--space-4); }
-.footer-cta { margin-top: var(--space-4); }
+.footer-dates { color: var(--footer-mute); font-size: 0.92rem; margin-top: var(--space-3); }
+.footer-cta { margin-top: var(--space-3); }
 .footer-col h3 {
   font-family: var(--font-body);
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--paper);
-  margin: 0 0 var(--space-4);
+  margin: 0 0 var(--space-3);
   letter-spacing: 0;
 }
 .footer-col ul { list-style: none; padding: 0; margin: 0; }
-.footer-col li { margin-bottom: var(--space-2); }
+.footer-col li { margin-bottom: 6px; font-size: 0.92rem; line-height: 1.45; }
+/* Explore has 8 links — two columns so it stops being the tallest column. */
+.footer-inner > .footer-col:nth-child(2) ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px var(--space-4); }
+.footer-inner > .footer-col:nth-child(2) li { margin-bottom: 0; }
 .footer-col a { color: var(--footer-ink); text-decoration: none; transition: color 0.15s var(--ease-out); }
 .footer-col a:hover { color: var(--paper); text-decoration: underline; }
-.footer-col p { color: var(--footer-mute); font-size: 0.95rem; }
+.footer-col p { color: var(--footer-mute); font-size: 0.92rem; line-height: 1.5; margin-bottom: var(--space-3); }
+.footer-col p:last-child { margin-bottom: 0; }
 .footer-bottom {
   border-top: 1px solid var(--footer-line);
-  padding-top: var(--space-4);
-  padding-bottom: var(--space-5);
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-4);
   font-size: 0.88rem;
   color: var(--footer-mute);
   display: flex;
