@@ -128,47 +128,8 @@
 .field textarea { border-radius: var(--radius-soft); }
 .form-note { border-radius: var(--radius-soft); }
 
-/* ---- Gallery: the album jump bar stays put on desktop, under the header ---- */
-@media (min-width: 861px) {
-  .album-nav {
-    position: sticky;
-    top: var(--header-h);
-    z-index: 50;
-  }
-}
-/* Once the page is scrolled past the jump bar (JS adds .compact), it
-   collapses to one horizontally-scrollable row of pills, so the pinned
-   bar stops eating ~40% of the viewport (v7). The toggle expands it back
-   to the full grid. Desktop only — below 861px the bar is not sticky and
-   the small-screen 8-pill + toggle pattern applies instead. */
-@media (min-width: 861px) {
-  .album-nav.compact .container { flex-wrap: nowrap; }
-  .album-nav.compact ul {
-    flex: 1 1 auto;
-    min-width: 0;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: thin;
-    padding-bottom: 2px;
-  }
-  .album-nav.compact ul li { flex-shrink: 0; }
-  .album-nav.compact .album-nav-toggle {
-    display: inline-block;
-    flex-shrink: 0;
-    margin-top: 0;
-    padding: var(--space-1) var(--space-3);
-    border: 1px solid var(--ink);
-    border-radius: var(--radius-pill);
-    background: var(--ink);
-    color: var(--paper);
-    font-size: 0.88rem;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  /* Expanded in compact mode: back to the full wrapped grid. */
-  .album-nav.compact.expanded ul { flex-wrap: wrap; overflow: visible; }
-}
-.album-head h2 { margin-bottom: var(--space-2); }
+/* v31 (W-D): the gallery jump bar is gone with the albums — the gallery is
+   event sections only now. The rules that pinned/collapsed the bar lived here. */
 
 /* ---- Small screens: keep the new radii and the form card comfortable ---- */
 @media (max-width: 600px) {
@@ -255,18 +216,6 @@
 @media (max-width: 600px) {
   .videos-long .card:last-child { grid-column: auto; }
   .videos-long .card:last-child .card-media { aspect-ratio: 16 / 10; }
-}
-
-/* ---- v29 (Phase B polish) ---- */
-
-/* Gallery jump bar: pin at the 65px scrolled header, not the 72px resting
-   --header-h. The JS stuck test is `top <= 70`, so at 72px .compact never
-   fired on plain scroll and the full 35-pill grid (~300px) stayed pinned
-   over the photos for the whole 39,700px page. At 65px the bar collapses
-   to one scrollable row once it sticks, as v7 designed it — the grid
-   starts cleanly below it and no photo row is cut off behind the panel. */
-@media (min-width: 861px) {
-  .album-nav { top: 65px; }
 }
 
 /* Life, Clubs: at 861–1200px the split squeezes the 5-column tile grid
@@ -387,10 +336,6 @@
 /* ---------- 44px targets, 8px gaps: interaction-design, taste tap-size ----------
    .btn-small was 42px; album pills + toggles 26-33px; footer links 20px. */
 .btn-small { min-height: 44px; }
-.album-nav a { min-height: 44px; display: inline-flex; align-items: center; }
-html.js .album-nav-toggle, .album-nav.compact .album-nav-toggle {
-  display: inline-flex; align-items: center; min-height: 44px;
-}
 /* ASSEMBLY EDIT 23 Nov (v30): footer-link 44px rule REMOVED — B3-D's
    `.footer-col a { display: block; padding: var(--space-3) 0; }` rebuilt
    footer text links to ~44px rows and inflated the footer to 385/654/641px
@@ -600,3 +545,294 @@ section[aria-label="Questions"] .cta-band .btn:active {
 @media (max-width: 600px) {
   section[aria-label="How to apply"] .steps h3 { font-size: 1.15rem; }
 }
+
+/* ===== v31 W-B: About page rework (worker W-B, 23 Nov 2026) =====
+   Scope: about.html ONLY. Every rule below is scoped to an about-only
+   class or an about section[aria-label], so nothing leaks to the other
+   10 detail pages. Tokens only, 4px steps, blue + gold, no red.
+   Hallmark floor: no eyebrow, no tracked-caps labels, transform/opacity
+   only, focus instant, content visible with scripting off. */
+
+/* ---- Item 2: the divider is a real photograph, not a rule ----
+   better-ui (Polish the details): one strong authored moment beats a
+   decorative divider; no-ai-design-slop (Product truth): the image is
+   the school's own aerial campus photo, already on the site. */
+.story-banner { margin: 0 0 var(--space-7); }
+.story-banner img { aspect-ratio: 21 / 9; }
+@media (max-width: 600px) {
+  .story-banner img { aspect-ratio: 16 / 9; }
+}
+
+/* ---- Item 3: principals timeline spacing + the one photo that exists ----
+   better-ui (Cut text that wraps to a lonely last word): the years column
+   is max-content (sized by the longest, "2025–present") with a 32px gap,
+   so "present" no longer sits against the name — and the name column
+   keeps its full width, so every principal's name still fits one line
+   (the first attempt, a fixed 152px years column, pushed the two longest
+   names to two lines at 768/834/1440 — measured, reverted). The timeline
+   is 2 columns on desktop (6 names = 3 even rows) and 1 column below
+   861px, where 2 columns would squeeze the names. The current principal
+   gets the only principal portrait on the site (principal-crop.jpg);
+   earlier principals have no photo on the site, so they stay a clean
+   text timeline — no invented portraits (Hallmark floor 8). */
+section[aria-label="Our story"] .lineage-row {
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: var(--space-6);
+}
+section[aria-label="Our story"] .lineage-current {
+  grid-template-columns: max-content 56px minmax(0, 1fr);
+  column-gap: var(--space-4);
+  align-items: center;
+}
+.lineage-current p { font-weight: 600; }
+.lineage-thumb {
+  width: 56px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: var(--radius-soft);
+  display: block;
+}
+@media (min-width: 861px) {
+  section[aria-label="Our story"] .lineage-wide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 860px) {
+  section[aria-label="Our story"] .lineage-wide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  section[aria-label="Our story"] .lineage-row {
+    column-gap: var(--space-5);
+  }
+}
+@media (max-width: 600px) {
+  .lineage-thumb { width: 40px; height: 56px; }
+}
+
+/* ---- Item 4: principal's photo travels with the text on phones ----
+   design-taste (splits stack text first, no row half empty): below the
+   861px stack point the figure takes order -1, so on a phone the photo
+   opens the section instead of stranding at the bottom after ~1,000px
+   of text. Desktop split untouched. */
+@media (max-width: 860px) {
+  .principal-split > figure {
+    order: -1;
+    max-width: 420px;
+    width: 100%;
+    margin-inline: auto;
+  }
+}
+
+/* ---- Item 6: Vision and Mission share one size ----
+   typography (3–4 sizes only; hierarchy from size + weight + colour,
+   not a new size per block) + design-system (semantic tokens, no raw
+   values): Mission is now an h3 + the same .lede (1.2rem / 1.6) as
+   Vision. No CSS needed — the HTML carries it. */
+
+/* ---- Item 8: why families — uniform tiles, not ragged chips ----
+   design-system (one component, one size): the flex chip row could
+   never be uniform, so the 9 reasons use the site's own .tile-grid
+   (v22 pattern). 3 columns = 3 even rows of 3 at every width above
+   600px; stretch + height 100% makes every cell the same size even
+   when a label wraps. */
+.why-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+}
+.why-grid .tile { height: 100%; min-height: 88px; }
+@media (max-width: 600px) {
+  .why-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---- Item 9: coat of arms, reworked in place ----
+   Decision (ambiguity in the brief): the anthem stays exactly where it
+   is — Jayant called it perfect, and moving it would only displace a
+   finished section. The coat of arms is fixed by presentation instead:
+   the crest is capped as an emblem (320px desktop, 420px stacked)
+   instead of filling its column, and the emblems/colours become two
+   uniform 4-across card grids with equal heights (align-items: stretch;
+   the school's own meanings, unchanged). frontend-design (spend
+   boldness in one place): the crest is the section's one focal object. */
+@media (min-width: 861px) {
+  section[aria-label="Coat of arms"] .crest-figure {
+    max-width: 320px;
+    margin-inline: auto;
+  }
+}
+.emblem-grid { align-items: stretch; }
+@media (min-width: 861px) {
+  .emblem-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (min-width: 601px) and (max-width: 860px) {
+  .emblem-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .emblem-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---- Item 10: leadership — name line 1, role line 2, uniformly ----
+   better-ui (shorten labels that force a second line): the name and
+   the role are separate blocks now, so no name ever wraps mid-role
+   and every entry reads the same way. */
+.leader-list .leader-name-role { display: block; min-width: 0; }
+.leader-list .leader-name-role > strong {
+  display: block;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+.leader-list .leader-role {
+  display: block;
+  color: var(--ink-soft);
+  font-size: 0.98rem;
+  line-height: 1.45;
+  margin-top: 2px;
+}
+
+/* ---- Item 11: school hours — bigger, structured ----
+   typography (hierarchy from size + weight): times are display-face
+   1.35rem with tabular numerals (better-ui: keep numbers tabular where
+   they sit in columns); design-system (one card language): the two
+   seasons are one card with a hairline between them, one short row per
+   fact (contact-page hours pattern, B3-B). */
+.hours-card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: var(--space-5) var(--space-6);
+  box-shadow: var(--shadow-soft);
+  margin-bottom: var(--space-4);
+}
+.hours-season h4 { margin: 0 0 var(--space-3); font-size: 1.25rem; }
+.hours-season + .hours-season {
+  border-top: 1px solid var(--line);
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+}
+.hours-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-2) var(--space-4);
+  align-items: baseline;
+  padding: var(--space-2) 0;
+}
+.hours-row + .hours-row { border-top: 1px solid var(--line); }
+.hours-row span { color: var(--ink-soft); }
+.hours-row strong {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  .hours-row strong { font-size: 1.15rem; }
+  .hours-card { padding: var(--space-4) var(--space-5); }
+}
+
+/* ---- Item 12: managing committee — one uniform card per person ----
+   ui-ux-pro-max (layout: no ragged last row) + better-ui (one system):
+   the old 7-card grid hid three members inside one "Members" card and
+   left the last card spanning. 11 people = 11 identical cards, role as
+   a small sentence-case label (Hallmark floor 9: labels untracked,
+   body face, a step smaller), name as the card's one line. 3 columns
+   above 600px, 1 column on phones. */
+.committee-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: var(--space-4);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.committee-list li {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  min-width: 0;
+}
+.committee-list li span {
+  font-size: 0.88rem;
+  color: var(--ink-mute);
+  line-height: 1.4;
+  /* Every role label reserves two lines, so a card whose label wraps
+     ("Teachers' representative" at tablet widths) is exactly as tall as
+     its one-line neighbours — all 11 cards identical at every width. */
+  min-height: calc(2 * 1.4em);
+}
+.committee-list li strong {
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+@media (max-width: 600px) {
+  .committee-list { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---- Item 13: awards infinite-scroll slider ----
+   interaction-design (offer buttons as well as swipe — here the strip
+   moves by itself, as Jayant approved for the Life strip, and the
+   duplicated half makes the loop seamless) + 12-principles (transform
+   only, one easing curve, reduced-motion fallback): same proven pattern
+   as home.css .photo-strip, scoped to about. 340px cards: at 1440px
+   three full cards + a peek of the fourth on the right, so the sides
+   show there is more; 300px at tablet, 264px at phone. No pause on
+   hover — Jayant's "let it scroll by itself" wins over taste
+   loop-pause; reduced motion gets the static 3-card grid. */
+.awards-slider { display: block; overflow: clip; }
+.awards-track {
+  display: flex;
+  width: max-content;
+  animation: awards-scroll 36s linear infinite;
+  will-change: transform;
+}
+@keyframes awards-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.award-slide { flex: 0 0 340px; width: 340px; margin: 0 var(--space-4) 0 0; }
+.award-slide img {
+  aspect-ratio: 4 / 3;
+  transition: transform 0.35s var(--ease-out);
+}
+.award-slide:hover img { transform: scale(1.02); }
+.award-slide figcaption {
+  margin: var(--space-3) 0 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+@media (max-width: 860px) {
+  .award-slide { flex-basis: 300px; width: 300px; }
+}
+@media (max-width: 600px) {
+  .award-slide { flex-basis: 264px; width: 264px; margin-right: var(--space-3); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .awards-slider { overflow: visible; }
+  .awards-track {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+    width: auto;
+    animation: none;
+  }
+  .award-slide { flex: none; width: auto; margin-right: 0; }
+  .award-slide[aria-hidden="true"] { display: none; }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 860px) {
+  .awards-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 600px) {
+  .awards-track { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---- Item 14: achievements — uniform line counts ----
+   better-ui (cut text that wraps to a lonely last word): the compound
+   Telegraph items (5 awards, 5 lines) are split into one bullet per
+   award, same facts, so every 2026/2025 item is 1–2 lines at desktop
+   and ≤3 on a phone. No CSS needed — the HTML carries it. */
