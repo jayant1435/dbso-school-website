@@ -1,7 +1,9 @@
-/* v6 navigation — MGM blend. v25: the mobile menu is a right-side drawer
-   and this file is the single source of truth for header / nav / menu
-   (style.css no longer carries toggle or mobile-menu rules).
-   Loaded after style.css. Overrides only header / nav / mobile-menu rules.
+/* v6 navigation — MGM blend. v37 B3-F: the mobile menu is a full-width
+   TOP drop-down panel (Jayant 17:53 IST — the side drawer is gone;
+   the header sitting visible alongside it looked bad). This file is
+   the single source of truth for header / nav / menu (style.css no
+   longer carries toggle or mobile-menu rules). Loaded after style.css.
+   Overrides only header / nav / mobile-menu rules.
    MGM cue (mgmschool.co.in): bold dark-navy links, generous spacing, hover
    is a plain colour change to blue — NO underline, NO background pill,
    NO dropdown. Active page: blue text + a 2-3px blue underline offset
@@ -30,10 +32,14 @@
   width: 44px;
   height: 44px;
 }
-/* v25: with the menu open the header sits above the drawer and the
-   backdrop, so the round toggle morphing into an X stays visible and
-   tappable as the one close control. */
-.site-header.menu-open { z-index: 200; }
+/* v37 B3-F: the top drop-down panel REPLACES the side drawer (Jayant
+   17:53 IST). The panel (z-index 150) + backdrop (140) sit ABOVE the
+   header (z-index 100), so when open the panel IS the top area: the
+   announcement bar + header are fully covered, nothing peeking
+   alongside, no side left empty. The old .site-header.menu-open
+   z-index: 200 rule is DELETED — it was the v32 drawer fix (header
+   stays visible alongside the drawer), which this design reverses by
+   design. The close control now lives INSIDE the panel (top row). */
 .brand { transition: opacity 0.2s var(--ease-out); }
 .brand:hover { opacity: 0.85; }
 
@@ -152,19 +158,32 @@
    is exactly why the three lines looked wrong. */
 .menu-toggle .bar { display: block; width: 22px; height: 3px; background: currentColor; border-radius: 3px; margin: 0; transition: transform 0.3s var(--ease-out), opacity 0.2s var(--ease-out), width 0.25s var(--ease-out); }
 .menu-toggle .bar:nth-child(2) { width: 15px; }
-/* Open: blue button, white bars, the top and bottom bars cross into an X
-   (8px is the bar pitch: 3px bar + 5px gap). */
-.site-header.menu-open .menu-toggle { background: var(--blue); border-color: var(--blue); color: var(--paper); }
-.site-header.menu-open .menu-toggle .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-.site-header.menu-open .menu-toggle .bar:nth-child(2) { opacity: 0; transform: scaleX(0.4); }
-.site-header.menu-open .menu-toggle .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+/* v37 B3-F: the toggle-to-X morph is DELETED with the drawer — the
+   hamburger is covered by the panel when open, so the morph performed
+   no job (no-ai-design-slop removal test). The X close control lives
+   in the panel's top row (.menu-close below). The bars keep their base
+   rules above; they never animate now. */
 
-/* ---------- Mobile menu: a right-side drawer, not a blank sheet ----
-   v25: the menu slides in from the right over a dimmed backdrop, and
-   the header stays above it — so the round toggle morphing into an X
-   is the one close control (the in-menu top bar is gone). Links carry
-   small blue numerals; the active page gets a short blue rule under its
-   name. The footer pins contact + motto to the bottom. */
+/* ---------- Mobile menu: a full-width TOP drop-down panel ----
+   v37 B3-F (Jayant 17:53 IST): the side drawer is gone. Tapping the
+   hamburger drops a panel down from the very top; when open the panel
+   IS the top area — it starts at top: 0 and covers the announcement
+   bar + header entirely (panel z-index 150, backdrop 140, header 100),
+   so nothing of the page header sits visible alongside it and no side
+   is left empty. The panel's own top row carries the crest + school
+   name + a dedicated X close control, so it reads as the header itself
+   (design-taste-frontend: one system — the panel reuses the header's
+   crest, display face and 44px+ controls; interaction-design: the back
+   action is predictable — the X sits top-right, where the hamburger
+   that opened it sits). Motion: one move only — the whole panel
+   translates down 0.30s on the site's one easing curve (transform +
+   opacity only, 12-principles 150–400ms budget; Hallmark floor 2).
+   The old per-link stagger is DELETED: it held each link back up to
+   ~0.65s after open (audit-ai-design-slop motion theater — motion
+   delaying access; 12-principles budget). The links ride the panel as
+   one unit and are usable the moment it lands. The panel scrolls
+   internally (overflow-y: auto, max-height 100dvh) so short viewports
+   still reach the CTA + contact footer. */
 .menu-backdrop {
   position: fixed;
   inset: 0;
@@ -184,58 +203,113 @@
 .mobile-menu {
   position: fixed;
   top: 0;
+  left: 0;
   right: 0;
-  bottom: 0;
   z-index: 150;
-  width: min(420px, 88vw);
+  max-height: 100vh;
+  max-height: 100dvh;
   display: flex;
   flex-direction: column;
   padding: 16px var(--space-5) var(--space-6);
   overflow-y: auto;
   background: var(--paper);
-  box-shadow: var(--shadow-drawer);
+  box-shadow: var(--shadow-2);
   visibility: hidden;
-  transform: translateX(102%);
-  transition: transform 0.38s var(--ease-out), visibility 0s linear 0.38s;
+  transform: translateY(-102%);
+  transition: transform 0.3s var(--ease-out), visibility 0s linear 0.3s;
 }
 .mobile-menu.open {
   visibility: visible;
-  transform: translateX(0);
-  transition: transform 0.38s var(--ease-out);
-}
-/* Links, CTA and footer enter one after another, top to bottom.
-   Closing is prompt: no stagger on the way out. */
-.mobile-menu nav li,
-.mobile-menu .btn,
-.mobile-menu-foot {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.35s var(--ease-out), transform 0.35s var(--ease-out);
-}
-.mobile-menu.open nav li,
-.mobile-menu.open .btn,
-.mobile-menu.open .mobile-menu-foot {
-  opacity: 1;
   transform: translateY(0);
+  transition: transform 0.3s var(--ease-out);
 }
-.mobile-menu.open nav li:nth-child(1) { transition-delay: 0.06s; }
-.mobile-menu.open nav li:nth-child(2) { transition-delay: 0.09s; }
-.mobile-menu.open nav li:nth-child(3) { transition-delay: 0.12s; }
-.mobile-menu.open nav li:nth-child(4) { transition-delay: 0.15s; }
-.mobile-menu.open nav li:nth-child(5) { transition-delay: 0.18s; }
-.mobile-menu.open nav li:nth-child(6) { transition-delay: 0.21s; }
-.mobile-menu.open .btn { transition-delay: 0.24s; }
-.mobile-menu.open .mobile-menu-foot { transition-delay: 0.27s; }
-.mobile-menu:not(.open) nav li,
-.mobile-menu:not(.open) .btn,
-.mobile-menu:not(.open) .mobile-menu-foot { transition-delay: 0s; }
-/* Link rows: blue numeral + display name, hairline between rows. */
+/* Top row: the panel's header — crest + school name on the left, the
+   X close control on the right. Same 44px crest and 1.25rem display
+   name as the page header (better-ui: one type scale, one system),
+   one hairline below to separate it from the links (one divider, not
+   a boxed header — no-ai-design-slop removal test: a card around the
+   row would add a container that performs no job). */
+.mobile-menu-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 48px;
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-2);
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+}
+.mobile-menu-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 48px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.mobile-menu-brand img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.mobile-menu-brand:hover { color: var(--blue); }
+/* Close control: the same round 48px button language as the hamburger
+   (better-ui: one radius + one control language), top-right where the
+   hamburger sits. The X is two drawn bars, not a unicode glyph
+   (impeccable craft-floor: no unicode glyphs as icons; same 22px x 3px
+   bars as the toggle). 48px target, labelled for assistive tech
+   (aria-label="Close menu" in the markup; interaction-design: visible
+   affordance + keyboard path first). */
+.menu-close {
+  position: relative;
+  margin-left: auto;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--band);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease-out), border-color 0.25s var(--ease-out),
+    color 0.25s var(--ease-out), transform 0.15s var(--ease-out);
+}
+.menu-close:hover,
+.menu-close:focus-visible { background: var(--blue); border-color: var(--blue); color: var(--paper); }
+.menu-close:active { transform: scale(0.94); }
+.menu-close .x-bar {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 3px;
+  margin-left: -11px;
+  margin-top: -1.5px;
+  background: currentColor;
+  border-radius: 3px;
+}
+.menu-close .x-bar:nth-child(1) { transform: rotate(45deg); }
+.menu-close .x-bar:nth-child(2) { transform: rotate(-45deg); }
+/* Link rows: display name only, hairline between rows. The v25 blue
+   numerals (01–07) are DELETED — impeccable craft-floor refuses
+   section numbers unless the sequence itself carries information the
+   reader needs (it does not: the order is the site's nav order, not
+   content), and the no-ai-design-slop removal test finds they perform
+   no job (delete them and nothing — state, action, hierarchy — is
+   lost). Text edges align with the brand text above (taste: equal
+   edges): links sit at 0 side padding inside the panel's 24px padding,
+   so brand, links and footer share one left edge. */
 .mobile-menu nav ul { list-style: none; margin: 0; padding: 0; }
 .mobile-menu nav a {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  padding: 14px 4px;
+  display: block;
+  padding: 14px 0;
   font-family: var(--font-display);
   font-size: 1.55rem;
   font-weight: 700;
@@ -246,14 +320,6 @@
   transition: color 0.2s var(--ease-out), padding-left 0.2s var(--ease-out);
 }
 .mobile-menu nav a:hover { color: var(--blue); padding-left: 12px; }
-.mobile-menu .menu-num {
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--blue);
-  flex-shrink: 0;
-}
 .mobile-menu nav a[aria-current="page"] .menu-name { color: var(--blue); box-shadow: inset 0 -3px 0 var(--blue); }
 .mobile-menu .btn { margin-top: var(--space-6); width: 100%; }
 /* Footer: pinned to the bottom, contact + motto, no dead space. */
@@ -281,6 +347,8 @@
 .main-nav a:focus-visible,
 .brand:focus-visible,
 .menu-toggle:focus-visible,
+.menu-close:focus-visible,
+.mobile-menu-brand:focus-visible,
 .mobile-menu nav a:focus-visible,
 .mobile-menu-foot a:focus-visible { outline-offset: 3px; }
 
@@ -294,17 +362,12 @@
   .main-nav a,
   .mobile-menu,
   .menu-backdrop,
-  .mobile-menu nav li,
-  .mobile-menu .btn,
-  .mobile-menu-foot,
+  .menu-close,
   .menu-toggle { transition: none !important; }
   .main-nav a[aria-current="page"]::after {
     animation: none;
     transform: none;
   }
-  .mobile-menu.open nav li,
-  .mobile-menu.open .btn,
-  .mobile-menu.open .mobile-menu-foot { transition-delay: 0s; }
 }
 
 /* ===== v29 assembly: w1-anim-nav.css ===== */
@@ -313,7 +376,7 @@
    underline draw, drawer slide, staggered links, toggle morph and
    backdrop fade all have transitions — except one gap below. */
 
-/* ---------- Drawer footer links: hover changed colour instantly ----------
+/* ---------- Panel footer links: hover changed colour instantly ----------
    Every other nav link eases its colour; these popped. */
 .mobile-menu-foot a { transition: color 0.2s var(--ease-out); }
 
@@ -351,13 +414,10 @@
   .header-cta { display: none; }
 }
 
-/* ---------- Mobile-menu cascade: one more link ----------
-   The drawer now has 7 items (Home 01 … Gallery 06, Contact 07), so the
-   stagger gains one step and the CTA + footer shift one step later.
-   Same 0.03s step as the existing rules. */
-.mobile-menu.open nav li:nth-child(7) { transition-delay: 0.24s; }
-.mobile-menu.open .btn { transition-delay: 0.27s; }
-.mobile-menu.open .mobile-menu-foot { transition-delay: 0.30s; }
+/* ===== v37 B3-F: the v25/v29 link stagger is DELETED with the drawer
+   (see the panel comment above — motion theater, 12-principles budget).
+   The three cascade delay rules below are gone with it; nothing
+   replaces them. */
 
 /* ===== v31 L3: no-JS mobile nav fallback (B3-D §8) ===== */
 /* The hamburger is a JS control: with scripting off the toggle is dead
