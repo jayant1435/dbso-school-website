@@ -416,7 +416,12 @@ button.photo-card figcaption { text-align: left; }
   padding: var(--space-6);
   animation: lb-in 0.3s var(--ease-out);
 }
-.house-modal-band { height: 10px; border-radius: 5px; margin-bottom: var(--space-5); }
+.house-modal-band { height: 10px; border-radius: 5px; margin-bottom: var(--space-5); margin-right: 28px; }
+/* W-Z4 P2 (interaction-design: controls must not collide; impeccable
+   craft-floor Coverage): the 44px close button sits top/right
+   var(--space-4) inside the 32px-padded card, so it covered the band's
+   right 28px (44 + 16 − 32). The band now ends exactly at the button's
+   left edge instead of running underneath it. */
 .house-modal-band-red { background: var(--house-red); } /* Red House colour: content, not UI */
 .house-modal-band-blue { background: var(--house-blue); }
 .house-modal-band-green { background: var(--house-green); }
