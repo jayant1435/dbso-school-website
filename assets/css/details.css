@@ -963,3 +963,52 @@ section[aria-label="Celebrations and events"] .tick-list li span {
     line-height: 1.2;
   }
 }
+
+/* ===== W-X2 (wave 7, 23 Nov 2026) =====
+   Hallmark · patch: two tablet-only alignment fixes · system: incumbent
+   DBSO tokens, blue + yellow only, Bricolage Grotesque + DM Sans ·
+   scope: admissions.html dates strip + facilities.html photo row only,
+   append-only, no redesign, no copy change, no new motion. */
+
+/* ---- FIX 1 (P2): admissions dates strip at 601-860px ----
+   Measured BEFORE (admissions.html, 768px + 834px): the middle item's
+   label wraps to 2 lines ("Entrance, interaction and / counselling")
+   and its value wraps to 2 lines ("17 and 18 December / 2026") in the
+   224px / 246px middle column, while both siblings stay 1 line — so the
+   middle value sits ~24px below the other two values; the three dates
+   share no baseline. The label (37 chars at 0.88rem) needs ~259px and
+   the value (1.3rem display) ~224px, so no font tweak fits the middle
+   column; the value copy cannot be shortened without a fact trim.
+   better-ui (align everything to a single grid; accidental inconsistency
+   in spacing) + audit-ai-design-slop (established UI failure: visual
+   hierarchy that contradicts task importance): the strip stacks to one
+   column at 601-860px, exactly the layout already proven at <=600px
+   (style.css:1404-1405, same gap + divider tokens) — every label and
+   value is 1 line and all three values align. Scoped with
+   .page-head + .dates-strip so the home strip (which follows a section,
+   not .page-head) keeps its 3 columns at tablet widths. Desktop
+   untouched. */
+@media (min-width: 601px) and (max-width: 860px) {
+  .page-head + .dates-strip .container { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  .page-head + .dates-strip .date-item + .date-item { border-left: 0; padding-left: 0; border-top: 1px solid var(--line-strong); padding-top: var(--space-4); }
+}
+
+/* ---- FIX 2 (P2): facilities photo row orphan at 601-860px ----
+   Measured BEFORE (facilities.html, 768px + 834px): .photo-row is 2
+   columns at <=860px (style.css:1378) but holds 3 photos, so the chess
+   photo sits alone in row 2 with a 352px empty slot at its right
+   (768px: football + basketball row 1, chess alone row 2).
+   better-ui (align everything to a single grid) + audit-ai-design-slop
+   (accidental inconsistency; ragged last row): the row is 3 columns at
+   601-860px, so all three photos share one even row — the site's own
+   established answer to an orphan (staff-grid comment, style.css:1386:
+   "three columns leaves no orphan card on the last row"). No crop
+   change, no new aspect: the 4/3 frames stay 4/3, just narrower
+   (229px at 768px, 251px at 834px). Scoped to the Grounds section so
+   the shared .photo-row on life / staff / home is untouched. A span-2
+   last-child was considered and rejected: it would crop faces and the
+   board out of the chess photo at 8/3. Desktop (3 cols) and phones
+   (1 col) untouched. */
+@media (min-width: 601px) and (max-width: 860px) {
+  section[aria-label="Sports grounds and courts"] .photo-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
