@@ -43,9 +43,26 @@
 /* The nav list is a horizontal flex row — the global li bottom margin
    (style.css) would centre the last item 4px lower than its siblings. */
 .main-nav li { margin-bottom: 0; }
+/* v33 W-F polish: ul gap 2px -> 4px (better-ui: 4px spacing scale only).
+   With the 12px link padding the text-to-text gap between links is now
+   28px, so the row's whitespace lives inside the nav instead of piling
+   up as one dead lump between the brand and the nav (115px before). */
+.main-nav ul { gap: 4px; }
 .main-nav a {
   position: relative;
-  padding: 11px 9px; /* v24: a little roomier with the thicker header */
+  /* v33 W-F polish: the hit area was 41.1px — under the 44px minimum
+     (interaction-design; design-taste-frontend tap-size). Now an
+     inline-flex 44px-minimum box with the text centred in it.
+     NOTE on padding: nav.css used to say 11px 9px, but the live pages
+     never saw it — home.css:736 / details.css:379 re-assert 8px 12px
+     after nav.css, so the live padding was already 8px 12px (measured
+     before this edit). This rule now declares those same live values
+     so nav.css matches reality; the real change here is the 44px box.
+     The ul gap below (2px -> 4px) is the only width change. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 12px;
   color: var(--ink);
   font-weight: 600;
   transition: color 0.25s var(--ease-out);
@@ -55,8 +72,10 @@
 .main-nav a::after {
   content: "";
   position: absolute;
-  left: 7px;
-  right: 7px;
+  /* v33 W-F polish: inset 7px -> 8px, a 4px step (better-ui); with the
+     12px side padding the rule now spans the text plus 4px each side. */
+  left: 8px;
+  right: 8px;
   bottom: -3px;
   height: 3px;
   border-radius: 2px;
@@ -84,6 +103,22 @@
 }
 @keyframes nav-underline-in {
   to { transform: scaleX(1); }
+}
+
+/* ---------- Header CTA: the row's one primary action ----------
+   v33 W-F polish (better-ui: breathing room around the primary action;
+   design-taste-frontend: one button pair — the site's primary buttons
+   are 48px, the header CTA was the odd 44px one). min-height 48px so
+   the CTA stands clearly taller than the 44px links, and margin-left
+   12px -> 16px so it reads as its own unit, not the seventh link.
+   Padding stays .btn-small's 8px 12px, so the CTA keeps its 180px
+   width. The double class is deliberate: home.css:691 and
+   details.css:338 both re-assert `.btn-small { min-height: 44px }`
+   AFTER nav.css, so a plain `.header-cta` 48px loses on order — the
+   (0,2,0) selector wins on specificity instead, on every page. */
+.header-cta.btn-small {
+  margin-left: var(--space-4);
+  min-height: 48px;
 }
 
 /* ---------- Hamburger: one round button, three honest bars ----------
@@ -239,15 +274,6 @@
   color: var(--ink-mute);
 }
 
-/* ---------- Breakpoint: measured v24 — with five links and the thicker
-   header the row (brand + nav + CTA) fits down to a 1024px viewport; below
-   that the hamburger takes over. */
-@media (max-width: 1024px) {
-  .main-nav { display: none; }
-  .menu-toggle { display: flex; }
-  .header-cta { display: none; }
-}
-
 /* ---------- Focus: clear rings on every nav control ---------- */
 
 .main-nav a:focus-visible,
@@ -302,8 +328,22 @@
    viewport (CTA right edge meets the content edge, zero slack) and at
    1025 the CTA already pushes 20px into the right padding. v24's
    1024px breakpoint is therefore 26px too low for six links.
-   New breakpoint 1060px: 10px of margin over the exact-fit 1050. */
-@media (max-width: 1060px) {
+   New breakpoint 1060px: 10px of margin over the exact-fit 1050.
+   v33 W-F polish: the wider links (4px ul gap, +10) and the CTA's
+   16px left margin (+4) grow the row 14px, so the sweep (qa-tools
+   wf-fit-sweep.js, live server, 23 Nov 2026) puts the exact fit at
+   1095px — at 1090 the CTA already pushes 4.8px into the right
+   padding, at 1065 it pushes 29.8px. New breakpoint 1105px: the same
+   10px of margin over the new exact fit. (Correction to the v32
+   record above: its 1050px fit was measured on the test copy, where
+   nav.css's 11px 9px link padding applied — the LIVE row was already
+   8px 12px via the page stylesheets, 36px wider, so the live fit was
+   ~1081px and the old 1060px breakpoint was already ~21px too low;
+   1061–1080px showed the CTA eating the right padding. 1105px
+   fixes that pre-existing overflow as well as the polish's +14px.)
+   The dead v24 1024px block above is removed — it was fully subsumed
+   by this rule. */
+@media (max-width: 1105px) {
   .main-nav { display: none; }
   .menu-toggle { display: flex; }
   .header-cta { display: none; }
@@ -319,14 +359,15 @@
 
 /* ===== v31 L3: no-JS mobile nav fallback (B3-D §8) ===== */
 /* The hamburger is a JS control: with scripting off the toggle is dead
-   and the drawer can never open, so below the 1060px breakpoint a phone
+   and the drawer can never open, so below the 1105px breakpoint a phone
    or tablet user had NO navigation (Hallmark Floor 7: content visible
    with scripting off). The fallback is a <noscript> strip directly
    below the header — plain links, no new behaviour, no new colours.
    With scripting on the <noscript> content is never in the DOM, so
    these rules match nothing and JS-on rendering is untouched. */
 .nojs-nav { display: none; }
-@media (max-width: 1060px) {
+/* v33 W-F: 1060px -> 1105px, matching the moved desktop breakpoint. */
+@media (max-width: 1105px) {
   .nojs-nav {
     display: block;
     background: var(--paper);
