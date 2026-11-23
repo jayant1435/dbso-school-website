@@ -62,7 +62,8 @@
 .home-subhead { margin: var(--space-7) 0 var(--space-4); }
 .home-subhead:first-of-type { margin-top: 0; }
 /* Clubs live in the shared .tile-grid (style.css): five equal tiles a row
-   on desktop, three on tablet, two on a phone — no ragged last row. */
+   on desktop, four on tablet (20 divides by 4 — three left a ragged
+   2-tile last row), two on a phone — no ragged last row. */
 .tile-hint { color: var(--ink-soft); font-size: 0.95rem; margin: 0 0 var(--space-3); }
 
 /* ---------- Houses: four equal tiles, colour band on top ---------- */
@@ -495,3 +496,256 @@ button.photo-card figcaption { text-align: left; }
   .pillars-slider .pillar:last-child { margin-bottom: 0; }
   .pillar-nav { display: none; }
 }
+
+/* ===== v29 assembly: w1-anim-home.css ===== */
+/* W1 animations patch — home.css-owned rules (qa-v29, wave 3).
+   Appended after home.css. Ticker, photo-strip and pillar-slider rules
+   are untouched (fixed v28). Palette: blue + gold tokens only. */
+
+/* ---------- House modal close button: hover changed border only, instantly ----------
+   Same quiet hover as the lightbox buttons — tint + border, eased. */
+.house-modal-close {
+  transition: background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+.house-modal-close:hover { border-color: var(--ink); background: var(--band); }
+
+/* ---------- House modal: a closing fade to match the open ----------
+   Same exit as the lightbox (main.js adds .closing, removes .open 180ms
+   later); keyframes live in w1-anim-style.css. */
+.house-modal.closing { animation: lb-fade-out 0.18s var(--ease-out) forwards; }
+.house-modal.closing .house-modal-card { animation: lb-out 0.18s var(--ease-out) forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .house-modal.closing, .house-modal.closing .house-modal-card { animation: none; }
+}
+
+/* ===== v29 assembly: w4-home.css ===== */
+/* W4 — new brief, wave 3 (23 Nov). Home page only: loaded after home.css.
+   Palette: blue + gold tokens only, no red. Fonts: Bricolage + DM Sans. */
+
+/* ---------- 2. Admissions CTA: tighten the white gap ----------
+   The 128px of white below the band was the section's own 64px bottom
+   padding plus the footer's 64px top margin, stacked. 32px total now. */
+section[aria-label="Admissions call to action"] {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-4);
+}
+.site-footer { margin-top: var(--space-4); }
+
+/* ---------- 16. CTA band: buttons fill the band, less dead space ----------
+   The stacked buttons left ~50px of dead band above and below them at
+   desktop, and 48px of band padding + 48px of white gap below the last
+   button at every width. From 861px up the buttons sit side by side, so
+   the action row fills the band's right column; the band hugs its content
+   (32px top, 24px bottom). Phones keep the stacked full-width buttons —
+   they already fill the band's width — with the same tighter padding.
+   Desktop: the band is a grid with align-items: center, so the 48px
+   buttons floated mid-height against the taller text column and left
+   ~55px of dead band below them (111px below-button total at 1440).
+   Bottom-aligning the row puts the buttons on the text's baseline, so
+   below-button is 24px band padding + 32px gap = 56px, as on phones. */
+.cta-band { padding-top: var(--space-6); padding-bottom: var(--space-5); }
+.cta-band h2 { overflow-wrap: break-word; text-wrap: balance; }
+@media (min-width: 861px) {
+  .cta-band { align-items: end; }
+  .cta-band > div { min-width: 0; }
+  .cta-actions { flex-direction: row; flex-wrap: wrap; }
+  .cta-actions .btn { width: auto; }
+}
+
+/* ---------- 3. News: revert the v26 stretched third card ----------
+   A fourth REAL item (Assembly 6B, "Festivala" — from news.html, announced
+   on the school homepage) makes the grid 2x2, so no card needs to span.
+   Two columns at every width above 860px; one column on a phone. */
+.news-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.news-cards .news-item:nth-child(3) { grid-column: auto; }
+@media (max-width: 860px) {
+  .news-cards { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- 4. Life at Bosco: softer photo shadows ----------
+   The old ring + shadow-1 read as a hard dark edge on the warm band.
+   No ring, lower opacity, larger blur. Animation and markup untouched.
+   Shadow values live in tokens (Hallmark floor: no literal colour past
+   the token block), declared here because this patch owns the photos. */
+:root {
+  --shadow-photo-soft: 0 1px 2px rgba(18, 30, 42, 0.05), 0 8px 28px rgba(18, 30, 42, 0.08);
+  --shadow-photo-soft-hover: 0 2px 4px rgba(18, 30, 42, 0.06), 0 16px 40px rgba(18, 30, 42, 0.10);
+}
+.photo-strip .photo-card {
+  box-shadow: var(--shadow-photo-soft);
+}
+.photo-strip .photo-card:hover {
+  box-shadow: var(--shadow-photo-soft-hover);
+}
+
+/* ---------- 5. Preventive System on tablet: single column ----------
+   At 861-1080px the two-column split is where Jayant's screenshot shows
+   the intro column cut at the left edge, pillars fine on the right. One
+   column removes the squeeze entirely: intro (heading, lede, photo) full
+   width on top, the three pillars stacked below, numeral-left, exactly the
+   v28 tablet language from 601-860px — extended up to 1080px. Desktop
+   (1081px+) keeps its two-column layout; phones keep the slider. The
+   section clips horizontally so nothing inside it can ever push content
+   off-canvas again; split children get min-width 0 as a second guard. */
+@media (min-width: 601px) and (max-width: 1080px) {
+  section[aria-label="The Preventive System"] { overflow-x: clip; }
+  section[aria-label="The Preventive System"] .container.split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  section[aria-label="The Preventive System"] .container.split > * {
+    min-width: 0;
+  }
+  .pillars-slider {
+    display: block;
+    overflow-x: visible;
+    padding-inline: 0;
+    padding-bottom: 0;
+  }
+  .pillars-slider .pillar {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: var(--space-5);
+    align-items: start;
+    margin-bottom: var(--space-4);
+  }
+  .pillars-slider .pillar:last-child { margin-bottom: 0; }
+  .pillar-nav { display: none; }
+}
+
+/* ---------- 5b. Pillar dots: 44px targets, transform-only growth ----------
+   The dots were 10px tall — below the 44px touch target — and the active
+   dot grew by animating width. The button is now the 44x44 hit area
+   (transparent); the visible dot is a centred ::after, and the active
+   pill is the same 10px dot scaled on X, so neighbours never shift.
+   (The 8px gap is --space-2, kept as a token like everything else here.) */
+.pillar-dots { gap: var(--space-2); }
+.pillar-dot {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  position: relative;
+  transition: none;
+}
+.pillar-dot::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--line-strong);
+  transform: translate(-50%, -50%) scaleX(1);
+  transition: transform 0.2s var(--ease-out), background-color 0.2s var(--ease-out);
+}
+.pillar-dot.is-active { width: 44px; background: transparent; border-radius: 0; }
+.pillar-dot.is-active::after {
+  background: var(--blue);
+  transform: translate(-50%, -50%) scaleX(2.6);
+}
+
+/* ===== v29 assembly: b3d-skills-audit-ASSEMBLED.css ===== */
+/* v29 ASSEMBLED copy of b3d-skills-audit.css — coordinator edits noted inline
+   (strip hover-pause removed; pillar-dot block removed, W4 covers it).
+   Original untouched at b3d-skills-audit.css. */
+/* hallmark: b3d-skills-audit · audit-patch · theme DBSO blue+gold · scope motion + controls */
+ /* critique: every rule below cites its skill + rule in the comment above it;
+    LOAD ORDER (load order is fonts, style, nav, then home/details last):
+    coordinator appends this AFTER the last-loaded sheet on each page --
+    home.css on index.html, details.css on the other 11 pages -- AND after
+    the four W1 patches (the :focus-visible override must win over
+    w1-anim-style.css). Appending it only to style.css will NOT win over
+    nav/home/details rules of equal specificity. */
+
+/* ---------- Motion budgets: 12-principles timing, 150-400ms ----------
+   Reveal ran 0.7s (+440ms stagger); hero text 0.9s, hero image 2.6s;
+   image hovers 0.5-0.6s; page heads 0.7s; active-nav underline 0.45s.
+   All now 0.35-0.4s on the same --ease-out curve. */
+.js .reveal { transition-duration: 0.35s; }
+.js .reveal .gold-rule { transition-duration: 0.35s; }
+.hero-content h1, .hero-content p, .hero-actions { animation-duration: 0.4s; }
+.page-head h1, .page-head p { animation-duration: 0.4s; }
+.hero-media img { animation-duration: 0.4s; }
+.card-media img, .split figure img, .leader-visual img,
+.photo-row img, .gallery-item img { transition-duration: 0.35s; }
+.photo-card { transition-duration: 0.35s; }
+.main-nav a[aria-current="page"]::after { animation-duration: 0.4s; }
+
+/* ---------- Transform + opacity only: Hallmark floor 2, 12-principles ----------
+   Header height + crest width/height animated layout on scroll: drop them,
+   the shadow transition still signals the compact state. */
+.header-inner { transition: none; }
+.brand-crest { transition: none; }
+/* Toggle bars never change width (dead transition): keep transform/opacity. */
+.menu-toggle .bar { transition: transform 0.3s var(--ease-out), opacity 0.2s var(--ease-out); }
+
+/* ---------- Focus appears instantly: Hallmark floor 6 ----------
+   W1 faded the ring in over 0.15s; rings must appear at once. */
+:focus-visible { transition: none; }
+
+/* ---------- 44px targets, 8px gaps: interaction-design, taste tap-size ----------
+   .btn-small was 42px; album pills + toggles 26-33px; footer links 20px. */
+.btn-small { min-height: 44px; }
+.album-nav a { min-height: 44px; display: inline-flex; align-items: center; }
+html.js .album-nav-toggle, .album-nav.compact .album-nav-toggle {
+  display: inline-flex; align-items: center; min-height: 44px;
+}
+.footer-col a { display: block; padding: var(--space-3) 0; }
+.mobile-menu-foot a { padding: var(--space-3) 0; }
+/* Standalone see-more links (not running text): give them the 44px height. */
+.text-link { min-height: 44px; }
+/* The whole announcement bar is one link; it was 39px tall. */
+.announce-track span { padding-top: var(--space-3); padding-bottom: var(--space-3); }
+
+/* ASSEMBLY EDIT 23 Nov: pillar-dot block removed — W4's verified ::after
+   implementation (w4-home.css) already covers it; shipping both would
+   render two overlapping dots (::before + ::after) on every dot. */
+
+/* ---------- Moving content must pause: taste loop-pause, interaction-design ----------
+   Ticker already pauses on hover; a focused ticker must too (keyboard users).
+   The photo strip never paused: a focused card scrolled away under its own
+   focus ring. Focus now pauses it (keyboard users); hover does NOT pause
+   it — ASSEMBLY EDIT 23 Nov: Jayant's "keep the infinite scroll exactly,
+   let it scroll by itself" wins over taste loop-pause on hover. */
+.announce:focus-visible .announce-track,
+.announce:focus-within .announce-track { animation-play-state: paused; }
+.photo-strip:focus-within .photo-track { animation-play-state: paused; }
+
+/* ---------- One radius language: better-ui ----------
+   --radius-img was 16px on home, 20px everywhere else (details.css override);
+   the same viewer rendered 16px on home, 20px on staff. Unify on 20px.
+   Staff photos were 18px against the 16px soft token: unify on the token. */
+:root { --radius-img: 20px; }
+.staff-photo img { border-radius: var(--radius-soft); }
+
+/* ---------- Tokens, zero visual change: Hallmark floor 1 / 24a ----------
+   Literal values where a token holds the same number. */
+.pillar-dots { gap: var(--space-2); }
+.mobile-menu { padding: var(--space-4) var(--space-5) var(--space-6); }
+.mobile-menu nav a { padding: 14px var(--space-1); }
+.mobile-menu nav a:hover { padding-left: var(--space-3); }
+.main-nav a { padding: var(--space-2) var(--space-3); }
+.steps li { padding: 0 0 var(--space-6) var(--space-8); }
+.tick-list svg { padding: var(--space-1); }
+.syllabus-grid { gap: var(--space-3); }
+
+/* ---------- Untracked labels: Hallmark floor 9 / 67 ----------
+   Numerals only, but tracked 0.08em; labels stay untracked. */
+.value-num, .mobile-menu .menu-num { letter-spacing: 0; }
+
+/* ---------- One edge or one shadow, not both: sloplint F24 ----------
+   Back-to-top carried a hairline border under a soft shadow. */
+.to-top { border: 0; }
+
+/* ---------- No decorative blur: impeccable craft-floor refuse ----------
+   The drawer backdrop blurred 2px for no effect; the dim alone does the job. */
+.menu-backdrop { backdrop-filter: none; -webkit-backdrop-filter: none; }
+
+/* ---------- Brief 3, equal + centred: better-ui one system ----------
+   The two admissions download buttons were 341px vs 353px wide. */
+.notice-figure .home-links .btn { flex: 1 1 0; min-width: 0; }
+/* "Compose enquiry in email app" was left-aligned in the form. */
+#enquiry-form button[type="submit"] { display: flex; width: max-content; margin-inline: auto; }
