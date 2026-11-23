@@ -680,30 +680,49 @@ section[aria-label="Our story"] .lineage-row {
   .why-grid .tile:last-child { grid-column: 1 / -1; }
 }
 
-/* ---- Item 9: coat of arms, reworked in place ----
-   Decision (ambiguity in the brief): the anthem stays exactly where it
-   is — Jayant called it perfect, and moving it would only displace a
-   finished section. The coat of arms is fixed by presentation instead:
-   the crest is capped as an emblem (320px desktop, 420px stacked)
-   instead of filling its column, and the emblems/colours become two
-   uniform 4-across card grids with equal heights (align-items: stretch;
-   the school's own meanings, unchanged). frontend-design (spend
-   boldness in one place): the crest is the section's one focal object. */
+/* ---- Item 9: coat of arms, reworked in place (W-AB5, wave 10) ----
+   DECISION: keep the section, rework it — the crest is the school's own
+   identity mark and the emblem/colour meanings are school-published
+   facts, so removal would delete real content to fix a presentation
+   problem. Wave 6 capped the crest at 320px as an "emblem" and put the
+   meanings in two 4-across card grids — that is exactly what still
+   looked bad: a postage-stamp crest floating in a warm void beside a
+   wall of 8 identical white cards whose ~130px columns wrapped every
+   meaning to 3-4 ragged lines. This rework goes the other way:
+   - the crest fills its column (the 512px source supports ~480px; the
+     v29 420px cap when stacked stays), vertically centred on the text;
+   - the emblems become ONE 2x2 ruled typographic list, no card chrome
+     (impeccable craft-floor: same-size icon+heading+text cards are the
+     lazy container; no-ai-design-slop removal test: the white boxes
+     carried no meaning the type does not carry itself);
+   - the four colour meanings become one prose paragraph, merged with
+     the frame sentence — every fact kept, no second grid, no orphan h3;
+   - the figcaption goes (design-taste house rule 1: no caption under
+     an image; the heading already says what the picture is).
+   Tokens only; blue + gold; no new colour, font or size. */
 @media (min-width: 861px) {
-  section[aria-label="Coat of arms"] .crest-figure {
-    max-width: 320px;
-    margin-inline: auto;
-  }
+  section[aria-label="Coat of arms"] .crest-figure { max-width: none; }
 }
-.emblem-grid { align-items: stretch; }
-@media (min-width: 861px) {
-  .emblem-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.emblem-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5) var(--space-6);
+  margin: 0 0 var(--space-5);
 }
-@media (min-width: 601px) and (max-width: 860px) {
-  .emblem-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.emblem-list .emblem {
+  border-top: 1px solid var(--line-strong);
+  padding-top: var(--space-3);
+  min-width: 0;
 }
+.emblem-list .emblem dt {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+.emblem-list .emblem dd { margin: var(--space-1) 0 0; color: var(--ink-soft); }
 @media (max-width: 600px) {
-  .emblem-grid { grid-template-columns: minmax(0, 1fr); }
+  .emblem-list { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* ---- Item 10: leadership — name line 1, role line 2, uniformly ----
