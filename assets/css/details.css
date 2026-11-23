@@ -872,6 +872,52 @@ section[aria-label="Our story"] .lineage-current {
    Telegraph items (5 awards, 5 lines) are split into one bullet per
    award, same facts, so every 2026/2025 item is 1–2 lines at desktop
    and ≤3 on a phone. No CSS needed — the HTML carries it. */
+/* ===== W-I re-audit (wave 6, 23 Nov 2026) =====
+   Hallmark · patch: two missed details from the v29-v37 re-audit · system:
+   incumbent DBSO tokens, blue + yellow only, Bricolage Grotesque + DM Sans ·
+   scope: about.html lineage + admissions.html Documents band only, append-only */
+
+/* ---- P1: lineage current-row gap asymmetry on phones ----
+   better-ui (one spacing system, 4px steps) + design-system (single grid,
+   tokens only) + audit-ai-design-slop (accidental inconsistency in spacing):
+   below 600px the thumb shrinks to 40px but its grid track stayed 56px, so
+   the 16px of slack landed between thumb and name — gaps measured 24px then
+   40px at 390px (24/24 at 834px, 16/16 at 1440px). The track follows the
+   thumb: both gaps are the 24px token at every width now. No HTML change. */
+@media (max-width: 600px) {
+  section[aria-label="Our story"] .lineage-current {
+    grid-template-columns: max-content 40px minmax(0, 1fr);
+  }
+}
+
+/* ---- P2: Documents band empty area under the text (Brief 14:47 item 2) ----
+   better-ui (proximity before containers: related items sit closer than
+   unrelated ones) + design-taste-frontend (equal edges, one system):
+   the text column ended 336px above the figure column at 1440px, leaving
+   ~290px of empty band under the documents list. The two download buttons
+   move from under the notice image into the text column they belong to
+   (HTML: admissions.html Documents section), filling the gap with the
+   page's own content instead of a min-height reserve or a smaller, less
+   legible notice. Buttons stay exactly equal: 400px wide (max-width cap)
+   by 48px at 768px and up, full column width below that, same as before;
+   focus ring and press state restated in the new scope (global rules
+   style.css :92, :293 still apply). The old .notice-figure .home-links
+   rules are now dead (no matching elements) — harmless, delete in a
+   later cleanup pass. */
+section[aria-label="Documents needed"] .home-links { flex-direction: column; }
+section[aria-label="Documents needed"] .home-links .btn {
+  width: 100%;
+  max-width: 400px;
+  white-space: normal;
+}
+section[aria-label="Documents needed"] .home-links .btn:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 3px;
+}
+section[aria-label="Documents needed"] .home-links .btn:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
 
 /* ---------- WG3-01: stream switcher tabs share one row at phone widths ----------
    interaction-design: targets >=44x44px (tabs stay 48px+ tall) + keyboard path
