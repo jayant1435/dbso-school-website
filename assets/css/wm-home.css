@@ -364,3 +364,14 @@ section[aria-label="The Preventive System"] .split > div:first-child figure { ma
 .photo-track.wm-dragging { animation: none; }
 
 /* ITEM 8 mobile-footer rules: promoted to shared style.css at v44 (all 12 pages). */
+
+/* W-R10 prescribed correction (qa-v31/wr10f): at phone widths the 7-dot
+   values nav overflows the container — shrink the values dots' hit width
+   (visual dot is a centred 10px ::after, so the look is unchanged) and
+   tighten the nav/dots gaps so prev + 7 dots + counter + next all fit.
+   Values nav only; houses/clubs navs fit and are untouched. */
+@media (max-width: 480px) {
+  .wm-values .wm-slider-nav { gap: 8px; }
+  .wm-values .wm-dots { gap: 4px; }
+  .wm-values .wm-dot { width: 24px; min-width: 0; } /* height stays 44px */
+}
