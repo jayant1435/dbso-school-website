@@ -1605,14 +1605,14 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
     padding-top: var(--space-4);
     padding-bottom: var(--space-4);
   }
-  .footer-brand-col { margin-bottom: var(--space-4); }
+  .footer-brand-col { margin-bottom: var(--space-3); }
   .footer-brand img { width: var(--space-7); height: var(--space-7); }
   .footer-col {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     gap: var(--space-2) var(--space-4);
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-2);
   }
   .footer-col h3 { margin: 0; }
   .footer-inner > .footer-col:nth-child(2) ul,
@@ -1621,9 +1621,32 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   .footer-inner > .footer-col:nth-child(3) li { margin-bottom: 0; }
   .footer-col li { margin-bottom: 0; white-space: nowrap; }
   .footer-col a { white-space: nowrap; }
-  .footer-cta { margin-top: 0; }
+  /* W-E (23 Nov, new-brief 15): Apply gets its own line with breathing
+     room above it, instead of sitting inline mid-row after "News and
+     notices" — better-ui: breathing room around the primary action.
+     Full-width row (flex-basis 100%) matches the site's own ≤600px
+     button pattern; min-height 44px from the base rule is kept. */
+  .footer-cta { margin-top: var(--space-2); flex-basis: 100%; }
   /* Contact keeps its block shape, just tighter. */
   .footer-inner > .footer-col:last-child { display: block; }
   .footer-inner > .footer-col:last-child p { margin-bottom: var(--space-2); }
   .footer-inner > .footer-col:last-child p:last-child { margin-bottom: 0; }
+}
+
+/* ===== W-E (23 Nov, new-brief 15): mobile footer strip =====
+   Motto + postal address hidden on mobile ONLY — display:none, the
+   HTML stays untouched so desktop/tablet still show both.
+   Breakpoint ≤768px, not ≤860px: the 834px tablet footer (455px,
+   two-column grid) is a stated regression hold and must stay
+   byte-identical; ≤860px would have changed it. ≤768px covers every
+   phone incl. large phones (601–768px, which use the two-column grid
+   and simply lose the two hidden lines). No HTML change was needed:
+   .footer-motto is already classed, and the address is the Contact
+   column's first <p> (p:first-of-type). Tokens only, no literal
+   colour; footer text links stay ~20px (conflict 16: Jayant's
+   "mobile footer small and compact" wins over interaction-design's
+   44px for running-text links — the Apply button alone keeps 44px). */
+@media (max-width: 768px) {
+  .footer-motto { display: none; }
+  .footer-inner > .footer-col:last-child p:first-of-type { display: none; }
 }
