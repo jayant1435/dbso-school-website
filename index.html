@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="assets/css/home.css">
 <link rel="stylesheet" href="assets/css/wg1-f6.css">
 <link rel="stylesheet" href="assets/css/wg1-f4.css">
+<link rel="stylesheet" href="assets/css/wm-home.css">
 <link rel="canonical" href="https://dbso.jayantjaiswal.com/">
 <meta property="og:title" content="Don Bosco School Oodlabari — Virtue and Knowledge">
 <meta property="og:description" content="Don Bosco School Oodlabari is a Catholic minority, English-medium, co-educational CISCE school in the Dooars, from UKG to Class XII.">
@@ -155,7 +156,7 @@
         <hr class="gold-rule" aria-hidden="true">
         <h2>A beacon of excellence in the Dooars</h2>
         <p class="lede">Don Bosco School Oodlabari is a Catholic minority, English-medium, co-educational school owned and administered by the Salesians of Don Bosco, North India. It is affiliated to the Council for the Indian School Certificate Examinations, New Delhi, and teaches classes from UKG to XII.</p>
-        <p>The school follows the Preventive System of St. John Bosco: education through reason, relationship and religion, where discipline grows out of understanding and trust rather than fear. Its stated vision is to shape every child into a physically strong, intellectually competent, emotionally balanced, socially committed, morally upright, environmentally sensitive and spiritually enlightened citizen.</p>
+        <p class="lede">The school follows the Preventive System of St. John Bosco: education through reason, relationship and religion, where discipline grows out of understanding and trust rather than fear. Its stated vision is to shape every child into a physically strong, intellectually competent, emotionally balanced, socially committed, morally upright, environmentally sensitive and spiritually enlightened citizen.</p>
         <p><a href="about.html">Read about the school, its story and its leadership</a></p>
         <blockquote class="quote-inline">
           <p>“Our aim is to shape students who are not only academically proficient but also morally grounded and equipped to face the challenges of a rapidly changing world.”</p>
@@ -198,47 +199,181 @@
       </div>
       <div class="reveal">
         <h3 class="home-subhead">Twenty clubs</h3>
-        <p class="tile-hint">Select a club to highlight it.</p>
-        <div class="tile-grid" role="group" aria-label="Twenty clubs">
-          <button class="tile" type="button" data-club="Literary" aria-pressed="false">Literary</button>
-          <button class="tile" type="button" data-club="Debating" aria-pressed="false">Debating</button>
-          <button class="tile" type="button" data-club="Science" aria-pressed="false">Science</button>
-          <button class="tile" type="button" data-club="Maths" aria-pressed="false">Maths</button>
-          <button class="tile" type="button" data-club="Computer" aria-pressed="false">Computer</button>
-          <button class="tile" type="button" data-club="Nature" aria-pressed="false">Nature</button>
-          <button class="tile" type="button" data-club="Social Service" aria-pressed="false">Social Service</button>
-          <button class="tile" type="button" data-club="Karate" aria-pressed="false">Karate</button>
-          <button class="tile" type="button" data-club="Taekwondo" aria-pressed="false">Taekwondo</button>
-          <button class="tile" type="button" data-club="Yoga" aria-pressed="false">Yoga</button>
-          <button class="tile" type="button" data-club="Aerobics" aria-pressed="false">Aerobics</button>
-          <button class="tile" type="button" data-club="Gymnastics" aria-pressed="false">Gymnastics</button>
-          <button class="tile" type="button" data-club="Football" aria-pressed="false">Football</button>
-          <button class="tile" type="button" data-club="Cricket" aria-pressed="false">Cricket</button>
-          <button class="tile" type="button" data-club="Basketball" aria-pressed="false">Basketball</button>
-          <button class="tile" type="button" data-club="Volleyball" aria-pressed="false">Volleyball</button>
-          <button class="tile" type="button" data-club="Badminton" aria-pressed="false">Badminton</button>
-          <button class="tile" type="button" data-club="Kabaddi" aria-pressed="false">Kabaddi</button>
-          <button class="tile" type="button" data-club="Chess" aria-pressed="false">Chess</button>
-          <button class="tile" type="button" data-club="Music" aria-pressed="false">Music</button>
+        <p class="tile-hint">Select a club to highlight it. Drag the row, or use the arrows, to browse all twenty.</p>
+        <div class="wm-clubs" id="wm-clubs">
+          <div class="wm-clubs-viewport" id="wm-clubs-viewport" tabindex="0" role="region" aria-label="Twenty clubs — drag or use the arrow keys to browse">
+            <div class="wm-clubs-track" id="wm-clubs-track">
+              <button class="wm-club-slide" type="button" data-club="Literary" aria-pressed="false">
+                <img src="assets/img/events-720/rabindra-jayanti-05.jpg" alt="A student reading at the microphone, Rabindra Jayanti" width="720" height="480" loading="lazy">
+                <span class="wm-club-name">Literary Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Debating" aria-pressed="false">
+                <img src="assets/img/gallery-720/debate-club-01.jpg" alt="A speaker in the 9A versus 9B debate, on the hazards of peer pressure in school" width="720" height="480" loading="lazy">
+                <span class="wm-club-name">Debating Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Science" aria-pressed="false">
+                <img src="assets/img/ig-720/DMxOzUsznja_science-seminar-stage.jpg" alt="A science seminar presentation on stage" width="720" height="480" loading="lazy">
+                <span class="wm-club-name">Science Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Maths" aria-pressed="false">
+                <img src="assets/img/techfest-certificate.jpg" alt="A student receiving a certificate at the ComPhyMathix tech fest" width="1600" height="1067" loading="lazy">
+                <span class="wm-club-name">Maths Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Computer" aria-pressed="false">
+                <img src="assets/img/covers-720/computer-lab-1.jpg" alt="Students at computers in the computer lab" width="720" height="480" loading="lazy">
+                <span class="wm-club-name">Computer Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Nature" aria-pressed="false">
+                <img src="assets/img/gallery-720/nature-club-01.jpg" alt="Scouts, Guides and Bulbul girls planting seedlings in a garden bed, with a teacher's help" width="720" height="480" loading="lazy">
+                <span class="wm-club-name">Nature Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Social Service" aria-pressed="false">
+                <img src="assets/img/events-720/scouts-02.jpg" alt="Guides beside a World Scout's Day board" width="720" height="480" loading="lazy">
+                <span class="wm-club-name">Social Service Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Karate" aria-pressed="false">
+                <img src="assets/img/events-720/karate-club-01.jpg" alt="Pupils practising punches in the courtyard" width="720" height="480" loading="lazy">
+                <span class="wm-club-name">Karate Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Taekwondo" aria-pressed="false">
+                <img src="assets/img/taekwondo-winners.jpg" alt="Four students with certificates and medals from the West Bengal State Taekwondo Championship" width="1600" height="1067" loading="lazy">
+                <span class="wm-club-name">Taekwondo Club</span>
+              </button>
+              <button class="wm-club-slide wm-club-slide--gap" type="button" data-club="Yoga" aria-pressed="false">
+                <span class="wm-club-name">Yoga Club</span>
+              </button>
+              <button class="wm-club-slide wm-club-slide--gap" type="button" data-club="Aerobics" aria-pressed="false">
+                <span class="wm-club-name">Aerobics Club</span>
+              </button>
+              <button class="wm-club-slide wm-club-slide--gap" type="button" data-club="Gymnastics" aria-pressed="false">
+                <span class="wm-club-name">Gymnastics Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Football" aria-pressed="false">
+                <img src="assets/img/football.jpg" alt="Boys playing football on the school grass ground" width="1600" height="1067" loading="lazy">
+                <span class="wm-club-name">Football Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Cricket" aria-pressed="false">
+                <img src="assets/img/ig-720/C11gOhlpvR2_cricket-team.jpg" alt="The cricket team, posed with a trophy" width="720" height="480" loading="lazy">
+                <span class="wm-club-name">Cricket Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Basketball" aria-pressed="false">
+                <img src="assets/img/basketball-girls.jpg" alt="Girls basketball team lined up on the school court" width="1600" height="1067" loading="lazy">
+                <span class="wm-club-name">Basketball Club</span>
+              </button>
+              <button class="wm-club-slide wm-club-slide--gap" type="button" data-club="Volleyball" aria-pressed="false">
+                <span class="wm-club-name">Volleyball Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Badminton" aria-pressed="false">
+                <img src="assets/img/ig-720/DXPiIdjkzg7_badminton-champions.jpg" alt="Badminton champions with medals and a trophy" width="720" height="480" loading="lazy">
+                <span class="wm-club-name">Badminton Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Kabaddi" aria-pressed="false">
+                <img src="assets/img/events-720/kabaddi-team-02.jpg" alt="The girls' kabaddi team with the school flag" width="720" height="480" loading="lazy">
+                <span class="wm-club-name">Kabaddi Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Chess" aria-pressed="false">
+                <img src="assets/img/covers-720/chess.jpg" alt="Boys playing chess" width="720" height="480" loading="lazy">
+                <span class="wm-club-name">Chess Club</span>
+              </button>
+              <button class="wm-club-slide" type="button" data-club="Music" aria-pressed="false">
+                <img src="assets/img/events-720/school-band-01.jpg" alt="The school pipe band in the courtyard, led by the drum major with a mace" width="720" height="480" loading="lazy">
+                <span class="wm-club-name">Music Club</span>
+              </button>
+            </div>
+          </div>
+          <div class="wm-slider-nav" aria-label="Clubs slider controls">
+            <button class="wm-arrow" type="button" id="wm-clubs-prev" aria-label="Previous clubs">‹</button>
+            <span class="wm-count" id="wm-clubs-count" aria-live="polite">1 of 20</span>
+            <button class="wm-arrow" type="button" id="wm-clubs-next" aria-label="Next clubs">›</button>
+          </div>
         </div>
         <div class="home-links"><a class="text-link" href="life.html">See sport, clubs and celebrations <span class="arrow" aria-hidden="true">→</span></a></div>
         <h3 class="home-subhead">Four houses</h3>
-        <p class="tile-hint">Select a house to highlight it.</p>
-        <div class="house-grid" role="group" aria-label="Four houses">
-          <button class="house-tile" type="button" data-house="Red" aria-pressed="false"><span class="house-swatch house-swatch-red" aria-hidden="true"></span><span class="house-name">Red</span></button>
-          <button class="house-tile" type="button" data-house="Blue" aria-pressed="false"><span class="house-swatch house-swatch-blue" aria-hidden="true"></span><span class="house-name">Blue</span></button>
-          <button class="house-tile" type="button" data-house="Green" aria-pressed="false"><span class="house-swatch house-swatch-green" aria-hidden="true"></span><span class="house-name">Green</span></button>
-          <button class="house-tile" type="button" data-house="Yellow" aria-pressed="false"><span class="house-swatch house-swatch-yellow" aria-hidden="true"></span><span class="house-name">Yellow</span></button>
+        <p class="tile-hint">Select a house to highlight it. Drag, or use the arrows, to see each house.</p>
+        <div class="wm-houses" id="wm-houses">
+          <div class="wm-houses-stage" id="wm-houses-stage" tabindex="0" role="region" aria-label="Four houses — drag or use the arrow keys to see each house">
+            <button class="wm-house-slide is-active" type="button" data-house="Red" aria-pressed="false" aria-label="Red House — Sports Day flag hoisting">
+              <img src="assets/img/events/sports-day-2025-17.jpg" alt="The flag hoisting at Sports Day 2025, under the red and white canopy" width="1600" height="1067" loading="lazy">
+              <span class="wm-house-band house-swatch-red" aria-hidden="true"></span>
+              <span class="wm-house-name">Red House</span>
+            </button>
+            <button class="wm-house-slide" type="button" data-house="Blue" aria-pressed="false" aria-label="Blue House — Sports Day march-past">
+              <img src="assets/img/events/sports-day-2025-20.jpg" alt="The march-past on the track at Sports Day 2025, led by the blue flag" width="1600" height="1067" loading="lazy">
+              <span class="wm-house-band house-swatch-blue" aria-hidden="true"></span>
+              <span class="wm-house-name">Blue House</span>
+            </button>
+            <button class="wm-house-slide" type="button" data-house="Green" aria-pressed="false" aria-label="Green House — Sports Day trophy lift">
+              <img src="assets/img/events/sports-day-2025-04.jpg" alt="A winner lifting the trophy at Sports Day 2025" width="1600" height="1067" loading="lazy">
+              <span class="wm-house-band house-swatch-green" aria-hidden="true"></span>
+              <span class="wm-house-name">Green House</span>
+            </button>
+            <button class="wm-house-slide" type="button" data-house="Yellow" aria-pressed="false" aria-label="Yellow House — Sports Day medal winners">
+              <img src="assets/img/events/sports-day-2025-08.jpg" alt="A winner holding his medals aloft on the field at Sports Day 2025" width="1600" height="1067" loading="lazy">
+              <span class="wm-house-band house-swatch-yellow" aria-hidden="true"></span>
+              <span class="wm-house-name">Yellow House</span>
+            </button>
+          </div>
+          <div class="wm-slider-nav" aria-label="Houses slider controls">
+            <button class="wm-arrow" type="button" id="wm-houses-prev" aria-label="Previous house">‹</button>
+            <div class="wm-dots" id="wm-houses-dots">
+              <button class="wm-dot is-active" type="button" data-i="0" aria-label="Red House"></button>
+              <button class="wm-dot" type="button" data-i="1" aria-label="Blue House"></button>
+              <button class="wm-dot" type="button" data-i="2" aria-label="Green House"></button>
+              <button class="wm-dot" type="button" data-i="3" aria-label="Yellow House"></button>
+            </div>
+            <span class="wm-count" id="wm-houses-count" aria-live="polite">1 of 4</span>
+            <button class="wm-arrow" type="button" id="wm-houses-next" aria-label="Next house">›</button>
+          </div>
         </div>
         <h3 class="home-subhead">Six core values</h3>
-        <ul class="values-grid" aria-label="Six core values">
-          <li class="value-tile"><span class="value-num">01</span><span class="value-name">Integrity</span></li>
-          <li class="value-tile"><span class="value-num">02</span><span class="value-name">Compassion</span></li>
-          <li class="value-tile"><span class="value-num">03</span><span class="value-name">Discipline</span></li>
-          <li class="value-tile"><span class="value-num">04</span><span class="value-name">Respect</span></li>
-          <li class="value-tile"><span class="value-num">05</span><span class="value-name">Faith</span></li>
-          <li class="value-tile"><span class="value-num">06</span><span class="value-name">Nature</span></li>
-        </ul>
+        <p class="tile-hint">One value at a time — drag, or use the arrows, to read all six.</p>
+        <div class="wm-values" id="wm-values">
+          <div class="wm-values-stage" id="wm-values-stage" tabindex="0" role="region" aria-label="Six core values — drag or use the arrow keys to read each value">
+            <div class="wm-value-slide is-active">
+              <span class="value-num">01</span>
+              <img src="assets/img/core-values/value-integrity.png" alt="" width="120" height="120" loading="lazy">
+              <span class="value-name">Integrity</span>
+            </div>
+            <div class="wm-value-slide">
+              <span class="value-num">02</span>
+              <img src="assets/img/core-values/value-compassion.png" alt="" width="120" height="120" loading="lazy">
+              <span class="value-name">Compassion</span>
+            </div>
+            <div class="wm-value-slide">
+              <span class="value-num">03</span>
+              <img src="assets/img/core-values/value-self-discipline.png" alt="" width="120" height="120" loading="lazy">
+              <span class="value-name">Discipline</span>
+            </div>
+            <div class="wm-value-slide">
+              <span class="value-num">04</span>
+              <img src="assets/img/core-values/value-respect-for-others.png" alt="" width="120" height="120" loading="lazy">
+              <span class="value-name">Respect</span>
+            </div>
+            <div class="wm-value-slide">
+              <span class="value-num">05</span>
+              <img src="assets/img/core-values/value-love-of-god.png" alt="" width="120" height="120" loading="lazy">
+              <span class="value-name">Faith</span>
+            </div>
+            <div class="wm-value-slide">
+              <span class="value-num">06</span>
+              <img src="assets/img/core-values/value-love-for-nature.png" alt="" width="120" height="120" loading="lazy">
+              <span class="value-name">Nature</span>
+            </div>
+          </div>
+          <div class="wm-slider-nav" aria-label="Core values slider controls">
+            <button class="wm-arrow" type="button" id="wm-values-prev" aria-label="Previous value">‹</button>
+            <div class="wm-dots" id="wm-values-dots">
+              <button class="wm-dot is-active" type="button" data-i="0" aria-label="Integrity"></button>
+              <button class="wm-dot" type="button" data-i="1" aria-label="Compassion"></button>
+              <button class="wm-dot" type="button" data-i="2" aria-label="Discipline"></button>
+              <button class="wm-dot" type="button" data-i="3" aria-label="Respect"></button>
+              <button class="wm-dot" type="button" data-i="4" aria-label="Faith"></button>
+              <button class="wm-dot" type="button" data-i="5" aria-label="Nature"></button>
+            </div>
+            <span class="wm-count" id="wm-values-count" aria-live="polite">1 of 6</span>
+            <button class="wm-arrow" type="button" id="wm-values-next" aria-label="Next value">›</button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -246,13 +381,13 @@
   <section class="section" aria-label="The Preventive System">
     <div class="container split">
       <div class="reveal">
-        <hr class="gold-rule" aria-hidden="true">
-        <h2>The Preventive System</h2>
-        <p class="lede">Don Bosco's way of educating rests on three pillars. Education here is not policed into children. It is drawn out of them, through presence, trust and joy.</p>
         <figure>
           <img class="rounded-img" src="assets/img/classroom-leadership.jpg" alt="Students and teachers together in a classroom, with a board asking what makes a good leader" width="1600" height="1067" loading="lazy">
           <figcaption>Learning together, in the classroom and beyond it.</figcaption>
         </figure>
+        <hr class="gold-rule" aria-hidden="true">
+        <h2>The Preventive System</h2>
+        <p class="lede">Don Bosco's way of educating rests on three pillars. Education here is not policed into children. It is drawn out of them, through presence, trust and joy.</p>
       </div>
       <div class="pillars pillars-slider reveal" style="--d: 90ms">
         <div class="pillar reveal" style="--d: 0ms">
@@ -297,7 +432,7 @@
         <h2>Life at Bosco</h2>
         <p>Sport, art, music, clubs and celebrations fill the school year. These photographs are the school's own.</p>
       </div>
-      <div class="photo-row photo-strip" data-stagger>
+      <div class="photo-row photo-strip" data-stagger tabindex="0" role="region" aria-label="Life at Bosco photographs — drag or use the arrow keys to move the row">
         <div class="photo-track">
         <figure class="photo-card js-viewer" role="button" tabindex="0" data-full="assets/img/football.jpg" data-caption="Football on the school grass ground" data-detail="The school field hosts the biennial Sports Day, one of the biggest days on the calendar.">
           <img src="assets/img/football.jpg" alt="Boys playing football on the school grass ground" width="1600" height="1067" loading="lazy">
