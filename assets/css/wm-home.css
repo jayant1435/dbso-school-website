@@ -1,0 +1,366 @@
+/* Hallmark: wm-home · W-M home-page rebuild (wave 6) · theme DBSO blue+gold · scope index.html only */
+/* critique: every rule below cites its skill + rule in the comment above it.
+   LOAD ORDER: linked LAST on index.html, after home.css + wg1-f*.css, so these
+   home-only rules win without touching the shared sheets. Tokens only
+   (Hallmark floor 1); blue + gold only, no red in UI chrome. House colours
+   come from the existing --house-* content tokens, never new values. */
+
+/* =====================================================================
+   SHARED SLIDER CONTROLS — one system (better-ui: one radius, one
+   spacing scale; interaction-design: 44px targets, 8px gaps).
+   All three sliders share this nav language; the SLIDES themselves are
+   three different treatments (see below). Arrows 44px, dots 44px hit
+   area with a 10px visible dot (W4 pillar-dot pattern), counter text.
+   ===================================================================== */
+
+.wm-slider-nav {
+  display: none; /* needs JS; shown below */
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+.js .wm-slider-nav { display: flex; }
+.wm-arrow {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+.wm-arrow:hover { border-color: var(--ink); box-shadow: var(--shadow-1); }
+.wm-arrow:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.wm-dots { display: flex; gap: var(--space-2); flex: 1; justify-content: center; }
+.wm-dot {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  position: relative;
+  cursor: pointer;
+}
+.wm-dot::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--line-strong);
+  transform: translate(-50%, -50%) scaleX(1);
+  transition: transform 0.2s var(--ease-out), background-color 0.2s var(--ease-out);
+}
+.wm-dot.is-active::after { background: var(--blue); transform: translate(-50%, -50%) scaleX(2.6); }
+.wm-dot:focus-visible { outline: 3px solid var(--blue); outline-offset: -2px; }
+.wm-count { font-size: 0.9rem; color: var(--ink-soft); font-weight: 600; white-space: nowrap; }
+
+/* =====================================================================
+   ITEM 2 — CLUBS: an infinite moving rail (treatment 1 of 3).
+   Photo cards with the club name written on the photo; the rail moves
+   by itself and the visitor can drag it or nudge it with the arrows.
+   Motion: transform only, one easing curve (12-principles timing —
+   the rail moves at a constant linear rate; card hover is a 0.2s
+   ease-out lift). No-JS fallback: a plain wrapping grid, all 20
+   visible (Hallmark floor 7: content visible with scripting off).
+   ===================================================================== */
+
+/* No-JS: every club visible in a grid. */
+.wm-clubs-track {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.js .wm-clubs-viewport { overflow: clip; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.js .wm-clubs-viewport.wm-grabbing { cursor: grabbing; }
+.js .wm-clubs-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+/* The gap lives as a margin on EVERY card (the Life-strip pattern):
+   each half is then exactly half the track, so the wrap lands precisely
+   on the seam. A track gap would put the seam half a gap off. */
+.js .wm-club-slide { margin-right: var(--space-3); }
+.wm-club-slide {
+  display: block;
+  position: relative;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  border: 0;
+  border-radius: var(--home-r-img);
+  overflow: clip;
+  background: var(--paper);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px var(--line), var(--shadow-photo-soft, var(--shadow-1));
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+.js .wm-club-slide { flex: 0 0 272px; width: 272px; }
+.wm-club-slide:hover { transform: translateY(-3px); box-shadow: var(--shadow-photo-soft-hover, var(--shadow-2)); }
+.wm-club-slide:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.wm-club-slide[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--blue), var(--shadow-1); }
+.wm-club-slide img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Name written ON the photo: bottom scrim (tokens only) + white text.
+   Typography: display face, one line, no truncation risk — the longest
+   name ("Social Service Club", 19 chars) fits 272px at 1.05rem. */
+.wm-club-name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--space-5) var(--space-4) var(--space-3);
+  background: linear-gradient(to top, var(--scrim-bottom), var(--scrim-mid) 55%, transparent);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+/* Gap clubs (no suitable real photo on file — see report): an honest
+   blue tile with the name, never a faked or stock photo
+   (no-ai-design-slop: product truth; design-taste: no stock passed off
+   as the school's own). Same size and name position as photo cards. */
+.wm-club-slide--gap { background: var(--blue); }
+.wm-club-slide--gap .wm-club-name { background: none; color: var(--paper); }
+@media (max-width: 860px) {
+  .js .wm-club-slide { flex-basis: 248px; width: 248px; }
+}
+@media (max-width: 600px) {
+  .wm-clubs-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .js .wm-club-slide { flex-basis: 232px; width: 232px; }
+}
+/* Reduced motion: the rail rests as the static grid; the JS engine never
+   starts (main.js guards on the same media query). Duplicated halves are
+   hidden so no club appears twice. */
+@media (prefers-reduced-motion: reduce) {
+  .js .wm-clubs-viewport { overflow: visible; cursor: default; }
+  .js .wm-clubs-track { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: auto; }
+  .js .wm-club-slide { flex: none; width: auto; margin-right: 0; }
+  .wm-club-slide[aria-hidden="true"] { display: none; }
+  /* Only the clubs nav hides here: the rail is a static grid under
+     reduced motion, so its arrows/counter have nothing to move. The
+     houses + values navs stay visible — their manual controls are the
+     only way to change slides, and they never auto-move. */
+  .js .wm-clubs .wm-slider-nav { display: none; }
+}
+@media (prefers-reduced-motion: reduce) and (max-width: 860px) {
+  .js .wm-clubs-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* =====================================================================
+   ITEM 3 — HOUSES: a single crossfading stage (treatment 2 of 3).
+   One large photo at a time, fading into the next every 5s; the house
+   name sits on the photo with its house-colour band across the top
+   (the band is house identity = content, the same --house-* tokens the
+   old tiles used; the chrome — arrows, dots, counter — is blue/yellow
+   only). Motion: opacity only, 0.4s ease-out (12-principles budget).
+   No-JS fallback: all four photos visible in a 2-column grid.
+   ===================================================================== */
+
+.wm-houses-stage { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+.js .wm-houses-stage {
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--home-r-img);
+  overflow: clip;
+  background: var(--band);
+  box-shadow: 0 0 0 1px var(--line), var(--shadow-1);
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.wm-house-slide {
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 10;
+  padding: 0;
+  border: 0;
+  border-radius: var(--home-r-img);
+  overflow: clip;
+  background: var(--paper);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.js .wm-house-slide {
+  position: absolute;
+  inset: 0;
+  /* W-R7 FIX (item 3 — house name clipped at ≥601px): the base rule above
+     sets aspect-ratio: 16/10 for the no-JS in-flow grid. Under .js the
+     slide is absolute with inset: 0, and Chrome lets the aspect-ratio's
+     preferred height (16/10 = 708px at 1132 wide) win over bottom: 0 —
+     the slide rendered 708 tall inside the 637-tall 16/9 stage, and the
+     stage's overflow: clip cut the bottom 71px, which is exactly where
+     the bottom-anchored .wm-house-name sits. The name was in the DOM
+     (textContent checks passed) but never painted at 768/834/1440/1536;
+     only ≤600px (stage 4/3, taller than the slide) showed it.
+     aspect-ratio: auto restores inset: 0 as the sizing rule, so the
+     slide fills the stage exactly and the name paints inside it.
+     Impeccable craft-floor — Coverage (every brief requirement present
+     and findable within seconds) + Type (run the real copy at every
+     breakpoint and fix what overflows). No-JS grid untouched: without
+     .js the 16/10 rule still applies. Tokens/colours/motion untouched. */
+  aspect-ratio: auto;
+  border-radius: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s var(--ease-out), visibility 0s linear 0.4s;
+}
+.js .wm-house-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s var(--ease-out), visibility 0s;
+}
+.wm-house-slide:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.wm-house-slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* House-colour band across the top: the old tile's swatch, kept as the
+   house's own colour (content token, not UI chrome). */
+.wm-house-band { position: absolute; top: 0; left: 0; right: 0; height: 10px; }
+.wm-house-name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--space-6) var(--space-5) var(--space-4);
+  background: linear-gradient(to top, var(--scrim-bottom), var(--scrim-mid) 55%, transparent);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.15;
+}
+@media (max-width: 600px) {
+  .js .wm-houses-stage { aspect-ratio: 4 / 3; }
+  .wm-house-name { font-size: 1.35rem; }
+  .wm-houses-stage { grid-template-columns: minmax(0, 1fr); }
+}
+/* Reduced motion: no auto-advance (main.js guard); the stage still
+   crossfades instantly on manual control, and the grid fallback shows
+   all four without JS. */
+@media (prefers-reduced-motion: reduce) {
+  .js .wm-house-slide { transition: none; }
+}
+
+/* =====================================================================
+   ITEM 4 — CORE VALUES: a centred reading card, one value at a time
+   (treatment 3 of 3). No auto-motion at all — values are read, not
+   watched. The v33 value PNG (transparent blue line icon + gold dot,
+   navy #1d6fa5 / gold #c9a227) sits large above the name, with the
+   numeral carried over from the old tiles. Paging is by arrows, dots,
+   swipe or keyboard. No-JS fallback: all six visible in a grid.
+   PNG mapping (home name → v33 file, made for the About-page names):
+   Integrity → value-integrity · Compassion → value-compassion ·
+   Discipline → value-self-discipline · Respect → value-respect-for-others ·
+   Faith → value-love-of-god · Nature → value-love-for-nature.
+   Spirituality has no home slot (home shows six, per the brief) and its
+   PNG is unused here.
+   ===================================================================== */
+
+.wm-values-stage { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+.js .wm-values-stage {
+  grid-template-columns: minmax(0, 560px);
+  justify-content: center;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.wm-value-slide {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--blue);
+  border-radius: var(--home-r-card);
+  padding: var(--space-5) var(--space-4);
+  min-height: 132px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+.js .wm-value-slide {
+  grid-area: 1 / 1;
+  min-height: 0;
+  padding: var(--space-6) var(--space-5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s var(--ease-out), visibility 0s linear 0.4s;
+}
+.js .wm-value-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s var(--ease-out), visibility 0s;
+}
+.wm-value-slide img { width: 120px; height: 120px; object-fit: contain; }
+.wm-value-slide .value-name { font-size: 1.6rem; white-space: nowrap; }
+@media (max-width: 600px) {
+  .wm-values-stage { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wm-value-slide img { width: 96px; height: 96px; }
+  .wm-value-slide .value-name { font-size: 1.35rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .wm-value-slide { transition: none; }
+}
+
+/* =====================================================================
+   ITEM 5 — PREVENTIVE SYSTEM ORDER: image first, then the big line,
+   then the description. Markup order does the work (no CSS needed for
+   the order itself); this only keeps the figure from crowding the
+   heading that now follows it (better-ui: breathing room; the h2's own
+   top margin already separates them — this guards the caption edge).
+   ===================================================================== */
+
+section[aria-label="The Preventive System"] .split > div:first-child figure { margin-bottom: var(--space-2); }
+
+/* =====================================================================
+   ITEM 6 — PILLARS INFINITE LOOP: backstop only (the loop itself is
+   JS clones in main.js). A cloned pillar must never sit invisible:
+   clones have their .reveal classes stripped at creation, and this
+   rule forces them visible even if the strip missed one.
+   (impeccable craft-floor: content visible by default.)
+   ===================================================================== */
+
+.pillars-slider .pillar-clone { opacity: 1 !important; transform: none !important; }
+
+/* =====================================================================
+   ITEM 7 — LIFE AT BOSCO DRAG: the strip keeps its settled 32s linear
+   auto-scroll exactly (Jayant's words win over taste loop-pause: NO
+   hover pause). Dragging freezes the animation at its current offset
+   (JS reads the computed transform first, so there is no jump), and
+   releasing resumes it from the dragged position via a negative
+   animation-delay. touch-action: pan-y keeps vertical page scroll
+   native while horizontal drags belong to the strip
+   (interaction-design: swipe where users expect it, buttons as well —
+   the cards themselves stay the tap targets; arrow keys nudge the row).
+   ===================================================================== */
+
+.photo-strip { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.photo-strip.wm-grabbing { cursor: grabbing; }
+.photo-strip:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.photo-track.wm-dragging { animation: none; }
+
+/* ITEM 8 mobile-footer rules: promoted to shared style.css at v44 (all 12 pages). */
