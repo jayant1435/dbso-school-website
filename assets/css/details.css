@@ -873,6 +873,20 @@ section[aria-label="Our story"] .lineage-row {
   .awards-track { grid-template-columns: minmax(0, 1fr); }
 }
 
+/* ---- W-AB7 LEDGER-ONLY (wave 10, task 124, split for v66): year ledger.
+   The slider above (Item 13) is RETAINED per task 115 (v61); only the
+   ledger part of W-AB7 ships here — the slider-to-grid replacement was
+   dropped by coordinator decision. One rhythm per year: 48px (space-7)
+   between year blocks, the same gold-dot list inside each (style.css
+   .award-group). The Fit India line moves out of the 2023 cell to a
+   full-width closing line (.awards-note): it has no year. No copy
+   changed, no award added/renamed/dropped, no new colour, font or
+   token. better-ui (one spacing system, 4px steps) + design-taste
+   (one section, one rhythm; equal edges) + impeccable craft-floor
+   (tight groups, generous separation). */
+.awards-years .award-group + .award-group { margin-top: var(--space-7); }
+.awards-note { margin: var(--space-7) 0 0; }
+
 /* ---- Item 14: achievements — uniform line counts ----
    better-ui (cut text that wraps to a lonely last word): the compound
    Telegraph items (5 awards, 5 lines) are split into one bullet per
@@ -1051,27 +1065,15 @@ section[aria-label="Celebrations and events"] .tick-list li span {
   .committee-list li strong { min-height: calc(2 * 1.3em); }
 }
 
-/* ---- FIX 2 (P3): awards slider captions end uneven ----
-   Measured BEFORE (about.html): caption heights are [44, 22, 44]px at
-   1440px and [44, 44, 66]px at 390/768/834px — "A trophy from the
-   Telegraph School Awards." is 1 line at desktop while its neighbours
-   are 2, and "The Minervaa 2025 plaque, trophy and framed certificate
-   for Best Infrastructure Excellence." is 3 lines on phones/tablets
-   while its neighbours are 2. The flex track stretches the figures, so
-   the short-caption slides carry 22px of dead space under the caption
-   and the strip's bottom edge steps.
-   better-ui (align everything to a single grid) + audit-ai-design-slop
-   (accidental inconsistency, P3) + no-ai-design-slop (smallest
-   correction, existing system): the caption reserves the band's maximum
-   line count — 2 lines at 861px+ (2 * 1.45em, the caption's own
-   line-height, details.css) and 3 lines at 860px and below. Every slide
-   ends level; no copy change, no new tokens. */
-@media (min-width: 861px) {
-  .award-slide figcaption { min-height: calc(2 * 1.45em); }
-}
-@media (max-width: 860px) {
-  .award-slide figcaption { min-height: calc(3 * 1.45em); }
-}
+/* ---- FIX 2 (P3): awards slider captions end uneven — SUPERSEDED by
+   W-AB7 LEDGER-ONLY (wave 10, task 124, split for v66): the caption
+   reserve is deleted, not retargeted — W-AB7 pass-1 measurement proved
+   no single reserve value is right at every width (caption line counts
+   [2,2,2]@1440, [2,2,3]@1024, [3,3,4]@768, [3,3,3]@834 and on phones)
+   and a reserve never aligned baselines anyway (text is top-aligned in
+   its box). The slider itself is RETAINED per task 115 (v61), so no
+   .awards-photos retarget exists. Rules removed so no dead min-height
+   pads short captions. */
 
 /* ===== W-Z5 (wave 9, 23 Nov 2026) =====
    Hallmark · patch: three structure/uniformity fixes · system: incumbent
