@@ -781,7 +781,7 @@
     track.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
     if (reduceMotion) return; /* static grid (CSS); no engine, no drag. */
     var offset = 0, dragging = false, paused = false, raf = null, lastTs = null;
-    var HALF = 64; /* seconds for one half-loop (20 cards). */
+    var HALF = 64; /* seconds for one half-loop (18 cards). */
     var half = 0, lastCount = "";
     function measureHalf() { half = track.scrollWidth / 2; }
     function halfWidth() { return half || track.scrollWidth / 2; }
