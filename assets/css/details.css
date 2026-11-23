@@ -574,3 +574,29 @@ section[aria-label="Questions"] .cta-band .btn:active {
   transform: translateY(1px);
   box-shadow: none;
 }
+/* ===== C1 skills-audit patch — v30 (wave 4) =====
+   Hallmark · patch: C1 audit fixes · system: incumbent DBSO tokens, blue + yellow only,
+   Bricolage Grotesque + DM Sans · scope: admissions.html only, append-only, no redesign.
+   Critique: one validated fix (step titles at phone widths). Every rule cites its skill
+   + exact rule in the comment above it. Load order: append AFTER the last-loaded sheet
+   on admissions.html (details.css, which already carries the B3-A block this extends).
+   Validated on the throwaway copy qa-v30/c1-test-site/ (served :8346):
+   "Interaction & counselling" 2 lines -> 1 line at 360/390/430px; all six titles 1 line.
+   At 320px steps 2 + 4 still wrap (below the Brief 3 390px floor — noted in the report,
+   not chased). No other rule in this file: the form-note fix is an HTML edit (see
+   c1-audit-report.md Finding 2); step 3 + step 6 descs are fact-forced (Finding 3,
+   conflict extension — no patch). */
+
+/* ---------- Step titles fit one line at phone widths ----------
+   better-ui (Polish the details): "shorten labels that force a second line";
+   Brief 3 line-count uniformity (title max 1 line). B3-A's v29 patch narrowed the
+   rail (64 -> 56px) and cut desc text to 1rem but never touched the h3 size, so
+   "Interaction & counselling" still wrapped at 390px (measured 2 lines, screenshot
+   qa-v30/c1/shots/c1-steps-390.png). Cutting the title copy would drop the word
+   "counselling" from a real admission step, so the smallest correction is type:
+   1.15rem (18.4px) keeps all six titles uniform with each other at <=600px and
+   stays above the 16px body floor (better-ui: body text 16px or above). The disc
+   (40px) and rail are untouched. */
+@media (max-width: 600px) {
+  section[aria-label="How to apply"] .steps h3 { font-size: 1.15rem; }
+}
