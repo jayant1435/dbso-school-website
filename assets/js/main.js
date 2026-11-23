@@ -5,47 +5,34 @@
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* Focus trap: Tab cycles inside the open panel instead of wandering into
+     the page behind it. Roots are in document order (toggle, then menu). */
+  function trapTab(e, roots) {
+    if (e.key !== "Tab") return;
+    var els = [];
+    roots.forEach(function (root) {
+      if (!root) return;
+      if (root.matches("a[href], button:not([disabled]), [tabindex]:not([tabindex='-1'])")) els.push(root);
+      Array.prototype.slice.call(root.querySelectorAll(
+        "a[href], button:not([disabled]), [tabindex]:not([tabindex='-1'])"
+      )).forEach(function (el) { els.push(el); });
+    });
+    if (!els.length) return;
+    var first = els[0], last = els[els.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+
   /* Footer year */
   var yearEl = document.querySelector("[data-year]");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
   /* Header shadow on scroll */
   var header = document.querySelector(".site-header");
-  var albumNav = document.querySelector(".album-nav");
-  /* Gallery jump bar: collapse to one scrollable row once it sticks.
-     Stuck is read live from the bar's own position — the old cached
-     threshold raced font loading and sometimes never fired (v8 probe:
-     same click, compact true once, false the next time). */
-  var jumpUntil = 0; /* while an album jump is animating, never un-collapse */
   function onScroll() {
     if (header) header.classList.toggle("scrolled", window.scrollY > 8);
     var top = document.querySelector(".to-top");
     if (top) top.classList.toggle("show", window.scrollY > 1200);
-    /* Gallery jump bar: once it sticks (desktop only), collapse to one
-       scrollable row of pills — the full 35-pill grid is ~300px tall when
-       pinned. The toggle expands it back to the grid. Stuck = the bar's
-       top is pinned at the header's height (~59-66px). */
-    if (albumNav) {
-      var wide = window.matchMedia("(min-width: 861px)").matches;
-      var stuck = albumNav.getBoundingClientRect().top <= 70;
-      if (Date.now() < jumpUntil) {
-        if (stuck) albumNav.classList.add("compact");
-      } else {
-        albumNav.classList.toggle("compact", wide && stuck);
-      }
-    }
-  }
-  /* Pill click: collapse the bar BEFORE the browser measures the anchor
-     jump — otherwise the mid-scroll collapse shifts content up ~230px and
-     the landing overshoots past the album heading. The native jump then
-     runs against the already-collapsed layout. */
-  if (albumNav) {
-    albumNav.addEventListener("click", function (e) {
-      var a = e.target.closest ? e.target.closest("a[href^='#']") : null;
-      if (!a || !document.querySelector(a.getAttribute("href"))) return;
-      albumNav.classList.add("compact");
-      jumpUntil = Date.now() + 1500;
-    });
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
@@ -57,6 +44,7 @@
   var menu = document.getElementById("mobile-menu");
   var backdrop = document.getElementById("menu-backdrop");
   var lastFocus = null;
+  if (menu) { menu.setAttribute("role", "dialog"); menu.setAttribute("aria-modal", "true"); }
   function openMenu() {
     lastFocus = document.activeElement;
     if (header) header.classList.add("menu-open");
@@ -92,8 +80,31 @@
     });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && menu.classList.contains("open")) closeMenu();
+      if (menu.classList.contains("open")) trapTab(e, [toggle, menu]);
     });
   }
+
+  /* Auto-reveal: rows and cards that ship static in the HTML get the same
+     entrance as everything else — staggered inside their own list, so a
+     long list ripples instead of flashing in as one block. Runs before the
+     stagger / reveal setup below, so the observer and the sweep pick them
+     up like any other reveal. */
+  var autoReveal = [
+    ".dates-strip .date-item",
+    ".meaning-grid .meaning",
+    ".steps li",
+    ".rule-list li",
+    ".results-board .result-row",
+    ".contact-lines li",
+    ".news-list .news-item"
+  ];
+  autoReveal.forEach(function (sel) {
+    document.querySelectorAll(sel).forEach(function (el, i) {
+      if (el.classList.contains("reveal")) return;
+      el.classList.add("reveal");
+      el.style.setProperty("--d", Math.min(i * 55, 440) + "ms");
+    });
+  });
 
   /* Staggered entrances: children of [data-stagger] reveal one after
      another. Runs before the reveal setup below, so the observer and
@@ -108,12 +119,31 @@
 
   /* Reveals: observer plus a sweep, so a fast scroll cannot leave a section hidden. */
   var revealEls = document.querySelectorAll(".reveal");
+  /* Strip helper: once a reveal has finished, drop the reveal classes so
+     hover transforms on cards are not overridden by the reveal end-state.
+     transitionend (below) is the primary trigger, but it never fires for
+     elements that gain .in before first paint — the browser renders them
+     straight in their final state, so there is no transition to end — and
+     it never fires under reduced motion, where transitions are off. The
+     timer covers both: delay + 750ms lands just after the 0.7s transition
+     ends. Harmless if transitionend already stripped the classes. */
+  function scheduleStrip(el) {
+    var d = parseInt(el.style.getPropertyValue("--d") || "0", 10) || 0;
+    setTimeout(function () {
+      /* Unconditional: the sweep below can no longer re-add .in to a
+         stripped element, but if it ever did, this still cleans it up. */
+      el.classList.remove("reveal");
+      el.classList.remove("in");
+      el.style.removeProperty("--d");
+    }, d + 750);
+  }
   function revealSweep() {
     var vh = window.innerHeight || 800;
     revealEls.forEach(function (el) {
+      if (!el.classList.contains("reveal")) return; /* stripped already = revealed */
       if (el.classList.contains("in")) return;
       var r = el.getBoundingClientRect();
-      if (r.top < vh * 0.94 && r.bottom > 0) el.classList.add("in");
+      if (r.top < vh * 0.94 && r.bottom > 0) { el.classList.add("in"); scheduleStrip(el); }
     });
   }
   if (revealEls.length && !reduceMotion && "IntersectionObserver" in window) {
@@ -121,6 +151,7 @@
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add("in");
+          scheduleStrip(entry.target);
           io.unobserve(entry.target);
         }
       });
@@ -138,7 +169,7 @@
     setTimeout(revealSweep, 2500);
     revealSweep();
   } else {
-    revealEls.forEach(function (el) { el.classList.add("in"); });
+    revealEls.forEach(function (el) { el.classList.add("in"); scheduleStrip(el); });
   }
 
   /* Once a reveal finishes, drop the reveal classes so hover transforms
@@ -161,7 +192,7 @@
       el.textContent = target.toLocaleString("en-IN") + suffix;
       return;
     }
-    var start = null, dur = 1100;
+    var start = null, dur = 400;
     function frame(ts) {
       if (!start) start = ts;
       var p = Math.min((ts - start) / dur, 1);
@@ -209,14 +240,16 @@
     });
   }
 
-  /* Album nav: on small screens show the first few pills, expand on tap. */
+  /* Album nav: slim bar + grouped panel (v29/B3-C). The panel holds four
+     <details> groups and a live search. Without JS the panel is visible
+     (CSS hides it only under html.js) and the search stays hidden. */
   var albumNav = document.querySelector(".album-nav");
   var albumToggle = document.querySelector(".album-nav-toggle");
-  if (albumNav && albumToggle) {
-    var albumCount = albumNav.querySelectorAll("a").length;
+  var albumPanel = document.getElementById("album-panel");
+  if (albumNav && albumToggle && albumPanel) {
     function setAlbumToggle() {
       var open = albumNav.classList.contains("expanded");
-      albumToggle.textContent = open ? "Show fewer albums" : "Show all " + albumCount + " albums";
+      albumToggle.textContent = open ? "Hide albums" : "All albums (36)";
       albumToggle.setAttribute("aria-expanded", open ? "true" : "false");
     }
     albumToggle.addEventListener("click", function () {
@@ -224,6 +257,44 @@
       setAlbumToggle();
     });
     setAlbumToggle();
+    /* Pill click: close the panel — the landing is below it, so an open
+       panel would sit above the album the visitor just jumped to. */
+    albumPanel.addEventListener("click", function (e) {
+      var a = e.target.closest ? e.target.closest("a[href^='#']") : null;
+      if (!a) return;
+      albumNav.classList.remove("expanded");
+      setAlbumToggle();
+    });
+    /* Search: filter pills by name; open groups that hold a match. */
+    var albumSearch = document.getElementById("album-search");
+    if (albumSearch) {
+      var albumEmpty = albumPanel.querySelector(".album-panel-empty");
+      var albumEmptyTerm = albumEmpty ? albumEmpty.querySelector("span") : null;
+      albumSearch.addEventListener("input", function () {
+        var q = albumSearch.value.trim().toLowerCase();
+        var matches = 0;
+        albumPanel.querySelectorAll(".album-group").forEach(function (group) {
+          var groupMatches = 0;
+          group.querySelectorAll("li").forEach(function (li) {
+            var hay = li.textContent + " " + (li.getAttribute("data-search") || "");
+            var hit = !q || hay.toLowerCase().indexOf(q) !== -1;
+            li.style.display = hit ? "" : "none";
+            if (hit) groupMatches++;
+          });
+          group.style.display = groupMatches ? "" : "none";
+          if (q && groupMatches) group.open = true;
+          matches += groupMatches;
+        });
+        if (albumEmpty) {
+          albumEmpty.hidden = matches !== 0;
+          if (albumEmptyTerm) albumEmptyTerm.textContent = albumSearch.value.trim();
+        }
+        if (q && !albumNav.classList.contains("expanded")) {
+          albumNav.classList.add("expanded");
+          setAlbumToggle();
+        }
+      });
+    }
   }
 
   /* Gallery lightbox */
@@ -231,6 +302,7 @@
   if (lightbox) {
     var lbImg = lightbox.querySelector("img");
     var lbCap = lightbox.querySelector("figcaption");
+    lightbox.setAttribute("aria-modal", "true");
     var items = Array.prototype.slice.call(document.querySelectorAll(".gallery-item button"));
     var current = 0;
     var lbLastFocus = null;
@@ -241,7 +313,10 @@
       lbImg.alt = btn.getAttribute("data-alt") || "";
       lbCap.textContent = btn.getAttribute("data-caption") || "";
     }
+    var lbTimer = null;
     function openLb(i) {
+      clearTimeout(lbTimer);
+      lightbox.classList.remove("closing");
       lbLastFocus = document.activeElement;
       show(i);
       lightbox.classList.add("open");
@@ -249,14 +324,27 @@
       document.body.style.overflow = "hidden";
       lightbox.querySelector(".lightbox-close").focus();
     }
+    /* Close fades out (CSS .closing, 180ms) instead of vanishing — the
+       open animation has a matching exit. Reduced motion skips the wait
+       and closes at once, so the overlay never lingers. */
     function closeLb() {
-      lightbox.classList.remove("open");
+      if (lightbox.classList.contains("closing")) return;
+      if (reduceMotion) { finishLbClose(); return; }
+      lightbox.classList.add("closing");
+      lbTimer = setTimeout(finishLbClose, 180);
+    }
+    function finishLbClose() {
+      clearTimeout(lbTimer);
+      lightbox.classList.remove("open", "closing");
       lightbox.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
       if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
     }
-    items.forEach(function (btn, i) {
-      btn.addEventListener("click", function () { openLb(i); });
+    items.forEach(function (btn) {
+      /* The tapped button opens its own photo: the index is resolved
+         from the live DOM node at tap time, never captured at bind time,
+         so the control that was tapped always opens its own content. */
+      btn.addEventListener("click", function () { openLb(items.indexOf(btn)); });
     });
     lightbox.querySelector(".lightbox-close").addEventListener("click", closeLb);
     lightbox.querySelector(".lightbox-prev").addEventListener("click", function () { show(current - 1); });
@@ -267,7 +355,21 @@
       if (e.key === "Escape") closeLb();
       if (e.key === "ArrowLeft") show(current - 1);
       if (e.key === "ArrowRight") show(current + 1);
+      trapTab(e, [lightbox]);
     });
+    /* Swipe: a horizontal drag moves to the next/previous photo. The
+       prev/next buttons stay the primary control; vertical panning is
+       left to the browser (see .lightbox figure touch-action). */
+    var lbTouchX = null;
+    lightbox.addEventListener("touchstart", function (e) {
+      if (e.touches.length === 1) lbTouchX = e.touches[0].clientX;
+    }, { passive: true });
+    lightbox.addEventListener("touchend", function (e) {
+      if (lbTouchX === null) return;
+      var dx = e.changedTouches[0].clientX - lbTouchX;
+      lbTouchX = null;
+      if (Math.abs(dx) > 48) show(current + (dx < 0 ? 1 : -1));
+    }, { passive: true });
   }
 
   /* Enquiry form: validate, then hand off to the visitor's email app. Nothing is sent from this page. */
@@ -328,8 +430,12 @@
   if (houseModal) {
     var hmBand = document.getElementById("house-modal-band");
     var hmName = document.getElementById("house-modal-name");
+    houseModal.setAttribute("aria-modal", "true");
     var hmLastFocus = null;
+    var hmTimer = null;
     function openHouse(name) {
+      clearTimeout(hmTimer);
+      houseModal.classList.remove("closing");
       hmLastFocus = document.activeElement;
       hmName.textContent = name + " House";
       hmBand.className = "house-modal-band house-modal-band-" + name.toLowerCase();
@@ -338,8 +444,16 @@
       document.body.style.overflow = "hidden";
       houseModal.querySelector(".house-modal-close").focus();
     }
+    /* Same closing fade as the lightbox (CSS .closing, 180ms). */
     function closeHouse() {
-      houseModal.classList.remove("open");
+      if (houseModal.classList.contains("closing")) return;
+      if (reduceMotion) { finishHouseClose(); return; }
+      houseModal.classList.add("closing");
+      hmTimer = setTimeout(finishHouseClose, 180);
+    }
+    function finishHouseClose() {
+      clearTimeout(hmTimer);
+      houseModal.classList.remove("open", "closing");
       houseModal.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
       if (hmLastFocus && hmLastFocus.focus) hmLastFocus.focus();
@@ -355,6 +469,7 @@
     houseModal.addEventListener("click", function (e) { if (e.target === houseModal) closeHouse(); });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && houseModal.classList.contains("open")) closeHouse();
+      if (houseModal.classList.contains("open")) trapTab(e, [houseModal]);
     });
   }
 
@@ -364,9 +479,13 @@
   if (viewer) {
     var vImg = viewer.querySelector("img");
     var vCap = document.getElementById("viewer-caption");
+    viewer.setAttribute("aria-modal", "true");
     var vDet = document.getElementById("viewer-detail");
     var vLastFocus = null;
+    var vTimer = null;
     function openViewer(el) {
+      clearTimeout(vTimer);
+      viewer.classList.remove("closing");
       vLastFocus = document.activeElement;
       vImg.src = el.getAttribute("data-full");
       vImg.alt = el.getAttribute("data-caption") || "";
@@ -378,8 +497,16 @@
       document.body.style.overflow = "hidden";
       viewer.querySelector(".lightbox-close").focus();
     }
+    /* Same closing fade as the lightbox (CSS .closing, 180ms). */
     function closeViewer() {
-      viewer.classList.remove("open");
+      if (viewer.classList.contains("closing")) return;
+      if (reduceMotion) { finishViewerClose(); return; }
+      viewer.classList.add("closing");
+      vTimer = setTimeout(finishViewerClose, 180);
+    }
+    function finishViewerClose() {
+      clearTimeout(vTimer);
+      viewer.classList.remove("open", "closing");
       viewer.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
       if (vLastFocus && vLastFocus.focus) vLastFocus.focus();
@@ -394,6 +521,7 @@
     viewer.addEventListener("click", function (e) { if (e.target === viewer) closeViewer(); });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && viewer.classList.contains("open")) closeViewer();
+      if (viewer.classList.contains("open")) trapTab(e, [viewer]);
     });
   }
 
@@ -405,6 +533,7 @@
     var slides = Array.prototype.slice.call(slider.querySelectorAll(".pillar"));
     var dots = Array.prototype.slice.call(document.querySelectorAll(".pillar-dot"));
     var countEl = document.getElementById("pillar-count");
+    if (countEl) countEl.setAttribute("aria-live", "polite");
     var prevBtn = document.getElementById("pillar-prev");
     var nextBtn = document.getElementById("pillar-next");
     var current = 0;
