@@ -687,8 +687,9 @@ section[aria-label="Admissions call to action"] {
 :focus-visible { transition: none; }
 
 /* ---------- 44px targets, 8px gaps: interaction-design, taste tap-size ----------
-   .btn-small was 42px; album pills + toggles 26-33px; footer links 20px. */
-.btn-small { min-height: 44px; }
+   .btn-small was 42px; album pills + toggles 26-33px; footer links 20px.
+   B3-E v36 (P3-1): .btn-small 44px deleted here — base style.css:301
+   already carries it; the duplicate misled the next editor. */
 /* ASSEMBLY EDIT 23 Nov (v30): footer-link 44px rule REMOVED — B3-D's
    `.footer-col a { display: block; padding: var(--space-3) 0; }` rebuilt
    footer text links to ~44px rows and inflated the footer to 385/654/641px
@@ -729,7 +730,8 @@ section[aria-label="Admissions call to action"] {
 .mobile-menu { padding: var(--space-4) var(--space-5) var(--space-6); }
 .mobile-menu nav a { padding: 14px var(--space-1); }
 .mobile-menu nav a:hover { padding-left: var(--space-3); }
-.main-nav a { padding: var(--space-2) var(--space-3); }
+/* B3-E v36 (P3-1): .main-nav a padding deleted here — nav.css already
+   carries 8px 12px; the duplicate misled the next editor. */
 .steps li { padding: 0 0 var(--space-6) var(--space-8); }
 .tick-list svg { padding: var(--space-1); }
 .syllabus-grid { gap: var(--space-3); }
