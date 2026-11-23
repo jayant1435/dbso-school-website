@@ -582,6 +582,11 @@ figcaption {
   font-weight: 500;
   /* No font-style: italic — Bricolage ships no italic face and the
      declaration was dead code (v7). The slant is Jayant's call. */
+  /* margin: 0 — the UA default blockquote inset (40px each side) was
+     live here: on a stacked phone column it stole ~80px of measure and
+     left the quote a narrow, indented block. The quote now starts on
+     the same left edge as the heading and body text. */
+  margin: 0;
   max-width: 30ch;
   text-wrap: balance;
 }
@@ -1374,6 +1379,18 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 
 @media (max-width: 860px) {
   .split, .split-wide, .split-narrow { grid-template-columns: minmax(0, 1fr); }
+  /* W-AB1 (task 113): the Principal's aim paragraph is a display quote
+     (clamp to 1.9rem) sized for the wide desktop text column. Where the
+     split stacks, that size turns ~28 words into a 7–10-line wall that
+     outweighs the heading and the photo. On stacked widths the quote
+     steps down to the site's existing lead step (.lede: 1.2rem / 1.6)
+     and takes the full column — no new size, no new token, hierarchy
+     kept by the display face at weight 500 over body 400. The 30ch
+     cap is lifted here: at 19.2px it would strand the quote in a
+     ~384px strip inside a 720px tablet column. Desktop: size
+     unchanged, but the margin reset aligns the quote to the column
+     edge, so it reflows 5 lines to 4 (measured 1440/1536). */
+  .quote-block { font-size: 1.2rem; line-height: 1.6; max-width: none; }
   .card-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .photo-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .photo-row .photo-wide { grid-column: span 2; }
