@@ -1,0 +1,4 @@
+/* Hallmark: W-G1 F3 — orphan photo spans the row at the 2-column band (601–860px); 8/3 keeps it the same height as its siblings (established .photo-wide treatment, style.css:539); object-position top keeps faces in frame (Brief 3 face rule — the award photos carry faces in the upper half). */
+@media (min-width: 601px) and (max-width: 860px) {
+  .photo-row > :last-child:nth-child(odd) { grid-column: 1 / -1; aspect-ratio: 8 / 3; object-position: top; }
+}
