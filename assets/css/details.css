@@ -196,6 +196,24 @@
 .videos-long,
 .videos-shorts { align-items: stretch; }
 
+/* W-Z6 (wave 9, 23 Nov 2026): every videos card media renders 4/3, not the
+   designed 16/10. Measured BEFORE (videos.html, all 5 widths): mediaH is
+   267px at 390px, 260px at 768px, 284px at 834px and 269px at 1440/1536px
+   on a 361px card — 269/361 = 0.745, the thumbnail's own 4:3 — while the
+   16/10 box should be 226px. Only the last long card holds its ratio
+   (21/9, 319px), because it is the only card with min-height: 0 (rule
+   below, whose own comment names the mechanism: the flex item's
+   content-based minimum clamps the media back to 4:3). Same one-line fix
+   the facilities grid already carries (style.css: the .facilities-grid
+   .card-media min-height: 0 rule, which is why facilities media hold
+   16/10 at 225px on the same 361px card). Scoped to the two videos grids;
+   no other card on the site changes. no-ai-design-slop (System — the
+   specified 16/10 ratio holds at every width; smallest correction, existing
+   system) + audit-ai-design-slop (accidental inconsistency, P1) +
+   impeccable craft-floor (Spacing — computed values read). */
+.videos-long .card-media,
+.videos-shorts .card-media { min-height: 0; }
+
 /* Long: the last card spans the rest of its row as a wide card. Its media
    runs cinematic 21 / 9, so the wide card stays about as tall as its
    row-mate instead of towering over it or shrinking to a strip.
