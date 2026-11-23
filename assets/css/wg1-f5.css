@@ -1,0 +1,7 @@
+/* Hallmark: W-G1 F5 — desktop split figures fill the text column on life.html (Clubs 62px short, Celebrations 184px short at 1440px); the image fills, the caption stays below it. */
+@media (min-width: 861px) {
+  section[aria-label="Clubs"] .split > figure,
+  section[aria-label="Celebrations and events"] .split > figure { align-self: stretch; display: flex; flex-direction: column; }
+  section[aria-label="Clubs"] .split > figure img,
+  section[aria-label="Celebrations and events"] .split > figure img { flex: 1 1 auto; min-height: 0; object-fit: cover; }
+}
