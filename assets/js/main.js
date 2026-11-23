@@ -997,6 +997,30 @@
       if (e.key === "ArrowLeft") { e.preventDefault(); nudge(1); }
       if (e.key === "ArrowRight") { e.preventDefault(); nudge(-1); }
     });
+    /* WR3-O1: a focused card froze wherever the 32s scroll happened
+       to be — a card could sit half off-screen left (probed x = -109
+       @390) because focus scrolling cannot move a transformed track.
+       On focus, shift the track by the smallest amount that brings
+       the focused card fully into view (left edge first, else right);
+       a card already fully visible does not move. Focus leaving the
+       strip resumes the scroll from the shifted offset. Keyboard focus
+       still pauses the strip (CSS :focus-within); hover never does. */
+    strip.addEventListener("focusin", function (e) {
+      var card = e.target && e.target.closest ? e.target.closest(".photo-card") : null;
+      if (!card || !track.contains(card)) return;
+      var sr = strip.getBoundingClientRect();
+      var cr = card.getBoundingClientRect();
+      var shift = 0;
+      if (cr.left < sr.left) shift = sr.left - cr.left;
+      else if (cr.right > sr.right) shift = sr.right - cr.right;
+      if (!shift) return;
+      track.style.transform = "translateX(" + (currentX() + shift) + "px)";
+      track.classList.add("wm-dragging");
+    });
+    strip.addEventListener("focusout", function (e) {
+      if (e.relatedTarget && strip.contains(e.relatedTarget)) return;
+      resume(currentX());
+    });
     armDrag(strip,
       function () {
         dragging = true;
