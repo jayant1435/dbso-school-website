@@ -267,9 +267,9 @@ button.photo-card figcaption { text-align: left; }
 
 /* ---------- News: equal cards on home (news.html keeps its list) ----------
    Three cards in a row on desktop, one column on a phone. Every card is
-   the same height: heading reserves two lines, description three, and
-   the tag sits pinned to the bottom edge of every card. */
-.news-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: var(--space-4); border-top: 0; }
+   the same height: heading one line, description two, and the tag sits
+   pinned to the bottom edge of every card. */
+.news-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; gap: var(--space-4); border-top: 0; }
 .news-cards .news-item {
   display: flex;
   flex-direction: column;
@@ -281,7 +281,7 @@ button.photo-card figcaption { text-align: left; }
 }
 .news-cards .news-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); }
 .news-cards .news-item h3 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-.news-cards .news-item p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: var(--space-4); }
+.news-cards .news-item p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: var(--space-4); }
 .news-cards .news-item .news-tag { margin-top: auto; align-self: flex-start; }
 
 /* ---------- CTA band: softer corners, two actions ---------- */
@@ -308,11 +308,11 @@ button.photo-card figcaption { text-align: left; }
 }
 
 /* Three news cards across is too narrow at tablet width — two across keeps
-   every heading inside two lines and every description in three. (Placed
-   last: the base three-column rule sits above, so this must come after
-   it to win at tablet widths.) */
+   every heading inside one line and every description in two. The third
+   card spans both columns, so no empty cell is left under the second. */
 @media (max-width: 1080px) {
   .news-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .news-cards .news-item:nth-child(3) { grid-column: 1 / -1; }
 }
 @media (max-width: 860px) {
   .news-cards { grid-template-columns: minmax(0, 1fr); }
