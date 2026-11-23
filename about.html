@@ -108,9 +108,13 @@
   </div>
 
   <section class="section" aria-label="Our story">
+    <div class="container">
+      <figure class="story-banner reveal">
+        <img class="rounded-img" src="assets/img/aerial-campus.jpg" alt="Aerial view of the school campus among the tea gardens" width="1600" height="900" loading="lazy">
+      </figure>
+    </div>
     <div class="container split">
       <div class="reveal">
-        <hr class="gold-rule" aria-hidden="true">
         <h2>Our story</h2>
         <p>Don Bosco School Oodlabari was established in 2007. It was the brainchild of Fr. Francis V.L., the school's first principal. It began with just UKG and Class 1.</p>
         <p>The school is owned and administered by the Salesians of Don Bosco, North India. It is a Catholic minority institution, English-medium and co-educational, affiliated to the Council for the Indian School Certificate Examinations, New Delhi, with School Code WB366.</p>
@@ -118,7 +122,6 @@
       </div>
       <figure class="reveal" style="--d: 90ms">
         <img class="rounded-img" src="assets/img/aerial-main-building.jpg" alt="Aerial view of the school main building, entrance driveway and the statue of Don Bosco" width="1600" height="900" loading="lazy">
-        <figcaption>The main building and entrance, seen from above.</figcaption>
       </figure>
     </div>
     <div class="container lineage-block reveal">
@@ -129,13 +132,13 @@
         <div class="lineage-row"><span class="lineage-years">2012–2016</span><p>Fr. Tomy Mathew</p></div>
         <div class="lineage-row"><span class="lineage-years">2016–2022</span><p>Fr. Sanjay Manohar Kujur</p></div>
         <div class="lineage-row"><span class="lineage-years">2022–2025</span><p>Fr. Tijo Thomas</p></div>
-        <div class="lineage-row"><span class="lineage-years">2025–present</span><p>Fr. (Dr.) Aju Kurian</p></div>
+        <div class="lineage-row lineage-current"><span class="lineage-years">2025–present</span><img class="lineage-thumb" src="assets/img/principal-crop.jpg" alt="Fr. (Dr.) Aju Kurian" width="670" height="1067" loading="lazy"><p>Fr. (Dr.) Aju Kurian</p></div>
       </div>
     </div>
   </section>
 
   <section class="section section-band" aria-label="From the Principal">
-    <div class="container split split-wide">
+    <div class="container split split-wide principal-split">
       <div class="reveal">
         <hr class="gold-rule" aria-hidden="true">
         <h2>From the Principal</h2>
@@ -167,7 +170,8 @@
         <hr class="gold-rule" aria-hidden="true">
         <h2>Vision</h2>
         <p class="lede">To build a virtuous society where everyone lives in harmony with God and nature through the holistic, value-based education of our students.</p>
-        <p>The school's mission is the holistic development of every child into a young person who is physically strong, intellectually competent, emotionally balanced, socially committed, morally upright, environmentally sensitive, and spiritually enlightened, and who contributes to nation-building.</p>
+        <h3>Mission</h3>
+        <p class="lede">The school's mission is the holistic development of every child into a young person who is physically strong, intellectually competent, emotionally balanced, socially committed, morally upright, environmentally sensitive, and spiritually enlightened, and who contributes to nation-building.</p>
         <p>The school's patron is St. John Bosco, born in 1815 at Becchi, Italy, ordained a Catholic priest in 1841, and founder of the Salesians in 1859. His Preventive System, reason, relationship and religion, guides how the school educates.</p>
       </div>
       <div class="reveal" style="--d: 90ms">
@@ -193,16 +197,16 @@
         <p>Nine reasons the school gives for itself, in its own words.</p>
       </div>
       <div class="reveal">
-        <ul class="chip-list" aria-label="Why choose Don Bosco">
-          <li>Holistic Support</li>
-          <li>Presence in Promoting Social Change</li>
-          <li>Qualified Formation</li>
-          <li>Scientific Reflection and Outreach</li>
-          <li>National and International Collaboration</li>
-          <li>Salesian Identity</li>
-          <li>Critical Reflection</li>
-          <li>Family Spirit</li>
-          <li>Promoting Education and Communication</li>
+        <ul class="tile-grid why-grid" aria-label="Why choose Don Bosco">
+          <li class="tile">Holistic Support</li>
+          <li class="tile">Presence in Promoting Social Change</li>
+          <li class="tile">Qualified Formation</li>
+          <li class="tile">Scientific Reflection and Outreach</li>
+          <li class="tile">National and International Collaboration</li>
+          <li class="tile">Salesian Identity</li>
+          <li class="tile">Critical Reflection</li>
+          <li class="tile">Family Spirit</li>
+          <li class="tile">Promoting Education and Communication</li>
         </ul>
       </div>
     </div>
@@ -219,14 +223,14 @@
         <h2>The coat of arms</h2>
         <p>The school crest carries the motto "Virtue and Knowledge". The shield stands for protection, and each emblem inside it carries a meaning every Bosconian learns to read.</p>
         <h3>The emblems</h3>
-        <dl class="meaning-grid">
+        <dl class="meaning-grid emblem-grid">
           <div class="meaning"><dt>Sun</dt><dd>Knowledge, light and enlightenment.</dd></div>
           <div class="meaning"><dt>Lamp</dt><dd>The light of learning.</dd></div>
           <div class="meaning"><dt>Open book</dt><dd>Knowledge, wisdom and learning.</dd></div>
           <div class="meaning"><dt>Lotus</dt><dd>Purity, beauty and enlightenment.</dd></div>
         </dl>
         <h3>The colours</h3>
-        <dl class="meaning-grid">
+        <dl class="meaning-grid emblem-grid">
           <div class="meaning"><dt>Gold</dt><dd>Excellence and achievement.</dd></div>
           <div class="meaning"><dt>Blue</dt><dd>Trust and wisdom.</dd></div>
           <div class="meaning"><dt>Red</dt><dd>Energy and passion.</dd></div>
@@ -271,32 +275,46 @@
         <hr class="gold-rule" aria-hidden="true">
         <h2>Leadership</h2>
         <p>The school is led by its Rector and Principal, with a Vice Principal, Vice Rector and Campus Minister.</p>
-        <ul class="tick-list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Fr. (Dr.) Aju Kurian, SDB</strong>, Principal, Rector and Secretary</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Fr. John Selvan</strong>, Vice Principal and Administrator</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Fr. (Dr.) Antony Vayalil</strong>, Vice Rector</span></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span><strong>Fr. Sunit Kiro</strong>, Campus Minister</span></li>
+        <ul class="tick-list leader-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span class="leader-name-role"><strong>Fr. (Dr.) Aju Kurian, SDB</strong><span class="leader-role">Principal, Rector and Secretary</span></span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span class="leader-name-role"><strong>Fr. John Selvan</strong><span class="leader-role">Vice Principal and Administrator</span></span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span class="leader-name-role"><strong>Fr. (Dr.) Antony Vayalil</strong><span class="leader-role">Vice Rector</span></span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg><span class="leader-name-role"><strong>Fr. Sunit Kiro</strong><span class="leader-role">Campus Minister</span></span></li>
         </ul>
       </div>
       <div class="reveal" style="--d: 90ms">
         <h3>School hours</h3>
-        <p><strong>Summer.</strong> UKG and Class 1: 8:30 am to 12:40 pm. Classes 2 to 12: 8:30 am to 2:30 pm.</p>
-        <p><strong>Winter.</strong> UKG and Class 1: 8:50 am to 12:50 pm. Classes 2 to 12: 8:50 am to 2:30 pm.</p>
+        <div class="hours-card">
+          <div class="hours-season">
+            <h4>Summer</h4>
+            <div class="hours-row"><span>UKG and Class 1</span><strong>8:30 am – 12:40 pm</strong></div>
+            <div class="hours-row"><span>Classes 2 to 12</span><strong>8:30 am – 2:30 pm</strong></div>
+          </div>
+          <div class="hours-season">
+            <h4>Winter</h4>
+            <div class="hours-row"><span>UKG and Class 1</span><strong>8:50 am – 12:50 pm</strong></div>
+            <div class="hours-row"><span>Classes 2 to 12</span><strong>8:50 am – 2:30 pm</strong></div>
+          </div>
+        </div>
         <p>The school's 57 teachers, with their subjects, are listed on the <a href="staff.html">staff page</a>.</p>
       </div>
     </div>
     <div class="container reveal">
       <h3>Managing Committee, 2025–26</h3>
       <p>The committee that governs the school, as published by the school for the 2025–26 session.</p>
-      <dl class="meaning-grid committee-grid">
-        <div class="meaning"><dt>President</dt><dd>Fr. Babu Joseph</dd></div>
-        <div class="meaning"><dt>Secretary and Principal</dt><dd>Fr. (Dr.) Aju Kurian</dd></div>
-        <div class="meaning"><dt>Treasurer</dt><dd>Fr. John Selvan</dd></div>
-        <div class="meaning"><dt>Members</dt><dd>Fr. (Dr.) Antony Vayalil; Fr. Sunit Kiro; Sr. Shemi Jose</dd></div>
-        <div class="meaning"><dt>Teachers' representatives</dt><dd>Mr. Suvojit Biswas; Mrs. Mary Lai</dd></div>
-        <div class="meaning"><dt>Support staff representative</dt><dd>Mr. Roshan Toppo</dd></div>
-        <div class="meaning"><dt>Parent representatives</dt><dd>Mr. Sanjay Kujur; Mr. Ayan Chakraborty</dd></div>
-      </dl>
+      <ul class="committee-list">
+        <li><span>President</span><strong>Fr. Babu Joseph</strong></li>
+        <li><span>Secretary and Principal</span><strong>Fr. (Dr.) Aju Kurian</strong></li>
+        <li><span>Treasurer</span><strong>Fr. John Selvan</strong></li>
+        <li><span>Member</span><strong>Fr. (Dr.) Antony Vayalil</strong></li>
+        <li><span>Member</span><strong>Fr. Sunit Kiro</strong></li>
+        <li><span>Member</span><strong>Sr. Shemi Jose</strong></li>
+        <li><span>Teachers' representative</span><strong>Mr. Suvojit Biswas</strong></li>
+        <li><span>Teachers' representative</span><strong>Mrs. Mary Lai</strong></li>
+        <li><span>Support staff representative</span><strong>Mr. Roshan Toppo</strong></li>
+        <li><span>Parent representative</span><strong>Mr. Sanjay Kujur</strong></li>
+        <li><span>Parent representative</span><strong>Mr. Ayan Chakraborty</strong></li>
+      </ul>
     </div>
   </section>
 
@@ -307,19 +325,33 @@
         <h2>Awards and recognition</h2>
         <p>Honours the school has received in recent years, as published by the school.</p>
       </div>
-      <div class="photo-row awards-row" data-stagger>
-        <figure>
-          <img class="rounded-img" src="assets/img/awards/awards-01.jpg" alt="Two gold Minervaa trophies on a table" width="1066" height="1600" loading="lazy">
-          <figcaption>Two gold trophies from the Minervaa Edu Achievement Awards 2026.</figcaption>
-        </figure>
-        <figure>
-          <img class="rounded-img" src="assets/img/awards/awards-06.jpg" alt="A Telegraph School Awards trophy on a table" width="1600" height="1066" loading="lazy">
-          <figcaption>A trophy from the Telegraph School Awards.</figcaption>
-        </figure>
-        <figure>
-          <img class="rounded-img" src="assets/img/awards/awards-23.jpg" alt="The Minervaa 2025 plaque, trophy and framed certificate on a table" width="1600" height="1066" loading="lazy">
-          <figcaption>The Minervaa 2025 plaque, trophy and framed certificate for Best Infrastructure Excellence.</figcaption>
-        </figure>
+      <div class="awards-slider reveal" role="region" aria-label="Award photographs">
+        <div class="awards-track">
+          <figure class="award-slide">
+            <img class="rounded-img" src="assets/img/awards/awards-01.jpg" alt="Two gold Minervaa trophies on a table" width="1066" height="1600" loading="lazy">
+            <figcaption>Two gold trophies from the Minervaa Edu Achievement Awards 2026.</figcaption>
+          </figure>
+          <figure class="award-slide">
+            <img class="rounded-img" src="assets/img/awards/awards-06.jpg" alt="A Telegraph School Awards trophy on a table" width="1600" height="1066" loading="lazy">
+            <figcaption>A trophy from the Telegraph School Awards.</figcaption>
+          </figure>
+          <figure class="award-slide">
+            <img class="rounded-img" src="assets/img/awards/awards-23.jpg" alt="The Minervaa 2025 plaque, trophy and framed certificate on a table" width="1600" height="1066" loading="lazy">
+            <figcaption>The Minervaa 2025 plaque, trophy and framed certificate for Best Infrastructure Excellence.</figcaption>
+          </figure>
+          <figure class="award-slide" aria-hidden="true">
+            <img class="rounded-img" src="assets/img/awards/awards-01.jpg" alt="" width="1066" height="1600" loading="lazy">
+            <figcaption>Two gold trophies from the Minervaa Edu Achievement Awards 2026.</figcaption>
+          </figure>
+          <figure class="award-slide" aria-hidden="true">
+            <img class="rounded-img" src="assets/img/awards/awards-06.jpg" alt="" width="1600" height="1066" loading="lazy">
+            <figcaption>A trophy from the Telegraph School Awards.</figcaption>
+          </figure>
+          <figure class="award-slide" aria-hidden="true">
+            <img class="rounded-img" src="assets/img/awards/awards-23.jpg" alt="" width="1600" height="1066" loading="lazy">
+            <figcaption>The Minervaa 2025 plaque, trophy and framed certificate for Best Infrastructure Excellence.</figcaption>
+          </figure>
+        </div>
       </div>
       <div class="split reveal">
         <div>
@@ -327,7 +359,11 @@
             <h3>2026</h3>
             <ul>
               <li>Minervaa Edu Achievement Awards: Certificate of Excellence for Consistent Scholastic Achievement, 19 September 2026.</li>
-              <li>The Telegraph School Awards, North Bengal Chapter: Vidya Mandir Trust award for extra-curricular activities; Sister Nivedita University award for maintenance and eco-friendly environment; TTEF award for social service; IIHM award for academics (ICSE); and the Caring Minds certificate, "A School that Cares", 29 September 2026.</li>
+              <li>The Telegraph School Awards, North Bengal Chapter: Vidya Mandir Trust award for extra-curricular activities, 29 September 2026.</li>
+              <li>The Telegraph School Awards: Sister Nivedita University award for maintenance and eco-friendly environment, 29 September 2026.</li>
+              <li>The Telegraph School Awards: TTEF award for social service, 29 September 2026.</li>
+              <li>The Telegraph School Awards: IIHM award for academics (ICSE), 29 September 2026.</li>
+              <li>The Telegraph School Awards: Caring Minds certificate, "A School that Cares", 29 September 2026.</li>
               <li>Dr A P O'Brien Memorial Lifetime Achievement Award for a Teacher, presented to Mary Lai, 29 September 2026.</li>
               <li>Yoga Sangam Patra, International Yoga Day, 21 June 2026, with 150 participants.</li>
               <li>Swachhata Hi Seva 2026, certificate of participation.</li>
@@ -340,7 +376,11 @@
             <h3>2025</h3>
             <ul>
               <li>Minervaa Edu Achievement Awards: ICSE School of the Year, Eastern India, for Best Infrastructure Excellence, 30–31 August 2025.</li>
-              <li>The Telegraph School Awards: IIHM award for academics (ICSE); Vidya Mandir Trust award for extra-curricular activities; TTEF awards for maintenance and eco-friendly environment and for social service; and the Caring Minds certificate, "A School that Cares", 8 November 2025.</li>
+              <li>The Telegraph School Awards: IIHM award for academics (ICSE), 8 November 2025.</li>
+              <li>The Telegraph School Awards: Vidya Mandir Trust award for extra-curricular activities, 8 November 2025.</li>
+              <li>The Telegraph School Awards: TTEF award for maintenance and eco-friendly environment, 8 November 2025.</li>
+              <li>The Telegraph School Awards: TTEF award for social service, 8 November 2025.</li>
+              <li>The Telegraph School Awards: Caring Minds certificate, "A School that Cares", 8 November 2025.</li>
               <li>National Sports Day 2025, certificate of participation.</li>
             </ul>
           </div>
