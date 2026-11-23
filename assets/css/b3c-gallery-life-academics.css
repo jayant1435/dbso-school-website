@@ -1,0 +1,174 @@
+/* Hallmark: b3c-gallery-life-academics · fix-loop patch · theme DBSO blue+gold · scope gallery jump-nav + grid, life figures, syllabus groups */
+/* B3-C patch — gallery jump-nav + grid + portraits; life figures; syllabus groups.
+   Placement: copy to site/assets/css/b3c-gallery-life-academics.css (link tags
+   already added after details.css in gallery.html, life.html, academics.html).
+   All colours, fonts and spacing come from the tokens in style.css :root. */
+
+/* ---- Jump nav: slim sticky bar + grouped panel (Spec 1) ---- */
+.album-nav .container { align-items: center; }
+.album-nav .album-nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 0;
+  padding: var(--space-2) var(--space-4);
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.album-nav .album-nav-toggle:hover { background: var(--blue); border-color: var(--blue); }
+.album-nav .album-nav-toggle:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+/* Search sits in the bar; hidden without JS (html.js is added by main.js). */
+.album-search { display: none; flex: 1 1 220px; min-width: 0; position: relative; }
+html.js .album-search { display: block; }
+/* The search label is for screen readers only (no such utility exists yet
+   elsewhere on the site, so it lives here with the search it labels). */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.album-search input {
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-soft);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+.album-search input::placeholder { color: var(--ink-mute); }
+.album-search input:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-color: var(--blue); }
+@media (max-width: 600px) {
+  .album-search { flex-basis: 100%; order: 3; }
+}
+
+/* Panel: visible without JS; with JS it opens under the bar, never sticky. */
+.album-panel {
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+  padding: var(--space-4) 0 var(--space-6);
+}
+.album-panel .container { display: grid; gap: var(--space-2); }
+html.js .album-panel { display: none; }
+html.js .album-nav.expanded + .album-panel { display: block; animation: album-panel-in 250ms var(--ease-out); }
+@keyframes album-panel-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.album-panel-empty { color: var(--ink-soft); margin: 0; padding: var(--space-2) 0; }
+
+.album-group { border-bottom: 1px solid var(--line); }
+.album-group summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding: var(--space-2) 0;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+}
+.album-group summary::-webkit-details-marker { display: none; }
+.album-group summary::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  margin-left: auto;
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: rotate(45deg);
+  transition: transform 200ms var(--ease-out);
+  flex: none;
+}
+.album-group[open] summary::after { transform: rotate(225deg); }
+.album-group summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.album-group-count { font-size: 0.85rem; font-weight: 500; color: var(--ink-mute); }
+.album-group ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0 0 var(--space-4);
+}
+.album-group a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+.album-group a:hover { background: var(--band); border-color: var(--blue); color: var(--blue); }
+.album-group a:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+/* ---- Gallery grid: every row full — a lone last photo spans the row ---- */
+@media (min-width: 861px) {
+  .gallery-grid > .gallery-item:last-child:nth-child(3n+1) { grid-column: span 3; }
+  .gallery-grid > .gallery-item:last-child:nth-child(3n+2) { grid-column: span 2; }
+  .gallery-grid > .gallery-item:last-child:nth-child(3n+1) img,
+  .gallery-grid > .gallery-item:last-child:nth-child(3n+2) img { aspect-ratio: 21/9; object-position: center 25%; }
+}
+@media (min-width: 601px) and (max-width: 860px) {
+  .gallery-grid > .gallery-item:last-child:nth-child(2n+1) { grid-column: span 2; }
+  .gallery-grid > .gallery-item:last-child:nth-child(2n+1) img { aspect-ratio: 21/9; object-position: center 25%; }
+  /* Hula-hoops (Picnic III-V, last item): ground-level subject, keep the bottom. */
+  .gallery-grid > .gallery-item--pos-bottom:last-child img { object-position: bottom; }
+}
+/* A portrait that is also a wide last item keeps its faces: crop from the top. */
+.gallery-grid > .gallery-item.gallery-item--portrait:last-child img { object-position: top; }
+
+/* Portrait photos: crop from the top so faces stay in frame (gallery + life). */
+.gallery-item--portrait img { object-position: top; }
+.photo-row img.photo-face-top { object-position: top; }
+
+/* ---- Life: keep the figure beside its text on desktop (academics v29 pattern) ---- */
+@media (min-width: 861px) {
+  section[aria-label="Clubs"] .split > figure,
+  section[aria-label="Celebrations and events"] .split > figure {
+    align-self: start;
+    position: sticky;
+    top: 100px;
+  }
+}
+
+/* ---- Syllabus: three class-range groups, same 140x48 buttons ---- */
+.syllabus-groups { display: grid; gap: var(--space-6); }
+.syllabus-group h3 {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+  margin: 0 0 var(--space-3);
+}
+
+/* Lightbox: horizontal swipes are handled by JS; let vertical panning through. */
+.lightbox figure { touch-action: pan-y; }
+
+/* Motion: panel and chevron use transform/opacity only; reduced motion = no motion. */
+@media (prefers-reduced-motion: reduce) {
+  html.js .album-nav.expanded + .album-panel { animation: none; }
+  .album-group summary::after { transition: none; }
+}
