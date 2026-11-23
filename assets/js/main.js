@@ -1174,4 +1174,82 @@
         suppressClick(Math.abs(dx) > 6);
       });
   })();
+
+  /* ---------- W-AB3 (task 115): About awards strip — drag + arrows
+     + keys interrupt the 36s CSS auto-scroll, then it resumes from
+     the dragged/nudged spot. Same proven pattern as lifeStripDrag
+     above: freeze by reading the computed transform and pinning it
+     inline (no jump), resume by wrapping the offset into one
+     half-loop and restarting the animation with a negative delay
+     equal to the dragged position. Arrow buttons nudge one card;
+     ArrowLeft/ArrowRight on the focused strip do the same. Focus-
+     within pauses it (CSS); hover does NOT pause it. Reduced
+     motion: static grid, no wiring here, buttons hidden by CSS.
+     No click target lives inside the slides, so no click-suppress
+     is needed — only the drag-end blur, so a pointer drag cannot
+     leave focus on the slider and hold the :focus-within pause
+     forever after the mouse is gone. ---------- */
+  (function awardsStripDrag() {
+    var slider = document.querySelector(".awards-slider");
+    var track = document.querySelector(".awards-track");
+    var prevBtn = document.querySelector(".awards-prev");
+    var nextBtn = document.querySelector(".awards-next");
+    if (!slider || !track || reduceMotion) return;
+    track.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
+    var DUR = 36; /* seconds; must match the awards-scroll keyframes. */
+    var startOffset = 0;
+    function halfWidth() { return track.scrollWidth / 2; }
+    function currentX() {
+      var m = new DOMMatrixReadOnly(window.getComputedStyle(track).transform);
+      return m.e;
+    }
+    function wrap(o) {
+      var h = halfWidth();
+      if (!h) return 0;
+      o = o % h;
+      if (o > 0) o -= h;
+      return o;
+    }
+    function cardStep() {
+      var card = track.querySelector(".award-slide");
+      if (!card) return 356;
+      var cs = window.getComputedStyle(card);
+      return card.getBoundingClientRect().width + (parseFloat(cs.marginRight) || 0);
+    }
+    function nudge(dir) {
+      /* Freeze, shift one card, resume from the new spot. */
+      var x = wrap(currentX() + dir * cardStep());
+      track.style.transform = "translateX(" + x + "px)";
+      track.classList.add("wm-dragging");
+      resume(x);
+    }
+    function resume(x) {
+      var h = halfWidth();
+      var frac = h ? (-wrap(x) / h) : 0;
+      track.style.animationDelay = (-frac * DUR) + "s";
+      track.style.transform = "";
+      track.classList.remove("wm-dragging");
+    }
+    slider.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") { e.preventDefault(); nudge(1); }
+      if (e.key === "ArrowRight") { e.preventDefault(); nudge(-1); }
+    });
+    if (prevBtn) prevBtn.addEventListener("click", function () { nudge(1); });
+    if (nextBtn) nextBtn.addEventListener("click", function () { nudge(-1); });
+    armDrag(slider,
+      function () {
+        startOffset = currentX();
+        track.style.transform = "translateX(" + startOffset + "px)";
+        track.classList.add("wm-dragging");
+        slider.classList.add("wm-grabbing");
+      },
+      function (dx) {
+        track.style.transform = "translateX(" + (startOffset + dx) + "px)";
+      },
+      function (dx) {
+        slider.classList.remove("wm-grabbing");
+        resume(startOffset + dx);
+        if (document.activeElement === slider) slider.blur();
+      });
+  })();
 })();
