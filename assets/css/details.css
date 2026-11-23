@@ -602,7 +602,7 @@ section[aria-label="Questions"] .cta-band .btn:active {
   .story-banner img { aspect-ratio: 16 / 9; }
 }
 
-/* ---- Item 3: principals timeline spacing + the one photo that exists ----
+/* ---- Item 3: principals timeline spacing, text-only ----
    better-ui (Cut text that wraps to a lonely last word): the years column
    is max-content (sized by the longest, "2025–present") with a 32px gap,
    so "present" no longer sits against the name — and the name column
@@ -610,27 +610,18 @@ section[aria-label="Questions"] .cta-band .btn:active {
    (the first attempt, a fixed 152px years column, pushed the two longest
    names to two lines at 768/834/1440 — measured, reverted). The timeline
    is 2 columns on desktop (6 names = 3 even rows) and 1 column below
-   861px, where 2 columns would squeeze the names. The current principal
-   gets the only principal portrait on the site (principal-crop.jpg);
-   earlier principals have no photo on the site, so they stay a clean
-   text timeline — no invented portraits (Hallmark floor 8). */
+   861px, where 2 columns would squeeze the names. W-AB4 (wave 10, task
+   116, Jayant's brief 24 Nov): the current principal's portrait is
+   removed — only he had a photo, so the list is now text-only for all
+   six principals, every row the same two-column grid, the current row
+   distinguished by its semibold name alone. No invented portraits
+   (Hallmark floor 8); the 3-column thumb grid, .lineage-thumb and the
+   600px thumb-track rule are deleted with it, not left as dead CSS. */
 section[aria-label="Our story"] .lineage-row {
   grid-template-columns: max-content minmax(0, 1fr);
   column-gap: var(--space-6);
 }
-section[aria-label="Our story"] .lineage-current {
-  grid-template-columns: max-content 56px minmax(0, 1fr);
-  column-gap: var(--space-4);
-  align-items: center;
-}
 .lineage-current p { font-weight: 600; }
-.lineage-thumb {
-  width: 56px;
-  height: 72px;
-  object-fit: cover;
-  border-radius: var(--radius-soft);
-  display: block;
-}
 @media (min-width: 861px) {
   section[aria-label="Our story"] .lineage-wide {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -647,9 +638,6 @@ section[aria-label="Our story"] .lineage-current {
   section[aria-label="Our story"] .lineage-row {
     column-gap: var(--space-5);
   }
-}
-@media (max-width: 600px) {
-  .lineage-thumb { width: 40px; height: 56px; }
 }
 
 /* ---- Item 4: principal's photo travels with the text on phones ----
@@ -895,18 +883,12 @@ section[aria-label="Our story"] .lineage-current {
    incumbent DBSO tokens, blue + yellow only, Bricolage Grotesque + DM Sans ·
    scope: about.html lineage + admissions.html Documents band only, append-only */
 
-/* ---- P1: lineage current-row gap asymmetry on phones ----
-   better-ui (one spacing system, 4px steps) + design-system (single grid,
-   tokens only) + audit-ai-design-slop (accidental inconsistency in spacing):
-   below 600px the thumb shrinks to 40px but its grid track stayed 56px, so
-   the 16px of slack landed between thumb and name — gaps measured 24px then
-   40px at 390px (24/24 at 834px, 16/16 at 1440px). The track follows the
-   thumb: both gaps are the 24px token at every width now. No HTML change. */
-@media (max-width: 600px) {
-  section[aria-label="Our story"] .lineage-current {
-    grid-template-columns: max-content 40px minmax(0, 1fr);
-  }
-}
+/* W-AB4 (wave 10, task 116): the P1 rule above this line (600px
+   .lineage-current 3-column grid with a 40px thumb track) is deleted
+   with the portrait it served — left in place it would have injected
+   an empty 40px middle track into the now two-child current row below
+   600px, a leftover gap between years and name. The current row now
+   uses the same two-column grid as every other row at every width. */
 
 /* ---- P2: Documents band empty area under the text (Brief 14:47 item 2) ----
    better-ui (proximity before containers: related items sit closer than
