@@ -693,7 +693,13 @@ section[aria-label="Admissions call to action"] {
 html.js .album-nav-toggle, .album-nav.compact .album-nav-toggle {
   display: inline-flex; align-items: center; min-height: 44px;
 }
-.footer-col a { display: block; padding: var(--space-3) 0; }
+/* ASSEMBLY EDIT 23 Nov (v30): footer-link 44px rule REMOVED — B3-D's
+   `.footer-col a { display: block; padding: var(--space-3) 0; }` rebuilt
+   footer text links to ~44px rows and inflated the footer to 385/654/641px
+   (v29 claim 265/455/453; v26 was 351/486/811). Per ASSEMBLY-NOTES
+   conflict 16, Jayant's "mobile footer small and compact" wins over
+   interaction-design 44px for running-text links; Taste exempts running
+   text from tap-size. Apply + CTA buttons keep 44px. */
 .mobile-menu-foot a { padding: var(--space-3) 0; }
 /* Standalone see-more links (not running text): give them the 44px height. */
 .text-link { min-height: 44px; }
