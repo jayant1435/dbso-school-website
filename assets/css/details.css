@@ -257,6 +257,21 @@
   }
 }
 
+/* ---------- WG3-02: "How learning works" figure centred in its split ----------
+   Composes with the sticky pin above (same selector, later in file, so
+   align-self: center wins; position: sticky + top: 100px untouched).
+   Mid-scroll pin behaviour verified identical to live (fig pins at
+   top:100px, void 244/106 mid-scroll, 350/0 at section bottom); only the
+   at-rest state changes, 0/350 -> 175/175 @1440, 240/239 @1024.
+   design-taste-frontend Checklist: "nothing sparse, no section half empty"
+   (section-height / empty-area); better-ui Composition: alignment + negative
+   space intentional at every viewport. Before: at 2-column widths the text
+   column is 745px tall and the figure 394px, both top-aligned — ~350px of
+   empty space pooled below the figure @1440 (~479px @1024). After: the
+   figure centres against the text (void 175/175 @1440, 240/239 @1024).
+   Single-column widths (<861px) are unaffected — the rule is a no-op there. */
+section[aria-label="How learning works"] .split > figure { align-self: center; }
+
 /* ===== v29 assembly: w1-anim-details.css ===== */
 /* W1 animations patch — details.css-owned rules (qa-v29, wave 3).
    Appended after details.css. Palette: blue + gold tokens only. */
@@ -857,3 +872,18 @@ section[aria-label="Our story"] .lineage-current {
    Telegraph items (5 awards, 5 lines) are split into one bullet per
    award, same facts, so every 2026/2025 item is 1–2 lines at desktop
    and ≤3 on a phone. No CSS needed — the HTML carries it. */
+
+/* ---------- WG3-01: stream switcher tabs share one row at phone widths ----------
+   interaction-design: targets >=44x44px (tabs stay 48px+ tall) + keyboard path
+   first (roving tabindex + arrow keys already in main.js); better-ui: one
+   system, one radius + one spacing language — the fix reuses the existing
+   .switcher-tab tokens, only the flex distribution changes between 370-600px.
+   Before: Science + Commerce row 1, Humanities alone row 2 @390 (measured
+   114/138/139px + 8px gaps = 407px > 358px content width). After: 3 equal
+   tabs, one row, spill 0 @390 and @370 (measured fit boundary); below 370px
+   the rule switches off and the previous 2+1 wrap returns, spill 0, no
+   overflowX @360/320. Verified on this snapshot. */
+@media (min-width: 370px) and (max-width: 600px) {
+  .switcher-tabs { flex-wrap: nowrap; }
+  .switcher-tab { flex: 1 1 0; min-width: 0; padding-inline: var(--space-2); }
+}
