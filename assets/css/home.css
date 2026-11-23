@@ -8,8 +8,6 @@
   --home-r-card: 20px;
   --home-r-img: 20px;
   --home-r-row: 16px;
-  --home-green: #2e7d46;
-  --house-blue: #1d6fa5; /* the Blue house's own colour — not a UI blue */
 }
 
 /* ---------- Dates strip: three rounded cards ---------- */
@@ -89,8 +87,8 @@
 .house-swatch { height: 12px; flex-shrink: 0; }
 .house-swatch-red { background: var(--red); }
 .house-swatch-blue { background: var(--house-blue); }
-.house-swatch-green { background: var(--home-green); }
-.house-swatch-yellow { background: var(--gold); }
+.house-swatch-green { background: var(--house-green); }
+.house-swatch-yellow { background: var(--house-yellow); }
 .house-name { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.05rem; color: var(--ink); }
 
 /* ---------- Values: six single-word tiles, no descriptions ----------
@@ -347,8 +345,8 @@ button.photo-card figcaption { text-align: left; }
 .house-modal-band { height: 10px; border-radius: 5px; margin-bottom: var(--space-5); }
 .house-modal-band-red { background: var(--red); }
 .house-modal-band-blue { background: var(--house-blue); }
-.house-modal-band-green { background: var(--home-green); }
-.house-modal-band-yellow { background: var(--gold); }
+.house-modal-band-green { background: var(--house-green); }
+.house-modal-band-yellow { background: var(--house-yellow); }
 .house-modal-card h3 { margin: 0 0 var(--space-2); font-size: 1.6rem; }
 .house-modal-card p { color: var(--ink-soft); margin-bottom: var(--space-5); }
 .house-modal-close {
