@@ -1230,6 +1230,97 @@ section[aria-label="Celebrations and events"] .tick-list li span {
   .page-head + .dates-strip .date-item:first-child { border-top: 1px solid transparent; padding-top: var(--space-4); }
 }
 
+/* ===== W-AB2 (wave 10, 24 Nov 2026) =====
+   Task 114: Managing Committee major rework · system: incumbent DBSO
+   tokens, blue + gold, Bricolage Grotesque + DM Sans · scope: about.html
+   committee block only, no copy change (same 11 members, same roles,
+   same order), no new motion, no new tokens.
+
+   Measured BEFORE (probe-base.json, all 10 widths): the flat 11-card
+   3-column grid closes 3+3+3+2, and the old W-G2 fix spans the last
+   card across the two remaining columns — so Mr. Ayan Chakraborty is
+   DOUBLE-WIDE at every width >=601px (749px vs 367px at 1440/1536,
+   645 vs 315 at 1024, 519 vs 251 at 834, 475 vs 229 at 768) while
+   the other ten cards are identical. That is the unevenness Jayant
+   asked to rework. Second defect: the Item-12 role label reserves two
+   lines at EVERY width, but every role is one line except "Support
+   staff representative" at 768px — so at 8 of 10 widths each card
+   carries ~20px of empty space between role and name (97px cards
+   whose content needs ~77px), and at 768/834 the W-Z2 name reserve
+   adds another 22px (119px cards, names measured 1 line throughout).
+
+   Restructure (no-ai-design-slop: hierarchy before labels; the flat
+   list made President and Parent representative look equal — the
+   committee's own structure is the grouping, so the page now shows
+   it): Office bearers (3) / Members (3) / Representatives (5), each
+   under a plain sentence-case h4 (Hallmark floor 9: labels untracked,
+   body face, a step smaller — here the h4 is the display face at the
+   site's own h4 size, 1.15rem, with no eyebrow, no tracked caps).
+   Heading order stays clean: h2 Leadership -> h3 Managing Committee
+   -> h4 group. Office bearers carry a 2px gold top rule (gold is an
+   accent mark per the token comment, never text) so the senior tier
+   reads at a glance; the other groups keep the plain card. It is an
+   inset shadow, not a thicker top border, so the office cards keep
+   the exact same box (and height) as every other card — a 2px top
+   border would have made them 1px taller (measured v1: 79px vs
+   78px), which is exactly the kind of accidental inconsistency this
+   rework removes.
+
+   Grid (better-ui: one system, one card geometry everywhere;
+   design-system: component tokens only, no raw values): every list
+   is one flex row-set with the SAME basis — calc((100% - 2 gaps)/3)
+   — so all 11 cards are exactly the same width at every width.
+   Groups of 3 close as one full row. The 5-card Representatives
+   group wraps 3+2 and the orphan row CENTRES (justify-content:
+   center) instead of spanning or leaving a hole: two identical
+   cards, symmetric, no double-wide card anywhere. At <=600px every
+   list is one column. design-first-ui-prompting (one system, then
+   iterate): the card itself is untouched — same background, border,
+   radius, padding, type — only the layout around it changes.
+
+   Reserves (impeccable craft-floor: spacing is read from computed
+   values; audit-ai-design-slop: accidental inconsistency): the
+   2-line role reserve now applies ONLY in 601-860px, the one band
+   where a role actually wraps ("Support staff representative" is 2
+   lines at 768px, and the Representatives group has two rows, so
+   the reserve is what keeps its rows level). Outside that band
+   every role is 1 line and the reserve is dead space, so it is
+   switched off — cards go from 97px to ~77px with no content loss.
+   The W-Z2 name reserve (601-860px) is left exactly as it is: it
+   guards the same knife-edge band for names. Single-row groups
+   need no reserve at all — flex stretch levels the row — so no
+   reserve is added anywhere else. Result per width: every card the
+   same height within its width (77px at <=600 and >=861, 119px at
+   601-860), every name and role 1 line except the one 2-line role
+   at 768px, and no double-wide card. */
+.committee-group { margin-top: var(--space-6); }
+.committee-group:first-child { margin-top: 0; }
+.committee-group h4 { margin-top: 0; }
+.committee-group--office .committee-list li { box-shadow: inset 0 2px 0 var(--gold); }
+.committee-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: var(--space-4);
+}
+.committee-list li {
+  flex: 0 1 calc((100% - 2 * var(--space-4)) / 3);
+}
+/* The old W-G2 span-2 hack is dead under flex (grid-column does not
+   apply to flex items); reset it explicitly so no later grid rule
+   can revive a double-wide card. */
+.committee-list li:last-child { grid-column: auto; }
+@media (max-width: 600px) {
+  .committee-list li { flex-basis: 100%; }
+}
+/* Role reserve off outside 601-860px: no role wraps there, so the
+   unscoped Item-12 reserve was ~20px of dead space in every card.
+   Same specificity as Item 12, later in the file, so it wins. */
+@media (max-width: 600px), (min-width: 861px) {
+  .committee-list li span { min-height: 0; }
+}
+
 /* ---- W-AB3 (task 115): awards strip manual scroll ----
    interaction-design (support swipe/drag where users expect it AND
    offer buttons as well; keyboard path first; 44px+ targets, 8px+
