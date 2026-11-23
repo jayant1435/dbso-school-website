@@ -111,11 +111,13 @@
    are 48px, the header CTA was the odd 44px one). min-height 48px so
    the CTA stands clearly taller than the 44px links, and margin-left
    12px -> 16px so it reads as its own unit, not the seventh link.
-   Padding stays .btn-small's 8px 12px, so the CTA keeps its 180px
-   width. The double class is deliberate: home.css:691 and
-   details.css:338 both re-assert `.btn-small { min-height: 44px }`
-   AFTER nav.css, so a plain `.header-cta` 48px loses on order — the
-   (0,2,0) selector wins on specificity instead, on every page. */
+   Padding stays .btn-small's 8px 12px, so the CTA keeps its 176px
+   width (measured 176px, not 180px — B3-E correction). The double class
+   is deliberate: it wins on specificity (0,2,0) over base `.btn-small`
+   (0,1,0) in style.css:301, so the 48px survives on every page — the
+   home.css/details.css re-assertions that used to beat a plain
+   .header-cta on order were deleted in v36 (B3-E P3-1) as duplicates
+   of the base value. */
 .header-cta.btn-small {
   margin-left: var(--space-4);
   min-height: 48px;
@@ -417,7 +419,7 @@
   .nojs-nav a:not(.btn):hover::after { transform: scaleX(1); }
   .nojs-nav a:not(.btn)[aria-current="page"] { color: var(--blue); font-weight: 700; }
   .nojs-nav a:not(.btn)[aria-current="page"]::after { transform: scaleX(1); }
-  /* The header CTA reuses .btn-small (42px); the fallback lifts it to
+  /* The header CTA reuses .btn-small (44px); the fallback lifts it to
      the 44px touch target the other links already meet. */
   .nojs-nav .btn { min-height: 44px; }
 }
