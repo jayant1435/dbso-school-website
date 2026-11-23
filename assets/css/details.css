@@ -83,7 +83,7 @@
 
 /* ---- Admissions steps: the number disc deepens on hover ---- */
 .steps li::before { transition: background-color 0.2s var(--ease-out); }
-.steps li:hover::before { background: var(--red-dark); }
+.steps li:hover::before { background: var(--blue-dark); }
 
 /* ---- Admissions plain lists: gold-dot markers, same voice as awards ---- */
 .check-list { list-style: none; padding: 0; margin: 0 0 var(--space-4); }
