@@ -933,3 +933,33 @@ section[aria-label="Documents needed"] .home-links .btn:active {
   .switcher-tabs { flex-wrap: nowrap; }
   .switcher-tab { flex: 1 1 0; min-width: 0; padding-inline: var(--space-2); }
 }
+
+/* ---------- W-K FIX 1 (v41): Celebrations split on mobile ----------
+   Measured BEFORE (life.html, section[aria-label="Celebrations and
+   events"]): overflowX 0 at every width; the split ALREADY stacks to one
+   358px column at <=860px (style.css:1376, incumbent — left untouched);
+   figure 358x272, img 358x239, no clipping, no wide descendants. What
+   was awkward: h2 "Celebrations and events" 30.4px fills 341px of the
+   358px column at 390px (17px slack — one narrower phone wraps it to a
+   lone "events" line); tick-list items end on single-word orphans at
+   390px ("elocution" 70px alone on line 2; "curriculum" 80px alone on
+   line 4) and at 834px ("Year" 34px alone on line 2).
+   typography (2px type-scale steps): 30.4px -> 28px (1.75rem) at
+   <=600px, so the heading is ~314px wide — fits 390px with 44px slack
+   and 360px with 14px. (text-wrap: balance + overflow-wrap on headings
+   are already site-wide, style.css:106 — not re-declared here.)
+   better-ui (cut text that wraps to a lonely last word): text-wrap:
+   pretty on this section's tick spans at ALL widths — the site already
+   uses text-wrap: pretty on body copy (style.css:118), so this extends
+   the incumbent language, it does not introduce one. No copy changed,
+   no new colours, fonts or spacing. Desktop split untouched (the size
+   rule is <=600px only). */
+section[aria-label="Celebrations and events"] .tick-list li span {
+  text-wrap: pretty;
+}
+@media (max-width: 600px) {
+  section[aria-label="Celebrations and events"] h2 {
+    font-size: 1.75rem;
+    line-height: 1.2;
+  }
+}
