@@ -21,14 +21,15 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/nav.css">
 <link rel="stylesheet" href="assets/css/details.css">
+  <link rel="stylesheet" href="assets/css/b3c-gallery-life-academics.css">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
 
 <a class="announce" href="admissions.html">
   <span class="announce-track">
-    <span>Admissions open for 2027–28 · UKG and Class XI · Forms close 10 December 2026 · <b>See admissions&nbsp;→</b></span>
-    <span aria-hidden="true">Admissions open for 2027–28 · UKG and Class XI · Forms close 10 December 2026 · <b>See admissions&nbsp;→</b></span>
+    <span>Admissions open for 2027–28 · UKG to Class 11 · Forms close 10 December 2026 · <b>See admissions&nbsp;→</b></span>
+    <span aria-hidden="true">Admissions open for 2027–28 · UKG to Class 11 · Forms close 10 December 2026 · <b>See admissions&nbsp;→</b></span>
   </span>
 </a>
 
@@ -44,6 +45,7 @@
         <li><a href="academics.html">Academics</a></li>
         <li><a href="admissions.html">Admissions</a></li>
         <li><a href="life.html">Life at Bosco</a></li>
+        <li><a href="gallery.html" aria-current="page">Gallery</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
@@ -64,7 +66,8 @@
       <li><a href="academics.html"><span class="menu-num" aria-hidden="true">03</span><span class="menu-name">Academics</span></a></li>
       <li><a href="admissions.html"><span class="menu-num" aria-hidden="true">04</span><span class="menu-name">Admissions</span></a></li>
       <li><a href="life.html"><span class="menu-num" aria-hidden="true">05</span><span class="menu-name">Life at Bosco</span></a></li>
-      <li><a href="contact.html"><span class="menu-num" aria-hidden="true">06</span><span class="menu-name">Contact</span></a></li>
+      <li><a href="gallery.html" aria-current="page"><span class="menu-num" aria-hidden="true">06</span><span class="menu-name">Gallery</span></a></li>
+      <li><a href="contact.html"><span class="menu-num" aria-hidden="true">07</span><span class="menu-name">Contact</span></a></li>
     </ul>
   </nav>
   <a class="btn btn-primary" href="admissions.html">Admissions 2027–28</a>
@@ -87,53 +90,81 @@
   <nav class="album-nav" aria-label="Albums">
     <div class="container">
       <span class="album-nav-label">Jump to an album</span>
-      <ul id="album-nav-list">
-        <li><a href="#bosco-fizza-2026">Bosco Fizza 2026</a></li>
-        <li><a href="#exhibition-2026">Exhibition 2026</a></li>
-        <li><a href="#ethnic-day-2026">Ethnic Day 2026</a></li>
-        <li><a href="#picnic-3-5">Picnic III–V</a></li>
-        <li><a href="#picnic-1-2">Picnic I–II</a></li>
-        <li><a href="#orientation-2026">Orientation 2026</a></li>
-        <li><a href="#investiture-seniors">Investiture Seniors</a></li>
-        <li><a href="#investiture-juniors">Investiture Juniors</a></li>
-        <li><a href="#belt-grading">Belt Grading</a></li>
-        <li><a href="#football-team">Football Team</a></li>
-        <li><a href="#fancy-dress">Fancy Dress</a></li>
-        <li><a href="#excursion">Excursion</a></li>
-        <li><a href="#debate-competition">Debate Competition</a></li>
-        <li><a href="#cubs-bulbul">Cubs &amp; Bulbul</a></li>
-        <li><a href="#nature-club">Nature Club</a></li>
-        <li><a href="#childrens-day-2024">Children&#x27;s Day 2024</a></li>
-        <li><a href="#bosco-fizza-2025">Bosco Fizza 2025</a></li>
-        <li><a href="#sports-day-2025">Sports Day 2025</a></li>
-        <li><a href="#scouts">Scouts</a></li>
-        <li><a href="#karate-club">Karate Club</a></li>
-        <li><a href="#kabaddi-team">Kabaddi Team</a></li>
-        <li><a href="#school-band">School Band</a></li>
-        <li><a href="#rectors-parents-day">Rector&#x27;s &amp; Parents&#x27; Day</a></li>
-        <li><a href="#rabindra-jayanti">Rabindra Jayanti</a></li>
-        <li><a href="#independence-day">Independence Day</a></li>
-        <li><a href="#republic-day">Republic Day</a></li>
-        <li><a href="#prize-distribution">Prize Distribution</a></li>
-        <li><a href="#leadership-training">Leadership Training</a></li>
-        <li><a href="#careers-workshop">Careers Workshop</a></li>
-        <li><a href="#industrial-visit">Industrial Visit</a></li>
-        <li><a href="#parents-animation">Parents&#x27; Animation</a></li>
-        <li><a href="#student-animation">Student Animation</a></li>
-        <li><a href="#campus-life">Campus Life</a></li>
-        <li><a href="#events-2023">2023 Events</a></li>
-        <li><a href="#instagram">Instagram</a></li>
-      </ul>
-      <button class="album-nav-toggle" type="button" aria-expanded="false" aria-controls="album-nav-list">Show all albums</button>
+      <div class="album-search">
+        <label class="visually-hidden" for="album-search">Search albums</label>
+        <input type="search" id="album-search" placeholder="Search albums" autocomplete="off">
+      </div>
+      <button class="album-nav-toggle" type="button" aria-expanded="false" aria-controls="album-panel">All albums (36)</button>
     </div>
   </nav>
+  <div class="album-panel" id="album-panel">
+    <div class="container">
+      <p class="album-panel-empty" hidden>No album matches &ldquo;<span></span>&rdquo; &mdash; try another word.</p>
+      <details class="album-group" open>
+        <summary>Festivals &amp; celebrations <span class="album-group-count">11 albums</span></summary>
+        <ul>
+          <li><a href="#bosco-fizza-2026">Bosco Fizza 2026</a></li>
+          <li><a href="#exhibition-2026">Exhibition 2026</a></li>
+          <li><a href="#ethnic-day-2026">Ethnic Day 2026</a></li>
+          <li><a href="#childrens-day-2024">Children&#x27;s Day 2024</a></li>
+          <li><a href="#bosco-fizza-2025">Bosco Fizza 2025</a></li>
+          <li><a href="#sports-day-2025">Sports Day 2025</a></li>
+          <li><a href="#rectors-parents-day">Rector&#x27;s &amp; Parents&#x27; Day</a></li>
+          <li><a href="#rabindra-jayanti">Rabindra Jayanti</a></li>
+          <li><a href="#independence-day">Independence Day</a></li>
+          <li><a href="#republic-day">Republic Day</a></li>
+          <li data-search="bosco fizza 2026"><a href="#visiting-schools">Visiting Schools</a></li>
+        </ul>
+      </details>
+      <details class="album-group">
+        <summary>Ceremonies &amp; school life <span class="album-group-count">10 albums</span></summary>
+        <ul>
+          <li><a href="#orientation-2026">Orientation 2026</a></li>
+          <li><a href="#investiture-seniors">Investiture Seniors</a></li>
+          <li><a href="#investiture-juniors">Investiture Juniors</a></li>
+          <li><a href="#belt-grading">Belt Grading</a></li>
+          <li><a href="#prize-distribution">Prize Distribution</a></li>
+          <li><a href="#leadership-training">Leadership Training</a></li>
+          <li><a href="#careers-workshop">Careers Workshop</a></li>
+          <li><a href="#parents-animation">Parents&#x27; Animation</a></li>
+          <li><a href="#student-animation">Student Animation</a></li>
+          <li><a href="#events-2023">2023 Events</a></li>
+        </ul>
+      </details>
+      <details class="album-group">
+        <summary>Sport, clubs &amp; teams <span class="album-group-count">9 albums</span></summary>
+        <ul>
+          <li><a href="#football-team">Football Team</a></li>
+          <li><a href="#fancy-dress">Fancy Dress</a></li>
+          <li><a href="#cubs-bulbul">Cubs &amp; Bulbul</a></li>
+          <li><a href="#nature-club">Nature Club</a></li>
+          <li><a href="#scouts">Scouts</a></li>
+          <li><a href="#karate-club">Karate Club</a></li>
+          <li><a href="#kabaddi-team">Kabaddi Team</a></li>
+          <li><a href="#school-band">School Band</a></li>
+          <li><a href="#debate-competition">Debate Competition</a></li>
+        </ul>
+      </details>
+      <details class="album-group">
+        <summary>Trips, campus &amp; more <span class="album-group-count">6 albums</span></summary>
+        <ul>
+          <li><a href="#picnic-3-5">Picnic III–V</a></li>
+          <li><a href="#picnic-1-2">Picnic I–II</a></li>
+          <li><a href="#excursion">Excursion</a></li>
+          <li><a href="#industrial-visit">Industrial Visit</a></li>
+          <li><a href="#campus-life">Campus Life</a></li>
+          <li><a href="#instagram">Instagram</a></li>
+        </ul>
+      </details>
+    </div>
+  </div>
 
   <section class="section" aria-label="Photographs">
   <div class="container">
     <div class="album" id="bosco-fizza-2026">
       <div class="album-head reveal">
         <h2>Bosco Fizza 2026</h2>
-        <p>18 photographs. The inter-school cultural fest, on stage in the school auditorium. The third edition brought together 20 schools and 1,403 participants in 23 events across 20 venues, run by 300 student volunteers.</p>
+        <p>14 photographs. The third Bosco Fizza: 20 schools, 1,403 participants, 23 events, 300 student volunteers.</p>
       </div>
       <div class="gallery-grid" data-stagger>
       <figure class="gallery-item">
@@ -148,12 +179,7 @@
         </button>
         <figcaption>The auditorium audience.</figcaption>
       </figure>
-      <figure class="gallery-item">
-        <button data-full="assets/img/gallery/bosco-fizza-2026-03.jpg" data-alt="Dancers on stage, with a Holy View Jr. High School banner at the front" data-caption="Dancers on stage, with a Holy View Jr. High School banner at the front, Bosco Fizza 2026." aria-label="View larger: Dancers on stage.">
-          <img src="assets/img/gallery-720/bosco-fizza-2026-03.jpg" alt="Dancers on stage, with a Holy View Jr. High School banner at the front" width="720" height="480" loading="lazy">
-        </button>
-        <figcaption>Dancers on stage.</figcaption>
-      </figure>
+      
       <figure class="gallery-item">
         <button data-full="assets/img/gallery/bosco-fizza-2026-04.jpg" data-alt="A classical dance performance under stage lights" data-caption="A classical dance performance under stage lights, Bosco Fizza 2026." aria-label="View larger: A classical dance performance.">
           <img src="assets/img/gallery-720/bosco-fizza-2026-04.jpg" alt="A classical dance performance under stage lights" width="720" height="480" loading="lazy">
@@ -184,24 +210,9 @@
         </button>
         <figcaption>A solo dancer.</figcaption>
       </figure>
-      <figure class="gallery-item">
-        <button data-full="assets/img/gallery/bosco-fizza-2026-09.jpg" data-alt="Dancers on stage, with a Jalpaiguri Public School banner" data-caption="Dancers on stage, with a Jalpaiguri Public School banner, Bosco Fizza 2026." aria-label="View larger: Dancers on stage.">
-          <img src="assets/img/gallery-720/bosco-fizza-2026-09.jpg" alt="Dancers on stage, with a Jalpaiguri Public School banner" width="720" height="480" loading="lazy">
-        </button>
-        <figcaption>Dancers on stage.</figcaption>
-      </figure>
-      <figure class="gallery-item">
-        <button data-full="assets/img/gallery/bosco-fizza-2026-10.jpg" data-alt="A student band on stage, with a St. Anthony&#x27;s Convent School, Jaigaon banner" data-caption="A student band on stage, with a St. Anthony&#x27;s Convent School, Jaigaon banner, Bosco Fizza 2026." aria-label="View larger: A student band on stage.">
-          <img src="assets/img/gallery-720/bosco-fizza-2026-10.jpg" alt="A student band on stage, with a St. Anthony&#x27;s Convent School, Jaigaon banner" width="720" height="480" loading="lazy">
-        </button>
-        <figcaption>A student band on stage.</figcaption>
-      </figure>
-      <figure class="gallery-item">
-        <button data-full="assets/img/gallery/bosco-fizza-2026-11.jpg" data-alt="Performers in masks and bright costumes with sparklers, with a Delhi Public School, Fulbari banner" data-caption="Performers in masks and bright costumes with sparklers, with a Delhi Public School, Fulbari banner, Bosco Fizza 2026." aria-label="View larger: Performers with sparklers.">
-          <img src="assets/img/gallery-720/bosco-fizza-2026-11.jpg" alt="Performers in masks and bright costumes with sparklers, with a Delhi Public School, Fulbari banner" width="720" height="480" loading="lazy">
-        </button>
-        <figcaption>Performers with sparklers.</figcaption>
-      </figure>
+      
+      
+      
       <figure class="gallery-item">
         <button data-full="assets/img/gallery/bosco-fizza-2026-12.jpg" data-alt="A trophy being presented on stage at the prize ceremony" data-caption="A trophy being presented on stage at the prize ceremony, Bosco Fizza 2026." aria-label="View larger: A trophy presented on stage.">
           <img src="assets/img/gallery-720/bosco-fizza-2026-12.jpg" alt="A trophy being presented on stage at the prize ceremony" width="720" height="480" loading="lazy">
@@ -249,7 +260,7 @@
     <div class="album" id="exhibition-2026">
       <div class="album-head reveal">
         <h2>Exhibition 2026</h2>
-        <p>12 photographs. Student models, paintings and craftwork on display at yellow-draped stalls — a Buddha painting, painted bamboo trays, crocheted bags, a 'WILDFIRE' diorama and a miniature garden.</p>
+        <p>12 photographs. Models, paintings and craft at the stalls, including a Buddha painting and a 'WILDFIRE' diorama.</p>
       </div>
       <div class="gallery-grid" data-stagger>
       <figure class="gallery-item">
@@ -264,7 +275,7 @@
         </button>
         <figcaption>Teachers under the Bosco Arcade canopy.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/exhibition-2026-03.jpg" data-alt="A textured Buddha painting on display" data-caption="A textured Buddha painting on display, Exhibition 2026." aria-label="View larger: A Buddha painting.">
           <img src="assets/img/gallery-720/exhibition-2026-03.jpg" alt="A textured Buddha painting on display" width="480" height="720" loading="lazy">
         </button>
@@ -394,7 +405,7 @@
         </button>
         <figcaption>Posing for a photograph.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--pos-bottom">
         <button data-full="assets/img/gallery/picnic-3-5-09.jpg" data-alt="Hula hoops on the ground, picnic day on campus" data-caption="Hula hoops on the ground, picnic day on campus, 2026." aria-label="View larger: Hula hoops on the ground.">
           <img src="assets/img/gallery-720/picnic-3-5-09.jpg" alt="Hula hoops on the ground, picnic day on campus" width="720" height="480" loading="lazy">
         </button>
@@ -456,7 +467,7 @@
         </button>
         <figcaption>Drawing outdoors.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/picnic-1-2-09.jpg" data-alt="Teachers and children seated outdoors with drawing boards, picnic day on campus" data-caption="Teachers and children seated outdoors with drawing boards, picnic day on campus, 2026." aria-label="View larger: Drawing with teachers.">
           <img src="assets/img/gallery-720/picnic-1-2-09.jpg" alt="Teachers and children seated outdoors with drawing boards, picnic day on campus" width="480" height="720" loading="lazy">
         </button>
@@ -490,8 +501,8 @@
     </div>
     <div class="album" id="orientation-2026">
       <div class="album-head reveal">
-        <h2>Class XI Orientation Programme 2026</h2>
-        <p>7 photographs. The Class XI orientation in the school hall — a gold-scarf welcome, prayer, and an address beside a garlanded statue of Don Bosco.</p>
+        <h2>Orientation 2026</h2>
+        <p>7 photographs. The Class XI orientation in the hall — a gold-scarf welcome, prayer, an address beside Don Bosco's garlanded statue.</p>
       </div>
       <div class="gallery-grid" data-stagger>
       <figure class="gallery-item">
@@ -540,8 +551,8 @@
     </div>
     <div class="album" id="investiture-seniors">
       <div class="album-head reveal">
-        <h2>Investiture Ceremony Seniors 2026</h2>
-        <p>13 photographs. The senior student leaders take their oath and receive their sashes and badges, with lamp-lighting, a scout flag procession and a classical dance.</p>
+        <h2>Investiture Seniors 2026</h2>
+        <p>13 photographs. Senior leaders take the oath, receive sashes and badges — lamp-lighting, flag procession, classical dance.</p>
       </div>
       <div class="gallery-grid" data-stagger>
       <figure class="gallery-item">
@@ -626,7 +637,7 @@
     </div>
     <div class="album" id="investiture-juniors">
       <div class="album-head reveal">
-        <h2>Investiture Ceremony Juniors 2026</h2>
+        <h2>Investiture Juniors 2026</h2>
         <p>9 photographs. The junior leaders take their oath and receive their sashes and certificates.</p>
       </div>
       <div class="gallery-grid" data-stagger>
@@ -688,8 +699,8 @@
     </div>
     <div class="album" id="belt-grading">
       <div class="album-head reveal">
-        <h2>Annual Belt Grading 2025-26</h2>
-        <p>8 photographs. Children in karate gi graded outdoors, receiving belts, medals and a trophy plaque.</p>
+        <h2>Annual Belt Grading</h2>
+        <p>8 photographs. Children in karate gi graded outdoors in 2025–26, receiving belts, medals and a trophy plaque.</p>
       </div>
       <div class="gallery-grid" data-stagger>
       <figure class="gallery-item">
@@ -786,37 +797,37 @@
         <p>6 photographs. Young children in costume in the school corridor — Durga, Krishna, Assamese dress, Spider-Man, a soldier and a doctor.</p>
       </div>
       <div class="gallery-grid" data-stagger>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/fancy-dress-01.jpg" data-alt="A child dressed as Goddess Durga, holding a trophy" data-caption="A child dressed as Goddess Durga, holding a trophy." aria-label="View larger: Dressed as Goddess Durga.">
           <img src="assets/img/gallery-720/fancy-dress-01.jpg" alt="A child dressed as Goddess Durga, holding a trophy" width="540" height="720" loading="lazy">
         </button>
         <figcaption>Dressed as Goddess Durga.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/fancy-dress-02.jpg" data-alt="A child dressed as Krishna" data-caption="A child dressed as Krishna." aria-label="View larger: Dressed as Krishna.">
           <img src="assets/img/gallery-720/fancy-dress-02.jpg" alt="A child dressed as Krishna" width="540" height="720" loading="lazy">
         </button>
         <figcaption>Dressed as Krishna.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/fancy-dress-03.jpg" data-alt="A child in Assamese dress" data-caption="A child in Assamese dress." aria-label="View larger: In Assamese dress.">
           <img src="assets/img/gallery-720/fancy-dress-03.jpg" alt="A child in Assamese dress" width="540" height="720" loading="lazy">
         </button>
         <figcaption>In Assamese dress.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/fancy-dress-04.jpg" data-alt="A child dressed as Spider-Man" data-caption="A child dressed as Spider-Man." aria-label="View larger: Dressed as Spider-Man.">
           <img src="assets/img/gallery-720/fancy-dress-04.jpg" alt="A child dressed as Spider-Man" width="540" height="720" loading="lazy">
         </button>
         <figcaption>Dressed as Spider-Man.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/fancy-dress-05.jpg" data-alt="A child dressed as Krishna, posing for the camera" data-caption="A child dressed as Krishna, posing for the camera." aria-label="View larger: Dressed as Krishna.">
           <img src="assets/img/gallery-720/fancy-dress-05.jpg" alt="A child dressed as Krishna, posing for the camera" width="540" height="720" loading="lazy">
         </button>
         <figcaption>Dressed as Krishna.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/fancy-dress-06.jpg" data-alt="A child in a blue traditional dress" data-caption="A child in a blue traditional dress." aria-label="View larger: In a blue traditional dress.">
           <img src="assets/img/gallery-720/fancy-dress-06.jpg" alt="A child in a blue traditional dress" width="540" height="720" loading="lazy">
         </button>
@@ -930,13 +941,13 @@
         </button>
         <figcaption>Formation practice.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/cubs-bulbul-05.jpg" data-alt="Bulbul girls with a teacher, under the trees." data-caption="Bulbul girls with a teacher, under the trees." aria-label="View larger: A group under the trees.">
           <img src="assets/img/gallery-720/cubs-bulbul-05.jpg" alt="Bulbul girls with a teacher, under the trees." width="540" height="720" loading="lazy">
         </button>
         <figcaption>A group under the trees.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/cubs-bulbul-06.jpg" data-alt="Bulbul girls playing hoop games on the grass." data-caption="Bulbul girls playing hoop games on the grass." aria-label="View larger: Hoop games on the grass.">
           <img src="assets/img/gallery-720/cubs-bulbul-06.jpg" alt="Bulbul girls playing hoop games on the grass." width="540" height="720" loading="lazy">
         </button>
@@ -956,31 +967,31 @@
         </button>
         <figcaption>Planting by the garden bed.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/nature-club-02.jpg" data-alt="Girls planting seedlings in the garden bed, helped by a teacher." data-caption="Girls planting seedlings in the garden bed, helped by a teacher." aria-label="View larger: Seedlings going in.">
           <img src="assets/img/gallery-720/nature-club-02.jpg" alt="Girls planting seedlings in the garden bed, helped by a teacher." width="480" height="720" loading="lazy">
         </button>
         <figcaption>Seedlings going in.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/nature-club-03.jpg" data-alt="Pupils and a teacher working the soil in the garden bed." data-caption="Pupils and a teacher working the soil in the garden bed." aria-label="View larger: Working the soil together.">
           <img src="assets/img/gallery-720/nature-club-03.jpg" alt="Pupils and a teacher working the soil in the garden bed." width="480" height="720" loading="lazy">
         </button>
         <figcaption>Working the soil together.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/nature-club-04.jpg" data-alt="Scouts planting seedlings along the garden bed." data-caption="Scouts planting seedlings along the garden bed." aria-label="View larger: Scouts planting in a row.">
           <img src="assets/img/gallery-720/nature-club-04.jpg" alt="Scouts planting seedlings along the garden bed." width="480" height="720" loading="lazy">
         </button>
         <figcaption>Scouts planting in a row.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/nature-club-05.jpg" data-alt="Scouts planting a row of seedlings in the garden bed." data-caption="Scouts planting a row of seedlings in the garden bed." aria-label="View larger: A row of new seedlings.">
           <img src="assets/img/gallery-720/nature-club-05.jpg" alt="Scouts planting a row of seedlings in the garden bed." width="480" height="720" loading="lazy">
         </button>
         <figcaption>A row of new seedlings.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/nature-club-06.jpg" data-alt="Scouts planting seedlings, with the school building behind them." data-caption="Scouts planting seedlings, with the school building behind them." aria-label="View larger: Planting with care.">
           <img src="assets/img/gallery-720/nature-club-06.jpg" alt="Scouts planting seedlings, with the school building behind them." width="480" height="720" loading="lazy">
         </button>
@@ -991,7 +1002,7 @@
     <div class="album" id="childrens-day-2024">
       <div class="album-head reveal">
         <h2>Children&#x27;s Day 2024</h2>
-        <p>13 photographs. The Children's Day annual fete: a merry-go-round, trampolines, an inflatable slide, game and prize stalls, food stalls and a lion mascot.</p>
+        <p>13 photographs. The Children's Day fete: rides, trampolines, an inflatable slide, game and food stalls, a lion mascot.</p>
       </div>
       <div class="gallery-grid" data-stagger>
       <figure class="gallery-item">
@@ -1000,7 +1011,7 @@
         </button>
         <figcaption>A ride at the fete.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/childrens-day-02.jpg" data-alt="The trampoline area at the Children&#x27;s Day fete." data-caption="The trampoline area at the Children&#x27;s Day fete." aria-label="View larger: The trampoline area.">
           <img src="assets/img/gallery-720/childrens-day-02.jpg" alt="The trampoline area at the Children&#x27;s Day fete." width="540" height="720" loading="lazy">
         </button>
@@ -1036,7 +1047,7 @@
         </button>
         <figcaption>A game of skill.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/gallery/childrens-day-08.jpg" data-alt="The inflatable slide at the Children&#x27;s Day annual fete, 2024." data-caption="The inflatable slide at the Children&#x27;s Day annual fete, 2024." aria-label="View larger: The inflatable slide.">
           <img src="assets/img/gallery-720/childrens-day-08.jpg" alt="The inflatable slide at the Children&#x27;s Day annual fete, 2024." width="540" height="720" loading="lazy">
         </button>
@@ -1293,7 +1304,7 @@
     <div class="album" id="karate-club">
       <div class="album-head reveal">
         <h2>Karate Club</h2>
-        <p>5 photographs. Karate practice in the courtyard, led by a black-belt instructor. Practice sessions, distinct from the Annual Belt Grading ceremony.</p>
+        <p>5 photographs. Karate practice in the courtyard with a black-belt instructor — not the Belt Grading ceremony.</p>
       </div>
       <div class="gallery-grid" data-stagger>
       <figure class="gallery-item">
@@ -1334,7 +1345,7 @@
         <p>3 photographs. The girls&#x27; kabaddi team in red, with the school flag.</p>
       </div>
       <div class="gallery-grid" data-stagger>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/events/kabaddi-team-01.jpg" data-alt="Three medal-winning kabaddi players." data-caption="Three medal-winning kabaddi players." aria-label="View larger: Three medal-winners.">
           <img src="assets/img/events-720/kabaddi-team-01.jpg" alt="Three medal-winning kabaddi players." width="540" height="720" loading="lazy">
         </button>
@@ -1480,7 +1491,7 @@
         </button>
         <figcaption>Addressing the assembly.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/events/independence-day-02.jpg" data-alt="The courtyard decorated for Independence Day." data-caption="The courtyard decorated for Independence Day." aria-label="View larger: The decorated courtyard.">
           <img src="assets/img/events-720/independence-day-02.jpg" alt="The courtyard decorated for Independence Day." width="480" height="720" loading="lazy">
         </button>
@@ -1518,7 +1529,7 @@
         </button>
         <figcaption>A dance in white and orange.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/events/republic-day-03.jpg" data-alt="The flag flying over the Republic Day assembly." data-caption="The flag flying over the Republic Day assembly." aria-label="View larger: The flag over the assembly.">
           <img src="assets/img/events-720/republic-day-03.jpg" alt="The flag flying over the Republic Day assembly." width="480" height="720" loading="lazy">
         </button>
@@ -1820,24 +1831,27 @@
         </button>
         <figcaption>Classical dance on stage.</figcaption>
       </figure>
-      <figure class="gallery-item">
-        <button data-full="assets/img/taekwondo-winners.jpg" data-alt="Students with taekwondo certificates and medals" data-caption="State taekwondo championship winners with their certificates and medals." aria-label="View larger: taekwondo winners">
-          <img src="assets/img/covers-720/taekwondo-winners.jpg" alt="Students with taekwondo certificates and medals" width="720" height="480" loading="lazy">
-        </button>
-        <figcaption>State taekwondo winners.</figcaption>
-      </figure>
-      <figure class="gallery-item">
+<figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/diwali-graphic.jpg" data-alt="The school's Diwali greeting graphic" data-caption="The school's Diwali greeting, from its Instagram page." aria-label="View larger: Diwali greeting">
           <img src="assets/img/covers-720/diwali-graphic.jpg" alt="The school's Diwali greeting graphic" width="658" height="720" loading="lazy">
         </button>
         <figcaption>Diwali greeting, from Instagram.</figcaption>
       </figure>
-      <figure class="gallery-item">
+<figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/bosco-jayanti-poster.jpg" data-alt="Bosco Jayanti poster" data-caption="Bosco Jayanti poster, the 211th birth anniversary of St. John Bosco." aria-label="View larger: Bosco Jayanti poster">
           <img src="assets/img/covers-720/bosco-jayanti-poster.jpg" alt="Bosco Jayanti poster" width="576" height="720" loading="lazy">
         </button>
         <figcaption>Bosco Jayanti poster.</figcaption>
       </figure>
+<figure class="gallery-item">
+        <button data-full="assets/img/taekwondo-winners.jpg" data-alt="Students with taekwondo certificates and medals" data-caption="State taekwondo championship winners with their certificates and medals." aria-label="View larger: taekwondo winners">
+          <img src="assets/img/covers-720/taekwondo-winners.jpg" alt="Students with taekwondo certificates and medals" width="720" height="480" loading="lazy">
+        </button>
+        <figcaption>State taekwondo winners.</figcaption>
+      </figure>
+      
+      
+      
       </div>
     </div>
     <div class="album" id="events-2023">
@@ -1870,7 +1884,7 @@
         </button>
         <figcaption>Certificate handover, 2023.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/trophy-portrait.jpg" data-alt="A student holding a trophy on stage" data-caption="A student with a trophy on stage, felicitation ceremony, 30 August 2023." aria-label="View larger: trophy portrait">
           <img src="assets/img/covers-720/trophy-portrait.jpg" alt="A student holding a trophy on stage" width="480" height="720" loading="lazy">
         </button>
@@ -1898,7 +1912,7 @@
     </div>
     <div class="album" id="instagram">
       <div class="album-head reveal">
-        <h2>From the school's Instagram</h2>
+        <h2>Instagram</h2>
         <p>14 photographs. Posted by the school on its Instagram account.</p>
       </div>
       <div class="gallery-grid" data-stagger>
@@ -1956,7 +1970,7 @@
         </button>
         <figcaption>The Constitution Day assembly.</figcaption>
       </figure>
-      <figure class="gallery-item">
+      <figure class="gallery-item gallery-item--portrait">
         <button data-full="assets/img/ig/DNXU2lbzMbr_independence-day-stage.jpg" data-alt="Independence Day, children on stage in tricolour" data-caption="Independence Day, children on stage in tricolour, 2025." aria-label="View larger: Independence Day on stage.">
           <img src="assets/img/ig-720/DNXU2lbzMbr_independence-day-stage.jpg" alt="Independence Day, children on stage in tricolour" width="535" height="720" loading="lazy">
         </button>
@@ -1987,6 +2001,38 @@
         <figcaption>A science seminar on stage.</figcaption>
       </figure>
       </div>
+    <div class="album" id="visiting-schools">
+      <div class="album-head reveal">
+        <h2>Visiting Schools</h2>
+        <p>4 photographs. Performances by visiting schools at Bosco Fizza 2026.</p>
+      </div>
+      <div class="gallery-grid" data-stagger>
+<figure class="gallery-item">
+        <button data-full="assets/img/gallery/bosco-fizza-2026-03.jpg" data-alt="Dancers on stage, with a Holy View Jr. High School banner at the front" data-caption="Dancers on stage, with a Holy View Jr. High School banner at the front, Bosco Fizza 2026." aria-label="View larger: Holy View Jr. High School dancers.">
+          <img src="assets/img/gallery-720/bosco-fizza-2026-03.jpg" alt="Dancers on stage, with a Holy View Jr. High School banner at the front" width="720" height="480" loading="lazy">
+        </button>
+        <figcaption>Holy View Jr. High School dancers.</figcaption>
+      </figure>
+<figure class="gallery-item">
+        <button data-full="assets/img/gallery/bosco-fizza-2026-09.jpg" data-alt="Dancers on stage, with a Jalpaiguri Public School banner" data-caption="Dancers on stage, with a Jalpaiguri Public School banner, Bosco Fizza 2026." aria-label="View larger: Jalpaiguri Public School dancers.">
+          <img src="assets/img/gallery-720/bosco-fizza-2026-09.jpg" alt="Dancers on stage, with a Jalpaiguri Public School banner" width="720" height="480" loading="lazy">
+        </button>
+        <figcaption>Jalpaiguri Public School dancers.</figcaption>
+      </figure>
+<figure class="gallery-item">
+        <button data-full="assets/img/gallery/bosco-fizza-2026-10.jpg" data-alt="A student band on stage, with a St. Anthony&#x27;s Convent School, Jaigaon banner" data-caption="A student band on stage, with a St. Anthony&#x27;s Convent School, Jaigaon banner, Bosco Fizza 2026." aria-label="View larger: St. Anthony's band on stage.">
+          <img src="assets/img/gallery-720/bosco-fizza-2026-10.jpg" alt="A student band on stage, with a St. Anthony&#x27;s Convent School, Jaigaon banner" width="720" height="480" loading="lazy">
+        </button>
+        <figcaption>St. Anthony's band on stage.</figcaption>
+      </figure>
+<figure class="gallery-item">
+        <button data-full="assets/img/gallery/bosco-fizza-2026-11.jpg" data-alt="Performers in masks and bright costumes with sparklers, with a Delhi Public School, Fulbari banner" data-caption="Performers in masks and bright costumes with sparklers, with a Delhi Public School, Fulbari banner, Bosco Fizza 2026." aria-label="View larger: Delhi Public School, Fulbari, performers.">
+          <img src="assets/img/gallery-720/bosco-fizza-2026-11.jpg" alt="Performers in masks and bright costumes with sparklers, with a Delhi Public School, Fulbari banner" width="720" height="480" loading="lazy">
+        </button>
+        <figcaption>Delhi Public School, Fulbari, performers.</figcaption>
+      </figure>
+      </div>
+    </div>
     </div>
   </div>
   </section>
@@ -2024,12 +2070,9 @@
       <h3>Explore</h3>
       <ul>
         <li><a href="about.html">About the school</a></li>
-        <li><a href="staff.html">Staff</a></li>
+        <li><a href="admissions.html">Admissions 2027–28</a></li>
         <li><a href="academics.html">Academics</a></li>
         <li><a href="life.html">Life at Bosco</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="videos.html">Videos</a></li>
-        <li><a href="facilities.html">Facilities</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </div>
@@ -2040,18 +2083,16 @@
         <li><a href="fees.html">Fee structure</a></li>
         <li><a href="news.html">News and notices</a></li>
       </ul>
-      <p class="footer-dates">Forms close 10 December 2026. Entrance, interaction and counselling 17–18 December.</p>
       <a class="btn btn-primary btn-small footer-cta" href="admissions.html">Apply for 2027–28</a>
     </div>
     <div class="footer-col">
       <h3>Contact</h3>
       <p>Oodlabari, Kranti Road, P.O. Manabari,<br>Dist. Jalpaiguri, West Bengal 735222</p>
       <p>Phone: <a href="tel:+917047343645">70473 43645</a><br>Email: <a href="mailto:dbsoodlabari@gmail.com">dbsoodlabari@gmail.com</a></p>
-      <p>Affiliated to CISCE, New Delhi. School Code WB366.</p>
     </div>
   </div>
   <div class="container footer-bottom">
-    <span>© <span data-year>2026</span> Don Bosco School Oodlabari · Virtue and Knowledge</span>
+    <span>© <span data-year>2026</span> Don Bosco School Oodlabari</span>
   </div>
 </footer>
 
