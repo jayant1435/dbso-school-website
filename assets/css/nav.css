@@ -316,3 +316,77 @@
 .mobile-menu.open nav li:nth-child(7) { transition-delay: 0.24s; }
 .mobile-menu.open .btn { transition-delay: 0.27s; }
 .mobile-menu.open .mobile-menu-foot { transition-delay: 0.30s; }
+
+/* ===== v31 L3: no-JS mobile nav fallback (B3-D §8) ===== */
+/* The hamburger is a JS control: with scripting off the toggle is dead
+   and the drawer can never open, so below the 1060px breakpoint a phone
+   or tablet user had NO navigation (Hallmark Floor 7: content visible
+   with scripting off). The fallback is a <noscript> strip directly
+   below the header — plain links, no new behaviour, no new colours.
+   With scripting on the <noscript> content is never in the DOM, so
+   these rules match nothing and JS-on rendering is untouched. */
+.nojs-nav { display: none; }
+@media (max-width: 1060px) {
+  .nojs-nav {
+    display: block;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  /* One wrapped row (two or three rows at 390px), aligned to the page
+     grid by the shared .container — in normal flow, so it can never
+     overlap the header and never forces horizontal scroll. */
+  .nojs-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 12px 0;
+  }
+  .nojs-nav li { margin-bottom: 0; }
+  /* Desktop nav language, reused: bold dark-navy text, blue on hover,
+     the same 3px blue underline drawing in — no pill, no new style. */
+  .nojs-nav a:not(.btn) {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 12px;
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s var(--ease-out);
+  }
+  .nojs-nav a:not(.btn)::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 2px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--blue);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s var(--ease-out);
+    pointer-events: none;
+  }
+  .nojs-nav a:not(.btn):hover { color: var(--blue); }
+  .nojs-nav a:not(.btn):hover::after { transform: scaleX(1); }
+  .nojs-nav a:not(.btn)[aria-current="page"] { color: var(--blue); font-weight: 700; }
+  .nojs-nav a:not(.btn)[aria-current="page"]::after { transform: scaleX(1); }
+  /* The header CTA reuses .btn-small (42px); the fallback lifts it to
+     the 44px touch target the other links already meet. */
+  .nojs-nav .btn { min-height: 44px; }
+}
+/* Focus ring: the global :focus-visible 3px blue ring applies; this
+   matches the other nav controls' 3px offset (better-ui: focus rings
+   visible at all times; Hallmark Floor 6). */
+.nojs-nav a:focus-visible { outline-offset: 3px; }
+/* Reduced motion: the colour/underline transition rests (Hallmark
+   Floor 7 prefers-reduced-motion fallback). */
+@media (prefers-reduced-motion: reduce) {
+  .nojs-nav a:not(.btn),
+  .nojs-nav a:not(.btn)::after { transition: none; }
+}
