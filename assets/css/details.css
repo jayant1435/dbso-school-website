@@ -1163,3 +1163,87 @@ section[aria-label="Celebrations and events"] .tick-list li span {
   line-height: 1.2;
   min-height: 2.4em;
 }
+
+/* ===== W-A8R (wave 9, 24 Nov 2026) =====
+   Re-measured A8's F1/F2/F3 on the v54 tree (Range-rect line counts,
+   390/768/834/1440) and patched what reproduces. No copy change, no new
+   colour, no new motion; all rules append-only in this file. */
+
+/* ---- FIX 1 (P2, A8 F1): "Who can apply" list line counts not constant ----
+   Measured BEFORE (admissions.html, v54): 390 all 2 lines (62px) ✓;
+   768 eight items 1 line (36px) and item 9 ("Admission is discretionary…")
+   2 lines (64px); 834 all 1 line (36px) ✓; 1440 eight items 2 lines (64px)
+   and item 8 ("ISC is normally reserved…") 1 line (36px). Flip-point
+   probes pin the bands: item 9 drops to 1 line between 768px (li 720px,
+   still 2 lines) and 770px (li 722px, 1 line); item 8 drops to 1 line
+   between 1160px (li 532px, all 2 lines) and 1180px (li 542px, item 8
+   1 line); the column caps at 542px (container max 1180px), so above the
+   flip item 8 stays 1 line at every wider viewport (1536, 1920 measured).
+   no-ai-design-slop (smallest correction, existing system — the same
+   min-height reserve the committee cards and fees summary cards carry) +
+   audit-ai-design-slop (accidental inconsistency, P2): every item reserves
+   2 lines — min-height calc(2 * 1.65em + var(--space-2)): the li's text
+   runs 1.65 line-height on the 17px body (16.5px ≤600px), border-box, so
+   2 lines + the 8px padding-bottom = 64px (62px ≤600px), exactly the
+   measured 2-line height. Scoped to ≤769px and ≥861px ONLY: at 770–860px
+   every item is 1 line (measured 772–850), so a reserve there would add
+   28px of dead space per item — the W-R14 failure mode. Below the flip
+   the reserve is a no-op where items are already 2 lines, and above 861px
+   the column never widens past 542px, so the ≥861px branch never needs an
+   upper bound. Scoped to the "How to apply" section so the Documents /
+   Uniform / rules check-lists (all 1 line everywhere) are untouched. */
+@media (max-width: 769px), (min-width: 861px) {
+  .section[aria-label="How to apply"] .check-list > li { min-height: calc(2 * 1.65em + var(--space-2)); }
+}
+
+/* ---- FIX 2 (P2, A8 F2): videos long-grid rows uneven — PARTIAL ----
+   Measured BEFORE (videos.html, v54): within every row the spread is 0
+   (align-items: stretch already ends each row level), but rows differ:
+   390 (1 col) cards 403–457px (spread 54); 768 rows 451px, last row 488px;
+   834 row 1 445px vs rows 2–5 471px, last row 516px; 1440 rows 459px,
+   last row 500px. Two drivers: (a) 1-line titles/descriptions — h3 runs
+   1–2 lines (28/56px), description p 1–2 lines (26/52px); (b) the last
+   card spans 2 columns with 21/9 media (319px @1440 vs 225px siblings),
+   which sets its whole row — a structural gap the v52 change to true
+   16:10 media opened (at v50 the 4:3 media nearly cancelled the wide
+   card's extra height; 16:10 no longer does).
+   no-ai-design-slop (smallest correction, existing system) +
+   audit-ai-design-slop (accidental inconsistency, P2): h3 and the
+   description p each reserve 2 lines (h3: calc(2 * 1.3em) on its 1.35rem /
+   1.3; p: calc(2 * 1.65em) on its 0.98rem / 1.65), the same reserve the
+   fees summary cards carry. This fixes driver (a) everywhere: 390 all
+   cards 457px, 834 row 1 rises 445 → 471px to match rows 2–5. The wide
+   last card is EXCLUDED at ≥601px: reserving its 1-line h3/p would grow
+   its row further (1440: 500 → 526px; 834: 516 → 570px; 768: 488 → 542px)
+   — strictly worse. At ≤600px the span is off (grid-column auto, 16/10
+   media), so the reserve applies to all cards there including the last.
+   RESIDUAL (not shippable by a line reserve): the wide row stays taller
+   than the other rows — 1440: 500 vs 459px (+41); 834: 516 vs 471px (+45);
+   768: 488 vs 451px (+37). Equalising it needs the wide card's media to
+   shrink (a ~3:1 crop of a 4:3 thumbnail — faces would go) or the other
+   rows to grow (dead space) — a design decision for the coordinator, not
+   this patch. Shorts grid untouched (already even: 399/397/417/403px). */
+.videos-long .card-body h3 { min-height: calc(2 * 1.3em); }
+.videos-long .card-body > p:not(.card-link) { min-height: calc(2 * 1.65em); }
+@media (min-width: 601px) {
+  .videos-long .card:last-child .card-body h3,
+  .videos-long .card:last-child .card-body > p:not(.card-link) { min-height: 0; }
+}
+
+/* ---- FIX 3 (P3, A8 F3): admissions dates strip first row 17px short ----
+   Measured BEFORE (admissions.html, v54): stacked at 390/768/834 the
+   items are [50, 67, 67]px; at 1440 (3-col row) all 50px ✓. Mechanism:
+   items 2–3 carry the divider (border-top 1px + padding-top 16px) while
+   the first item has neither. audit-ai-design-slop (accidental
+   inconsistency, P3) + better-ui (one spacing system): the first item
+   gets the identical divider box — a transparent top border (no visible
+   line added above the first row) plus the same padding-top — in both
+   stacked bands (≤600px, style.css:1404–1405; 601–860px, details.css
+   FIX 1 above), so all three rows are exactly 67px. Scoped with
+   .page-head + .dates-strip so the home strip is untouched. */
+@media (max-width: 600px) {
+  .page-head + .dates-strip .date-item:first-child { border-top: 1px solid transparent; padding-top: var(--space-4); }
+}
+@media (min-width: 601px) and (max-width: 860px) {
+  .page-head + .dates-strip .date-item:first-child { border-top: 1px solid transparent; padding-top: var(--space-4); }
+}
