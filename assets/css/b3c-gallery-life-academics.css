@@ -1,143 +1,109 @@
-/* Hallmark: b3c-gallery-life-academics · fix-loop patch · theme DBSO blue+gold · scope gallery jump-nav + grid, life figures, syllabus groups */
-/* B3-C patch — gallery jump-nav + grid + portraits; life figures; syllabus groups.
+/* Hallmark: b3c-gallery-life-academics · v31 gallery collage + mobile slider · theme DBSO blue+gold · scope gallery collage/slider, life figures, syllabus groups */
+/* B3-C patch — gallery collage + slider + portraits (v31); life figures; syllabus groups.
    Placement: copy to site/assets/css/b3c-gallery-life-academics.css (link tags
    already added after details.css in gallery.html, life.html, academics.html).
    All colours, fonts and spacing come from the tokens in style.css :root. */
 
-/* ---- Jump nav: slim sticky bar + grouped panel (Spec 1) ---- */
-.album-nav .container { align-items: center; }
-.album-nav .album-nav-toggle {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  margin-top: 0;
-  padding: var(--space-2) var(--space-4);
-  background: var(--ink);
-  color: var(--paper);
-  border: 1px solid var(--ink);
-  border-radius: var(--radius-pill);
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-.album-nav .album-nav-toggle:hover { background: var(--blue); border-color: var(--blue); }
-.album-nav .album-nav-toggle:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+/* ---- Gallery v31 (W-D, 23 Nov 2026): albums / jump-nav / search REMOVED per
+   Jayant — the page is event sections only: a header, then ALL its images.
+   No captions anywhere. One system for every event:
+   - desktop + tablet (>=768px): a real COLLAGE on a 6-column grid — first row
+     one big image, then 3+3, 2+2+2, 4+2 rows; the last tile stretches to
+     close a ragged final row. Faces stay in frame (portraits crop top).
+   - mobile (<768px): a swipeable SLIDER (scroll-snap, 82% cards so the next
+     photo peeks in) with 48px prev/next buttons + a live counter.
+   All colours, fonts, spacing and radii are the tokens in style.css :root
+   (blue + gold only, Bricolage Grotesque + DM Sans). Motion: transform +
+   opacity only, 150-400ms, reduced-motion respected. */
 
-/* Search sits in the bar; hidden without JS (html.js is added by main.js). */
-.album-search { display: none; flex: 1 1 220px; min-width: 0; position: relative; }
-html.js .album-search { display: block; }
-/* The search label is for screen readers only (no such utility exists yet
-   elsewhere on the site, so it lives here with the search it labels). */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
-}
-.album-search input {
-  width: 100%;
-  min-height: 44px;
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-soft);
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 1rem;
-}
-.album-search input::placeholder { color: var(--ink-mute); }
-.album-search input:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-color: var(--blue); }
-@media (max-width: 600px) {
-  .album-search { flex-basis: 100%; order: 3; }
+/* Event sections: the heading carries its own weight (Hallmark floor 9 —
+   no eyebrow, no tracked-caps label); the Visiting Schools note is the one
+   factual line the brief asks to keep visible. */
+.event-head { margin-bottom: var(--space-4); }
+.event-head h2 { margin-bottom: var(--space-2); }
+.event-note { color: var(--ink-soft); margin: 0; max-width: 62ch; }
+
+/* ---- Collage: >=768px (desktop and tablet — one grid system, it scales
+   down cleanly, so tablet keeps the collage instead of a second slider). ---- */
+@media (min-width: 768px) {
+  .gallery-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .gallery-item { aspect-ratio: 4 / 3; }
+  .gallery-item button { height: 100%; }
+  .gallery-item img { height: 100%; aspect-ratio: auto; }
+  /* 8-photo cycle, every row closes exactly on 6 columns:
+     hero 6 | 3+3 | 2+2+2 | 4+2. Row height is the tallest tile; the rest
+     stretch and their photos crop (object-fit: cover), so rows stay level. */
+  .gallery-grid > .gallery-item:nth-child(8n+1) { grid-column: span 6; aspect-ratio: 21 / 9; }
+  .gallery-grid > .gallery-item:nth-child(8n+2),
+  .gallery-grid > .gallery-item:nth-child(8n+3) { grid-column: span 3; aspect-ratio: 4 / 3; }
+  .gallery-grid > .gallery-item:nth-child(8n+4),
+  .gallery-grid > .gallery-item:nth-child(8n+5),
+  .gallery-grid > .gallery-item:nth-child(8n+6) { grid-column: span 2; aspect-ratio: 1 / 1; }
+  .gallery-grid > .gallery-item:nth-child(8n+7) { grid-column: span 4; aspect-ratio: 16 / 9; }
+  .gallery-grid > .gallery-item:nth-child(8n+8) { grid-column: span 2; aspect-ratio: 1 / 1; }
+  /* Hero crop: centre 30% down so faces survive the 21/9 letterbox. */
+  .gallery-grid > .gallery-item:nth-child(8n+1) img { object-position: center 30%; }
+  .gallery-grid > .gallery-item--portrait:nth-child(8n+1) img { object-position: top; }
+  .gallery-grid > .gallery-item--pos-bottom:nth-child(8n+1) img { object-position: bottom; }
+  /* Ragged final rows: stretch the last tile to close the row instead of
+     leaving a hole (counts ending 2, 4, 5 or 7 in the 8-cycle). */
+  .gallery-grid > .gallery-item:last-child:nth-child(8n+2),
+  .gallery-grid > .gallery-item:last-child:nth-child(8n+4),
+  .gallery-grid > .gallery-item:last-child:nth-child(8n+7) { grid-column: span 6; aspect-ratio: 21 / 9; }
+  .gallery-grid > .gallery-item:last-child:nth-child(8n+5) { grid-column: span 4; aspect-ratio: 16 / 9; }
 }
 
-/* Panel: visible without JS; with JS it opens under the bar, never sticky. */
-.album-panel {
-  background: var(--paper);
-  border-bottom: 1px solid var(--line);
-  padding: var(--space-4) 0 var(--space-6);
+/* ---- Slider: <768px. Scroll-snap + buttons; no auto-rotate, no autoplay. ---- */
+.event-nav { display: none; }
+@media (max-width: 767px) {
+  .gallery-grid {
+    display: flex;
+    gap: var(--space-3);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: var(--space-2);
+    scrollbar-width: thin;
+  }
+  /* 82% cards: the next photo peeks in so the visitor knows there is more. */
+  .gallery-grid > .gallery-item { flex: 0 0 82%; scroll-snap-align: start; }
+  /* Buttons exist only where the slider does, and only with JS (html.js is
+     added by main.js); without JS the strip still swipes natively. */
+  html.js .event-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-top: var(--space-3);
+  }
+  .event-prev,
+  .event-next {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    background: var(--paper);
+    color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
+  }
+  .event-prev svg,
+  .event-next svg { width: 20px; height: 20px; }
+  .event-prev:hover,
+  .event-next:hover { background: var(--blue); border-color: var(--blue); color: var(--paper); }
+  .event-prev:active,
+  .event-next:active { transform: scale(0.96); }
+  .event-prev:focus-visible,
+  .event-next:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+  .event-prev:disabled,
+  .event-next:disabled { opacity: 0.35; cursor: default; }
+  .event-prev:disabled:hover,
+  .event-next:disabled:hover { background: var(--paper); border-color: var(--line-strong); color: var(--ink); }
+  .event-count { font-weight: 600; font-variant-numeric: tabular-nums; min-width: 3.5em; text-align: center; }
 }
-.album-panel .container { display: grid; gap: var(--space-2); }
-html.js .album-panel { display: none; }
-html.js .album-nav.expanded + .album-panel { display: block; animation: album-panel-in 250ms var(--ease-out); }
-@keyframes album-panel-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
-.album-panel-empty { color: var(--ink-soft); margin: 0; padding: var(--space-2) 0; }
-
-.album-group { border-bottom: 1px solid var(--line); }
-.album-group summary {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  min-height: 44px;
-  padding: var(--space-2) 0;
-  font-family: var(--font-body);
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--ink);
-  cursor: pointer;
-  list-style: none;
-}
-.album-group summary::-webkit-details-marker { display: none; }
-.album-group summary::after {
-  content: "";
-  width: 10px;
-  height: 10px;
-  margin-left: auto;
-  border-right: 2px solid var(--ink);
-  border-bottom: 2px solid var(--ink);
-  transform: rotate(45deg);
-  transition: transform 200ms var(--ease-out);
-  flex: none;
-}
-.album-group[open] summary::after { transform: rotate(225deg); }
-.album-group summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
-.album-group-count { font-size: 0.85rem; font-weight: 500; color: var(--ink-mute); }
-.album-group ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  list-style: none;
-  margin: 0;
-  padding: 0 0 var(--space-4);
-}
-.album-group a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-pill);
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  font-weight: 500;
-  text-decoration: none;
-}
-.album-group a:hover { background: var(--band); border-color: var(--blue); color: var(--blue); }
-.album-group a:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
-
-/* ---- Gallery grid: every row full — a lone last photo spans the row ---- */
-@media (min-width: 861px) {
-  .gallery-grid > .gallery-item:last-child:nth-child(3n+1) { grid-column: span 3; }
-  .gallery-grid > .gallery-item:last-child:nth-child(3n+2) { grid-column: span 2; }
-  .gallery-grid > .gallery-item:last-child:nth-child(3n+1) img,
-  .gallery-grid > .gallery-item:last-child:nth-child(3n+2) img { aspect-ratio: 21/9; object-position: center 25%; }
-}
-@media (min-width: 601px) and (max-width: 860px) {
-  .gallery-grid > .gallery-item:last-child:nth-child(2n+1) { grid-column: span 2; }
-  .gallery-grid > .gallery-item:last-child:nth-child(2n+1) img { aspect-ratio: 21/9; object-position: center 25%; }
-  /* Hula-hoops (Picnic III-V, last item): ground-level subject, keep the bottom. */
-  .gallery-grid > .gallery-item--pos-bottom:last-child img { object-position: bottom; }
-}
-/* A portrait that is also a wide last item keeps its faces: crop from the top. */
-.gallery-grid > .gallery-item.gallery-item--portrait:last-child img { object-position: top; }
 
 /* Portrait photos: crop from the top so faces stay in frame (gallery + life). */
 .gallery-item--portrait img { object-position: top; }
@@ -169,6 +135,7 @@ html.js .album-nav.expanded + .album-panel { display: block; animation: album-pa
 
 /* Motion: panel and chevron use transform/opacity only; reduced motion = no motion. */
 @media (prefers-reduced-motion: reduce) {
-  html.js .album-nav.expanded + .album-panel { animation: none; }
-  .album-group summary::after { transition: none; }
+  .event-prev,
+  .event-next { transition: none; }
+  .gallery-grid { scroll-behavior: auto; }
 }
