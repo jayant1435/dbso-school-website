@@ -9,8 +9,9 @@
   --ink-mute: #5d6d7c;
   --line: #d9dee3;
   --line-strong: #b9c2ca;
-  --red: #b3202e;
-  --red-dark: #931a26;
+  --blue: #1d6fa5; /* the one action colour — buttons, links, accents */
+  --blue-dark: #175984; /* hover / darker action blue */
+  --house-red: #b3202e; /* Red House ONLY — school identity content, never UI */
   --gold: #c9a227; /* accent marks only: rules, dots, separators — NEVER text */
   --gold-soft: #e8d9a8; /* ::selection background ONLY */
   --footer-bg: #16232f;
@@ -22,7 +23,7 @@
   --house-yellow: #c9a227; /* Yellow house (= gold value, separate name) */
   /* Raw rgba values, tokenized */
   --scrim-mid: rgba(18, 30, 42, 0.42);
-  --shadow-red: rgba(179, 32, 46, 0.35);
+  --shadow-blue: rgba(29, 111, 165, 0.35);
   --footer-line: rgba(232, 237, 241, 0.18);
   --scrim-faint: rgba(18, 30, 42, 0.08); /* hero gradient faint stop */
   --shadow-header: 0 1px 2px rgba(18, 30, 42, 0.05), 0 8px 24px rgba(18, 30, 42, 0.08);
@@ -85,11 +86,11 @@ html { scrollbar-color: var(--line-strong) var(--paper); }
 
 img { max-width: 100%; height: auto; display: block; }
 
-a { color: var(--red); transition: color 0.15s var(--ease-out); text-underline-offset: 3px; }
-a:hover { color: var(--red-dark); }
+a { color: var(--blue); transition: color 0.15s var(--ease-out); text-underline-offset: 3px; }
+a:hover { color: var(--blue-dark); }
 
 :focus-visible {
-  outline: 3px solid var(--red);
+  outline: 3px solid var(--blue);
   outline-offset: 2px;
   border-radius: 2px;
 }
@@ -190,7 +191,7 @@ figcaption {
 .announce-track b { font-weight: 700; color: var(--paper); }
 @keyframes announce-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .announce:hover .announce-track { animation-play-state: paused; }
-/* The bar is a link: hovering must not turn its text red-dark on ink. */
+/* The bar is a link: hovering must not turn its text blue-dark on ink. */
 .announce:hover { color: var(--paper); }
 
 /* ---------- Header ---------- */
@@ -289,8 +290,8 @@ figcaption {
 .btn:hover { transform: translateY(-1px); }
 .btn:active { transform: translateY(1px); box-shadow: none; }
 .btn:focus-visible { outline-offset: 3px; }
-.btn-primary { background: var(--red); color: var(--paper); }
-.btn-primary:hover { background: var(--red-dark); color: var(--paper); box-shadow: 0 6px 18px var(--shadow-red); }
+.btn-primary { background: var(--blue); color: var(--paper); }
+.btn-primary:hover { background: var(--blue-dark); color: var(--paper); box-shadow: 0 6px 18px var(--shadow-blue); }
 .btn-outline { background: transparent; border-color: var(--paper); color: var(--paper); }
 .btn-outline:hover { background: var(--paper); color: var(--ink); box-shadow: var(--shadow-1); }
 .btn-ghost { background: transparent; border-color: var(--line-strong); color: var(--ink); }
@@ -301,7 +302,7 @@ figcaption {
 .home-links { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-5); }
 .home-links .btn { white-space: nowrap; }
 /* v24: the one "see more" style, site-wide. A text link, not a button —
-   red, underlined, arrow slides on hover. Every see-more link on the site
+   blue, underlined, arrow slides on hover. Every see-more link on the site
    uses .text-link, so they all look the same. */
 .text-link {
   display: inline-flex;
@@ -309,18 +310,18 @@ figcaption {
   gap: 6px;
   font-weight: 600;
   font-size: 1rem;
-  color: var(--red);
+  color: var(--blue);
   text-decoration: underline;
   text-underline-offset: 4px;
   text-decoration-thickness: 2px;
 }
-.text-link:hover { color: var(--red-dark); }
+.text-link:hover { color: var(--blue-dark); }
 .text-link .arrow { transition: transform 0.2s var(--ease-out); }
 .text-link:hover .arrow { transform: translateX(3px); }
 /* Outline button for light backgrounds (the hero/CTA-band .btn-outline is
    white-on-dark only). */
 .btn-outline-dark { background: transparent; border-color: var(--ink); color: var(--ink); }
-.btn-outline-dark:hover { border-color: var(--red); color: var(--red); box-shadow: var(--shadow-1); }
+.btn-outline-dark:hover { border-color: var(--blue); color: var(--blue); box-shadow: var(--shadow-1); }
 
 
 /* ---------- Hero ---------- */
@@ -486,7 +487,7 @@ figcaption {
   font-weight: 600;
   font-size: 2.4rem;
   line-height: 1;
-  color: var(--red);
+  color: var(--blue);
 }
 .pillar h3 { margin-top: 0; font-size: 1.6rem; }
 .pillar p { color: var(--ink-soft); max-width: 62ch; }
@@ -550,7 +551,7 @@ figcaption {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 1.25rem;
-  color: var(--red);
+  color: var(--blue);
 }
 .topper-name { font-weight: 600; font-size: 1.1rem; min-width: 0; line-height: 1.3; display: flex; align-items: center; }
 .topper-score {
@@ -619,7 +620,7 @@ figcaption {
   height: 20px;
   flex-shrink: 0;
   margin-top: 3px;
-  color: var(--red);
+  color: var(--blue);
 }
 
 .chip-list {
@@ -677,7 +678,7 @@ button.tile {
   transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out), background-color 0.2s var(--ease-out);
 }
 button.tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-1); border-color: var(--ink-mute); background: var(--paper-warm); }
-button.tile[aria-pressed="true"] { border-color: var(--red); background: var(--paper-warm); box-shadow: var(--shadow-1); }
+button.tile[aria-pressed="true"] { border-color: var(--blue); background: var(--paper-warm); box-shadow: var(--shadow-1); }
 /* ---------- Steps (admissions process) ---------- */
 
 .steps { list-style: none; padding: 0; margin: 0; counter-reset: step; }
@@ -698,7 +699,7 @@ button.tile[aria-pressed="true"] { border-color: var(--red); background: var(--p
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background: var(--red);
+  background: var(--blue);
   color: var(--paper);
   font-family: var(--font-display);
   font-weight: 600;
@@ -733,7 +734,7 @@ button.tile[aria-pressed="true"] { border-color: var(--red); background: var(--p
 }
 .switcher-tab:hover { border-color: var(--ink); transform: translateY(-1px); box-shadow: var(--shadow-1); }
 .switcher-tab:active { transform: translateY(0); box-shadow: none; }
-.switcher-tab[aria-selected="true"] { background: var(--ink); border-color: var(--red); color: var(--paper); box-shadow: 0 0 0 1px var(--red); } /* v24: the selected tab keeps a visible edge — ink-on-ink hid it */
+.switcher-tab[aria-selected="true"] { background: var(--ink); border-color: var(--blue); color: var(--paper); box-shadow: 0 0 0 1px var(--blue); } /* v24: the selected tab keeps a visible edge — ink-on-ink hid it */
 .switcher-panel { display: none; }
 .switcher-panel.active { display: block; animation: panel-in 0.35s var(--ease-out); }
 @keyframes panel-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
@@ -861,7 +862,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .gallery-item button { transition: box-shadow 0.3s var(--ease-out); }
 .gallery-item button:hover img { transform: scale(1.04); }
 .gallery-item button:hover { box-shadow: var(--shadow-2); }
-.gallery-item button:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+.gallery-item button:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
 .gallery-item figcaption { font-size: 0.88rem; }
 
 .lightbox {
@@ -1009,20 +1010,20 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   font-family: var(--font-body);
   font-size: 1rem;
   color: var(--ink);
-  caret-color: var(--red);
+  caret-color: var(--blue);
   width: 100%;
   transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
 }
 .field input:hover, .field select:hover, .field textarea:hover { border-color: var(--ink-mute); }
 .field textarea { min-height: 140px; resize: vertical; }
 .field input:focus, .field select:focus, .field textarea:focus {
-  outline: 3px solid var(--red);
+  outline: 3px solid var(--blue);
   outline-offset: 1px;
-  border-color: var(--red);
+  border-color: var(--blue);
 }
 .field .hint { font-size: 0.88rem; color: var(--ink-mute); min-height: 1lh; }
-.field .error-text { font-size: 0.88rem; color: var(--red); min-height: 1lh; font-weight: 600; }
-.field [aria-invalid="true"] { border-color: var(--red); }
+.field .error-text { font-size: 0.88rem; color: var(--blue); min-height: 1lh; font-weight: 600; }
+.field [aria-invalid="true"] { border-color: var(--blue); }
 .form-note {
   font-size: 0.92rem;
   color: var(--ink-soft);
@@ -1043,7 +1044,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   margin: 0;
 }
 .contact-lines li:last-child { border-bottom: 0; }
-.contact-lines svg { width: 22px; height: 22px; flex-shrink: 0; margin-top: 2px; color: var(--red); }
+.contact-lines svg { width: 22px; height: 22px; flex-shrink: 0; margin-top: 2px; color: var(--blue); }
 .contact-lines strong { display: block; }
 .contact-lines span { color: var(--ink-soft); }
 
@@ -1178,7 +1179,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   font-weight: 500;
   transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out), border-color 0.2s var(--ease-out), transform 0.2s var(--ease-out);
 }
-.album-nav a:hover { background: var(--ink); border-color: var(--red); color: var(--paper); transform: translateY(-1px); } /* v24: same visible-edge fix as the stream tabs */
+.album-nav a:hover { background: var(--ink); border-color: var(--blue); color: var(--paper); transform: translateY(-1px); } /* v24: same visible-edge fix as the stream tabs */
 .album-nav-toggle { display: none; }
 
 /* ---------- Anthem, lineage, awards ---------- */
