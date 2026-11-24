@@ -298,12 +298,13 @@
   visibility: visible;
   transition: opacity 0.4s var(--ease-out), visibility 0s;
 }
-.wm-value-slide :is(img, .dbso-value-icon) { width: 120px; height: 120px; object-fit: contain; }
-.wm-value-slide .value-name { font-size: 1.6rem; white-space: nowrap; }
+.wm-value-slide :is(img, .dbso-value-icon) { width: 104px; height: 104px; object-fit: contain; }
+.wm-value-slide .value-name { font-size: 1.45rem; white-space: nowrap; }
+html:not(.js) .wm-value-slide .value-name { white-space: normal; overflow-wrap: anywhere; }
 @media (max-width: 600px) {
   .wm-values-stage { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .wm-value-slide :is(img, .dbso-value-icon) { width: 96px; height: 96px; }
-  .wm-value-slide .value-name { font-size: 1.35rem; }
+  .wm-value-slide :is(img, .dbso-value-icon) { width: 80px; height: 80px; }
+  .wm-value-slide .value-name { font-size: 1.15rem; }
   /* W-HVALS2: no-JS fallback only — the full names (longest "Respect for
      Others", ~191px est.) spill out of the ~141px 2-column tile while
      white-space: nowrap holds, so let the name wrap there. The JS rail
@@ -335,7 +336,7 @@
    on phones, 72px at desktop, vs 16px / 36px before). */
 .wm-values-track { display: contents; }
 .js .wm-values-stage.wm-values--animated {
-  --values-peek: 36px;
+  --values-peek: 44px;
   display: block;
   max-width: 656px;
   margin-inline: auto;
@@ -343,7 +344,7 @@
   cursor: grab;
 }
 @media (min-width: 601px) {
-  .js .wm-values-stage.wm-values--animated { --values-peek: 80px; }
+  .js .wm-values-stage.wm-values--animated { --values-peek: 112px; }
 }
 .js .wm-values-stage.wm-values--animated:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
 .js .wm-values-stage.wm-values--animated.wm-grabbing { cursor: grabbing; }
@@ -692,3 +693,10 @@ section[aria-label="The Preventive System"] { padding-top: var(--space-5); }
    every width) + Type (name strip untouched, one size, 1 line each).
    ===================================================================== */
 .wm-house-slide img { flex: 1 1 auto; min-height: 0; width: 100%; display: block; object-fit: cover; }
+
+/* v110: stable text measure at narrow widths and consistent neighbour peek. */
+.js .wm-values-stage.wm-values--animated .wm-value-slide { padding-inline: var(--space-3); padding-block: var(--space-5); }
+.wm-value-slide .value-name { max-width: 100%; }
+@media (max-width: 360px) {
+  .js .wm-value-slide .value-name { white-space: normal; overflow-wrap: anywhere; }
+}

@@ -1099,11 +1099,12 @@
       var cardW = 0, step = 0, pos = 1;
       var snapTimer = null, snapPending = false;
       function peek() {
-        if (!halfMode) return window.innerWidth >= PEEK_BP ? 80 : 36;
         var stageW = stage.getBoundingClientRect().width;
-        var minCard = window.innerWidth >= PEEK_BP ? 232 : 202;
-        var card = Math.max(minCard, Math.floor((stageW - 16) / 2));
-        return Math.floor((stageW - card) / 2);
+        var minCard = window.innerWidth >= PEEK_BP ? 232 : 200;
+        var desired = halfMode
+          ? Math.floor((stageW - Math.max(minCard, Math.floor((stageW - 32) / 2))) / 2)
+          : window.innerWidth >= PEEK_BP ? 112 : 44;
+        return Math.max(0, Math.min(desired, Math.floor((stageW - minCard) / 2)));
       }
       function offsetFor(p) { return peek() - p * step; }
       function render(animate) {

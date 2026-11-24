@@ -66,10 +66,6 @@
    2-tile last row), two on a phone — no ragged last row. */
 .tile-hint { color: var(--ink-soft); font-size: 0.95rem; margin: 0 0 var(--space-3); }
 
-.house-swatch-red { background: var(--house-red); } /* Red House colour: content, not UI */
-.house-swatch-blue { background: var(--house-blue); }
-.house-swatch-green { background: var(--house-green); }
-.house-swatch-yellow { background: var(--house-yellow); }
 
 .value-num {
   font-family: var(--font-display);

@@ -935,7 +935,7 @@ section[aria-label="School hours"] h2 { margin-top: 0; }
    (one section, one rhythm; equal edges) + impeccable craft-floor
    (tight groups, generous separation). */
 .awards-years .award-group + .award-group { margin-top: var(--space-7); }
-.awards-note { margin: var(--space-7) 0 0; }
+.awards-note { margin: var(--space-3) 0 0; }
 
 /* ---- Item 14: achievements — uniform line counts ----
    better-ui (cut text that wraps to a lonely last word): the compound
@@ -1336,8 +1336,13 @@ section[aria-label="Celebrations and events"] .tick-list li span {
 @media (max-width: 600px) {
   .videos-long .card-body h3 { -webkit-line-clamp: 3; min-height: calc(3 * 1.3em); }
 }
-@media (min-width: 861px) and (max-width: 1200px) {
+@media (min-width: 601px) and (max-width: 1200px) {
   .videos-long .card-body h3 { -webkit-line-clamp: 3; min-height: calc(3 * 1.3em); }
+}
+/* Keep distinguishing years and event names readable at every width. */
+.videos-long .card-body h3 { display: block; overflow: visible; -webkit-line-clamp: unset; }
+@media (min-width: 601px) and (max-width: 860px) {
+  .videos-long .card-body > p:not(.card-link) { min-height: calc(3 * 1.65em); }
 }
 
 /* ---- FIX 3 (P3, A8 F3): admissions dates strip first row 17px short ----
@@ -1718,3 +1723,7 @@ section[aria-label="Mission and values"] .container > div:first-child p:not(.led
   section[aria-label="Mission and values"] .wm-value-slide :is(img, .dbso-value-icon) { width: 80px; height: 80px; }
   section[aria-label="Mission and values"] .wm-value-slide .value-name { font-size: 1.15rem; }
 }
+
+/* v110: keep the yearless recognition note and the Life gallery link close to their content. */
+section:has(> .container > .awards-note) { padding-bottom: var(--space-5); }
+section:has(> .container > .home-links > a.btn[href="gallery.html"]) { padding-bottom: var(--space-5); }

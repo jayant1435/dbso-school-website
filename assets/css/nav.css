@@ -135,10 +135,6 @@
    home.css/details.css re-assertions that used to beat a plain
    .header-cta on order were deleted in v36 (B3-E P3-1) as duplicates
    of the base value. */
-.header-cta.btn-small {
-  margin-left: var(--space-4);
-  min-height: 48px;
-}
 
 /* ---------- Hamburger: one round button, three honest bars ----------
    v25: 48px round button on a warm tint; the middle bar runs short so
@@ -415,7 +411,6 @@
 @media (max-width: 1105px) {
   .main-nav { display: none; }
   .menu-toggle { display: flex; }
-  .header-cta { display: none; }
 }
 
 /* ===== v37 B3-F: the v25/v29 link stagger is DELETED with the drawer
@@ -485,7 +480,6 @@
   .nojs-nav a:not(.btn)[aria-current="page"]::after { transform: scaleX(1); }
   /* The header CTA reuses .btn-small (44px); the fallback lifts it to
      the 44px touch target the other links already meet. */
-  .nojs-nav .btn { min-height: 44px; }
 }
 /* Focus ring: the global :focus-visible 3px blue ring applies; this
    matches the other nav controls' 3px offset (better-ui: focus rings

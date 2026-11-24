@@ -264,7 +264,6 @@ figcaption {
   transition: background-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
 }
 
-.header-cta { margin-left: var(--space-3); flex-shrink: 0; }
 
 
 /* ---------- Buttons ---------- */
@@ -413,11 +412,11 @@ figcaption {
 
 /* ---------- Sections ---------- */
 
-.section { padding-top: var(--space-8); padding-bottom: var(--space-8); }
+.section { padding-top: var(--space-7); padding-bottom: var(--space-7); }
 .section-band { background: var(--band); }
 .section-warm { background: var(--paper-warm); }
 
-.section-head { max-width: 65ch; margin-bottom: var(--space-7); }
+.section-head { max-width: 65ch; margin-bottom: var(--space-6); }
 .section-head h2 { margin-top: 0; }
 .section-head p { color: var(--ink-soft); font-size: 1.12rem; }
 
@@ -1078,7 +1077,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .site-footer {
   background: var(--footer-bg);
   color: var(--footer-ink);
-  margin-top: var(--space-8);
+  margin-top: var(--space-4);
   position: relative;
   overflow: clip;
 }
@@ -1210,11 +1209,16 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   .anthem { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-8); row-gap: var(--space-5); }
   .anthem-verse + .anthem-verse { margin-top: 0; }
 }
+.anthem-verse { min-width: 0; container-type: inline-size; }
 .anthem p {
   font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-size: 1rem;
+  font-size: clamp(0.75rem, 4.65cqi, 1.15rem);
   line-height: 1.65;
   margin: 0;
+}
+@media (max-width: 600px) {
+  .anthem { padding: var(--space-3); }
 }
 .lineage { margin: 0; }
 .lineage-row {
@@ -1448,8 +1452,8 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
    short. Above 600px only; below that the shared two-column rule already
    divides all three counts. */
 @media (min-width: 601px) {
-  .tile-grid--sport,
-  .tile-grid--clubs { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .tile-grid--sport { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .tile-grid--clubs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .tile-grid--cocurr { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 /* v29 assembly: W3's 601-700px 2-col cocurr rule reverted — Elocution is
@@ -1715,3 +1719,15 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
 .text-link .arrow { display: inline-flex; align-items: center; }
 .pillar-arrow .dbso-utility-icon { width: 24px; height: 24px; }
 @media (max-width: 600px) { .dbso-section-mark { width: 36px; height: 36px; } }
+
+/* v110: tighter content rhythm; retain the established CTA and reveal rules. */
+section[aria-label="Life at Bosco"] { padding-bottom: var(--space-5); }
+section[aria-label="ICSE 2026 toppers"] { padding-top: var(--space-5); }
+.tile-grid--clubs .tile { min-width: 0; overflow-wrap: anywhere; }
+.tile-grid--clubs { align-items: stretch; }
+@media (max-width: 600px) {
+  .section { padding-block: var(--space-6); }
+  .section-head { margin-bottom: var(--space-5); }
+  section[aria-label="Life at Bosco"] { padding-bottom: var(--space-5); }
+  section[aria-label="ICSE 2026 toppers"] { padding-top: var(--space-5); }
+}
