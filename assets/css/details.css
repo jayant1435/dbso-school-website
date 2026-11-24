@@ -620,19 +620,23 @@ section[aria-label="Our story"] .lineage-row {
      desktop, leaving the warm left column half empty. Centre the figure
      against the text column; stacked below 861px this rule does nothing. */
   section[aria-label="Coat of arms"] .split { align-items: center; }
-  /* W-L2-1 (wave 12, 24 Nov 2026): the principal photo column ends
-     ~566px above the text column at desktop (text 900px vs figure 334px
-     at 1440/1536; 888 vs 291 at 1024) — ~63% of the right column is empty
-     band, because the row uses align-items: start. Centre the figure
-     against the text column: the same one-line treatment W-G2 used for
-     the coat of arms, in the same ≥861px band. Stacked below 861px this
-     rule does nothing (one column; the figure takes order -1). No token,
-     colour, font or copy change.
+  /* W-AB67 (wave 11, task 283, Jayant's brief 24 Nov 11:50 IST): SUPERSEDES
+     the W-L2-1 centring below — centring only halved the void (283px
+     above + 283px below the photo at 1440, browser-measured W-R68),
+     because the split row held ~870px of text against a ~334px figure.
+     The priorities now live in a full-width block below the split, so
+     the row is only the quote + attribution (~366px at 1440, ~333px at
+     1024) against the same figure (~334px / ~291px): 32px trailing
+     space at 1440, 42px at 1024, 0 above the photo (font-metric sim,
+     ESTIMATE-ONLY). Top alignment is the .split default; the rule stays
+     explicit so a future centring does not silently re-open the void.
+     Stacked below 861px this rule does nothing (one column; the figure
+     takes order -1 per Item 4). No token, colour, font or copy change.
      design-taste-frontend §5 Checklist ("splits stack text first, no row
      half empty") + no-ai-design-slop Compact Quality Gate "Composition"
      (alignment, balance and negative space intentional at every
      viewport) + better-ui ("Align everything to a single grid"). */
-  section[aria-label="From the Principal"] .split { align-items: center; }
+  section[aria-label="From the Principal"] .split { align-items: start; }
 }
 @media (max-width: 860px) {
   section[aria-label="Our story"] .lineage-wide {
@@ -641,6 +645,51 @@ section[aria-label="Our story"] .lineage-row {
   section[aria-label="Our story"] .lineage-row {
     column-gap: var(--space-5);
   }
+}
+
+/* ---- W-AB67 (wave 11, task 283): principal attribution + priorities ----
+   (1) NAME WEIGHT: the <strong> name rendered at 700 — the browser's
+   unconsidered <strong> default — against a 400 role line, so the name
+   shouted for no reason. CHOICE: 600 semibold, not 400. 400 would
+   dissolve the name into the role line (hierarchy loss); 600 is the
+   site's own deliberate semibold step for principal names
+   (.lineage-current p, details.css) — name still leads, role still
+   follows, by weight + colour (name ink, role ink-soft), not by a
+   shout. typography (hierarchy from size + weight + colour, not a new
+   size per block) + no-ai-design-slop (a reflex default is slop when
+   it communicates no hierarchy). Scoped to this section only:
+   .quote-attr is used nowhere else, but style.css owns the shared
+   rule and this file owns the about-page overrides.
+   PADDING: the attribution is a signature block, not a body paragraph:
+   24px above it (space-5, was the generic 16px) so it stands off the
+   quote, and a 1.5 leading so name and role sit as one tight block
+   (was the inherited 1.65). Its bottom margin is 0 by the existing
+   p:last-child rule — it is now the last child of the text column.
+   (3) PRIORITIES: same six items, same wording, restructured only.
+   Two columns at full container width (3 + 3, balanced) with a 32px
+   gutter: the block drops from ~393px to ~208px at 1440 and the items
+   read as a clean index instead of a six-paragraph wall. Item gap
+   8px -> 12px (space-3): within an item the lines sit ~10px apart,
+   between items ~22px — proximity does the grouping, no containers
+   (no-ai-design-slop "Use proximity before containers"). One column
+   again below 600px, where two columns would wrap every item to 3-4
+   lines. The block itself sits 48px (space-7, the split's own gap)
+   below the quote/photo row. No new token, colour, font or size;
+   no fact cut or rewritten. better-ui (4px steps, one grid) +
+   design-system (tokens only) + typography (3-4 sizes only). */
+section[aria-label="From the Principal"] .quote-attr {
+  margin-top: var(--space-5);
+  line-height: 1.5;
+}
+section[aria-label="From the Principal"] .quote-attr strong { font-weight: 600; }
+.principal-priorities-block { margin-top: var(--space-7); }
+.principal-priorities {
+  columns: 2;
+  column-gap: var(--space-6);
+}
+.principal-priorities li { margin-bottom: var(--space-3); }
+@media (max-width: 600px) {
+  .principal-priorities { columns: 1; }
 }
 
 /* ---- Item 4: principal's photo travels with the text on phones ----
