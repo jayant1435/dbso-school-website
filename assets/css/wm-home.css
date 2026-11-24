@@ -701,3 +701,26 @@ html:not(.js) .wm-values-stage .wm-value-slide:last-child { grid-column: 1 / -1;
   section[aria-label="Welcome from the school"] .split > .reveal:first-child { order: 2; }
   section[aria-label="Welcome from the school"] .gold-rule { margin-top: 0; }
 }
+
+/* v122: About-only full-width native values rail, using the shared tokens (not home-only aliases). */
+section[aria-label="Mission and values"] .core-values-block { margin-top:var(--space-6); }
+.core-values-block > h3 { margin:0 0 var(--space-4); }
+#about-values-stage, .js #about-values-stage { position:relative; display:block; width:100%; max-width:none; margin:0; overflow-x:auto; overflow-y:hidden; touch-action:pan-x pan-y; scrollbar-width:thin; scroll-snap-type:x proximity; }
+#about-values-stage .wm-values-track { display:flex; width:max-content; gap:var(--space-4); padding:var(--space-1) 0 var(--space-2); transform:none; }
+#about-values-stage .wm-value-slide, .js #about-values-stage .wm-value-slide { flex:0 0 clamp(200px,22vw,240px); width:clamp(200px,22vw,240px); min-height:200px; margin:0; padding:var(--space-4); border:1px solid var(--line); border-radius:var(--radius-card); box-shadow:var(--shadow-1); opacity:1; visibility:visible; scroll-snap-align:start; }
+#about-values-stage .value-num { font-size:0.85rem; color:var(--ink-mute); }
+#about-values-stage .value-name { font-size:1.05rem; white-space:nowrap; }
+#about-values-stage .dbso-value-icon { width:88px; height:88px; border-radius:var(--radius-soft); object-fit:contain; }
+#about-values-stage.values-autoscroll { scroll-snap-type:none; scrollbar-width:none; }
+#about-values-stage.values-autoscroll::-webkit-scrollbar { display:none; }
+#about-values-stage .wm-value-slide--clone { pointer-events:none; }
+@media (max-width:600px) {
+  section[aria-label="Mission and values"] .core-values-block { margin-top:var(--space-5); }
+  #about-values-stage .wm-value-slide,.js #about-values-stage .wm-value-slide { flex-basis:200px; width:200px; min-height:176px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  #about-values-stage,.js #about-values-stage { overflow:visible; }
+  #about-values-stage .wm-values-track { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); width:auto; }
+  #about-values-stage .wm-value-slide,.js #about-values-stage .wm-value-slide { width:auto; }
+  #about-values-stage .wm-value-slide--clone { display:none; }
+}

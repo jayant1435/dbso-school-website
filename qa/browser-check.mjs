@@ -5,7 +5,7 @@ import { resolve, extname, sep } from "node:path";
 import assert from "node:assert/strict";
 const root = process.cwd();
 const pages = ["index","about","academics","admissions","life","gallery","news","contact"];
-const sizes = [320,360,390,601,650,768,834,861,890,960,1024,1100,1440,1536];
+const sizes = [320,360,375,390,400,412,430,440,601,650,768,834,861,890,960,1024,1100,1440,1536];
 const types = {".html":"text/html; charset=utf-8",".css":"text/css",".js":"text/javascript",".webp":"image/webp",".jpg":"image/jpeg",".jpeg":"image/jpeg",".png":"image/png",".svg":"image/svg+xml",".woff2":"font/woff2",".ico":"image/x-icon"};
 const server = createServer(async (req,res)=>{
   try {
@@ -41,9 +41,27 @@ async function check(name,width,mode){
   assert.equal(dom.h1,1,"one page H1");
   assert.equal(dom.duplicates.length,0,"unique IDs");
   assert.equal(dom.alt,0,"image alt attributes");
-  assert.equal(dom.icons.length,["index","about"].includes(name)?7:0,"illustrated icon scope");
+  assert.equal(dom.icons.length,name==="about"?7:0,"illustrated icon scope");
   assert.ok(dom.icons.every(x=>x.includes("/value-")) && dom.iconPlacement,"core value images only");
   assert.ok(dom.cloneAccessibility,"carousel clones hidden from assistive technology");
+  assert.equal(await p.locator(".life-strip-pause,.awards-pause,.awards-hint").count(),0,"no unwanted photograph controls");
+  if(name==="index"){assert.equal(await p.locator('section[aria-label="Campus"] .home-links a').count(),1,"one campus link");}
+  if(name==="about"){
+    const checks=await p.evaluate(()=>{
+      const stage=document.querySelector("#about-values-stage");
+      const lines=el=>{const r=document.createRange();r.selectNodeContents(el);return r.getClientRects().length;};
+      const leaders=[...document.querySelectorAll(".leader-body h3,.leader-body p")].map(el=>({lines:lines(el),fits:el.scrollWidth<=el.clientWidth+1}));
+      const labels=[...document.querySelectorAll(".why-grid .tile")].map(el=>({lines:lines(el),fits:el.scrollWidth<=el.clientWidth+1}));
+      const awardRects=[...document.querySelectorAll(".award-image")].map(el=>({w:el.getBoundingClientRect().width,h:el.getBoundingClientRect().height}));
+      return {stage:stage.clientWidth,container:stage.closest(".container").clientWidth,leaders,labels,awardRects};
+    });
+    if(width<=600){
+      assert.ok(checks.leaders.every(x=>x.lines===1&&x.fits),"one-line leader names and roles");
+      assert.ok(checks.labels.every(x=>x.lines===1&&x.fits),"one-line reasons");
+    }
+    if(width>=861)assert.ok(checks.stage>=checks.container-50,"full-width core-values stage");
+    if(mode==="normal")assert.ok(checks.awardRects.every(x=>Math.abs(x.w-checks.awardRects[0].w)<2&&Math.abs(x.h-checks.awardRects[0].h)<2),"uniform award frames");
+  }
   const navText=await p.locator(".main-nav a").allTextContents();
   assert.ok(navText.includes("Campus") && navText.includes("Notices"),"short navigation labels");
   if(name==="gallery") assert.equal(await p.locator(".event-head .gold-rule").count(),36,"all gallery events use gold heading rule");
@@ -56,7 +74,7 @@ async function check(name,width,mode){
     assert.equal(await toggle.getAttribute("aria-expanded"),"true","menu opens");
     await p.keyboard.press("Escape");
     assert.equal(await toggle.getAttribute("aria-expanded"),"false","menu closes");
-    const pause=p.locator(".life-strip-pause");await pause.click();assert.equal(await pause.getAttribute("aria-pressed"),"true","photo strip pauses");await pause.click();assert.equal(await pause.getAttribute("aria-pressed"),"false","photo strip resumes");
+    assert.equal(await p.locator(".life-strip-pause").count(),0,"no pause button");
   }
   assert.equal(errors.length,0,errors.join("; "));
   results.push({name,width,mode,status:"pass"});

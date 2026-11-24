@@ -1790,3 +1790,18 @@ section[aria-label="Non-teaching staff"] .nonteach-text h3 { margin-bottom:var(-
 @media(max-width:360px) {
   .topper-row,.result-row { grid-template-columns:36px minmax(0,1fr) auto; gap:var(--space-2); }
 }
+
+/* v122 — coherent footer and one-line mobile staff/reasons; canonical brand tokens. */
+.site-footer .footer-inner { align-items:start; gap:var(--space-5); }
+.site-footer .footer-col { min-width:0; }
+.site-footer .footer-col a { overflow-wrap:anywhere; }
+.site-footer .footer-col h3::after { content:""; display:block; width:56px; height:4px; border-radius:2px; background:var(--gold); margin-top:var(--space-2); }
+@media (max-width:600px) {
+  .site-footer .footer-inner { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-4); }
+  .site-footer .footer-inner > * { border:0; padding:0; }
+  .site-footer .footer-inner > * + * { border:0; padding:0; }
+  .site-footer .footer-brand-col,.site-footer .footer-inner > .footer-col:last-child { grid-column:1 / -1; }
+  .site-footer .footer-inner > .footer-col:nth-child(2) ul,.site-footer .footer-inner > .footer-col:nth-child(3) ul { display:grid; grid-template-columns:minmax(0,1fr); gap:0; }
+  .site-footer .footer-col a { display:inline-block; padding-block:var(--space-2); }
+  .site-footer .footer-inner > .footer-col:last-child p:first-of-type { display:block; }
+}

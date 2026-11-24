@@ -77,3 +77,8 @@ Checks: anchored edits against fetched v109 source, static structural and sizing
 - Retired shadowed layout rules and stale CSS line citations, made the values slider consume its declared peek size, normalized the celebrations heading and admissions list rhythm, and placed the welcome copy before its portrait on stacked layouts.
 - Clarified the 2026 Telegraph award caption based on the original handover's photo evidence.
 - Expanded browser coverage to 14 widths; v120 baseline passed 64/64 checks. v121 verification pending.
+
+## v122 — screenshot-driven correction
+- Keep the seven values only on About; replace the narrow pager with a full-width auto-scrolling native rail, shared radius tokens, 16px gaps, reduced-motion grid and interaction-stops-autoplay. Home retains its clubs and houses. Remove pause buttons and visible drag instructions; photograph strips use native manual scroll. Keep one Campus CTA in Home's Campus section.
+- Mobile reasons now use concise, one-line labels; preserve original meaning in titles. Leadership uses wider cards with readable one-line full names and roles, without truncation; single-column at phone widths, two columns on tablets. Awards use equal 3:4 frames, center crop and rounded masks; original full photos open in viewer. Restore actual address on phone footer and use consistent two-column link groups and gold rules.
+- Browser assertions now test requested phone widths, full-width values, one-line text fit, photo controls, and award-frame dimensions. Original tracker is preserved; none of the remaining 66 are claimed complete from this patch alone.

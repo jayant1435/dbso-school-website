@@ -987,416 +987,94 @@
     });
   })();
 
-  /* ---------- ITEM 4: values slider (W-H3 rebuild, wave 10; 282
-     chrome removal, wave 11; 355 grid REVERT, wave 11) ----------
-     A REAL swipeable rail on the Life-strip pattern (lifeStripDrag) +
-     the clubs rail's clone trick: the track holds the 7 real slides
-     plus one clone at each end, so a neighbour always peeks at both
-     edges — at rest and mid-swipe. The card follows the pointer while
-     dragging (transform only, no transition), and releasing settles
-     with one 0.32s var(--ease-out) move (12-principles: 150–400ms,
-     one easing curve, transform + opacity only). Wrapping animates
-     onto the clone, then snaps to the matching real slide with no
-     transition — same offset on screen, so no visible jump.
-     Track positions: 0 = last clone, 1..7 = real slides, 8 = first
-     clone. Reduced motion: no track, no clones, no transform — the
-     stacked opacity pager stands (its transition is removed by the
-     reduced-motion CSS), and keyboard/drag-threshold still work.
-     Copy, icons and order are untouched.
-     282: the arrows/dots/counter markup is DELETED from index.html
-     (no dead buttons in the DOM, no tab stops to nowhere, no "N of
-     7" state to keep in sync) — and 355 keeps that deletion: no
-     chrome is re-added anywhere.
-     355 (Jayant 24 Nov 12:36 IST, overriding 282): the 282 grid is
-     REVERTED — the rail below runs at EVERY width, desktop and
-     tablet included, exactly the W-H3 mobile swipe: swipe/drag +
-     ArrowLeft/Right on the focusable stage, 0.32s settle, clone-snap
-     wrap. The gridMq/gridMode branch is deleted wholesale (no
-     breakpoint mode exists any more); applyMode now only gates on
-     reduced motion. Card widths fit every name on one line
-     (verify355.py, opsz-pinned).
-     368 (Jayant 24 Nov 12:56 IST): hint deleted from index.html,
-     stage aria-label reworded (no swipe instruction — the peek is
-     the cue); cards a bit smaller, neighbours much more visible —
-     peek 28px -> 36px phones / 48px -> 80px at >=601px, gap 12px ->
-     8px, animated-card side padding 24px -> 16px (funds the phone
-     peek; name slack unchanged on phones). Infinite loop VERIFIED
-     by trace (no logic change): goTo wraps both ends via the
-     clone-snap — back from card 1 animates onto the last clone
-     (pos 0) and snaps to real card 7; forward from card 7 animates
-     onto the first clone (pos 8) and snaps to real card 1 — on
-     W-J8 (Jayant 24 Nov 17:11 IST, brief #5): the pager now
-     initialises EVERY .wm-values-stage on the page, not just the
-     home one — the About rail (about-values-stage) is a second
-     instance of the same component. Peek mode comes from the
-     stage's data-peek-mode: "home" keeps the 80/36px peek exactly
-     (no home behaviour change); "half" (About) sizes the peek so
-     each neighbour shows half its card — card = max(232px, half
-     the stage), peek = (stage - card) / 2 — with the 232px floor
-     (202px at <=600px) keeping the worst name ("Respect for
-     Others", 197.1px @21.6px / 167.9px @18.4px) on one line.
-     measure() still sets --values-card-w = stage - 2 x peek, so
-     the CSS and the JS can never drift apart.
-     drag, keyboard and goTo alike. */
-  (function valuesPager() {
-    document.querySelectorAll(".wm-values-stage").forEach(function (stage) {
-      initRail(stage);
+  /* Full-width core values: continuous, native-scroll rail, only on About.
+     Interaction stops automatic movement, and reduced-motion users see a static grid. */
+  (function coreValuesRail() {
+    var stage = document.getElementById("about-values-stage");
+    if (!stage) return;
+    var track = stage.querySelector(".wm-values-track");
+    if (!track || reduceMotion) return;
+    var motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var slides = Array.prototype.slice.call(track.querySelectorAll(".wm-value-slide"));
+    if (!slides.length) return;
+    var clones = slides.map(function (slide) {
+      var copy = slide.cloneNode(true);
+      copy.classList.add("wm-value-slide--clone");
+      copy.setAttribute("aria-hidden", "true");
+      copy.setAttribute("inert", "");
+      track.appendChild(copy);
+      return copy;
     });
-    function initRail(stage) {
-      var track = stage.querySelector(".wm-values-track");
-      if (!track) return;
-      var slides = Array.prototype.slice.call(track.querySelectorAll(".wm-value-slide"));
-      var current = 0;
-      var N = slides.length;
-      stage.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
-      function updateChrome() {
-        slides.forEach(function (s, j) {
-          s.classList.toggle("is-active", j === current);
-          /* Off-screen slides are still in the layout (translated
-             away), so hide them from assistive tech; the active one
-             stays exposed. In the stacked fade path visibility:hidden
-             does this already — aria-hidden is harmless there. */
-          s.setAttribute("aria-hidden", j === current ? "false" : "true");
-        });
-      }
-      function show(i) {
-        current = ((i % N) + N) % N;
-        updateChrome();
-      }
-      /* Animated rail state (built once, only while motion is allowed
-         — at every width since 355). */
-      var railOn = false, clonesBuilt = false;
-      var GAP = 8; /* must match the slide margin-right in wm-home.css */
-      var PEEK_BP = 601; /* must match the min-width breakpoint in wm-home.css */
-      var halfMode = stage.getAttribute("data-peek-mode") === "half";
-      var cardW = 0, step = 0, pos = 1;
-      var snapTimer = null, snapPending = false;
-      function peek() {
-        var stageW = stage.getBoundingClientRect().width;
-        var minCard = window.innerWidth >= PEEK_BP ? 232 : 200;
-        var desired = halfMode
-          ? Math.floor((stageW - Math.max(minCard, Math.floor((stageW - 32) / 2))) / 2)
-          : (parseFloat(window.getComputedStyle(stage).getPropertyValue("--values-peek")) || (window.innerWidth >= PEEK_BP ? 112 : 44));
-        return Math.max(0, Math.min(desired, Math.floor((stageW - minCard) / 2)));
-      }
-      function offsetFor(p) { return peek() - p * step; }
-      function render(animate) {
-        if (!railOn) return;
-        if (!animate) stage.classList.add("wm-dragging");
-        track.style.transform = "translateX(" + offsetFor(pos) + "px)";
-        if (!animate) { void track.offsetWidth; stage.classList.remove("wm-dragging"); }
-      }
-      function clearSnap() {
-        if (snapTimer) { clearTimeout(snapTimer); snapTimer = null; }
-        snapPending = false;
-      }
-      function snapToReal() {
-        /* The track is showing a clone; jump to the matching real
-           slide with no transition — same offset on screen. */
-        clearSnap();
-        pos = current + 1;
-        render(false);
-      }
-      function armSnap() {
-        snapPending = true;
-        snapTimer = setTimeout(snapToReal, 360); /* 0.32s move + margin */
-      }
-      track.addEventListener("transitionend", function (e) {
-        if (e.propertyName === "transform" && snapPending) snapToReal();
-      });
-      function measure() {
-        if (!railOn) return;
-        var stageW = stage.getBoundingClientRect().width;
-        cardW = Math.max(200, Math.floor(stageW - 2 * peek()));
-        stage.style.setProperty("--values-card-w", cardW + "px");
-        step = cardW + GAP;
-        render(false);
-      }
-      /* i is the UNWRAPPED target: arrows/drag pass current +/- 1
-         (N or -1 at the ends = wrap). A wrap animates onto the clone,
-         then snaps; a plain step moves one card in the one 0.32s move.
-         (282: the dot callers are gone; arrows + drag are the only
-         callers now. In reduced motion this is a plain show — no rail,
-         no animation.) */
-      function goTo(i, animate) {
-        if (reduceMotion || !railOn) { show(i); return; }
-        var target = ((i % N) + N) % N;
-        var wrapped = (i !== target);
-        current = target;
-        updateChrome();
-        if (!animate) { pos = current + 1; render(false); return; }
-        clearSnap();
-        if (wrapped && i > current) { pos = N + 1; render(true); armSnap(); }
-        else if (wrapped) { pos = 0; render(true); armSnap(); }
-        else { pos = current + 1; render(true); }
-      }
-      /* Clones are inert: no tab stop, hidden from assistive tech
-         (the clubs pattern). Built once; applyMode re-shows the rail
-         from them on every mode change. */
-      function makeClone(src) {
-        var c = src.cloneNode(true);
-        c.classList.add("wm-value-slide--clone");
-        c.classList.remove("is-active");
-        c.setAttribute("aria-hidden", "true");
-        return c;
-      }
-      function buildClones() {
-        if (clonesBuilt) return;
-        clonesBuilt = true;
-        var lastClone = makeClone(slides[N - 1]);
-        var firstClone = makeClone(slides[0]);
-        track.insertBefore(lastClone, slides[0]);
-        track.appendChild(firstClone);
-      }
-      function applyMode() {
-        if (reduceMotion) {
-          railOn = false;
-          stage.classList.remove("wm-values--animated", "wm-dragging", "wm-grabbing");
-          stage.style.removeProperty("--values-card-w");
-          track.style.transform = "";
-          updateChrome();
-          return;
-        }
-        railOn = true;
-        buildClones();
-        stage.classList.add("wm-values--animated");
-        measure();
-        updateChrome();
-      }
-      /* Keyboard: the stage stays tabindex="0" — ArrowLeft/Right page
-         the rail at every width (and the stacked pager under reduced
-         motion). */
-      stage.addEventListener("keydown", function (e) {
-        if (e.key === "ArrowLeft") { e.preventDefault(); goTo(current - 1, true); }
-        if (e.key === "ArrowRight") { e.preventDefault(); goTo(current + 1, true); }
-      });
-      var dragStartX = 0;
-      armDrag(stage,
-        function () {
-          if (!railOn) return;
-          /* Freeze the track exactly where it is (Life-strip pattern:
-             read the computed transform first, so a grab mid-settle
-             never jumps); finish a pending clone snap first so the
-             drag starts from a real slide. */
-          if (snapPending) snapToReal();
-          var m = new DOMMatrixReadOnly(window.getComputedStyle(track).transform);
-          dragStartX = m.e;
-          stage.classList.add("wm-dragging", "wm-grabbing");
-        },
-        function (dx) {
-          if (!railOn) return;
-          track.style.transform = "translateX(" + (dragStartX + dx) + "px)";
-        },
-        function (dx) {
-          stage.classList.remove("wm-dragging", "wm-grabbing");
-          if (reduceMotion || !railOn) {
-            /* Stacked pager (reduced motion): a 48px drag pages. */
-            if (Math.abs(dx) > 48) show(current + (dx < 0 ? 1 : -1));
-            return;
-          }
-          if (Math.abs(dx) > 48) goTo(current + (dx < 0 ? 1 : -1), true);
-          else render(true); /* snap back to the current card */
-        });
-      window.addEventListener("resize", measure);
-      applyMode();
-      show(0);
+    stage.classList.add("values-autoscroll");
+    stage.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
+    var frame = 0, previous = null, offset = 0, stopped = false, hovered = false, visible = !("IntersectionObserver" in window);
+    function half() { return clones[0].offsetLeft - slides[0].offsetLeft; }
+    function stop() {
+      if (stopped) return;
+      stopped = true;
+      cancelAnimationFrame(frame);
+      var realOffset = half() ? stage.scrollLeft % half() : 0;
+      clones.forEach(function (copy) { copy.remove(); });
+      stage.classList.remove("values-autoscroll");
+      stage.scrollLeft = realOffset;
+      if (observer) observer.disconnect();
     }
+    var observer = "IntersectionObserver" in window ? new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; }, { threshold: 0.1 }) : null;
+    if (observer) observer.observe(stage);
+    function tick(now) {
+      if (stopped) return;
+      var dt = previous === null ? 0 : Math.min(now - previous, 50);
+      previous = now;
+      if (visible && !hovered && !document.hidden && half() > 0) {
+        offset = (offset + dt * 0.045) % half();
+        stage.scrollLeft = offset;
+      }
+      frame = requestAnimationFrame(tick);
+    }
+    stage.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") hovered = true; });
+    stage.addEventListener("pointerleave", function () { hovered = false; });
+    ["pointerdown", "wheel", "focusin", "keydown"].forEach(function (event) {
+      stage.addEventListener(event, stop, { passive: true });
+    });
+    if (motion.addEventListener) motion.addEventListener("change", function (e) { if (e.matches) stop(); });
+    frame = requestAnimationFrame(tick);
   })();
 
-  /* ---------- ITEM 7: Campus strip — drag interrupts the
-     16s CSS auto-scroll, then it resumes from the dragged spot. ----------
-     Task 354: prev/next buttons + counter removed (markup + CSS +
-     wiring); drag, arrow keys and focus handling unchanged.
-     Freeze: read the computed transform, pin it inline, then switch the
-     animation off (inline transform set FIRST, so nothing jumps).
-     Resume: wrap the offset into one half-loop and restart the
-     animation with a negative delay equal to the dragged position, so
-     the strip continues exactly where the drag left it. Focus-within
-     already pauses it (b3d patch, CSS); hover does NOT pause it. */
-  (function lifeStripDrag() {
-    var strip = document.querySelector(".photo-row.photo-strip");
-    var track = document.querySelector(".photo-track");
-    if (!strip || !track) return;
-    track.querySelectorAll(".photo-card:not([aria-hidden='true'])").forEach(function (card) {
-      card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
-    });
-    if (reduceMotion) return;
-    strip.setAttribute("tabindex", "0");
-    strip.setAttribute("aria-label", "Campus photographs — drag or use arrow keys to move the row");
-    var pause = document.querySelector(".life-strip-pause");
-    if (pause) pause.addEventListener("click", function () {
-      var paused = pause.getAttribute("aria-pressed") !== "true";
-      pause.setAttribute("aria-pressed", String(paused));
-      track.classList.toggle("is-paused", paused);
-      pause.textContent = paused ? "Play photographs" : "Pause photographs";
-    });
-    track.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
-    var DUR = 16; /* seconds; must match the life-scroll keyframes. */
-    var suppressClick = armClickSuppress(strip);
-    var startOffset = 0;
-    function halfWidth() { return track.scrollWidth / 2; }
-    function currentX() {
-      var m = new DOMMatrixReadOnly(window.getComputedStyle(track).transform);
-      return m.e;
-    }
-    function wrap(o) {
-      var h = halfWidth();
-      if (!h) return 0;
-      o = o % h;
-      if (o > 0) o -= h;
-      return o;
-    }
-    function cardStep() {
-      var card = track.querySelector(".photo-card");
-      if (!card) return 356;
-      var cs = window.getComputedStyle(card);
-      return card.getBoundingClientRect().width + (parseFloat(cs.marginRight) || 0);
-    }
-    function nudge(dir) {
-      /* Keyboard nudge: freeze, shift one card, resume. */
-      var x = wrap(currentX() + dir * cardStep());
-      track.style.transform = "translateX(" + x + "px)";
-      track.classList.add("wm-dragging");
-      resume(x);
-    }
-    function resume(x) {
-      var h = halfWidth();
-      var frac = h ? (-wrap(x) / h) : 0;
-      track.style.animationDelay = (-frac * DUR) + "s";
-      track.style.transform = "";
-      track.classList.remove("wm-dragging");
-    }
-    strip.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowLeft") { e.preventDefault(); nudge(1); }
-      if (e.key === "ArrowRight") { e.preventDefault(); nudge(-1); }
-    });
-    /* WR3-O1: a focused card froze wherever the 16s scroll happened
-       to be — a card could sit half off-screen left (probed x = -109
-       @390) because focus scrolling cannot move a transformed track.
-       On focus, shift the track by the smallest amount that brings
-       the focused card fully into view (left edge first, else right);
-       a card already fully visible does not move. Focus leaving the
-       strip resumes the scroll from the shifted offset. Keyboard focus
-       still pauses the strip (CSS :focus-within); hover never does. */
-    strip.addEventListener("focusin", function (e) {
-      var card = e.target && e.target.closest ? e.target.closest(".photo-card") : null;
-      if (!card || !track.contains(card)) return;
-      var sr = strip.getBoundingClientRect();
-      var cr = card.getBoundingClientRect();
-      var shift = 0;
-      if (cr.left < sr.left) shift = sr.left - cr.left;
-      else if (cr.right > sr.right) shift = sr.right - cr.right;
-      if (!shift) return;
-      track.style.transform = "translateX(" + (currentX() + shift) + "px)";
-      track.classList.add("wm-dragging");
-    });
-    strip.addEventListener("focusout", function (e) {
-      if (e.relatedTarget && strip.contains(e.relatedTarget)) return;
-      resume(currentX());
-    });
-    armDrag(strip,
-      function () {
-        startOffset = currentX();
-        track.style.transform = "translateX(" + startOffset + "px)";
-        track.classList.add("wm-dragging");
-        strip.classList.add("wm-grabbing");
-      },
-      function (dx) {
-        track.style.transform = "translateX(" + (startOffset + dx) + "px)";
-      },
-      function (dx) {
-        strip.classList.remove("wm-grabbing");
-        resume(startOffset + dx);
-        /* The pointer left focus on the card under it, and the settled
-           :focus-within rule would keep the strip paused on that focus
-           forever after a mouse drag (probed: it never resumed). A
-           pointer drag is not keyboard focus, so release it and let
-           the strip resume; keyboard focus still pauses it. */
-        var ae = document.activeElement;
-        if (ae && strip.contains(ae)) ae.blur();
-        suppressClick(Math.abs(dx) > 6);
+  /* Manual photo rails: no autoplay, no visible pause/drag instructions.
+     Native scrolling on touch; arrow keys and mouse dragging on desktop. */
+  (function photoRails() {
+    document.querySelectorAll(".photo-row.photo-strip, .awards-slider").forEach(function (rail) {
+      rail.querySelectorAll(".js-viewer").forEach(function (card) {
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
       });
-  })();
-
-  /* ---------- W-AB3 (task 115): About awards strip — drag + arrows
-     + keys interrupt the 36s CSS auto-scroll, then it resumes from
-     the dragged/nudged spot. Same proven pattern as lifeStripDrag
-     above: freeze by reading the computed transform and pinning it
-     inline (no jump), resume by wrapping the offset into one
-     half-loop and restarting the animation with a negative delay
-     equal to the dragged position. Arrow buttons nudge one card;
-     ArrowLeft/ArrowRight on the focused strip do the same. Focus-
-     within pauses it (CSS); hover does NOT pause it. Reduced
-     motion: static grid, no wiring here, buttons hidden by CSS.
-     No click target lives inside the slides, so no click-suppress
-     is needed — only the drag-end blur, so a pointer drag cannot
-     leave focus on the slider and hold the :focus-within pause
-     forever after the mouse is gone. ---------- */
-  (function awardsStripDrag() {
-    var slider = document.querySelector(".awards-slider");
-    var track = document.querySelector(".awards-track");
-    var pauseBtn = document.querySelector(".awards-pause");
-    if (!slider || !track || reduceMotion) return;
-    if (pauseBtn) pauseBtn.addEventListener("click", function () {
-      var paused = track.classList.toggle("is-paused");
-      pauseBtn.setAttribute("aria-pressed", String(paused));
-      pauseBtn.textContent = paused ? "Play photographs" : "Pause photographs";
-    });
-    track.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
-    var DUR = 36; /* seconds; must match the awards-scroll keyframes. */
-    var startOffset = 0;
-    function halfWidth() { return track.scrollWidth / 2; }
-    function currentX() {
-      var m = new DOMMatrixReadOnly(window.getComputedStyle(track).transform);
-      return m.e;
-    }
-    function wrap(o) {
-      var h = halfWidth();
-      if (!h) return 0;
-      o = o % h;
-      if (o > 0) o -= h;
-      return o;
-    }
-    function cardStep() {
-      var card = track.querySelector(".award-slide");
-      if (!card) return 356;
-      var cs = window.getComputedStyle(card);
-      return card.getBoundingClientRect().width + (parseFloat(cs.marginRight) || 0);
-    }
-    function nudge(dir) {
-      /* Freeze, shift one card, resume from the new spot. */
-      var x = wrap(currentX() + dir * cardStep());
-      track.style.transform = "translateX(" + x + "px)";
-      track.classList.add("wm-dragging");
-      resume(x);
-    }
-    function resume(x) {
-      var h = halfWidth();
-      var frac = h ? (-wrap(x) / h) : 0;
-      track.style.animationDelay = (-frac * DUR) + "s";
-      track.style.transform = "";
-      track.classList.remove("wm-dragging");
-    }
-    slider.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowLeft") { e.preventDefault(); nudge(1); }
-      if (e.key === "ArrowRight") { e.preventDefault(); nudge(-1); }
-    });
-
-    armDrag(slider,
-      function () {
-        startOffset = currentX();
-        track.style.transform = "translateX(" + startOffset + "px)";
-        track.classList.add("wm-dragging");
-        slider.classList.add("wm-grabbing");
-      },
-      function (dx) {
-        track.style.transform = "translateX(" + (startOffset + dx) + "px)";
-      },
-      function (dx) {
-        slider.classList.remove("wm-grabbing");
-        resume(startOffset + dx);
-        if (document.activeElement === slider) slider.blur();
+      rail.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
+      var suppress = armClickSuppress(rail), start = 0;
+      rail.addEventListener("keydown", function (e) {
+        if (e.target !== rail || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
+        e.preventDefault();
+        var card = rail.querySelector(".photo-card, .award-slide");
+        rail.scrollBy({ left: (e.key === "ArrowRight" ? 1 : -1) * ((card ? card.offsetWidth : 260) + 16), behavior: reduceMotion ? "auto" : "smooth" });
       });
+      // Native touch swiping is left alone. Pointer dragging is enabled only for a mouse.
+      var origin = null, moved = false;
+      rail.addEventListener("pointerdown", function (e) {
+        if (e.pointerType !== "mouse" || e.button !== 0) return;
+        origin = e.clientX; start = rail.scrollLeft; moved = false;
+      });
+      window.addEventListener("pointermove", function (e) {
+        if (origin === null) return;
+        var dx = e.clientX - origin;
+        if (Math.abs(dx) > 6) { moved = true; rail.classList.add("wm-grabbing"); }
+        if (moved) rail.scrollLeft = start - dx;
+      });
+      function endDrag() {
+        if (origin === null) return;
+        origin = null; rail.classList.remove("wm-grabbing"); suppress(moved);
+      }
+      window.addEventListener("pointerup", endDrag);
+      window.addEventListener("pointercancel", endDrag);
+    });
   })();
 })();
 

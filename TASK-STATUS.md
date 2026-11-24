@@ -338,3 +338,6 @@ Browser QA v119: 64/64 checks passed, plus four legacy redirect checks with no f
 ### v121 source reconciliation
 - Addressed IDs: #231, #237, #247, #256, #313, #347, #357, #388, #393, #394, #410, #411, #412, #413, #415, #422, #444. Removed obsolete rules and stale line-number references rather than retaining fragile line citations; corrected the award caption using the handover's photo evidence; connected the slider peek setting to CSS; restored consistent heading sizes and natural checklist heights; reordered the stacked welcome section. Visual verification remains pending.
 - v120: 64/64 automated checks passed (Actions run 45426603182); v121 extends the breakpoint matrix. This is not independent visual or live deployment sign-off.
+
+### v122 user screenshot corrections
+Reopened earlier implementation IDs for values layout, mobile family tiles, leadership readability, awards image treatment and footer. The latest user brief supersedes the earlier duplicate Home/About values and visible pause controls. This patch preserves the seven actual icons on About only. New browser checks target the screenshot regressions. No additional original IDs signed off solely from these changes.
