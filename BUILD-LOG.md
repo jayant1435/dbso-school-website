@@ -99,3 +99,6 @@ Checks: anchored edits against fetched v109 source, static structural and sizing
 
 ## v127 — free-runner visual audit
 - Separate public-repository standard Ubuntu workflow: 8 pages at 390/834/1440 CSS pixels, compressed screenshots, split geometry, local errors and live deployment hash comparison. 24 MiB screenshot cap and one-day retention; no new cache or paid runner. First run not yet verified. Existing functional QA unchanged.
+
+## v128 — screenshot capture repair
+- v127 functional QA passed; the visual run inspected all 24 page/viewport combinations without reported text overflow or broken local images, and all five sampled live files matched the checkout. The screenshot capture failed for longer pages because the clip was not relative to the full page. Fixed full-page clipping without altering the site layout. Screenshot verification remains pending.

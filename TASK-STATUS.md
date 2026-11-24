@@ -396,3 +396,6 @@ Reopened earlier implementation IDs for values layout, mobile family tiles, lead
 
 ### v124 source references and additional QA
 - v123 browser run 45431038717 passed 168/168 checks. #420/#421/#445 reconciled for current source in QA-REFERENCE.md; absent historical reports themselves were not edited. #293 receives an explicit geometry audit at four widths and is not yet signed off. Added behavioral assertions for values autoplay and interaction/reduced-motion behavior.
+
+### v127 automated evidence
+- Visual audit run 45448050294 inspected 24 page/viewport combinations with no reported overflowing labels or broken local image requests. Five sampled live files returned HTTP 200 and exactly matched the checkout. Long-page screenshot clipping failed; the capture harness is repaired in v128. This is not full visual sign-off and does not resolve missing school evidence.
