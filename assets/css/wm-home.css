@@ -169,9 +169,10 @@
 /* =====================================================================
    ITEM 3 — HOUSES: a single crossfading stage (treatment 2 of 3).
    One large photo at a time, fading into the next every 5s; the house
-   name sits on the photo with its house-colour band across the top
-   (the band is house identity = content, the same --house-* tokens the
-   old tiles used; the chrome — arrows, dots, counter — is blue/yellow
+   name sits in a fixed strip under the colour field (303: the four
+   photos are gone — see the 303 block at end of file; the field IS
+   the house colour, same --house-* content tokens the old tiles
+   used; the chrome — arrows, dots, counter — is blue/yellow
    only). Motion: opacity only, 0.4s ease-out (12-principles budget).
    No-JS fallback: all four photos visible in a 2-column grid.
    ===================================================================== */
@@ -190,7 +191,8 @@
   -webkit-user-select: none;
 }
 .wm-house-slide {
-  display: block;
+  display: flex;
+  flex-direction: column;
   position: relative;
   aspect-ratio: 16 / 10;
   padding: 0;
@@ -232,18 +234,11 @@
   transition: opacity 0.4s var(--ease-out), visibility 0s;
 }
 .wm-house-slide:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
-.wm-house-slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
-/* House-colour band across the top: the old tile's swatch, kept as the
-   house's own colour (content token, not UI chrome). */
-.wm-house-band { position: absolute; top: 0; left: 0; right: 0; height: 10px; }
 .wm-house-name {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: var(--space-6) var(--space-5) var(--space-4);
-  background: linear-gradient(to top, var(--scrim-bottom), var(--scrim-mid) 55%, transparent);
-  color: var(--paper);
+  flex: 0 0 auto;
+  padding: var(--space-4) var(--space-5);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.6rem;
@@ -610,4 +605,70 @@ section[aria-label="The Preventive System"] { padding-top: var(--space-5); }
     visibility: visible;
     transition: none;
   }
+}
+
+/* =====================================================================
+   303 (W-HOME18, wave 11 — Jayant 24 Nov 12:09 IST): Four Houses
+   REDESIGN — the four photos did not match (verified from the files,
+   not the CSS): Red = flag-hoisting wide shot sliced by white poles
+   + red/white canopy + bare dirt foreground; Blue = march-past with a
+   full-width ORANGE canopy band fighting the blue; Green = tight
+   trophy lift against a blue banner whose text is cropped mid-word
+   ("BARI", "25") with out-of-focus hands across the trophy; Yellow =
+   indoor Investiture, dark stage, the yellow flag a flat diagonal
+   slab. Three outdoor daylight Sports Day frames + one dark indoor
+   frame, four distances, four palettes — no crop unifies them, and
+   the archive holds no matched per-house set (other Sports Day
+   frames: trophies table, two captains in one frame, three-house
+   podium, pipe band, empty ground). So the photos are REMOVED
+   (task brief: do not force four mismatched photos) and each card is
+   one uniform design: a flat house-colour banner field (the field IS
+   the flag — the house colour is content, --house-* tokens only)
+   with the house monogram in Bricolage Grotesque 800, centred, plus
+   a fixed white name strip below. Same card shape, same field, same
+   monogram size, same name size/spacing on all four, at every width.
+   Monogram ink: white on Red/Blue/Green (6.64 / 5.43 / 5.07:1);
+   white on gold is 2.42:1, so Yellow uses --ink (5.97:1) — a
+   contrast rule, not a styling exception. Name strip: --ink on
+   --paper, 14.09:1. Grid stays the v83 2x2 >=768px (286); mobile
+   keeps the crossfade stage (same pager JS, untouched — it binds
+   .wm-house-slide[data-house] only; openHouse modal untouched).
+   No new images, no new colours, no new fonts, no slider chrome.
+   no-ai-design-slop: removal test — the photos performed no job the
+   uniform card + modal don't already do, and each photo's subject
+   fought its neighbours; the monogram + colour IS the house's
+   identity, not generic SVG filler. design-taste-frontend: one card
+   style, one radius, equal edges, flat grounds on non-tech, type-led
+   moment, hover lift 2px (rule 5) in grid mode only.
+   impeccable craft-floor: Coverage (all four houses, modal intact),
+   Type (one size for all four names, 1 line each — "Green House" is
+   the longest at ~200px at 1.6rem, fits the narrowest 354px card).
+   ===================================================================== */
+.wm-house-slide { box-shadow: 0 0 0 1px var(--line), var(--shadow-1); }
+.wm-house-field { flex: 1 1 auto; min-height: 0; display: grid; place-items: center; }
+.house-field-red { background: var(--house-red); }
+.house-field-blue { background: var(--house-blue); }
+.house-field-green { background: var(--house-green); }
+.house-field-yellow { background: var(--house-yellow); }
+.wm-house-initial {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(4rem, 20vw, 7rem);
+  line-height: 1;
+  color: var(--paper);
+}
+.house-field-yellow .wm-house-initial { color: var(--ink); }
+@media (min-width: 768px) {
+  .js .wm-house-slide {
+    box-shadow: 0 0 0 1px var(--line), var(--shadow-1);
+    transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+  }
+  .js .wm-house-slide:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 0 1px var(--line), var(--shadow-2);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .wm-house-slide { transition: none; }
+  .js .wm-house-slide:hover { transform: none; box-shadow: 0 0 0 1px var(--line), var(--shadow-1); }
 }
