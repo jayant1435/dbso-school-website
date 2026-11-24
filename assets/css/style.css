@@ -664,8 +664,16 @@ figcaption {
   letter-spacing: -0.015em; /* site h-rule */
   color: var(--ink);
 }
-/* Core values main text: the "Core values" heading, one step up. */
-section[aria-label="Vision and values"] h3 { font-size: 1.6rem; /* 25.6px, was 1.45rem */ }
+/* W-AB69 (task 287, 24 Nov 2026): ONE h3 size on About — 1.6rem (25.6px)
+   for every main-content h3. Before: 1.6rem only inside "Vision and
+   values" (Mission, Core values), 1.45rem / 23.2px everywhere else
+   (Principals, The emblems, anthem verses, School hours, Managing
+   Committee, award years). Footer h3s keep their own 0.95rem label size
+   (.footer-col h3, outside <main>) — a different role, not a heading
+   level. typography (3-4 sizes only) + design-system (no new size:
+   1.6rem already on the page) + no-ai-design-slop (accidental
+   inconsistency, one rule per level). */
+body.page-about main h3 { font-size: 1.6rem; /* 25.6px */ }
 
 @media (max-width: 640px) {
   .value-logo { width: 28px; height: 28px; }
@@ -1713,3 +1721,21 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
     margin-bottom: var(--space-3);
   }
 }
+
+/* ---------- W-AB69 (task 279, 24 Nov 2026): Mission and values — close
+   the right-column void. The .split is align-items: start, so the
+   shorter column ends early: before Vision removal the Core values
+   column ended ~115-167px above the left column at 1024-1440px (model,
+   ESTIMATE-ONLY). Removing Vision alone leaves the columns within
+   ~16-67px; these rules close the rest wherever the left column is
+   still taller: the row stretches to the taller column and the 7 value
+   rows share the leftover space evenly (space-between — rows stay
+   56px, only the gaps grow, ~2-7px each in the 861-1000px band). Where
+   the right column is already taller, or the split stacks (<=860px),
+   the rules are no-ops. No content removed, no new size, tokens only.
+   better-ui (one grid, no element off it) + design-taste-frontend
+   (equal edges, no half-empty column) + audit-ai-design-slop
+   (accidental inconsistency: ragged column ends). */
+section[aria-label="Mission and values"] .split { align-items: stretch; }
+section[aria-label="Mission and values"] .split > div:last-child { display: flex; flex-direction: column; }
+section[aria-label="Mission and values"] .value-list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
