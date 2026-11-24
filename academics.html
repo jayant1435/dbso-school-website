@@ -206,35 +206,71 @@
         <h2>Syllabus 2026–27</h2>
         <p>The full syllabus for every class, as published by the school for the academic session 2026–27. Each document opens as a PDF.</p>
       </div>
-      <div class="syllabus-groups reveal">
-        <div class="syllabus-group">
-          <h3>UKG to Class 5</h3>
-          <div class="syllabus-grid">
-            <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUSCLASSUKG.pdf">UKG</a>
-            <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-1.pdf">Class 1</a>
-            <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-2.pdf">Class 2</a>
-            <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-3.pdf">Class 3</a>
-            <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-4.pdf">Class 4</a>
-            <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-5.pdf">Class 5</a>
-          </div>
+      <!-- wsyl (task 120): one native select replaces the 13 buttons in 3
+           containers. The 3 class-range groups survive as <optgroup> labels;
+           all 13 PDF URLs are the option values, unchanged. One action link
+           below opens the chosen class's PDF. No-JS: the select + action are
+           hidden and the full 13-link list (same URLs, same groups) is shown
+           from the noscript fallback, so every syllabus stays reachable with JS off. -->
+      <div class="syllabus-picker reveal">
+        <div class="field syllabus-field">
+          <label for="syllabus-select">Choose a class</label>
+          <select id="syllabus-select">
+            <optgroup label="UKG to Class 5">
+              <option value="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUSCLASSUKG.pdf" selected>UKG</option>
+              <option value="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-1.pdf">Class 1</option>
+              <option value="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-2.pdf">Class 2</option>
+              <option value="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-3.pdf">Class 3</option>
+              <option value="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-4.pdf">Class 4</option>
+              <option value="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-5.pdf">Class 5</option>
+            </optgroup>
+            <optgroup label="Class 6 to Class 10">
+              <option value="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-6.pdf">Class 6</option>
+              <option value="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-7.pdf">Class 7</option>
+              <option value="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-8.pdf">Class 8</option>
+              <option value="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-9.pdf">Class 9</option>
+              <option value="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-10.pdf">Class 10</option>
+            </optgroup>
+            <optgroup label="Class 11 to Class 12">
+              <option value="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUSCLASS11.pdf">Class 11</option>
+              <option value="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-12.pdf">Class 12</option>
+            </optgroup>
+          </select>
         </div>
-        <div class="syllabus-group">
-          <h3>Class 6 to Class 10</h3>
-          <div class="syllabus-grid">
-            <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-6.pdf">Class 6</a>
-            <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-7.pdf">Class 7</a>
-            <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-8.pdf">Class 8</a>
-            <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-9.pdf">Class 9</a>
-            <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-10.pdf">Class 10</a>
+        <p class="syllabus-action" aria-live="polite"><a class="btn btn-primary syllabus-open" id="syllabus-open" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUSCLASSUKG.pdf">Open UKG syllabus (PDF)</a></p>
+        <noscript>
+          <style>.syllabus-picker .syllabus-field, .syllabus-picker .syllabus-action { display: none; }</style>
+          <div class="syllabus-groups">
+            <div class="syllabus-group">
+              <h3>UKG to Class 5</h3>
+              <div class="syllabus-grid">
+                <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUSCLASSUKG.pdf">UKG</a>
+                <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-1.pdf">Class 1</a>
+                <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-2.pdf">Class 2</a>
+                <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-3.pdf">Class 3</a>
+                <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-4.pdf">Class 4</a>
+                <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-5.pdf">Class 5</a>
+              </div>
+            </div>
+            <div class="syllabus-group">
+              <h3>Class 6 to Class 10</h3>
+              <div class="syllabus-grid">
+                <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-6.pdf">Class 6</a>
+                <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-7.pdf">Class 7</a>
+                <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-8.pdf">Class 8</a>
+                <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-9.pdf">Class 9</a>
+                <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-10.pdf">Class 10</a>
+              </div>
+            </div>
+            <div class="syllabus-group">
+              <h3>Class 11 to Class 12</h3>
+              <div class="syllabus-grid">
+                <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUSCLASS11.pdf">Class 11</a>
+                <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-12.pdf">Class 12</a>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="syllabus-group">
-          <h3>Class 11 to Class 12</h3>
-          <div class="syllabus-grid">
-            <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUSCLASS11.pdf">Class 11</a>
-            <a class="btn btn-ghost" href="https://donboscooodlabari.com/wp-content/uploads/2026/04/SYLLABUS-CLASS-12.pdf">Class 12</a>
-          </div>
-        </div>
+        </noscript>
       </div>
     </div>
   </section>
