@@ -44,6 +44,11 @@ async function check(name,width,mode){
   assert.equal(dom.icons.length,["index","about"].includes(name)?7:0,"illustrated icon scope");
   assert.ok(dom.icons.every(x=>x.includes("/value-")) && dom.iconPlacement,"core value images only");
   assert.ok(dom.cloneAccessibility,"carousel clones hidden from assistive technology");
+  const navText=await p.locator(".main-nav a").allTextContents();
+  assert.ok(navText.includes("Campus") && navText.includes("Notices"),"short navigation labels");
+  if(name==="gallery") assert.equal(await p.locator(".event-head .gold-rule").count(),36,"all gallery events use gold heading rule");
+  if(name==="about") { const staffCopy=await p.locator(".nonteach-text").allTextContents(); assert.equal(staffCopy.length,2,"both staff groups"); assert.ok(staffCopy.every(t=>t.trim().length>180),"staff descriptions expanded"); }
+  if(name==="contact") assert.equal(await p.locator('button[type="submit"]').count(),1,"enquiry button");
   assert.ok(dom.width<=dom.viewport+2,"horizontal overflow: "+dom.width+" > "+dom.viewport);
   if(mode==="no-js"&&name==="academics")for(const panel of ["panel-science","panel-commerce","panel-humanities"])assert.ok(await p.locator("#"+panel).isVisible(),"no-JS stream "+panel);
   if(mode==="normal"&&name==="index"&&width===390){

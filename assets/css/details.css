@@ -207,8 +207,8 @@
    row-mate instead of towering over it or shrinking to a strip.
    (min-height: 0 matters: without it the flex item's content-based minimum
    — the thumbnail's own 4:3 — clamps the media back to 4:3.) */
-.videos-long .card:last-child { grid-column: span 2; }
-.videos-long .card:last-child .card-media { aspect-ratio: 21 / 9; min-height: 0; }
+.videos-long .card:last-child { grid-column: auto; }
+.videos-long .card:last-child .card-media { aspect-ratio: 16 / 10; min-height: 0; }
 
 /* Shorts: four columns on wide desktop — one even row of four. */
 @media (min-width: 1201px) {
@@ -710,7 +710,7 @@ section[aria-label="From the Principal"] .quote-attr strong { font-weight: 600; 
   grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: stretch;
 }
-.why-grid .tile { height: 100%; min-height: 88px; text-wrap: balance; }
+.why-grid .tile { height: 100%; min-height: 64px; text-wrap: balance; }
 @media (max-width: 860px) {
   .why-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
@@ -1301,7 +1301,7 @@ section[aria-label="Celebrations and events"] .tick-list li span {
    this patch. Shorts grid now reserves 2 lines for h3, same as the long grid. */
 .videos-long .card-body h3 { min-height: calc(2 * 1.3em); }
 .videos-shorts .card-body h3 { min-height: calc(2 * 1.3em); }
-.videos-long .card-body > p:not(.card-link) { min-height: calc(2 * 1.65em); }
+
 @media (min-width: 601px) {
   .videos-long .card:last-child .card-body h3,
   .videos-long .card:last-child .card-body > p:not(.card-link) { min-height: 0; }
@@ -1340,7 +1340,7 @@ section[aria-label="Celebrations and events"] .tick-list li span {
 /* Keep distinguishing years and event names readable at every width. */
 .videos-long .card-body h3 { display: block; overflow: visible; -webkit-line-clamp: unset; }
 @media (min-width: 601px) and (max-width: 860px) {
-  .videos-long .card-body > p:not(.card-link) { min-height: calc(3 * 1.65em); }
+  
 }
 
 /* ---- FIX 3 (P3, A8 F3): admissions dates strip first row 17px short ----
@@ -1774,3 +1774,29 @@ section[aria-label="Mission and values"] .wm-value-slide .value-name { font-size
 .videos-long .card-body > p:not(.card-link), .videos-shorts .card-body > p:not(.card-link) { overflow:visible; display:block; -webkit-line-clamp:unset; }
 section[aria-label="Our story"] .lineage-row { min-width:0; }
 section[aria-label="Contact details and enquiry form"] button[type="submit"] { width:100%; }
+
+/* v120 — all long-video thumbnails share one ratio; center the final two without a stretched outlier. */
+.videos-long .card-body h3, .videos-shorts .card-body h3 { min-height:0; }
+.videos-long .card-body > p, .videos-shorts .card-body > p { min-height:0; }
+.videos-long .card-media, .videos-shorts .card-media { aspect-ratio:16 / 10; }
+@media(min-width:861px) {
+  .videos-long { grid-template-columns:repeat(6,minmax(0,1fr)); }
+  .videos-long > .card { grid-column:span 2; }
+  .videos-long > .card:nth-last-child(2) { grid-column:2 / span 2; }
+  .videos-long > .card:last-child { grid-column:4 / span 2; }
+}
+@media(min-width:861px) and (max-width:1100px) {
+  .videos-long,.videos-shorts { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .videos-long > .card,.videos-shorts > .card,.videos-long > .card:nth-last-child(2) { grid-column:span 2; }
+  .videos-long > .card:last-child { grid-column:2 / span 2; }
+}
+section[aria-label="School hours"] .hours-season h3 { font-size:1.15rem; margin:0 0 var(--space-3); }
+section[aria-label="Contact details and enquiry form"] .split > div { min-width:0; }
+@media(min-width:861px) {
+  html.js section[aria-label="Contact details and enquiry form"] .split { align-items:stretch; }
+  html.js section[aria-label="Contact details and enquiry form"] .split > div:last-child { display:flex; flex-direction:column; }
+  html.js #enquiry-form { flex:1; display:flex; flex-direction:column; }
+  html.js #enquiry-form .form-grid { flex:1; }
+  html.js #enquiry-form .field-full { display:flex; flex-direction:column; }
+  html.js #enquiry-form .field-full textarea { flex:1; }
+}

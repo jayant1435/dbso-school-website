@@ -493,8 +493,8 @@ figcaption {
 .card-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  align-items: start;
-  gap: var(--space-5);
+  align-items: stretch;
+  gap: var(--space-4);
 }
 /* Facilities: the six photos have different native ratios (720×480 vs
    720×403), and the flex item's automatic minimum lets the taller photo
@@ -920,7 +920,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   border-bottom: 1px solid var(--line);
 }
 .page-head h1 { margin-bottom: var(--space-3); animation: hero-rise 0.7s var(--ease-out) 0.08s both; }
-.page-head p { color: var(--ink-soft); font-size: 1.15rem; max-width: 62ch; margin: 0; animation: hero-rise 0.7s var(--ease-out) 0.16s both; }
+.page-head p { color: var(--ink-soft); font-size: 1.15rem; max-width: 66ch; margin: 0; animation: hero-rise 0.7s var(--ease-out) 0.16s both; }
 .back-link {
   display: inline-block;
   margin-bottom: var(--space-5);
@@ -966,7 +966,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 /* ---------- Notice panel (science labs honesty panel) ---------- */
 
 .notice-panel {
-  border: 1px dashed var(--line-strong);
+  border: 1px solid var(--line);
   border-radius: var(--radius-card);
   padding: var(--space-6);
   background: var(--paper-warm);
@@ -1110,7 +1110,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   margin: var(--space-2) 0 0;
 }
 .footer-col h3 {
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--paper);
@@ -1276,7 +1276,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   border-radius: 14px;
   display: block;
 }
-.staff-card h3 { margin: 0; font-size: 1.05rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.staff-card h3 { margin: 0; font-size: 1.15rem; line-height: 1.3; overflow-wrap: anywhere; }
 .staff-card p { margin: 2px 0 0; color: var(--ink-mute); font-size: 0.95rem; }
 
 /* W-STF1 (task 297): non-teaching staff. Two group photos in the shared
@@ -1316,8 +1316,8 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
 .leader-visual { display: block; aspect-ratio: 4 / 5; overflow: clip; background: var(--band); }
 .leader-visual img { width: 100%; height: 100%; object-fit: cover; }
 .leader-body { padding: var(--space-4) var(--space-5) var(--space-5); }
-.leader-body h3 { margin: 0; font-size: 1.2rem; line-height: 1.3; }
-.leader-body p { margin: 2px 0 0; color: var(--ink-mute); font-size: 0.95rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.leader-body h3 { margin: 0; font-size: 1.15rem; line-height: 1.3; overflow-wrap: anywhere; }
+.leader-body p { margin: 2px 0 0; color: var(--ink-mute); font-size: 0.95rem; }
 
 /* ---------- Responsive ---------- */
 
@@ -1777,4 +1777,19 @@ section[aria-label="Non-teaching staff"] .nonteach-text h3 { margin-bottom:var(-
   section[aria-label="Our story"] .split,
   section[aria-label="Curriculum"] .split { align-items:center; }
   section[aria-label="Curriculum"] .split > figure { align-self:center; }
+}
+
+/* v120 — shared component rhythm. */
+.card-body h2, .card-body h3 { display:block; font-size:1.2rem; overflow:visible; -webkit-line-clamp:unset; }
+.card-body p { display:block; overflow:visible; -webkit-line-clamp:unset; }
+.tile-grid { align-items:stretch; }
+.tile { min-width:0; overflow-wrap:anywhere; text-wrap:balance; }
+.tile-grid > .tile { height:100%; }
+.summary-card:hover, .staff-card:hover, .leader-card:hover, .card:hover { transform:translateY(-3px); box-shadow:var(--shadow-1); }
+.leader-body { padding:var(--space-4); }
+.leader-body p, .staff-card p { font-size:0.95rem; }
+.fee-scroll-hint { margin:0; padding:var(--space-2) var(--space-5); font-size:0.92rem; color:var(--ink-soft); border-bottom:1px solid var(--line); }
+@media(min-width:1200px) { .fee-scroll-hint { display:none; } }
+@media(max-width:360px) {
+  .topper-row,.result-row { grid-template-columns:36px minmax(0,1fr) auto; gap:var(--space-2); }
 }

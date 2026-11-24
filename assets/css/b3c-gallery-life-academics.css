@@ -142,7 +142,7 @@
 /* ---- Syllabus: three class-range groups, same 140x48 buttons ---- */
 .syllabus-groups { display: grid; gap: var(--space-6); }
 .syllabus-group h3 {
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--ink);
@@ -294,3 +294,7 @@ section[aria-label="From 2023: two events"] .photo-row > figure {
     object-position: top;
   }
 }
+
+/* v120 — gallery events use the same heading motif as other page sections. */
+.event-head .gold-rule { margin-bottom:var(--space-3); }
+.event-head h2 { text-wrap:balance; }

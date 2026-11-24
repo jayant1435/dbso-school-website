@@ -4,10 +4,10 @@ Original source: the 247 task IDs marked ongoing in the supplied handover tracke
 
 | Status | Count |
 | --- | ---: |
-| Implementation or source correction recorded, visual verification pending | 122 |
+| Implementation or source correction recorded, visual verification pending | 157 |
 | Superseded or stale patch reconciled, verification pending | 7 |
 | Requires additional evidence, real-device/independent QA, or external access | 15 |
-| Still to review or implement | 103 |
+| Still to review or implement | 68 |
 | Total | 247 |
 
 No entries are formally signed off yet under the original handover's required independent, live and visual verification protocol. Some implementation entries represent partial fixes.
@@ -137,6 +137,42 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #374
 - [ ] #402
 
+- [ ] #56
+- [ ] #72
+- [ ] #106
+- [ ] #138
+- [ ] #146
+- [ ] #149
+- [ ] #157
+- [ ] #158
+- [ ] #167
+- [ ] #175
+- [ ] #177
+- [ ] #193
+- [ ] #204
+- [ ] #207
+- [ ] #216
+- [ ] #220
+- [ ] #234
+- [ ] #306
+- [ ] #307
+- [ ] #312
+- [ ] #316
+- [ ] #322
+- [ ] #323
+- [ ] #325
+- [ ] #326
+- [ ] #329
+- [ ] #330
+- [ ] #331
+- [ ] #334
+- [ ] #338
+- [ ] #396
+- [ ] #397
+- [ ] #398
+- [ ] #401
+- [ ] #409
+
 ## Superseded or stale patch reconciled, QA pending
 - [ ] #417
 - [ ] #418
@@ -164,39 +200,22 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #407
 
 ## Remaining review or implementation
-- [ ] #56
-- [ ] #72
 - [ ] #105
-- [ ] #106
 - [ ] #108
-- [ ] #138
-- [ ] #146
 - [ ] #148
-- [ ] #149
-- [ ] #157
-- [ ] #158
-- [ ] #167
 - [ ] #169
 - [ ] #173
 - [ ] #174
-- [ ] #175
 - [ ] #176
-- [ ] #177
 - [ ] #182
 - [ ] #183
 - [ ] #184
 - [ ] #185
 - [ ] #192
-- [ ] #193
 - [ ] #198
 - [ ] #203
-- [ ] #204
-- [ ] #207
 - [ ] #210
-- [ ] #216
-- [ ] #220
 - [ ] #231
-- [ ] #234
 - [ ] #237
 - [ ] #247
 - [ ] #252
@@ -207,29 +226,16 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #258
 - [ ] #274
 - [ ] #293
-- [ ] #306
-- [ ] #307
 - [ ] #308
-- [ ] #312
 - [ ] #313
-- [ ] #316
 - [ ] #317
 - [ ] #320
-- [ ] #322
-- [ ] #323
 - [ ] #324
-- [ ] #325
-- [ ] #326
 - [ ] #328
-- [ ] #329
-- [ ] #330
-- [ ] #331
 - [ ] #332
 - [ ] #333
-- [ ] #334
 - [ ] #336
 - [ ] #337
-- [ ] #338
 - [ ] #341
 - [ ] #346
 - [ ] #347
@@ -250,13 +256,8 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #390
 - [ ] #393
 - [ ] #394
-- [ ] #396
-- [ ] #397
-- [ ] #398
 - [ ] #399
-- [ ] #401
 - [ ] #404
-- [ ] #409
 - [ ] #410
 - [ ] #411
 - [ ] #412
@@ -295,3 +296,41 @@ At v117, repository-source inspection checked 13 HTML files, 1,265 local referen
 - #374: science slide uses existing seminar photo instead of square poster.
 - #402: facilities merged on current source rather than stale patch.
 The initial v118 browser run reported 52/64 passing, with 12 failures due to counting the two intentional core-value carousel clones. The updated test distinguishes original slides, checks that clones are aria-hidden, and checks every illustrated image remains inside a value slide. New run not yet verified.
+
+### v120 implementation/reconciliation notes (QA pending)
+- #56: existing anthem one-line introduction verified; lyrics untouched.
+- #72: eight repetitive video descriptions removed; specific descriptions retained.
+- #106: obsolete emblem grid removed; curriculum split centered in v119.
+- #138: previous arrow-button issue superseded by slider keyboard handling.
+- #146: previous/next controls removed in v111; focus pause on slider and explicit pause button.
+- #149: legacy facilities CTA replaced by shared admissions CTA.
+- #157: retain accurate, upcoming 10 Dec 2026 deadline in notices and announcement; not duplicate CTA copy.
+- #158: story split centered in v119; full-width second photograph preserved.
+- #167: obsolete colours paragraph absent with removed coat-of-arms section.
+- #175: leadership cards and separate school-hours section supersede old split.
+- #177: old coat-of-arms introduction absent.
+- #193: legacy facilities CTA removed in merge.
+- #204: seven shared CTA sections follow the same spacing rules.
+- #207: announcement arrow uses nonbreaking space in current markup.
+- #216: no duplicate admissions link within the footer.
+- #220: generic repeated video descriptions removed; unnecessary height reserve removed.
+- #234: page-heading intro 66ch.
+- #306: gold rules now present on all 36 gallery event headings.
+- #307: merged payment section already has canonical heading rule and spacing.
+- #312: footer and syllabus headings use display font.
+- #316: common content cards use shared hover lift and shadow.
+- #322: uniform video thumbnail ratio; centered normal-width final row.
+- #323: retain intentional editorial photo mosaic, not impose a single ratio on different images.
+- #325: staff and leadership headings/description sizing, padding and wrapping aligned.
+- #326: common card grid gap 16px.
+- #329: tile minimum height 64px with stretched rows.
+- #330: standard content card title 1.2rem; staff and summary remain smaller for hierarchy.
+- #331: notice panel uses solid shared border.
+- #334: stat and summary cards share hover lift and shadow.
+- #338: pillar arrows use 48px same as gallery/lightbox.
+- #396: coat-of-arms section removed.
+- #397: transport image moved after heading/text on mobile in v119.
+- #398: celebration image moved after heading/text on mobile in v119.
+- #401: principal figure after quote and attribution on mobile in v119.
+- #409: house-modal link ends with nonbreaking arrow.
+Browser QA v119: 64/64 checks passed, plus four legacy redirect checks with no failures. Run: https://github.com/jayant1435/dbso-school-website/actions/runs/45425918565. New v120 assertions extend those checks; no visual sign-off yet.

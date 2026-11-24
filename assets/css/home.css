@@ -53,7 +53,7 @@
   padding: var(--space-5);
   transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
 }
-.number-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-2); border-color: var(--line-strong); }
+.number-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); }
 /* One-line buttons, side by side — the old wrapping sentence is gone. */
 .numbers-more { margin-top: var(--space-6); display: flex; flex-wrap: wrap; gap: var(--space-3); }
 
@@ -796,3 +796,8 @@ html:not(.js) .photo-strip .photo-card[aria-hidden="true"] { display: none; }
 .pillar-dots { gap:0; }
 .pillar-dot, .pillar-dot.is-active { min-width:44px; width:44px; height:44px; flex:0 0 44px; }
 @media(max-width:360px) { .pillar-nav { flex-wrap:wrap; } .pillar-dots { flex:1 1 132px; } .number-label { text-wrap:balance; } }
+
+/* v120 — shared stat/card sizing and functional controls. */
+.pillar-arrow { width:48px; height:48px; }
+.news-cards .news-item h3 { font-size:1.2rem; }
+.numbers .number-item { height:100%; }
