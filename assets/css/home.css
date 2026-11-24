@@ -369,6 +369,36 @@ button.photo-card figcaption { text-align: left; }
 .news-cards .news-item h3 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 .news-cards .news-item p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: var(--space-4); }
 .news-cards .news-item .news-tag { margin-top: auto; align-self: flex-start; }
+/* W-HOME15 task 277 (wave 11, Jayant 24 Nov 11:50 IST): news description
+   line counts must be CONSISTENT at every width. Budgets: Admissions 1,
+   Photography 2, Quiz ~1, Assembly 6B / Festivala 1. Measured with the
+   site's own DM Sans woff2 (HarfBuzz shaping, qa-v31/whome15/measure*.py,
+   ESTIMATE-ONLY, static): current copy is 3 lines at 320px on ALL FOUR
+   cards (clamp 2 ellipsises every one — live 238), 2 lines at 390/1024,
+   1 line at 768/834, and Quiz is 2 lines even at 1440 (orphan "to V.").
+   The per-card clamps below hold the budgets ONLY together with the
+   shortened copy in index.html — clamps alone would ellipsize
+   Admissions/Quiz/Assembly at 320 (live 238) and at 861-1090 (live 239).
+   Shortened copy keeps every fact: the dropped "Announced on the school
+   homepage" is already the tag on three cards; Admissions drops
+   "Entrance 17-18 December" (kept on admissions.html, the dates strip
+   and the announce bar). Residual, measured: Photography is 2 lines at
+   320 but 1 line at 390px and up — exactly 2 lines at every width is
+   IMPOSSIBLE with fixed copy (a text wrapping to 2 at the 518px desktop
+   width needs >518px of text but must fit 2 x 224px = 448px at 320px),
+   so its budget is met at the narrow end and 1 line elsewhere; the only
+   mechanical pin is a 230px max-width (optional diff whome15-277c.diff),
+   which leaves a ragged narrow measure in a 582px card and is NOT
+   staged here. Uniform clamp 2 (= today) fails 238 at 320; uniform
+   clamp 3 would end 238/239 ellipsis but gives up constant counts —
+   see REPORT.md; coordinator decides. (typography: one type scale,
+   50-75ch measure kept; better-ui: cut text that wraps to a lonely last
+   word — Quiz "to V." orphan gone; audit-ai-design-slop: duplicate
+   "Announced on the school homepage" removed, not restyled.) */
+.news-cards .news-item:nth-child(1) p { -webkit-line-clamp: 1; }
+.news-cards .news-item:nth-child(3) p { -webkit-line-clamp: 1; }
+.news-cards .news-item:nth-child(4) p { -webkit-line-clamp: 1; }
+/* nth-child(2) Photography keeps the base clamp 2 (home.css news rule). */
 
 /* ---------- CTA band: softer corners, two actions ---------- */
 
@@ -774,3 +804,41 @@ section[aria-label="Admissions call to action"] {
 .notice-figure .home-links .btn { flex: 1 1 0; min-width: 0; }
 /* "Compose enquiry in email app" was left-aligned in the form. */
 #enquiry-form button[type="submit"] { display: flex; width: max-content; margin-inline: auto; }
+
+/* W-HOME15 task 280, proposed 289 (wave 11 fresh-eyes sweep): the PILLARS
+   nav overflows at 320-347px. Measured (static, same method as 288):
+   prev 44 + gap 12 + dots 3x44+2x8=148 + gap 12 + counter "1 of 3" 43.2
+   + gap 12 + next 44 = 315.2px against a 288px container at 320px
+   (+27.2; Next ~27px clipped) — fits from 348px up (315.2 vs 328 at
+   360px). Same dot-shrink treatment as W-R10/288, at <=360px only:
+   dots 44->24px hit width (visual dot unchanged), dots gap 8->4px,
+   nav gap 12->8px. New total at 320px: 44+8+80+8+43.2+8+44 = 235.2px.
+   The .is-active selector is listed explicitly because the v29 rule
+   sets its width at the same specificity — later in file wins.
+   (interaction-design: 44px height kept; better-ui: one system.) */
+@media (max-width: 360px) {
+  .pillar-nav { gap: var(--space-2); }
+  .pillar-dots { gap: 4px; }
+  .pillar-dot, .pillar-dot.is-active { width: 24px; } /* height stays 44px */
+}
+
+/* W-HOME15 task 280, proposed 290 (wave 11 fresh-eyes sweep): the QUIZ
+   news heading ellipsises at 320-336px. Measured with the site's own
+   Bricolage woff2 (HarfBuzz, opsz pinned): "Quiz contest, Classes III-V"
+   is 240.9px at 1.15rem/18.4px against a 224px content box at 320px
+   (the <=600px .news-item padding loses to the more specific
+   .news-cards .news-item 32px padding, so the box is 320-32-64=224px) —
+   17px over, so the clamp-1 heading renders "Quiz contest, Classes
+   III…". The other three headings fit (214.2/205.3/214.2px). A heading
+   with an ellipsis is not a heading (style.css:1405 comment, same rule
+   that fixed this at 360px). Fix: 1.05rem at <=360px only — the Quiz
+   heading measures 220.0px there, 4.0px slack; the other three measure
+   195.6/187.4/195.6px. 4px is a narrow margin: browser probe owed at
+   320-336px to confirm no ellipsis (see REPORT.md). Band: content box
+   < 240.9px, i.e. viewports 320-336px; 360px breakpoint covers it with
+   margin. No copy touched. (typography: type scale kept, one step down
+   at the narrowest width; impeccable craft-floor Type — run the real
+   copy at every breakpoint.) */
+@media (max-width: 360px) {
+  .news-cards .news-item h3 { font-size: 1.05rem; }
+}
