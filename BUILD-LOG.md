@@ -56,3 +56,7 @@ Checks: anchored edits against fetched v109 source, static structural and sizing
 - Verified original handover cleanup anchors against current source, rather than applying obsolete line-number patches. Removed only exact dead or overridden rules: #156 (4), #376 (5), #392 (1), #386 (1), #387 (1), #391 (1), #385 (1), #373 (1).
 - 319/310: one 20px photo-radius token (matches the established Home and details treatment), no duplicated radius declaration. 424/438/440: staff merge uses current non-teaching list and existing merge destinations; old staged patch issues need not be reapplied. 428: existing About why-grid contains 8 items; final render check outstanding.
 - JS source compiled successfully in a JavaScript parser. No changes to photographs, facts or illustrated-icon scope. Source-only cleanup, full browser test still required.
+
+## v118 — verification infrastructure
+- Reconciled all 247 original ongoing IDs in TASK-STATUS.md, with implementation, superseded, evidence-dependent and remaining categories. No false completion claims.
+- Added browser QA for all eight pages at six viewport widths, no-JS and reduced-motion modes, mobile menu and photo-strip controls, and legacy redirects. Runs in GitHub Actions; no production dependency introduced. Results are not yet confirmed.
