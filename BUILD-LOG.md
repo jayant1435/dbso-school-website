@@ -96,3 +96,6 @@ Checks: anchored edits against fetched v109 source, static structural and sizing
 
 ## v126 — match footer to primary navigation
 - All eight primary pages now show exactly the eight header navigation destinations and labels in two four-link groups: Explore (Home, About, Campus, Gallery) and School information (Academics, Admissions, Notices, Contact). Remove redundant Staff and Fee structure shortcuts from footer only; their sections and legacy routes remain available. Rename contact details heading to School office; preserve address, phone and email. Footer current-page semantics and browser parity assertions added.
+
+## v127 — free-runner visual audit
+- Separate public-repository standard Ubuntu workflow: 8 pages at 390/834/1440 CSS pixels, compressed screenshots, split geometry, local errors and live deployment hash comparison. 24 MiB screenshot cap and one-day retention; no new cache or paid runner. First run not yet verified. Existing functional QA unchanged.
