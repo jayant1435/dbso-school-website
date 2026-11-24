@@ -1701,10 +1701,17 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
    only, no new colour, font or size.) */
 @media (max-width: 860px) {
   section[aria-label="From the Principal"] .gold-rule,
-  section[aria-label="Coat of arms"] .gold-rule,
   section[aria-label="Transport"] .gold-rule,
   section[aria-label="Celebrations and events"] .gold-rule {
     margin-top: var(--space-5);
     margin-bottom: var(--space-3);
   }
 }
+
+/* DBSO v109: the shared icon family. Decorative marks never replace labels. */
+.dbso-section-mark { display: block; width: 40px; height: 40px; margin: 0 0 var(--space-3); }
+.dbso-value-icon { display: block; flex-shrink: 0; }
+.dbso-utility-icon { display: inline-block; width: 1.1em; height: 1.1em; vertical-align: -0.18em; flex-shrink: 0; }
+.text-link .arrow { display: inline-flex; align-items: center; }
+.pillar-arrow .dbso-utility-icon { width: 24px; height: 24px; }
+@media (max-width: 600px) { .dbso-section-mark { width: 36px; height: 36px; } }

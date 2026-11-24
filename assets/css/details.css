@@ -1711,10 +1711,10 @@ section[aria-label="Our story"] .lineage-years {
    only) + 7 (no-JS 3-col grid + reduced-motion stacked pager stand)
    + no-ai-design-slop (same component as home, not a second values
    treatment). */
-section[aria-label="Mission and values"] .wm-value-slide img { width: 96px; height: 96px; }
+section[aria-label="Mission and values"] .wm-value-slide :is(img, .dbso-value-icon) { width: 96px; height: 96px; }
 section[aria-label="Mission and values"] .wm-value-slide .value-name { font-size: 1.35rem; }
 section[aria-label="Mission and values"] .container > div:first-child p:not(.lede) { max-width: 62ch; }
 @media (max-width: 600px) {
-  section[aria-label="Mission and values"] .wm-value-slide img { width: 80px; height: 80px; }
+  section[aria-label="Mission and values"] .wm-value-slide :is(img, .dbso-value-icon) { width: 80px; height: 80px; }
   section[aria-label="Mission and values"] .wm-value-slide .value-name { font-size: 1.15rem; }
 }

@@ -298,11 +298,11 @@
   visibility: visible;
   transition: opacity 0.4s var(--ease-out), visibility 0s;
 }
-.wm-value-slide img { width: 120px; height: 120px; object-fit: contain; }
+.wm-value-slide :is(img, .dbso-value-icon) { width: 120px; height: 120px; object-fit: contain; }
 .wm-value-slide .value-name { font-size: 1.6rem; white-space: nowrap; }
 @media (max-width: 600px) {
   .wm-values-stage { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .wm-value-slide img { width: 96px; height: 96px; }
+  .wm-value-slide :is(img, .dbso-value-icon) { width: 96px; height: 96px; }
   .wm-value-slide .value-name { font-size: 1.35rem; }
   /* W-HVALS2: no-JS fallback only — the full names (longest "Respect for
      Others", ~191px est.) spill out of the ~141px 2-column tile while
