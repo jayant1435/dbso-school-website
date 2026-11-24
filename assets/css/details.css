@@ -347,7 +347,6 @@ section[aria-label="How learning works"] .split > figure { align-self: center; }
    conflict 16, Jayant's "mobile footer small and compact" wins over
    interaction-design 44px for running-text links; Taste exempts running
    text from tap-size. Apply + CTA buttons keep 44px. */
-.mobile-menu-foot a { padding: var(--space-3) 0; }
 /* Standalone see-more links (not running text): give them the 44px height. */
 .text-link { min-height: 44px; }
 /* The whole announcement bar is one link; it was 39px tall. */
@@ -378,10 +377,9 @@ section[aria-label="How learning works"] .split > figure { align-self: center; }
    Literal values where a token holds the same number. */
 .pillar-dots { gap: var(--space-2); }
 .mobile-menu { padding: var(--space-4) var(--space-5) var(--space-6); }
-/* v37 B3-F: 14px 4px -> 14px 0, matching nav.css — the numerals are gone,
-   so link text now shares one left edge with the panel brand + footer
-   (taste: equal edges). */
-.mobile-menu nav a { padding: 14px 0; }
+/* W-J6 (task 430): the .mobile-menu nav a padding re-assertion is DELETED
+   here — nav.css now carries 12px 0 (v36 precedent: the duplicate misled
+   the next editor, and it just beat the new value). */
 .mobile-menu nav a:hover { padding-left: var(--space-3); }
 /* B3-E v36 (P3-1): .main-nav a padding deleted here — nav.css already
    carries 8px 12px; the duplicate misled the next editor. */
