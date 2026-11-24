@@ -163,11 +163,10 @@
 /* =====================================================================
    ITEM 3 — HOUSES: a single crossfading stage (treatment 2 of 3).
    One large photo at a time, fading into the next every 5s; the house
-   name sits in a fixed strip under the colour field (303: the four
-   photos are gone — see the 303 block at end of file; the field IS
-   the house colour, same --house-* content tokens the old tiles
-   used; the chrome — arrows, dots, counter — is blue/yellow
-   only). Motion: opacity only, 0.4s ease-out (12-principles budget).
+   name sits in a fixed strip under the photo (433: the photos are
+   back — one per house, restored into the v95 colour-field slot;
+   see the 433 block at end of file. The chrome — arrows, dots,
+   counter — is blue/yellow only). Motion: opacity only, 0.4s ease-out (12-principles budget).
    No-JS fallback: all four photos visible in a 2-column grid.
    ===================================================================== */
 
@@ -666,3 +665,30 @@ section[aria-label="The Preventive System"] { padding-top: var(--space-5); }
   .js .wm-house-slide { transition: none; }
   .js .wm-house-slide:hover { transform: none; box-shadow: 0 0 0 1px var(--line), var(--shadow-1); }
 }
+
+/* =====================================================================
+   433 (W-HOU1, wave 11 — Jayant 24 Nov ~17:04 IST, TOP PRIORITY):
+   Four Houses IMAGES BACK — v95 (303) removed the photos for
+   mismatch; Jayant says the image is missing. One photo per house
+   restored into the v95 card: the photo replaces the colour-field
+   slot (same flex slot, same card shape), the v95 in-flow white name
+   strip stays untouched (same text size/spacing at every width).
+   Photos are the v57-verified set (W-H2 viewed all four): Red =
+   sports-day-2025-17 flag hoisting (weakest red in the archive, kept
+   — no better Red image exists, task 127); Blue =
+   sports-day-2025-20 march-past led by the blue flag; Green =
+   sports-day-2025-04 trophy lift in the green polo; Yellow =
+   investiture-juniors-2026-02 junior leaders with the yellow flag.
+   One crop rule for all four (object-fit: cover, flex fill) so the
+   four cards stay uniform at every width; no band re-added (the
+   pre-v95 absolute band would anchor to the stage, not the card, in
+   the >=768px grid where slides are position: static). No new colour,
+   font, or component; modal + pager JS untouched (they bind
+   .wm-house-slide[data-house] only). The 303 field/monogram rules
+   above are now unused — left for the dead-CSS round, not deleted
+   in this diff. no-ai-design-slop: smallest correction, existing
+   card pattern reused, real school photos only, nothing invented.
+   impeccable craft-floor: Coverage (all four houses show a photo at
+   every width) + Type (name strip untouched, one size, 1 line each).
+   ===================================================================== */
+.wm-house-slide img { flex: 1 1 auto; min-height: 0; width: 100%; display: block; object-fit: cover; }
