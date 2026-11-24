@@ -1314,6 +1314,29 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .staff-card h3 { margin: 0; font-size: 1.05rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .staff-card p { margin: 2px 0 0; color: var(--ink-mute); font-size: 0.95rem; }
 
+/* W-STF1 (task 297): non-teaching staff. Two group photos in the shared
+   3-column .photo-row left the third column empty on desktop/tablet.
+   Each photo now pairs with its own text in an alternating split row, so
+   every column carries content at every width. Tokens only; blue + gold
+   palette untouched, no new colour, font or size. Figcaptions go
+   (design-taste house rule 1: no caption under an image — the h3 already
+   says what the picture is; precedent details.css:703). Image keeps its
+   native 3 / 2 so no group face is cropped (the old .photo-row forced
+   4 / 3). Flip row puts the second photo on the right; on phones both
+   rows stack photo-first, so the photograph — the whole record here,
+   since no name list is published — leads. */
+section[aria-label="Non-teaching staff"] .nonteach-list { display: grid; gap: var(--space-7); }
+section[aria-label="Non-teaching staff"] .nonteach-row { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--space-5); align-items: center; }
+section[aria-label="Non-teaching staff"] .nonteach-row--flip figure { order: 2; }
+section[aria-label="Non-teaching staff"] .nonteach-row img { aspect-ratio: 3 / 2; display: block; transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out); }
+section[aria-label="Non-teaching staff"] .nonteach-row img:hover { transform: scale(1.02); box-shadow: var(--shadow-2); }
+section[aria-label="Non-teaching staff"] .nonteach-text h3 { margin: 0 0 var(--space-2); }
+section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; color: var(--ink-soft); }
+@media (max-width: 600px) {
+  section[aria-label="Non-teaching staff"] .nonteach-row { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+  section[aria-label="Non-teaching staff"] .nonteach-row--flip figure { order: 0; }
+}
+
 /* Leadership: portrait cards. Stretch, so a one-line role ends level with a
    two-line role instead of leaving a 25px step at desktop width. */
 .leader-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: stretch; gap: var(--space-4); }
