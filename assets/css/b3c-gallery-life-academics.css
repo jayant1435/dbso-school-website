@@ -61,6 +61,20 @@
     gap: var(--space-3);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    /* W-GAL18 NEW-7 / task 233 (24 Nov 2026): room for the focus ring.
+       .gallery-item button:focus-visible is a 3px outline + 3px offset
+       (style.css:895), so the ring reaches 6px outside the card on every
+       side; overflow-x:auto makes this grid a scroll container in both
+       axes and outlines create no scrollable overflow, so the top band
+       (every card) and the outer band on the first/last card were
+       clipped at 320-767px. 6px top + inline padding puts the ring
+       exactly inside the scrollport; the bottom already has 8px. No 6px
+       token exists (--space-1 is 4px, --space-2 is 8px), so the value is
+       a literal tied to the ring geometry, not a spacing choice.
+       Unscoped (not html.js): the strip is a slider with or without JS,
+       and the buttons are focusable either way. */
+    padding-top: 6px;
+    padding-inline: 6px;
     padding-bottom: var(--space-2);
     scrollbar-width: thin;
   }
