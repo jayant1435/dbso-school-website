@@ -681,11 +681,12 @@ section[aria-label="From the Principal"] .quote-attr strong { font-weight: 600; 
   }
 }
 
-/* ---- Item 6: Vision and Mission share one size ----
+/* ---- Item 6 (Vision removed v93; W-J7): Mission paragraphs share one size ----
    typography (3–4 sizes only; hierarchy from size + weight + colour,
-   not a new size per block) + design-system (semantic tokens, no raw
-   values): Mission is now an h3 + the same .lede (1.2rem / 1.6) as
-   Vision. No CSS needed — the HTML carries it. */
+   not a new size per block): the Vision block is gone, so the .lede on
+   the Mission paragraph was an orphan — it made the mission paragraph
+   larger than the patron paragraph beside it. Both Mission paragraphs
+   are plain body text now; the HTML carries it. */
 
 /* ---- Item 8: why families — uniform tiles, not ragged chips ----
    design-system (one component, one size): the flex chip row could
