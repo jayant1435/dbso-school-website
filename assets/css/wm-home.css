@@ -393,14 +393,24 @@
 }
 
 /* =====================================================================
-   ITEM 5 — PREVENTIVE SYSTEM ORDER: image first, then the big line,
-   then the description. Markup order does the work (no CSS needed for
-   the order itself); this only keeps the figure from crowding the
-   heading that now follows it (better-ui: breathing room; the h2's own
-   top margin already separates them — this guards the caption edge).
+   370 (W-HOME25, wave 11 — Jayant 24 Nov 12:57 IST, OVERRIDES the v87
+   353 bar removal for this one spot): PREVENTIVE SYSTEM ORDER is now
+   the app's standard layout — gold bar, then heading, then description,
+   then the image below. Markup order does the work; this rule only
+   sets the description -> image gap. Spacing, measured from the
+   tokens (style.css): bar -> heading 24px (.gold-rule margin-bottom
+   var(--space-5); the h2's top margin is already 0 via .split > * >
+   h2:first-of-type); heading -> description 16px (h2 margin-bottom
+   var(--space-4), unchanged); description -> image 24px (the lede's
+   16px p margin-bottom collapses with this 24px margin-top to the
+   max, 24px — the site's inter-block step). The caption stays REMOVED
+   per Jayant 12:56 IST (task 369 stands — no figcaption, no small
+   text below the image; the img alt stays for accessibility).
+   (no-ai-design-slop: proximity — each element sits one site step
+   from the next; better-ui: 4px spacing scale, tokens only.)
    ===================================================================== */
 
-section[aria-label="The Preventive System"] .split > div:first-child figure { margin-bottom: var(--space-2); }
+section[aria-label="The Preventive System"] .split > div:first-child figure { margin-top: var(--space-5); }
 
 /* =====================================================================
    ITEM 6 — PILLARS INFINITE LOOP: backstop only (the loop itself is
@@ -467,16 +477,23 @@ section[aria-label="The Preventive System"] { padding-top: var(--space-5); }
    Fix: at <=860px only, margin-top 24px above the bar and margin-bottom
    12px below it. Margins collapse to max(8, 24) = 24px above the bar
    and 12px below it — the bar now sits 2x nearer its heading than the
-   image, i.e. attached to the heading. Scoped to the two HOME sections
-   with this pattern (Welcome/beacon figure + Preventive photo); every
-   other image-above-bar spot site-wide belongs to W-HOME16.
+   image, i.e. attached to the heading. Scoped to the HOME section(s)
+   with this pattern — since 370, Welcome/beacon figure only (Preventive
+   dropped out, see below); every other image-above-bar spot site-wide
+   belongs to W-HOME16.
    Decision: ATTACH, not remove (refinement left the choice to the
    worker; removal would break the motif on mobile only).
+   370 (W-HOME25): The Preventive System drops OUT of this rule — its
+   image moved below the description, so the image-above-bar pattern
+   no longer exists there and the rule's 24px margin-top would float
+   a stray gap above a bar that is now first in its column. Its bar
+   takes the plain .gold-rule margins (0 above, 24px below) at every
+   width. Welcome keeps ATTACH unchanged; every other image-above-bar
+   spot site-wide is still W-HOME16's (style.css).
    (no-ai-design-slop: proximity before containers; better-ui: 4px
    spacing scale; design-system: tokens only; Hallmark floor 1.) */
 @media (max-width: 860px) {
-  section[aria-label="Welcome from the school"] .gold-rule,
-  section[aria-label="The Preventive System"] .gold-rule {
+  section[aria-label="Welcome from the school"] .gold-rule {
     margin-top: var(--space-5);
     margin-bottom: var(--space-3);
   }
