@@ -1567,3 +1567,98 @@ body.page-about section[aria-label="Admissions call to action"] {
   padding-bottom: var(--space-4);
 }
 body.page-about .site-footer { margin-top: var(--space-4); }
+
+/* ===== W-AB68 (wave 11, task 281, Jayant's brief 9, 24 Nov 2026) =====
+   ABOUT lineage — rebuild as a proper timeline.
+   CAUSE (measured BEFORE, static estimate from the live tree, font advances
+   summed from DMSans-Variable.woff2, kerning ignored so ~1% wide): every
+   row sizes its own years column (max-content, details.css ~610), so the
+   years column is 85.9–114.6px wide row to row and the name starts at a
+   different x in every row — name-x spread 28.7px at 768/834/1024/1440
+   (27.9px at 390). Jayant's named pair: 2007–2010 name-x 134.9px vs
+   2012–2016 name-x 129.9px at 1440/1024 (124.2 vs 119.4 at 390) — a 5.0px
+   step in exactly the boundary he flagged. There is NO straight line
+   between years and names; the boundary steps sideways row to row. The
+   vertical gaps happen to measure equal (25.0px = 12 pad + 1 border + 12
+   pad at all five widths, every name one line) — the inequality is the
+   horizontal alignment, and it is structural: per-row max-content columns
+   can never line up. At 320px three names wrap and the rhythm breaks by a
+   full line (+27.2px).
+   FIX (CSS only, about.html untouched — same six rows, same years, same
+   names, zero fact changes): one column at every width; one shared fixed
+   years column (132px — widest year "2025–present" is 114.6px at 17px /
+   111.3px at 16.5px, so the year sits centred with 8.7px / 10.4px padding
+   each side); ONE continuous 1px rule (::before, --line) down the middle
+   of the years–names gap, ending at the first/last year's centre; the
+   inter-row gap is now a single row-gap (16px, --space-4) on the container
+   — one value, so it is equal on every row by construction, at every
+   width, even when a name wraps. Years centred (text-align: center);
+   rows vertically centred (align-items: center) so a wrapped name keeps
+   its year centred. Desktop 2-column pairing deleted with the pairing:
+   paired grid tracks are the other way gaps go unequal (a wrapped name
+   in one column stretches the other column's gap). At <=600px the row's
+   12px hover bleed is dropped (touch: no hover) — without it the 132px
+   column wraps "Fr. Sanjay Manohar Kujur" at 390; with it the longest
+   name fits at 390 with 12.9px slack. Text x-positions do not move:
+   -12px margin + 12px padding already cancelled, so 0/0 lands the text
+   on the same pixel. No JS, no new colour, font or size; .reveal is
+   untouched and is .js-scoped site-wide, so the timeline is visible
+   with scripting off. Skills: better-ui (one spacing system, 4px steps;
+   align everything to a single grid); design-system (tokens only:
+   --space-4/5/6, --line, no raw px except the one documented 132px
+   column); typography (one type size, no new size; years centred in
+   their cell); no-ai-design-slop (smallest correction, existing system
+   reused; removal test — per-row borders and the 2-col pairing performed
+   no job the line + row-gap do not do better, so they go);
+   audit-ai-design-slop (accidental inconsistency in spacing/alignment,
+   P1); design-taste-frontend §5 (equal edges, one system, no row half
+   empty); impeccable craft-floor (spacing: tight groups, generous
+   separation; type: run the real copy at every breakpoint — longest name
+   fits at all five widths, see REPORT.md); Hallmark floor 7 (content
+   visible with scripting off); interaction-design (hover stays
+   enhancement-only; the line is pointer-events: none so it can never
+   block input); 12-principles-of-animation (no motion added);
+   design-first-ui-prompting (one variable changed at a time — layout
+   only). */
+section[aria-label="Our story"] .lineage-wide {
+  --lineage-years-w: 132px;
+  position: relative;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--space-4);
+  border-top: 0;
+}
+section[aria-label="Our story"] .lineage-wide::before {
+  content: "";
+  position: absolute;
+  top: 0.825em;
+  bottom: 0.825em;
+  left: calc(var(--lineage-years-w) + var(--space-6) / 2);
+  width: 1px;
+  background: var(--line);
+  pointer-events: none;
+}
+section[aria-label="Our story"] .lineage-row {
+  grid-template-columns: var(--lineage-years-w) minmax(0, 1fr);
+  column-gap: var(--space-6);
+  align-items: center;
+  padding-block: 0;
+  border-top: 0;
+  border-bottom: 0;
+}
+section[aria-label="Our story"] .lineage-years {
+  text-align: center;
+}
+@media (max-width: 860px) {
+  section[aria-label="Our story"] .lineage-row {
+    column-gap: var(--space-5);
+  }
+  section[aria-label="Our story"] .lineage-wide::before {
+    left: calc(var(--lineage-years-w) + var(--space-5) / 2);
+  }
+}
+@media (max-width: 600px) {
+  section[aria-label="Our story"] .lineage-row {
+    padding-inline: 0;
+    margin-inline: 0;
+  }
+}
