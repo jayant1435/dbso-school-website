@@ -1470,10 +1470,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
    Appended after style.css; nothing here edits an existing rule, it only
    adds what the audit found missing. Palette: blue + gold tokens only. */
 
-/* ---------- Coat-of-arms / committee cards: the site's card language ----------
-   .card, .summary-card, .number-item and .date-item all lift on hover;
-   .meaning cards were the one grid that sat dead. Same lift, same timing. */
-
 /* ---------- Focus: the ring fades in instead of snapping on ----------
    The global :focus-visible rule sets the ring; this adds the transition
    so keyboard focus moves smoothly between controls. */
