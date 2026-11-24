@@ -50,17 +50,6 @@
 /* ---- News tags: a soft fill so the date reads as a label, not a border ---- */
 .news-tag { background: var(--paper-warm); }
 
-/* ---- Chips: a quiet lift on hover, no fake affordance beyond the border ---- */
-.chip-list li {
-  transition: background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out),
-    transform 0.2s var(--ease-out);
-}
-.chip-list li:hover {
-  background: var(--band);
-  border-color: var(--ink);
-  transform: translateY(-1px);
-}
-
 /* ---- Tick and contact icons: a soft disc behind the mark ---- */
 .tick-list svg {
   width: 16px;
