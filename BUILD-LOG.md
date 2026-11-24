@@ -23,3 +23,9 @@ Checks: anchored edits against fetched v109 source, static structural and sizing
 - Task 426: eight genuine award photos, full portrait containment, no arrow buttons; existing drag/keyboard rail retained. Exact replacement crop unavailable.
 - Tasks 187/243/214: no-script stream visibility and controls. Task 150: facilities descriptions unclamped. Task 137: remove unverified campus claims; duplicate lab card still under review.
 - Checks: source-derived anchors, unique IDs, asset references, staff inventory, navigation destinations and sitemap. Browser/runtime and production deployment verification outstanding. AI raster transfer remains pending; existing icon references retained. Remaining backlog not marked complete.
+
+## v112 — real AI imagery and accessibility repairs
+- Tasks 37/38/62/64: uploaded all 23 selected AI-generated WebP icons (about 100 KB combined), converted 119 shared-sprite instances to image elements and deleted the superseded vector sprite. Preserved official crest and favicons.
+- Task 63: awards autoplay pause/play control; no arrows restored. No-JS awards grid displays all eight genuine photos.
+- Task 235: mobile menu closes when the viewport crosses the desktop breakpoint. Task 230: lock html scroll for dialogs. Task 246: gallery counters and button states update on resize. Task 403: enquiry form no-script fallback uses the school’s published email and phone. Task 163: contrasting lightbox arrow backgrounds. Extensionless route active states fixed.
+- Static anchors, exact asset inventory and old sprite reference checks passed. Live/browser QA and remaining task queue not declared complete.

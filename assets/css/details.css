@@ -1738,3 +1738,13 @@ body.page-about .staff-card h3, body.page-about .leader-card h3 { font-size: 1.1
 .award-slide--portrait img { object-fit: contain; margin-inline: auto; background: var(--band); }
 .awards-hint { margin-bottom: var(--space-4); }
 .rule-list li, .award-group li { text-wrap: pretty; }
+
+/* v112: accessible awards pause and static no-script fallback. */
+.awards-pause { display: none; }
+html.js .awards-pause { display: block; margin: var(--space-4) auto 0; }
+.awards-track.is-paused { animation-play-state: paused; }
+html:not(.js) .awards-slider { overflow: visible; cursor: default; }
+html:not(.js) .awards-track { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: var(--space-4); width: auto; animation: none; }
+html:not(.js) .award-slide { width: auto; margin: 0; }
+html:not(.js) .award-slide[aria-hidden="true"] { display: none; }
+@media (prefers-reduced-motion: reduce) { html.js .awards-pause { display: none; } }

@@ -101,6 +101,10 @@
       else openMenu();
     });
     if (closeBtn) closeBtn.addEventListener("click", closeMenu);
+    var desktopMenuMq = window.matchMedia("(min-width: 1106px)");
+    function closeAtDesktop(e) { if (e.matches && menu.classList.contains("open")) { closeMenu(); var firstLink = document.querySelector(".main-nav a"); if (firstLink) firstLink.focus(); } }
+    if (desktopMenuMq.addEventListener) desktopMenuMq.addEventListener("change", closeAtDesktop);
+    else if (desktopMenuMq.addListener) desktopMenuMq.addListener(closeAtDesktop);
     if (backdrop) backdrop.addEventListener("click", closeMenu);
     menu.querySelectorAll("a").forEach(function (a) {
       a.addEventListener("click", closeMenu);
@@ -385,7 +389,7 @@
       show(i);
       lightbox.classList.add("open");
       lightbox.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
       setLbBackgroundInert(true);
       lightbox.querySelector(".lightbox-close").focus();
     }
@@ -402,7 +406,7 @@
       clearTimeout(lbTimer);
       lightbox.classList.remove("open", "closing");
       lightbox.setAttribute("aria-hidden", "true");
-      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
       setLbBackgroundInert(false);
       if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
     }
@@ -459,8 +463,8 @@
       var i = Math.round(grid.scrollLeft / step());
       i = Math.max(0, Math.min(items.length - 1, i));
       if (count) count.textContent = (i + 1) + " / " + items.length;
-      prev.disabled = i === 0;
-      next.disabled = i === items.length - 1;
+      prev.disabled = grid.scrollLeft <= 1;
+      next.disabled = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 1;
     }
     function move(dir) {
       grid.scrollBy({ left: dir * step(), behavior: reduceMotion ? "auto" : "smooth" });
@@ -468,6 +472,8 @@
     prev.addEventListener("click", function () { move(-1); });
     next.addEventListener("click", function () { move(1); });
     grid.addEventListener("scroll", function () { requestAnimationFrame(update); }, { passive: true });
+    if ("ResizeObserver" in window) new ResizeObserver(update).observe(grid);
+    else window.addEventListener("resize", update, { passive: true });
     grid.addEventListener("keydown", function (e) {
       if (e.key === "ArrowLeft") { e.preventDefault(); move(-1); }
       if (e.key === "ArrowRight") { e.preventDefault(); move(1); }
@@ -546,7 +552,7 @@
       hmBand.className = "house-modal-band house-modal-band-" + name.toLowerCase();
       houseModal.classList.add("open");
       houseModal.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
       houseModal.querySelector(".house-modal-close").focus();
     }
     /* Same closing fade as the lightbox (CSS .closing, 180ms). */
@@ -560,7 +566,7 @@
       clearTimeout(hmTimer);
       houseModal.classList.remove("open", "closing");
       houseModal.setAttribute("aria-hidden", "true");
-      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
       if (hmLastFocus && hmLastFocus.focus) hmLastFocus.focus();
     }
     document.querySelectorAll(".wm-house-slide").forEach(function (tile) {
@@ -598,7 +604,7 @@
       vDet.style.display = vDet.textContent ? "" : "none";
       viewer.classList.add("open");
       viewer.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
       viewer.querySelector(".lightbox-close").focus();
     }
     /* Same closing fade as the lightbox (CSS .closing, 180ms). */
@@ -612,7 +618,7 @@
       clearTimeout(vTimer);
       viewer.classList.remove("open", "closing");
       viewer.setAttribute("aria-hidden", "true");
-      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
       if (vLastFocus && vLastFocus.focus) vLastFocus.focus();
     }
     document.querySelectorAll(".js-viewer").forEach(function (el) {
@@ -1316,9 +1322,13 @@
   (function awardsStripDrag() {
     var slider = document.querySelector(".awards-slider");
     var track = document.querySelector(".awards-track");
-    var prevBtn = document.querySelector(".awards-prev");
-    var nextBtn = document.querySelector(".awards-next");
+    var pauseBtn = document.querySelector(".awards-pause");
     if (!slider || !track || reduceMotion) return;
+    if (pauseBtn) pauseBtn.addEventListener("click", function () {
+      var paused = track.classList.toggle("is-paused");
+      pauseBtn.setAttribute("aria-pressed", String(paused));
+      pauseBtn.textContent = paused ? "Play photographs" : "Pause photographs";
+    });
     track.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
     var DUR = 36; /* seconds; must match the awards-scroll keyframes. */
     var startOffset = 0;
@@ -1358,8 +1368,7 @@
       if (e.key === "ArrowLeft") { e.preventDefault(); nudge(1); }
       if (e.key === "ArrowRight") { e.preventDefault(); nudge(-1); }
     });
-    if (prevBtn) prevBtn.addEventListener("click", function () { nudge(1); });
-    if (nextBtn) nextBtn.addEventListener("click", function () { nudge(-1); });
+
     armDrag(slider,
       function () {
         startOffset = currentX();

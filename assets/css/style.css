@@ -1735,3 +1735,10 @@ section[aria-label="ICSE 2026 toppers"] { padding-top: var(--space-5); }
 /* v111: readable no-script content and keyboard access. */
 html:not(.js) .switcher-panel { display: block; margin-block: var(--space-4); }
 html:not(.js) .switcher-tabs, html:not(.js) .pillar-nav, html:not(.js) .awards-hint { display: none; }
+
+/* v112: AI-generated raster icon assets; retain decorative semantics. */
+.dbso-section-mark, .dbso-value-icon, .dbso-utility-icon { object-fit: contain; }
+.tick-list .dbso-utility-icon { width: 24px; height: 24px; flex: 0 0 24px; margin-top: 1px; }
+.lightbox-btn .dbso-utility-icon, .event-prev .dbso-utility-icon, .event-next .dbso-utility-icon { width: 24px; height: 24px; }
+.lightbox-prev, .lightbox-next { background-color: rgba(11,31,49,.70); }
+html:not(.js) #enquiry-form { display: none; }

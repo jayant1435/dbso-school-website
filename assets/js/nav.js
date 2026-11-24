@@ -12,7 +12,8 @@
 
   /* Active page from the URL. On the home page no desktop link is active
      (the brand is the home link), which is correct. */
-  var page = (location.pathname.split("/").pop() || "index.html").split(/[?#]/)[0];
+  var page = (location.pathname.split("/").filter(Boolean).pop() || "index.html").split(/[?#]/)[0];
+  if (!/\.html$/.test(page)) page += ".html";
   links.forEach(function (a) {
     var href = a.getAttribute("href") || "";
     if (href === page) a.setAttribute("aria-current", "page");
