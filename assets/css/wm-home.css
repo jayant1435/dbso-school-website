@@ -68,7 +68,7 @@
 /* =====================================================================
    ITEM 2 — CLUBS: an infinite moving rail (treatment 1 of 3).
    Photo cards with the club name written on the photo; the rail moves
-   by itself and the visitor can drag it or nudge it with the arrows.
+   by itself and the visitor can drag it or use the arrow keys.
    Motion: transform only, one easing curve (12-principles timing —
    the rail moves at a constant linear rate; card hover is a 0.2s
    ease-out lift). No-JS fallback: a plain wrapping grid, all 18
@@ -84,7 +84,29 @@
   padding: 0;
   margin: 0;
 }
-.js .wm-clubs-viewport { overflow: clip; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+/* W-HOME15 task 278 (wave 11, Jayant 24 Nov 11:50 IST): the swipe
+   stopped after ~4 clubs on a phone. Measured cause (static + simulation
+   qa-v31/whome15/clubs-sim.js): the rail's own logic has NO cap — step
+   244px @<=600px, half 4392px, wrap() cycles all 18 in the 64s auto-loop
+   and in 20 consecutive 250px drags; no scroll-snap exists on this rail
+   (scroll-snap lives only on the pillars slider + gallery); the 358px
+   viewport at 390px shows 1.47 cards and clips, it never limits travel.
+   The only mobile-only break in the swipe chain is pointer delivery:
+   touch-action: pan-y lets the browser claim any diagonal thumb swipe
+   for vertical page scroll, firing pointercancel, which ends the drag
+   mid-gesture — desktop mouse drags never hit this, which is why every
+   mouse probe passed at 390 while a real thumb failed. Fix: touch-action:
+   none, so the whole gesture is delivered to the drag engine (the
+   standard treatment for a custom pointer-drag rail). Cost, disclosed:
+   a page scroll can no longer START on the rail itself (174px tall on a
+   phone); it starts normally everywhere else on the page. The
+   prefers-reduced-motion block below restores pan-y, where the rail is a
+   static grid and there is no drag engine. No-JS grid, keyboard path
+   (viewport ArrowLeft/Right), auto-scroll, clones and copy untouched.
+   (interaction-design: swipe where users expect it, keyboard path first;
+   12-principles: transform-only motion unchanged; no-ai-design-slop:
+   smallest correction; better-ui: feedback within the drag itself.) */
+.js .wm-clubs-viewport { overflow: clip; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
 .js .wm-clubs-viewport.wm-grabbing { cursor: grabbing; }
 .js .wm-clubs-track {
   display: flex;
@@ -156,15 +178,10 @@
    starts (main.js guards on the same media query). Duplicated halves are
    hidden so no club appears twice. */
 @media (prefers-reduced-motion: reduce) {
-  .js .wm-clubs-viewport { overflow: visible; cursor: default; }
+  .js .wm-clubs-viewport { overflow: visible; cursor: default; touch-action: pan-y; }
   .js .wm-clubs-track { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: auto; }
   .js .wm-club-slide { flex: none; width: auto; margin-right: 0; }
   .wm-club-slide[aria-hidden="true"] { display: none; }
-  /* Only the clubs nav hides here: the rail is a static grid under
-     reduced motion, so its arrows/counter have nothing to move. The
-     houses + values navs stay visible — their manual controls are the
-     only way to change slides, and they never auto-move. */
-  .js .wm-clubs .wm-slider-nav { display: none; }
   /* Life strip nav hides for the same reason: under reduced motion the
      strip is a static 3-card grid and lifeStripDrag never starts, so
      its buttons/counter would be dead controls. */
