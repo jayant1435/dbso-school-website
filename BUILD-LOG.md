@@ -35,3 +35,7 @@ Checks: anchored edits against fetched v109 source, static structural and sizing
 - Replace illustrated utility icons with simple functional text glyphs; accessible control labels unchanged. Keep generated illustrations only in the two Core Values rails.
 - Leave the official crest and favicon identity intact. Delete unused v112 section and utility WebP assets. The seven value icons are rejected and still need a lighter, restrained gradient treatment. Icon tasks 37/38/62/64 remain open and are not counted as finished.
 - Static reference scope verified. Live deployment and visual verification remain outstanding.
+
+## v114 — replace rejected core-values artwork
+- Replaced all seven v112 dark metallic value images with selected AI-generated pale-blue/cream gradient art. Correct original seven symbols, no new artwork outside the two value sliders. Native image dimensions corrected to 144px. Asset hashes recorded in ICON-SHEET.md.
+- Tasks 37/38/62/64 revised to reflect the latest user direction; live visual approval remains open.
