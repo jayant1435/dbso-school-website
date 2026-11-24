@@ -24,13 +24,13 @@
   transition: width 0.32s var(--ease-out), height 0.32s var(--ease-out);
 }
 .site-header.scrolled {
-  --header-h: 64px; /* v24: thicker header — scrolled is 64px, resting 72px */
+  --header-h: 56px; /* W-J6 (task 430): resting is now 64px, so scrolled drops a step to 56px — the compact-on-scroll delta is kept */
   box-shadow: var(--shadow-header);
   border-bottom: 1px solid var(--line); /* faint hairline divider, MGM cue */
 }
 .site-header.scrolled .brand-crest {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
 }
 /* v37 B3-F: the top drop-down panel REPLACES the side drawer (Jayant
    17:53 IST). The panel (z-index 150) + backdrop (140) sit ABOVE the
@@ -54,6 +54,9 @@
    28px, so the row's whitespace lives inside the nav instead of piling
    up as one dead lump between the brand and the nav (115px before). */
 .main-nav ul { gap: 4px; }
+/* W-J6 (task 430, Jayant 17:11 brief #3): header a step smaller — link text
+   17px -> 15.9px (Hallmark Floor 9: nav links a step smaller than body) and side
+   padding 8px -> 6px; min-height stays 44px (interaction-design tap target). */
 .main-nav a {
   position: relative;
   /* v33 W-F polish: the hit area was 41.1px — under the 44px minimum
@@ -68,8 +71,9 @@
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  padding: 8px 8px;
+  padding: 8px 6px;
   color: var(--ink);
+  font-size: 0.9375rem;
   font-weight: 600;
   transition: color 0.25s var(--ease-out);
 }
@@ -87,8 +91,8 @@
   position: absolute;
   /* v33 W-F polish: inset 7px -> 8px, a 4px step (better-ui); with the
      12px side padding the rule now spans the text plus 4px each side. */
-  left: 4px;
-  right: 4px;
+  left: 2px;
+  right: 2px;
   bottom: -3px;
   height: 3px;
   border-radius: 2px;
@@ -253,7 +257,7 @@
   min-height: 48px;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   line-height: 1.1;
   letter-spacing: -0.01em;
   color: var(--ink);
@@ -261,8 +265,8 @@
   white-space: nowrap;
 }
 .mobile-menu-brand img {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -314,11 +318,14 @@
    edges): links sit at 0 side padding inside the panel's 24px padding,
    so brand, links and footer share one left edge. */
 .mobile-menu nav ul { list-style: none; margin: 0; padding: 0; }
+/* W-J6 (task 430): menu rows a bit smaller — 1.55rem -> 1.35rem, 14px -> 12px
+   row padding; the panel still reads at a glance, and the rows stop
+   dominating the small screen. */
 .mobile-menu nav a {
   display: block;
-  padding: 14px 0;
+  padding: 12px 0;
   font-family: var(--font-display);
-  font-size: 1.55rem;
+  font-size: 1.35rem;
   font-weight: 700;
   line-height: 1.2;
   color: var(--ink);
@@ -329,25 +336,11 @@
 .mobile-menu nav a:hover { color: var(--blue); padding-left: 12px; }
 .mobile-menu nav a[aria-current="page"] .menu-name { color: var(--blue); box-shadow: inset 0 -3px 0 var(--blue); }
 .mobile-menu .btn { margin-top: var(--space-6); width: 100%; }
-/* Footer: pinned to the bottom, contact + motto, no dead space. */
-.mobile-menu-foot {
-  margin-top: auto;
-  padding-top: var(--space-5);
-  border-top: 1px solid var(--line);
-}
-.mobile-menu-foot a {
-  display: block;
-  padding: 6px 0;
-  font-weight: 600;
-  color: var(--ink);
-  text-decoration: none;
-}
-.mobile-menu-foot a:hover { color: var(--blue); }
-.mobile-menu-foot p {
-  margin: var(--space-3) 0 0;
-  font-size: 0.85rem;
-  color: var(--ink-mute);
-}
+/* W-J6 (task 430, Jayant 17:11 brief #3): the mobile-menu footer (phone,
+   email, motto) is DELETED from all 12 pages — the panel now ends at the
+   Admissions button. These rules go with it; nothing replaces them
+   (no-ai-design-slop removal test: the footer performed no job the panel
+   CTA + the Contact page do not already do). */
 
 /* ---------- Focus: clear rings on every nav control ---------- */
 
@@ -356,8 +349,7 @@
 .menu-toggle:focus-visible,
 .menu-close:focus-visible,
 .mobile-menu-brand:focus-visible,
-.mobile-menu nav a:focus-visible,
-.mobile-menu-foot a:focus-visible { outline-offset: 3px; }
+.mobile-menu nav a:focus-visible { outline-offset: 3px; }
 
 /* ---------- Reduced motion: everything rests, nothing hides ---------- */
 
@@ -383,9 +375,6 @@
    underline draw, drawer slide, staggered links, toggle morph and
    backdrop fade all have transitions — except one gap below. */
 
-/* ---------- Panel footer links: hover changed colour instantly ----------
-   Every other nav link eases its colour; these popped. */
-.mobile-menu-foot a { transition: color 0.2s var(--ease-out); }
 
 /* ===== v29 assembly: w5-nav.css ===== */
 /* W5 (wave 3, fix 3): Gallery joins the nav — patch for nav.css.
