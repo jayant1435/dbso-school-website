@@ -1,2 +1,0 @@
-/* Hallmark: W-G1 F6 — the grid gap already separates rows; the inherited li margin-bottom (style.css:122) made five tiles 132px and the last one 140px. */
-.values-grid .value-tile { margin-bottom: 0; }
