@@ -690,22 +690,31 @@ section[aria-label="From the Principal"] .quote-attr strong { font-weight: 600; 
 
 /* ---- Item 8: why families — uniform tiles, not ragged chips ----
    design-system (one component, one size): the flex chip row could
-   never be uniform, so the 9 reasons use the site's own .tile-grid
-   (v22 pattern). 3 columns = 3 even rows of 3 at every width above
-   600px; stretch + height 100% makes every cell the same size even
-   when a label wraps. */
+   never be uniform, so the 8 reasons use the site's own .tile-grid
+   (v22 pattern). 8 tiles divide by 4 and by 2, so the grid is even
+   at every width with no spanning fix: 4 columns = 2 even rows above
+   860px; 2 columns = 4 even rows at and below 860px (the site's own
+   861px breakpoint). The old 9th-tile full-width span is deleted with
+   the 9th tile — with 8 tiles every row fills the same way.
+   Labels shortened to alike length (2–4 words; Jayant 11:57 + 17:11
+   briefs, meaning kept): "Presence in Promoting Social Change" →
+   "Promoting Social Change"; "Scientific Reflection and Outreach" →
+   "Reflection and Outreach" (both activities kept, qualifier dropped);
+   "National and International Collaboration" → "National and Global
+   Collaboration" (both levels kept, Global = International);
+   "Promoting Education and Communication" → "Education and
+   Communication". "Critical Reflection" dropped (task 428): its
+   substance — reflection — is carried by "Reflection and Outreach";
+   only the "Critical" qualifier goes. text-wrap: balance evens the
+   two phone lines (better-ui: shorten labels that force a second
+   line — here the balance rule does the evening). */
 .why-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: stretch;
 }
-.why-grid .tile { height: 100%; min-height: 88px; }
-@media (max-width: 600px) {
+.why-grid .tile { height: 100%; min-height: 88px; text-wrap: balance; }
+@media (max-width: 860px) {
   .why-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  /* W-G2 (wave 6): 9 tiles in 2 columns leaves the 9th alone in the last
-     row with an empty slot at its right. Span it full width so the row
-     ends even — same intent as the v22 tile-grid comment (every row fills
-     the same way). Text stays 1 line full-width; height stays 88px. */
-  .why-grid .tile:last-child { grid-column: 1 / -1; }
 }
 
 /* ---- Item 10: leadership — name line 1, role line 2, uniformly ----
