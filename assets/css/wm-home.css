@@ -339,13 +339,15 @@
    Motion (12-principles: 150–400ms, one easing curve, transform +
    opacity only): track translateX 0.32s var(--ease-out) — the site's
    single easing token (design-system: tokens only, Hallmark floor 1).
-   Peek: --values-peek 28px on phones, 48px at >=601px — the same
+   Peek: --values-peek 36px on phones, 80px at >=601px — the same
    601px breakpoint main.js reads, so the JS step math and this CSS
-   can never drift apart. Stage max 656px = 560px card + 2 x 48px
-   peek, so the card keeps its settled 560px desktop width. */
+   can never drift apart. Stage max 656px = 496px card + 2 x 80px
+   peek at desktop (368: cards a bit smaller, neighbours much more
+   visible — the visible neighbour is peek minus the 8px gap: 28px
+   on phones, 72px at desktop, vs 16px / 36px before). */
 .wm-values-track { display: contents; }
 .js .wm-values-stage.wm-values--animated {
-  --values-peek: 28px;
+  --values-peek: 36px;
   display: block;
   max-width: 656px;
   margin-inline: auto;
@@ -353,7 +355,7 @@
   cursor: grab;
 }
 @media (min-width: 601px) {
-  .js .wm-values-stage.wm-values--animated { --values-peek: 48px; }
+  .js .wm-values-stage.wm-values--animated { --values-peek: 80px; }
 }
 .js .wm-values-stage.wm-values--animated:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
 .js .wm-values-stage.wm-values--animated.wm-grabbing { cursor: grabbing; }
@@ -369,12 +371,18 @@
 .js .wm-values-stage.wm-values--animated.wm-dragging .wm-values-track { transition: none; }
 .js .wm-values-stage.wm-values--animated .wm-value-slide {
   /* Card width is set by JS as --values-card-w (stage width minus
-     2 x --values-peek); the 12px margin is the Life-strip/clubs
+     2 x --values-peek); the 8px margin is the Life-strip/clubs
      pattern — the gap lives on every card, so every step is exactly
-     card + gap and the wrap lands precisely. */
+     card + gap and the wrap lands precisely. (368: gap 12px -> 8px,
+     so more of each neighbour shows: visible peek = peek - gap.)
+     Horizontal padding is --space-4 here (16px, not the 24px of the
+     stacked pager): the 16px saved funds the phone peek increase
+     28px -> 36px exactly, so every name's one-line slack is
+     UNCHANGED on phones (38.9px @390, 8.9px @360, strict). */
   flex: 0 0 var(--values-card-w, 560px);
   width: var(--values-card-w, 560px);
-  margin-right: 12px;
+  margin-right: 8px;
+  padding-inline: var(--space-4);
   grid-area: auto;
   opacity: 1;
   visibility: visible;
@@ -496,11 +504,53 @@ section[aria-label="The Preventive System"] { padding-top: var(--space-5); }
    fits on ONE line (nowrap holds) at every width — worst name
    "Respect for Others" 197.1px @21.6px (390px) / 232.5px @25.6px (768px+); slack per width: 390 40.9px,
    768 279.5px, 834 279.5px, 1024 279.5px, 1440 279.5px.
+   (368 SUPERSEDES these widths — see the 368 block below; the pinned
+   name widths themselves are unchanged.)
    No-JS: the base 3-column grid above still shows all seven
    (Hallmark floor 7); reduced motion: stacked pager, unchanged.
    (no-ai-design-slop: removal test — the grid performed no job the
    rail doesn't already do, and it broke the names; the rail is the
    established pattern, restored, not a new invention.)
+   ===================================================================== */
+/* =====================================================================
+   368 (W-HOME24, wave 11 — Jayant 24 Nov 12:56 IST, his words):
+   values slider refinement, three parts. (1) The 'Swipe to read
+   all seven.' hint is REMOVED completely — the <p> is deleted from
+   index.html (no such text anywhere on the slider) and the stage
+   aria-label is reworded so it does not instruct swiping ("Seven
+   core values — use the arrow keys to read each value"); the peek
+   is the cue. The houses hint is untouched (different slider).
+   (2) Cards a BIT SMALLER, neighbours MUCH MORE visible: peek
+   28px -> 36px on phones, 48px -> 80px at >=601px; gap 12px -> 8px
+   (CSS margin-right + JS GAP, must match); animated-card side
+   padding 24px -> 16px (--space-4, rail only — the stacked pager
+   and the no-JS grid keep 24px). Visible neighbour = peek - gap:
+   phones 16px -> 28px (+75%), desktop 36px -> 72px (+100%,
+   exactly double); card 286px -> 270px @390 (-5.6%), 560px ->
+   496px @768+ (-11.4%). Stage max stays 656px, so the slider
+   footprint is unchanged. (3) INFINITE LOOP: already present —
+   PROVEN by trace, no logic change (see the 368 note in main.js
+   valuesPager): clone-snap wraps both ends on drag, keyboard and
+   goTo alike; back from card 1 lands on card 7, forward from
+   card 7 lands on card 1. The About-page value list is static,
+   not a slider — no treatment needed there; the home rail is the
+   only swipeable values slider, desktop/tablet included per the
+   12:36 correction.
+   Card widths (measured, verify368.py — Bricolage opsz PINNED to
+   px size, wght 700, same method as verify355.py; name content =
+   cardW - 34px strict: 2x16px padding + 2x1px border, border-box):
+   every value name fits on ONE line (nowrap holds) at every
+   width — worst name "Respect for Others" 197.1px @21.6px /
+   232.5px @25.6px; slack: 390 38.9px (= v88, unchanged), 360
+   8.9px (= v88, unchanged), 600 248.9px, 601 126.5px, 768 229.5px,
+   834 229.5px, 1024 229.5px, 1440 229.5px. Icon fits everywhere
+   (120px + 34px = 154px need vs 393px smallest desktop card).
+   No-JS: base 3-column grid still shows all seven (Hallmark
+   floor 7); reduced motion: stacked pager, unchanged; no chrome
+   re-added (no arrows, no dots, no counter — 355 keeps that).
+   (no-ai-design-slop: removal test — the hint performed no job
+   the peek doesn't already do; impeccable: refinement preserves,
+   incumbent identity/behaviour kept, tokens only.)
    ===================================================================== */
 /* =====================================================================
    286 (W-HOME14, wave 11 — Jayant 24 Nov 11:50 IST): house-cards
