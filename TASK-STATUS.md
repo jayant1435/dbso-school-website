@@ -5,9 +5,9 @@ Original source: the 247 task IDs marked ongoing in the supplied handover tracke
 | Status | Count |
 | --- | ---: |
 | Implementation or source correction recorded, visual verification pending | 223 |
-| Superseded or stale patch reconciled, verification pending | 7 |
+| Superseded or stale patch reconciled, verification pending | 10 |
 | Requires additional evidence, real-device/independent QA, or external access | 13 |
-| Still to review or implement | 4 |
+| Still to review or implement | 1 |
 | Total | 247 |
 
 No entries are formally signed off yet under the original handover's required independent, live and visual verification protocol. Some implementation entries represent partial fixes.
@@ -247,6 +247,9 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #424
 - [ ] #438
 - [ ] #440
+- [ ] #420
+- [ ] #421
+- [ ] #445
 
 ## Evidence or external verification dependencies
 - [ ] #52
@@ -265,9 +268,6 @@ No entries are formally signed off yet under the original handover's required in
 
 ## Remaining review or implementation
 - [ ] #293
-- [ ] #420
-- [ ] #421
-- [ ] #445
 
 ## Verification
 At v117, repository-source inspection checked 13 HTML files, 1,265 local references, 30 fragments, image alt attributes, unique IDs and ARIA references; no errors were found in those checks. JavaScript syntax was validated. Seven generated value assets and no old sprite remain. These are static results, not live browser sign-off.
@@ -393,3 +393,6 @@ Reopened earlier implementation IDs for values layout, mobile family tiles, lead
 - #404: Removed fragile single-line-based timeline pseudo-rule; per-row borders now mark each item.
 - #293 remains open for comprehensive split geometry/visual review. Academics longest split now moves its extra copy into a full-width continuation; other splits centered as appropriate. #420/#421/#445 are report-only historical citation corrections, not changes to visible website; original cited QA reports were not included in the handover, so leave them explicitly open.
 - v122 passed 168/168 automated checks at 19 responsive widths, plus legacy redirects. v123 adds fee geometry, video widths and privacy checks. External dependencies still open, including school-confirmed qualifications, prospectus text, real-device checks, new genuine images and live cache.
+
+### v124 source references and additional QA
+- v123 browser run 45431038717 passed 168/168 checks. #420/#421/#445 reconciled for current source in QA-REFERENCE.md; absent historical reports themselves were not edited. #293 receives an explicit geometry audit at four widths and is not yet signed off. Added behavioral assertions for values autoplay and interaction/reduced-motion behavior.

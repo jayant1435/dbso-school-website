@@ -22,7 +22,7 @@ const server = createServer(async (req,res)=>{
 await new Promise(r=>server.listen(0,"127.0.0.1",r));
 const base="http://127.0.0.1:"+server.address().port;
 const browser=await chromium.launch({headless:true});
-const failures=[], results=[];
+const failures=[], results=[], splitAudit=[];
 async function check(name,width,mode){
  const ctx=await browser.newContext({viewport:{width,height:900},javaScriptEnabled:mode!=="no-js",reducedMotion:mode==="reduced"?"reduce":"no-preference"});
  // Keep this check deterministic: external links and embedded remote services are not part of local rendering QA.
@@ -61,6 +61,24 @@ async function check(name,width,mode){
     }
     if(width>=861)assert.ok(checks.stage>=checks.container-50,"full-width core-values stage");
     if(mode==="normal")assert.ok(checks.awardRects.every(x=>Math.abs(x.w-checks.awardRects[0].w)<2&&Math.abs(x.h-checks.awardRects[0].h)<2),"uniform award frames");
+  }
+  if(name==="about"&&mode==="normal"&&[390,1440].includes(width)){
+    const rail=p.locator("#about-values-stage");
+    await rail.scrollIntoViewIfNeeded();
+    await p.waitForFunction(()=>document.querySelector("#about-values-stage").scrollLeft>3,{},{timeout:5000});
+    await rail.focus();
+    assert.equal(await p.locator(".wm-value-slide--clone").count(),0,"focus stops autoplay and removes clones");
+  }
+  if(name==="about"&&mode==="reduced")assert.equal(await p.locator(".wm-value-slide--clone").count(),0,"reduced motion does not duplicate or animate values");
+  if(mode==="normal"&&[861,1024,1440,1536].includes(width)){
+    const pairs=await p.evaluate(()=>[...document.querySelectorAll(".container.split,.nonteach-row")].flatMap(el=>{
+      const children=[...el.children].filter(x=>getComputedStyle(x).display!=="none");
+      if(children.length!==2||!children.some(x=>x.querySelector("img")))return [];
+      const [a,b]=children.map(x=>({w:x.offsetWidth,h:x.offsetHeight,top:x.offsetTop}));
+      if(Math.abs(a.top-b.top)>Math.max(a.h,b.h))return [];
+      return [{section:el.closest("section")?.getAttribute("aria-label")||el.closest("section")?.querySelector("h2")?.textContent||el.className,columns:getComputedStyle(el).gridTemplateColumns,a,b,gap:Math.abs(a.h-b.h)}];
+    }));
+    for(const pair of pairs)splitAudit.push({page:name,width,...pair});
   }
   const navText=await p.locator(".main-nav a").allTextContents();
   assert.ok(navText.includes("Campus") && navText.includes("Notices"),"short navigation labels");
@@ -110,6 +128,7 @@ try{
  for(const [old,target] of [["staff","about#staff"],["fees","admissions#fees"],["facilities","life#facilities"],["videos","gallery#videos"]]){
   const p=await browser.newPage();try{await p.goto(base+"/"+old+".html");await p.waitForURL(u=>u.pathname.endsWith("/"+target.split("#")[0]+".html")&&u.hash==="#"+target.split("#")[1]);}catch(e){failures.push({name:old,error:e.message});}finally{await p.close();}
  }
+ console.log("SPLIT-AUDIT "+JSON.stringify(splitAudit));
  console.log(JSON.stringify({checks:results.length,passed:results.filter(r=>r.status==="pass").length,failures},null,2));
  if(failures.length)process.exitCode=1;
 }finally{await browser.close();await new Promise(r=>server.close(r));}
