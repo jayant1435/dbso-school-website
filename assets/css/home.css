@@ -66,63 +66,11 @@
    2-tile last row), two on a phone — no ragged last row. */
 .tile-hint { color: var(--ink-soft); font-size: 0.95rem; margin: 0 0 var(--space-3); }
 
-/* ---------- Houses: four equal tiles, colour band on top ---------- */
-
-.house-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); list-style: none; padding: 0; margin: 0; }
-.house-tile {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  min-height: 96px;
-  padding: 0;
-  overflow: clip;
-  background: var(--paper);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-soft);
-  font-family: var(--font-body);
-  cursor: pointer;
-  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
-}
-.house-tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-1); }
-.house-tile[aria-pressed="true"] { border-color: var(--ink); box-shadow: var(--shadow-1); }
-.house-swatch { height: 12px; flex-shrink: 0; }
 .house-swatch-red { background: var(--house-red); } /* Red House colour: content, not UI */
 .house-swatch-blue { background: var(--house-blue); }
 .house-swatch-green { background: var(--house-green); }
 .house-swatch-yellow { background: var(--house-yellow); }
-.house-name { flex: 1; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.05rem; color: var(--ink); }
 
-/* ---------- Values: six single-word tiles, no descriptions ----------
-   v24: Jayant — seven cards with glosses looked bad, and the names were too
-   long. Six values, thoughtfully picked from the school's own seven plus the
-   Salesian lists (see BUILD-LOG): Integrity, Compassion, Discipline,
-   Respect, Faith, Nature. One word each, so every tile is one line at every
-   width. The container is different from the club tiles on purpose: a tall
-   card with a big blue numeral and the word in the display face, so the row
-   reads as a statement, not a list. 3 across desktop, 2 across on a phone
-   (six fills the grid exactly at every width). */
-.values-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-3);
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.value-tile {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-top: 3px solid var(--blue);
-  border-radius: var(--home-r-card);
-  padding: var(--space-5) var(--space-4);
-  min-height: 132px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: var(--space-2);
-  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
-}
-.value-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--line-strong); border-top-color: var(--blue); }
 .value-num {
   font-family: var(--font-display);
   font-weight: 700;
@@ -412,9 +360,6 @@ button.photo-card figcaption { text-align: left; }
   .pillar-numeral { width: 52px; height: 52px; font-size: 1.5rem; }
   .news-item { padding: var(--space-4) var(--space-5); }
   .quote-inline { padding: var(--space-4) var(--space-5); }
-  .house-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .values-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .value-tile { min-height: 112px; }
   .value-name { font-size: 1.25rem; }
   /* Narrower cards, slightly smaller labels, so every stat label still
      fits its two-line budget on a small phone. */
