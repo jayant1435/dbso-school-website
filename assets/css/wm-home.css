@@ -461,7 +461,7 @@ section[aria-label="Mission and values"] .core-values-block { margin-top:var(--s
 .core-values-block > h3 { margin:0 0 var(--space-4); }
 #about-values-stage, .js #about-values-stage { position:relative; display:block; width:100%; max-width:none; margin:0; overflow-x:auto; overflow-y:hidden; touch-action:pan-x pan-y; scrollbar-width:thin; scroll-snap-type:x proximity; }
 #about-values-stage .wm-values-track { display:flex; width:max-content; gap:var(--space-4); padding:var(--space-1) 0 var(--space-2); transform:none; }
-#about-values-stage .wm-value-slide, .js #about-values-stage .wm-value-slide { flex:0 0 clamp(200px,22vw,240px); width:clamp(200px,22vw,240px); min-height:200px; margin:0; padding:var(--space-4); border:1px solid var(--line); border-radius:var(--radius-card); box-shadow:var(--shadow-1); opacity:1; visibility:visible; scroll-snap-align:start; }
+#about-values-stage .wm-value-slide, .js #about-values-stage .wm-value-slide { grid-area:auto; flex:0 0 clamp(200px,22vw,240px); width:clamp(200px,22vw,240px); min-height:200px; margin:0; padding:var(--space-4); border:1px solid var(--line); border-radius:var(--radius-card); box-shadow:var(--shadow-1); opacity:1; visibility:visible; scroll-snap-align:start; }
 #about-values-stage .value-num { font-size:0.85rem; color:var(--ink-mute); }
 #about-values-stage .value-name { font-size:1.05rem; white-space:nowrap; }
 #about-values-stage .dbso-value-icon { width:88px; height:88px; border-radius:var(--radius-soft); object-fit:contain; }

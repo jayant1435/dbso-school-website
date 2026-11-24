@@ -41,7 +41,7 @@ try{
     const maxHeight=10000;
     for(let top=0,part=1;top<metrics.height;top+=maxHeight,part++){
      const filename=name+"-"+viewport.width+"-"+part+".jpg";
-     const buf=await p.screenshot({type:"jpeg",quality:56,scale:"css",animations:"disabled",...(metrics.height<=maxHeight?{fullPage:true}:{fullPage:true,clip:{x:0,y:top,width:viewport.width,height:Math.min(maxHeight,metrics.height-top)}})});
+     const buf=await p.screenshot({type:"jpeg",quality:name==="gallery"?32:48,scale:"css",animations:"disabled",...(metrics.height<=maxHeight?{fullPage:true}:{fullPage:true,clip:{x:0,y:top,width:viewport.width,height:Math.min(maxHeight,metrics.height-top)}})});
      if(bytes+buf.length>cap){report.warnings.push("Screenshot budget reached; omitted "+filename);continue;}
      await writeFile(resolve(out,filename),buf);bytes+=buf.length;report.screenshots.push({filename,bytes:buf.length});
     }

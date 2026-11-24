@@ -399,3 +399,6 @@ Reopened earlier implementation IDs for values layout, mobile family tiles, lead
 
 ### v127 automated evidence
 - Visual audit run 45448050294 inspected 24 page/viewport combinations with no reported overflowing labels or broken local image requests. Five sampled live files returned HTTP 200 and exactly matched the checkout. Long-page screenshot clipping failed; the capture harness is repaired in v128. This is not full visual sign-off and does not resolve missing school evidence.
+
+### v129 screenshot review
+Actual v128 screenshots were retrieved and inspected; the reduced-motion values overlap was identified and repaired. Prior layout metrics and selected live hash comparisons passed. The comprehensive layout task #293 remains open pending complete visual review and individual task sign-off; no unsupported school facts added. Latest audit reduces screenshot quality on the very long Gallery page to stay within the free storage budget.

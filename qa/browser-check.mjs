@@ -96,7 +96,12 @@ async function check(name,width,mode){
     await rail.focus();
     assert.equal(await p.locator(".wm-value-slide--clone").count(),0,"focus stops autoplay and removes clones");
   }
-  if(name==="about"&&mode==="reduced")assert.equal(await p.locator(".wm-value-slide--clone").count(),0,"reduced motion does not duplicate or animate values");
+  if(name==="about"){
+    const positions=await p.locator("#about-values-stage .wm-value-slide:not(.wm-value-slide--clone)").evaluateAll(els=>els.map(el=>{const r=el.getBoundingClientRect();return [r.x,r.y,r.width,r.height]}));
+    assert.equal(positions.length,7,"seven original value cards");
+    assert.ok(positions.every((a,i)=>positions.every((b,j)=>i===j||Math.min(a[0]+a[2],b[0]+b[2])-Math.max(a[0],b[0])<2||Math.min(a[1]+a[3],b[1]+b[3])-Math.max(a[1],b[1])<2)),"value cards do not overlap");
+    if(mode==="reduced")assert.equal(await p.locator(".wm-value-slide--clone").count(),0,"reduced motion does not duplicate or animate values");
+  }
   if(mode==="normal"&&[861,1024,1440,1536].includes(width)){
     const pairs=await p.evaluate(()=>[...document.querySelectorAll(".container.split,.nonteach-row")].flatMap(el=>{
       const children=[...el.children].filter(x=>getComputedStyle(x).display!=="none");

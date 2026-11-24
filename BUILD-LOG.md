@@ -102,3 +102,6 @@ Checks: anchored edits against fetched v109 source, static structural and sizing
 
 ## v128 — screenshot capture repair
 - v127 functional QA passed; the visual run inspected all 24 page/viewport combinations without reported text overflow or broken local images, and all five sampled live files matched the checkout. The screenshot capture failed for longer pages because the clip was not relative to the full page. Fixed full-page clipping without altering the site layout. Screenshot verification remains pending.
+
+## v129 — repair visible reduced-motion values overlap
+- Reviewed actual downloaded v128 screenshots, including the mobile Home and About layouts and desktop overview. Detected all seven reduced-motion value cards stacking in the same grid cell due to the retired pager's grid-area declaration; reset grid placement to auto and added pairwise overlap assertions for seven original cards. Full-width standard-motion rail and existing icon assets are unchanged. Adjusted screenshot JPEG quality to keep the entire Gallery within the established 24 MiB cap. Prior v128 audit measured no broken local images or targeted overflow across 24 layouts; five sampled live files matched exactly. Two gallery screenshot slices exceeded the budget; current run pending.
