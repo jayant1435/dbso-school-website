@@ -1678,3 +1678,34 @@ section[aria-label="Our story"] .lineage-years {
     margin-inline: 0;
   }
 }
+
+/* ---------- W-J8 (Jayant 24 Nov 17:11 IST, brief #5): About core
+   values are the home values rail, a bit smaller, neighbours half
+   visible. The rail markup + mechanism are shared with home
+   (wm-home.css + main.js valuesPager, data-peek-mode="half"); these
+   rules only size the About cards down and cap the Mission measure
+   now the values no longer share its split (the W-AB69 stretch
+   rules are deleted with the list in style.css — no side-by-side
+   void can form).
+   Sizing (measured, same pinned-Bricolage method as verify355/368):
+   icon 120px -> 96px, name 1.6rem -> 1.35rem (80px / 1.15rem at
+   <=600px); worst name "Respect for Others" 197.1px @21.6px /
+   167.9px @18.4px, so the one-line minimum card is 232px / 202px
+   (name + 2x16px padding + 2px border). Half-peek holds at every
+   width >=601px (stage capped 656px like home: card 320px, peek
+   168px, 160px of each neighbour visible = exactly half); at
+   <=600px the peek is the largest that keeps one-line names
+   (card 202px, peek 70px @390 — 62px visible, ~31% of the card;
+   literal half-peek at phone widths would need wrapped names).
+   impeccable craft-floor (Spacing: computed values read; Type: names
+   on one line at every width >=601px) + Hallmark floor 1 (tokens
+   only) + 7 (no-JS 3-col grid + reduced-motion stacked pager stand)
+   + no-ai-design-slop (same component as home, not a second values
+   treatment). */
+section[aria-label="Mission and values"] .wm-value-slide img { width: 96px; height: 96px; }
+section[aria-label="Mission and values"] .wm-value-slide .value-name { font-size: 1.35rem; }
+section[aria-label="Mission and values"] .container > div:first-child p:not(.lede) { max-width: 62ch; }
+@media (max-width: 600px) {
+  section[aria-label="Mission and values"] .wm-value-slide img { width: 80px; height: 80px; }
+  section[aria-label="Mission and values"] .wm-value-slide .value-name { font-size: 1.15rem; }
+}
