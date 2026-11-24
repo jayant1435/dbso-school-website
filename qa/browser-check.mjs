@@ -109,6 +109,12 @@ async function check(name,width,mode){
   }
   const navText=await p.locator(".main-nav a").allTextContents();
   assert.ok(navText.includes("Campus") && navText.includes("Notices"),"short navigation labels");
+  const footerGroups=await p.locator(".site-footer .footer-col > ul").evaluateAll(uls=>uls.map(ul=>[...ul.querySelectorAll("a")].map(a=>[a.getAttribute("href"),a.textContent.trim()])));
+  const headerLinks=await p.locator(".main-nav a").evaluateAll(els=>els.map(a=>[a.getAttribute("href"),a.textContent.trim()]));
+  assert.deepEqual(footerGroups.map(group=>group.length),[4,4],"two equal footer navigation groups");
+  assert.deepEqual(footerGroups.flat().sort(),headerLinks.sort(),"footer exactly matches header links and labels");
+  assert.equal(await p.locator(".site-footer .footer-col > ul a[aria-current='page']").count(),1,"current footer page");
+
   if(name==="gallery") {
     assert.equal(await p.locator(".event-head .gold-rule").count(),36,"all gallery events use gold heading rule");
     assert.equal(await p.locator("#exhibition-2026 .gallery-item").count(),7,"privacy-reviewed exhibition");
