@@ -68,11 +68,18 @@
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  padding: 8px 12px;
+  padding: 8px 8px;
   color: var(--ink);
   font-weight: 600;
   transition: color 0.25s var(--ease-out);
 }
+/* W-NAV301 (task 301, v82 staging): unified 8-link nav (Home + News &
+   Notices join; Staff/Fees/Facilities/Videos merge away) — the row grows
+   ~205px, so the link padding tightens 12px -> 8px (one 4px spacing step;
+   text-to-text gap 28px -> 20px) and the underline inset follows 8px ->
+   4px, keeping the underline = text + 4px per side. Min-height stays
+   44px (design-taste-frontend tap-size); font, weight, colours unchanged;
+   no-ai-design-slop smallest correction — no new component, no dropdown. */
 /* The underline lives on every link, drawn in on hover and on the active
    page. Hover: text turns blue + the same 3px underline draws in. */
 .main-nav a::after {
@@ -80,8 +87,8 @@
   position: absolute;
   /* v33 W-F polish: inset 7px -> 8px, a 4px step (better-ui); with the
      12px side padding the rule now spans the text plus 4px each side. */
-  left: 8px;
-  right: 8px;
+  left: 4px;
+  right: 4px;
   bottom: -3px;
   height: 3px;
   border-radius: 2px;
@@ -406,6 +413,14 @@
    ~1081px and the old 1060px breakpoint was already ~21px too low;
    1061–1080px showed the CTA eating the right padding. 1105px
    fixes that pre-existing overflow as well as the polish's +14px.)
+   W-NAV301 (task 301): unified 8-link nav (Home + News & Notices join).
+   Real-rendered (chrome-headless-shell, file copy): 8-link row 734px at
+   the 8px padding (six links were 583px at 12px). Header row WITHOUT the
+   CTA is 985.8px, exact fit ~1034px viewport, so the 1105px breakpoint
+   is KEPT with ~71px of margin (at 1106 the row has 57px of slack).
+   WITH the CTA the row is 1197.8px and overflows the 1132px content box
+   by 65.8px at every desktop width, so the header CTA is dropped
+   (mobile-panel CTA kept; full numbers in REPORT.md).
    The dead v24 1024px block above is removed — it was fully subsumed
    by this rule. */
 @media (max-width: 1105px) {
