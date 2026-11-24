@@ -1052,158 +1052,181 @@
      clone-snap — back from card 1 animates onto the last clone
      (pos 0) and snaps to real card 7; forward from card 7 animates
      onto the first clone (pos 8) and snaps to real card 1 — on
+     W-J8 (Jayant 24 Nov 17:11 IST, brief #5): the pager now
+     initialises EVERY .wm-values-stage on the page, not just the
+     home one — the About rail (about-values-stage) is a second
+     instance of the same component. Peek mode comes from the
+     stage's data-peek-mode: "home" keeps the 80/36px peek exactly
+     (no home behaviour change); "half" (About) sizes the peek so
+     each neighbour shows half its card — card = max(232px, half
+     the stage), peek = (stage - card) / 2 — with the 232px floor
+     (202px at <=600px) keeping the worst name ("Respect for
+     Others", 197.1px @21.6px / 167.9px @18.4px) on one line.
+     measure() still sets --values-card-w = stage - 2 x peek, so
+     the CSS and the JS can never drift apart.
      drag, keyboard and goTo alike. */
   (function valuesPager() {
-    var stage = document.getElementById("wm-values-stage");
-    var track = document.getElementById("wm-values-track");
-    if (!stage || !track) return;
-    var slides = Array.prototype.slice.call(track.querySelectorAll(".wm-value-slide"));
-    var current = 0;
-    var N = slides.length;
-    stage.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
-    function updateChrome() {
-      slides.forEach(function (s, j) {
-        s.classList.toggle("is-active", j === current);
-        /* Off-screen slides are still in the layout (translated
-           away), so hide them from assistive tech; the active one
-           stays exposed. In the stacked fade path visibility:hidden
-           does this already — aria-hidden is harmless there. */
-        s.setAttribute("aria-hidden", j === current ? "false" : "true");
-      });
-    }
-    function show(i) {
-      current = ((i % N) + N) % N;
-      updateChrome();
-    }
-    /* Animated rail state (built once, only while motion is allowed
-       — at every width since 355). */
-    var railOn = false, clonesBuilt = false;
-    var GAP = 8; /* must match the slide margin-right in wm-home.css */
-    var PEEK_BP = 601; /* must match the min-width breakpoint in wm-home.css */
-    var cardW = 0, step = 0, pos = 1;
-    var snapTimer = null, snapPending = false;
-    function peek() { return window.innerWidth >= PEEK_BP ? 80 : 36; }
-    function offsetFor(p) { return peek() - p * step; }
-    function render(animate) {
-      if (!railOn) return;
-      if (!animate) stage.classList.add("wm-dragging");
-      track.style.transform = "translateX(" + offsetFor(pos) + "px)";
-      if (!animate) { void track.offsetWidth; stage.classList.remove("wm-dragging"); }
-    }
-    function clearSnap() {
-      if (snapTimer) { clearTimeout(snapTimer); snapTimer = null; }
-      snapPending = false;
-    }
-    function snapToReal() {
-      /* The track is showing a clone; jump to the matching real
-         slide with no transition — same offset on screen. */
-      clearSnap();
-      pos = current + 1;
-      render(false);
-    }
-    function armSnap() {
-      snapPending = true;
-      snapTimer = setTimeout(snapToReal, 360); /* 0.32s move + margin */
-    }
-    track.addEventListener("transitionend", function (e) {
-      if (e.propertyName === "transform" && snapPending) snapToReal();
+    document.querySelectorAll(".wm-values-stage").forEach(function (stage) {
+      initRail(stage);
     });
-    function measure() {
-      if (!railOn) return;
-      var stageW = stage.getBoundingClientRect().width;
-      cardW = Math.max(200, Math.floor(stageW - 2 * peek()));
-      stage.style.setProperty("--values-card-w", cardW + "px");
-      step = cardW + GAP;
-      render(false);
-    }
-    /* i is the UNWRAPPED target: arrows/drag pass current +/- 1
-       (N or -1 at the ends = wrap). A wrap animates onto the clone,
-       then snaps; a plain step moves one card in the one 0.32s move.
-       (282: the dot callers are gone; arrows + drag are the only
-       callers now. In reduced motion this is a plain show — no rail,
-       no animation.) */
-    function goTo(i, animate) {
-      if (reduceMotion || !railOn) { show(i); return; }
-      var target = ((i % N) + N) % N;
-      var wrapped = (i !== target);
-      current = target;
-      updateChrome();
-      if (!animate) { pos = current + 1; render(false); return; }
-      clearSnap();
-      if (wrapped && i > current) { pos = N + 1; render(true); armSnap(); }
-      else if (wrapped) { pos = 0; render(true); armSnap(); }
-      else { pos = current + 1; render(true); }
-    }
-    /* Clones are inert: no tab stop, hidden from assistive tech
-       (the clubs pattern). Built once; applyMode re-shows the rail
-       from them on every mode change. */
-    function makeClone(src) {
-      var c = src.cloneNode(true);
-      c.classList.add("wm-value-slide--clone");
-      c.classList.remove("is-active");
-      c.setAttribute("aria-hidden", "true");
-      return c;
-    }
-    function buildClones() {
-      if (clonesBuilt) return;
-      clonesBuilt = true;
-      var lastClone = makeClone(slides[N - 1]);
-      var firstClone = makeClone(slides[0]);
-      track.insertBefore(lastClone, slides[0]);
-      track.appendChild(firstClone);
-    }
-    function applyMode() {
-      if (reduceMotion) {
-        railOn = false;
-        stage.classList.remove("wm-values--animated", "wm-dragging", "wm-grabbing");
-        stage.style.removeProperty("--values-card-w");
-        track.style.transform = "";
-        updateChrome();
-        return;
+    function initRail(stage) {
+      var track = stage.querySelector(".wm-values-track");
+      if (!track) return;
+      var slides = Array.prototype.slice.call(track.querySelectorAll(".wm-value-slide"));
+      var current = 0;
+      var N = slides.length;
+      stage.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
+      function updateChrome() {
+        slides.forEach(function (s, j) {
+          s.classList.toggle("is-active", j === current);
+          /* Off-screen slides are still in the layout (translated
+             away), so hide them from assistive tech; the active one
+             stays exposed. In the stacked fade path visibility:hidden
+             does this already — aria-hidden is harmless there. */
+          s.setAttribute("aria-hidden", j === current ? "false" : "true");
+        });
       }
-      railOn = true;
-      buildClones();
-      stage.classList.add("wm-values--animated");
-      measure();
-      updateChrome();
-    }
-    /* Keyboard: the stage stays tabindex="0" — ArrowLeft/Right page
-       the rail at every width (and the stacked pager under reduced
-       motion). */
-    stage.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowLeft") { e.preventDefault(); goTo(current - 1, true); }
-      if (e.key === "ArrowRight") { e.preventDefault(); goTo(current + 1, true); }
-    });
-    var dragStartX = 0;
-    armDrag(stage,
-      function () {
+      function show(i) {
+        current = ((i % N) + N) % N;
+        updateChrome();
+      }
+      /* Animated rail state (built once, only while motion is allowed
+         — at every width since 355). */
+      var railOn = false, clonesBuilt = false;
+      var GAP = 8; /* must match the slide margin-right in wm-home.css */
+      var PEEK_BP = 601; /* must match the min-width breakpoint in wm-home.css */
+      var halfMode = stage.getAttribute("data-peek-mode") === "half";
+      var cardW = 0, step = 0, pos = 1;
+      var snapTimer = null, snapPending = false;
+      function peek() {
+        if (!halfMode) return window.innerWidth >= PEEK_BP ? 80 : 36;
+        var stageW = stage.getBoundingClientRect().width;
+        var minCard = window.innerWidth >= PEEK_BP ? 232 : 202;
+        var card = Math.max(minCard, Math.floor((stageW - 16) / 2));
+        return Math.floor((stageW - card) / 2);
+      }
+      function offsetFor(p) { return peek() - p * step; }
+      function render(animate) {
         if (!railOn) return;
-        /* Freeze the track exactly where it is (Life-strip pattern:
-           read the computed transform first, so a grab mid-settle
-           never jumps); finish a pending clone snap first so the
-           drag starts from a real slide. */
-        if (snapPending) snapToReal();
-        var m = new DOMMatrixReadOnly(window.getComputedStyle(track).transform);
-        dragStartX = m.e;
-        stage.classList.add("wm-dragging", "wm-grabbing");
-      },
-      function (dx) {
+        if (!animate) stage.classList.add("wm-dragging");
+        track.style.transform = "translateX(" + offsetFor(pos) + "px)";
+        if (!animate) { void track.offsetWidth; stage.classList.remove("wm-dragging"); }
+      }
+      function clearSnap() {
+        if (snapTimer) { clearTimeout(snapTimer); snapTimer = null; }
+        snapPending = false;
+      }
+      function snapToReal() {
+        /* The track is showing a clone; jump to the matching real
+           slide with no transition — same offset on screen. */
+        clearSnap();
+        pos = current + 1;
+        render(false);
+      }
+      function armSnap() {
+        snapPending = true;
+        snapTimer = setTimeout(snapToReal, 360); /* 0.32s move + margin */
+      }
+      track.addEventListener("transitionend", function (e) {
+        if (e.propertyName === "transform" && snapPending) snapToReal();
+      });
+      function measure() {
         if (!railOn) return;
-        track.style.transform = "translateX(" + (dragStartX + dx) + "px)";
-      },
-      function (dx) {
-        stage.classList.remove("wm-dragging", "wm-grabbing");
-        if (reduceMotion || !railOn) {
-          /* Stacked pager (reduced motion): a 48px drag pages. */
-          if (Math.abs(dx) > 48) show(current + (dx < 0 ? 1 : -1));
+        var stageW = stage.getBoundingClientRect().width;
+        cardW = Math.max(200, Math.floor(stageW - 2 * peek()));
+        stage.style.setProperty("--values-card-w", cardW + "px");
+        step = cardW + GAP;
+        render(false);
+      }
+      /* i is the UNWRAPPED target: arrows/drag pass current +/- 1
+         (N or -1 at the ends = wrap). A wrap animates onto the clone,
+         then snaps; a plain step moves one card in the one 0.32s move.
+         (282: the dot callers are gone; arrows + drag are the only
+         callers now. In reduced motion this is a plain show — no rail,
+         no animation.) */
+      function goTo(i, animate) {
+        if (reduceMotion || !railOn) { show(i); return; }
+        var target = ((i % N) + N) % N;
+        var wrapped = (i !== target);
+        current = target;
+        updateChrome();
+        if (!animate) { pos = current + 1; render(false); return; }
+        clearSnap();
+        if (wrapped && i > current) { pos = N + 1; render(true); armSnap(); }
+        else if (wrapped) { pos = 0; render(true); armSnap(); }
+        else { pos = current + 1; render(true); }
+      }
+      /* Clones are inert: no tab stop, hidden from assistive tech
+         (the clubs pattern). Built once; applyMode re-shows the rail
+         from them on every mode change. */
+      function makeClone(src) {
+        var c = src.cloneNode(true);
+        c.classList.add("wm-value-slide--clone");
+        c.classList.remove("is-active");
+        c.setAttribute("aria-hidden", "true");
+        return c;
+      }
+      function buildClones() {
+        if (clonesBuilt) return;
+        clonesBuilt = true;
+        var lastClone = makeClone(slides[N - 1]);
+        var firstClone = makeClone(slides[0]);
+        track.insertBefore(lastClone, slides[0]);
+        track.appendChild(firstClone);
+      }
+      function applyMode() {
+        if (reduceMotion) {
+          railOn = false;
+          stage.classList.remove("wm-values--animated", "wm-dragging", "wm-grabbing");
+          stage.style.removeProperty("--values-card-w");
+          track.style.transform = "";
+          updateChrome();
           return;
         }
-        if (Math.abs(dx) > 48) goTo(current + (dx < 0 ? 1 : -1), true);
-        else render(true); /* snap back to the current card */
+        railOn = true;
+        buildClones();
+        stage.classList.add("wm-values--animated");
+        measure();
+        updateChrome();
+      }
+      /* Keyboard: the stage stays tabindex="0" — ArrowLeft/Right page
+         the rail at every width (and the stacked pager under reduced
+         motion). */
+      stage.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft") { e.preventDefault(); goTo(current - 1, true); }
+        if (e.key === "ArrowRight") { e.preventDefault(); goTo(current + 1, true); }
       });
-    window.addEventListener("resize", measure);
-    applyMode();
-    show(0);
+      var dragStartX = 0;
+      armDrag(stage,
+        function () {
+          if (!railOn) return;
+          /* Freeze the track exactly where it is (Life-strip pattern:
+             read the computed transform first, so a grab mid-settle
+             never jumps); finish a pending clone snap first so the
+             drag starts from a real slide. */
+          if (snapPending) snapToReal();
+          var m = new DOMMatrixReadOnly(window.getComputedStyle(track).transform);
+          dragStartX = m.e;
+          stage.classList.add("wm-dragging", "wm-grabbing");
+        },
+        function (dx) {
+          if (!railOn) return;
+          track.style.transform = "translateX(" + (dragStartX + dx) + "px)";
+        },
+        function (dx) {
+          stage.classList.remove("wm-dragging", "wm-grabbing");
+          if (reduceMotion || !railOn) {
+            /* Stacked pager (reduced motion): a 48px drag pages. */
+            if (Math.abs(dx) > 48) show(current + (dx < 0 ? 1 : -1));
+            return;
+          }
+          if (Math.abs(dx) > 48) goTo(current + (dx < 0 ? 1 : -1), true);
+          else render(true); /* snap back to the current card */
+        });
+      window.addEventListener("resize", measure);
+      applyMode();
+      show(0);
+    }
   })();
 
   /* ---------- ITEM 7: Life at Bosco strip — drag interrupts the
