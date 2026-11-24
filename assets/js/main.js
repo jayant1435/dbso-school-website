@@ -963,55 +963,22 @@
     var stage = document.getElementById("wm-houses-stage");
     if (!stage) return;
     var slides = Array.prototype.slice.call(stage.querySelectorAll(".wm-house-slide"));
-    var current = 0, timer = null;
-    var DELAY = 5000;
-    /* 286: grid breakpoint — one source of truth with wm-home.css
-       (min-width: 768px). */
+    if (!slides.length) return;
     var gridMq = window.matchMedia("(min-width: 768px)");
-    function gridMode() { return gridMq.matches; }
     stage.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
-    function show(i) {
-      current = (i + slides.length) % slides.length;
-      slides.forEach(function (s, j) { s.classList.toggle("is-active", j === current); });
+    function center(i) {
+      var slide = slides[Math.max(0, Math.min(slides.length - 1, i))];
+      var left = slide.getBoundingClientRect().left - stage.getBoundingClientRect().left + stage.scrollLeft;
+      stage.scrollTo({left: left + slide.offsetWidth / 2 - stage.clientWidth / 2, behavior: reduceMotion ? "auto" : "smooth"});
     }
-    function start() {
-      if (reduceMotion || gridMode() || timer) return;
-      timer = setInterval(function () { show(current + 1); }, DELAY);
-    }
-    function stop() { if (timer) { clearInterval(timer); timer = null; } }
-    function restart() { stop(); start(); }
-    function applyMode() { if (gridMode()) stop(); else start(); }
-    if (gridMq.addEventListener) gridMq.addEventListener("change", applyMode);
-    else if (gridMq.addListener) gridMq.addListener(applyMode);
-    /* Keyboard: ArrowLeft/Right change the house on a phone. In grid
-       mode the handler returns without preventDefault, so the arrows
-       scroll the page; every house is Tab-reachable anyway. */
     stage.addEventListener("keydown", function (e) {
-      if (gridMode()) return;
-      if (e.key === "ArrowLeft") { e.preventDefault(); show(current - 1); restart(); }
-      if (e.key === "ArrowRight") { e.preventDefault(); show(current + 1); restart(); }
+      if (gridMq.matches || (e.key !== "ArrowLeft" && e.key !== "ArrowRight" && e.key !== "Home" && e.key !== "End")) return;
+      e.preventDefault();
+      var mid = stage.getBoundingClientRect().left + stage.clientWidth / 2, nearest = 0;
+      function distance(slide) { var b = slide.getBoundingClientRect(); return Math.abs(b.left + b.width / 2 - mid); }
+      slides.forEach(function (slide, i) { if (distance(slide) < distance(slides[nearest])) nearest = i; });
+      center(e.key === "Home" ? 0 : e.key === "End" ? slides.length - 1 : nearest + (e.key === "ArrowRight" ? 1 : -1));
     });
-    /* Hover / focus pauses the timer (this is a new showcase slider,
-       not the Life strip — Jayant's no-pause order covers the strip).
-       Keyboard focus pauses; pointer focus does not (same reason as
-       the clubs rail: a mouse click must not freeze the timer). */
-    var pointerFocus = false;
-    stage.addEventListener("pointerdown", function () { pointerFocus = true; });
-    stage.addEventListener("focusin", function () { if (pointerFocus) { pointerFocus = false; return; } stop(); });
-    stage.addEventListener("focusout", function () { start(); });
-    stage.addEventListener("mouseenter", stop);
-    stage.addEventListener("mouseleave", start);
-    var suppressClick = armClickSuppress(stage);
-    armDrag(stage,
-      function () {},
-      function () {},
-      function (dx) {
-        if (gridMode()) return;
-        if (Math.abs(dx) > 48) { show(current + (dx < 0 ? 1 : -1)); restart(); }
-        suppressClick(Math.abs(dx) > 6);
-      });
-    show(0);
-    start();
   })();
 
   /* ---------- ITEM 4: values slider (W-H3 rebuild, wave 10; 282

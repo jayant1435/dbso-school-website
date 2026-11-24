@@ -1731,3 +1731,7 @@ section[aria-label="ICSE 2026 toppers"] { padding-top: var(--space-5); }
   section[aria-label="Life at Bosco"] { padding-bottom: var(--space-5); }
   section[aria-label="ICSE 2026 toppers"] { padding-top: var(--space-5); }
 }
+
+/* v111: readable no-script content and keyboard access. */
+html:not(.js) .switcher-panel { display: block; margin-block: var(--space-4); }
+html:not(.js) .switcher-tabs, html:not(.js) .pillar-nav, html:not(.js) .awards-hint { display: none; }

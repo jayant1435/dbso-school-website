@@ -1235,7 +1235,7 @@ section[aria-label="Celebrations and events"] .tick-list li span {
    2-line reserve — so nothing visual changes. The outline is now
    H1 -> H2 x10 with no skips. The footer H3s are untouched: H2 sections
    precede them, so they do not skip. */
-.summary-card h2 {
+.summary-card h2, .summary-card h3 {
   margin: 0 0 var(--space-3);
   font-size: 1.15rem;
   line-height: 1.2;
@@ -1727,3 +1727,14 @@ section[aria-label="Mission and values"] .container > div:first-child p:not(.led
 /* v110: keep the yearless recognition note and the Life gallery link close to their content. */
 section:has(> .container > .awards-note) { padding-bottom: var(--space-5); }
 section:has(> .container > .home-links > a.btn[href="gallery.html"]) { padding-bottom: var(--space-5); }
+
+/* v111: merged sections retain their existing component styles. */
+.merged-intro { padding-bottom: 0; scroll-margin-top: 90px; }
+.merged-intro .section-head { margin-bottom: 0; }
+.merged-intro + .section { padding-top: var(--space-5); }
+#staff { scroll-margin-top: 90px; }
+body.page-about .staff-card h3, body.page-about .leader-card h3 { font-size: 1.15rem; }
+.facilities-grid .card-body p { display: block; overflow: visible; -webkit-line-clamp: unset; }
+.award-slide--portrait img { object-fit: contain; margin-inline: auto; background: var(--band); }
+.awards-hint { margin-bottom: var(--space-4); }
+.rule-list li, .award-group li { text-wrap: pretty; }

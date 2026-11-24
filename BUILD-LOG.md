@@ -16,3 +16,10 @@ Implemented from the authoritative handover queue (task IDs remain open until li
 Skills applied: better-ui (4px spacing increments and shared system); design-system (existing tokens); impeccable craft-floor (proximity, responsive type, recoverable error state); design-taste-frontend and no-ai-design-slop (smallest corrections within existing visual world); Hallmark (no-JS content); interaction-design (clear recovery choices). No new palette, typeface, dependencies, school facts, redirects or assets.
 
 Checks: anchored edits against fetched v109 source, static structural and sizing-math checks; no stale patches. Browser execution, independent second-worker screenshot review and live served-byte confirmation unavailable in this environment. Do not mark tasks Completed until verified. Larger page merges and prospectus-dependent fee text remain separate.
+
+## v111 — consolidate the site navigation and mobile content
+- Tasks 298, 299, 300, 302: Facilities → Life, Staff → About (57 teachers, four leadership portraits and existing non-teaching layout), Fees → Admissions (same school-published figures), Videos → Gallery. Old URLs retain immediate redirects with a visible link; sitemap and internal links point to eight primary pages. Duplicate leadership and admissions CTA sections removed.
+- Task 435: native touch and keyboard mobile Four Houses rail, with bounded ends and visible adjacent cards where available; desktop grid retained. No autoplay, dots or arrows.
+- Task 426: eight genuine award photos, full portrait containment, no arrow buttons; existing drag/keyboard rail retained. Exact replacement crop unavailable.
+- Tasks 187/243/214: no-script stream visibility and controls. Task 150: facilities descriptions unclamped. Task 137: remove unverified campus claims; duplicate lab card still under review.
+- Checks: source-derived anchors, unique IDs, asset references, staff inventory, navigation destinations and sitemap. Browser/runtime and production deployment verification outstanding. AI raster transfer remains pending; existing icon references retained. Remaining backlog not marked complete.

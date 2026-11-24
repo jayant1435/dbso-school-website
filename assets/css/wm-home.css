@@ -700,3 +700,11 @@ section[aria-label="The Preventive System"] { padding-top: var(--space-5); }
 @media (max-width: 360px) {
   .js .wm-value-slide .value-name { white-space: normal; overflow-wrap: anywhere; }
 }
+
+/* v111: Four Houses — native, touch-first, bounded scroll-snap rail. */
+@media (max-width: 767px) {
+  .js .wm-houses-stage { display: flex; gap: var(--space-3); padding: 4px 10%; aspect-ratio: auto; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-padding-inline: 10%; scrollbar-width: none; touch-action: pan-x pan-y; background: transparent; box-shadow: none; border-radius: 0; }
+  .js .wm-houses-stage::-webkit-scrollbar { display: none; }
+  .js .wm-house-slide { flex: 0 0 100%; position: relative; inset: auto; aspect-ratio: 16 / 10; border-radius: var(--home-r-img); opacity: 1; visibility: visible; scroll-snap-align: center; transition: none; }
+  .js .wm-house-slide img { pointer-events: none; }
+}
