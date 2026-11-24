@@ -1035,7 +1035,18 @@
      wrap. The gridMq/gridMode branch is deleted wholesale (no
      breakpoint mode exists any more); applyMode now only gates on
      reduced motion. Card widths fit every name on one line
-     (verify355.py, opsz-pinned). */
+     (verify355.py, opsz-pinned).
+     368 (Jayant 24 Nov 12:56 IST): hint deleted from index.html,
+     stage aria-label reworded (no swipe instruction — the peek is
+     the cue); cards a bit smaller, neighbours much more visible —
+     peek 28px -> 36px phones / 48px -> 80px at >=601px, gap 12px ->
+     8px, animated-card side padding 24px -> 16px (funds the phone
+     peek; name slack unchanged on phones). Infinite loop VERIFIED
+     by trace (no logic change): goTo wraps both ends via the
+     clone-snap — back from card 1 animates onto the last clone
+     (pos 0) and snaps to real card 7; forward from card 7 animates
+     onto the first clone (pos 8) and snaps to real card 1 — on
+     drag, keyboard and goTo alike. */
   (function valuesPager() {
     var stage = document.getElementById("wm-values-stage");
     var track = document.getElementById("wm-values-track");
@@ -1061,11 +1072,11 @@
     /* Animated rail state (built once, only while motion is allowed
        — at every width since 355). */
     var railOn = false, clonesBuilt = false;
-    var GAP = 12; /* must match the slide margin-right in wm-home.css */
+    var GAP = 8; /* must match the slide margin-right in wm-home.css */
     var PEEK_BP = 601; /* must match the min-width breakpoint in wm-home.css */
     var cardW = 0, step = 0, pos = 1;
     var snapTimer = null, snapPending = false;
-    function peek() { return window.innerWidth >= PEEK_BP ? 48 : 28; }
+    function peek() { return window.innerWidth >= PEEK_BP ? 80 : 36; }
     function offsetFor(p) { return peek() - p * step; }
     function render(animate) {
       if (!railOn) return;
