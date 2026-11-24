@@ -44,8 +44,7 @@
   --space-7: 48px;
   --space-8: 64px;
   --space-9: 96px;
-  --space-10: 128px;
-  --radius-img: 16px;
+  --radius-img: 20px;
   --radius-card: 20px;
   --radius-pill: 999px;
   --radius-btn: 10px; /* every button, site-wide — one radius decision (v7) */
@@ -205,7 +204,6 @@ figcaption {
   border-bottom: 1px solid var(--line);
   transition: box-shadow 0.3s var(--ease-out);
 }
-.site-header.scrolled { box-shadow: var(--shadow-1); }
 
 .header-inner {
   display: flex;
@@ -470,7 +468,6 @@ figcaption {
 
 /* ---------- Pillars ---------- */
 
-.pillars { border-top: 1px solid var(--line-strong); }
 .pillar {
   display: grid;
   grid-template-columns: 72px minmax(0, 1fr);
@@ -865,7 +862,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 }
 .gallery-item button { transition: box-shadow 0.3s var(--ease-out); }
 .gallery-item button:hover img { transform: scale(1.04); }
-.gallery-item button:hover { box-shadow: var(--shadow-2); }
 .gallery-item button:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
 .gallery-item figcaption { font-size: 0.88rem; }
 
@@ -1402,7 +1398,6 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
      360px phone — a heading with an ellipsis is not a heading. 1.15rem
      fits every title whole at 360px (longest ≈ 249px vs ~288px content). */
   .news-item h3 { font-size: 1.15rem; }
-  .footer-inner { grid-template-columns: minmax(0, 1fr); }
   .news-item { grid-template-columns: minmax(0, 1fr); }
   .news-tag { justify-self: start; }
   .brand-sub { display: none; }

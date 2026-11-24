@@ -15,31 +15,6 @@
    rules below are pre-existing dead CSS, left for the dead-CSS round.
    ===================================================================== */
 
-.wm-dots { display: flex; gap: var(--space-2); flex: 1; justify-content: center; }
-.wm-dot {
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  position: relative;
-  cursor: pointer;
-}
-.wm-dot::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--line-strong);
-  transform: translate(-50%, -50%) scaleX(1);
-  transition: transform 0.2s var(--ease-out), background-color 0.2s var(--ease-out);
-}
-.wm-dot.is-active::after { background: var(--blue); transform: translate(-50%, -50%) scaleX(2.6); }
-.wm-dot:focus-visible { outline: 3px solid var(--blue); outline-offset: -2px; }
 
 /* =====================================================================
    ITEM 2 — CLUBS: an infinite moving rail (treatment 1 of 3).

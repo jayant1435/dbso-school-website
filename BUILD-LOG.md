@@ -51,3 +51,8 @@ Checks: anchored edits against fetched v109 source, static structural and sizing
 - 61/276: Life photo strip gets a user-controlled pause/play button, a six-photo no-JS grid, and real interactive roles only when the JS viewer is active. No clone exposed to assistive technology.
 - 226/188: announcement track has three repetitions per animation half, sufficient for typical desktop widths; static wrapping text without JavaScript or with reduced motion. Only one announcement is accessible to screen readers.
 - 171: link arrow kept with preceding phrase. 314: same Core Values type scale in both sliders. 249/260/356: portrait centered, eight recognition photos in balanced reduced-motion rows and hint spacing. 261: static value grid handles final card deliberately. These remain subject to visual and runtime QA.
+
+## v117 — source cleanup and image-radius consistency
+- Verified original handover cleanup anchors against current source, rather than applying obsolete line-number patches. Removed only exact dead or overridden rules: #156 (4), #376 (5), #392 (1), #386 (1), #387 (1), #391 (1), #385 (1), #373 (1).
+- 319/310: one 20px photo-radius token (matches the established Home and details treatment), no duplicated radius declaration. 424/438/440: staff merge uses current non-teaching list and existing merge destinations; old staged patch issues need not be reapplied. 428: existing About why-grid contains 8 items; final render check outstanding.
+- JS source compiled successfully in a JavaScript parser. No changes to photographs, facts or illustrated-icon scope. Source-only cleanup, full browser test still required.

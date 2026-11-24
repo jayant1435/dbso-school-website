@@ -6,7 +6,7 @@
 
 :root {
   --home-r-card: 20px;
-  --home-r-img: 20px;
+  --home-r-img: var(--radius-img);
   --home-r-row: 16px;
 }
 
@@ -346,8 +346,6 @@ button.photo-card figcaption { text-align: left; }
 /* ---------- CTA band: softer corners, two actions ---------- */
 
 .cta-band { border-radius: var(--home-r-card); box-shadow: var(--shadow-2); }
-.cta-actions { display: flex; flex-direction: column; gap: var(--space-3); }
-.cta-actions .btn { width: 100%; }
 
 /* ---------- Small screens ---------- */
 
@@ -536,8 +534,6 @@ section[aria-label="Admissions call to action"] {
 @media (min-width: 861px) {
   .cta-band { align-items: end; }
   .cta-band > div { min-width: 0; }
-  .cta-actions { flex-direction: row; flex-wrap: wrap; }
-  .cta-actions .btn { width: auto; }
 }
 
 /* ---------- 3. News: revert the v26 stretched third card ----------
