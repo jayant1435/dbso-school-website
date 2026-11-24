@@ -1123,6 +1123,22 @@ section[aria-label="Celebrations and events"] .tick-list li span {
   .result-name { min-height: calc(2 * 1.3em); }
 }
 
+/* ---- W-ACA5 (task 159, 24 Nov 2026): extend FIX 1 reserve into
+   861-999px ---- Measured (W-ACA2, browser, Range-rect counts): at
+   861-990px the split is two-column so the name column narrows to
+   220-235px, below the ~236-252px the longest row-1 name needs at
+   17.6px/600, so row 1 wraps to 2 lines and is 72px while rows 2-3
+   are 63px. The flip is between 990px (2 lines) and 1000px (1 line).
+   Same FIX 1 reserve, same pattern, no new mechanism: all three rows
+   become 72px in the band; rows 2-3 keep their 1-line names inside the
+   reserve, exactly as they already do at <=600px. Scoped to 861-999px
+   only: at >=1000px the names fit 1 line and the reserve would only
+   add dead space (the W-R14 failure mode). No position-column change,
+   no grid restyle. */
+@media (min-width: 861px) and (max-width: 999px) {
+  .result-name { min-height: calc(2 * 1.3em); }
+}
+
 /* ---- FIX 2 REWORK (W-F2R, wave 9, 24 Nov 2026) — replaces the v51
    min-height: 136px reserve, which W-R14 FAILED: it left 36-38px of
    plainly visible dead space inside the Science/Commerce lists at
