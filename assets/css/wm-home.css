@@ -320,6 +320,12 @@
   .wm-values-stage { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .wm-value-slide img { width: 96px; height: 96px; }
   .wm-value-slide .value-name { font-size: 1.35rem; }
+  /* W-HVALS2: no-JS fallback only — the full names (longest "Respect for
+     Others", ~191px est.) spill out of the ~141px 2-column tile while
+     white-space: nowrap holds, so let the name wrap there. The JS rail
+     keeps nowrap: main.js adds .js to <html>, so html:not(.js) never
+     matches it. */
+  html:not(.js) .wm-value-slide .value-name { white-space: normal; }
 }
 @media (prefers-reduced-motion: reduce) {
   .js .wm-value-slide { transition: none; }
