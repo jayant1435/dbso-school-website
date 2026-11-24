@@ -239,3 +239,38 @@
   .gallery-grid > .gallery-item--pos-40:nth-child(8n+1) img { object-position: center 40%; }
   .gallery-grid > .gallery-item--pos-55:nth-child(8n+1) img { object-position: center 55%; }
 }
+
+/* ---- W-LIFE5H (WL5-03): per-photo event captions in "From 2023, two events" ----
+   The six photos are two events (4 felicitation, 30 Aug 2023; 2 ComPhyMathix,
+   29 Aug 2023 — alt text + curation-notes.md Folders 1-2), but the old layout
+   was two undifferentiated rows of bare <img>s, so only the alt text marked
+   the split. Each photo is now a <figure> with a one-line <figcaption> naming
+   its event + date, reusing the section intro's own words — no new copy.
+   The caption reuses the site figcaption rule (style.css:126, 0.875rem /
+   1.5 / --ink-mute); this block only makes the figure a well-behaved grid
+   item. Measured with real DM Sans advances at 14px: "Felicitation ·
+   30 August 2023" is 188px and "ComPhyMathix · 29 August 2023" is 213px,
+   so both stay on one line in the narrowest photo column (269px at 601px).
+   Grouped sub-labels were rejected: 4 photos do not fill 3-column rows
+   (3+1 orphan + a 2-of-3 row), and a 2-column regroup would more than
+   double the section height — see qa-v31/wlife5h/REPORT.md. */
+section[aria-label="From 2023: two events"] .photo-row > figure {
+  margin: 0;
+  min-width: 0;
+}
+
+/* W-G1 F3 orphan span (601-860px) must land on the <img> inside the figure,
+   not on the figure itself: an 8/3 aspect-ratio on the figure would size the
+   figure shorter than its own image + caption, so the caption would paint
+   over the next row. Grid span stays; the 8/3 letterbox + top crop move to
+   the img (same treatment the bare-img rule applied). Higher specificity
+   than wg1-f3.css, so link order does not matter. */
+@media (min-width: 601px) and (max-width: 860px) {
+  section[aria-label="From 2023: two events"] .photo-row > :last-child:nth-child(odd) {
+    aspect-ratio: auto;
+  }
+  section[aria-label="From 2023: two events"] .photo-row > :last-child:nth-child(odd) img {
+    aspect-ratio: 8 / 3;
+    object-position: top;
+  }
+}
