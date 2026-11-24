@@ -118,7 +118,6 @@
      up like any other reveal. */
   var autoReveal = [
     ".dates-strip .date-item",
-    ".meaning-grid .meaning",
     ".steps li",
     ".rule-list li",
     ".results-board .result-row",
@@ -555,9 +554,8 @@
       document.body.style.overflow = "";
       if (hmLastFocus && hmLastFocus.focus) hmLastFocus.focus();
     }
-    document.querySelectorAll(".house-tile, .wm-house-slide").forEach(function (tile) {
+    document.querySelectorAll(".wm-house-slide").forEach(function (tile) {
       tile.addEventListener("click", function () {
-        document.querySelectorAll(".house-tile").forEach(function (t) { t.setAttribute("aria-pressed", "false"); });
         tile.setAttribute("aria-pressed", "true");
         openHouse(tile.getAttribute("data-house"));
       });
@@ -852,7 +850,6 @@
     var track = document.getElementById("wm-clubs-track");
     if (!viewport || !track) return;
     var realSlides = Array.prototype.slice.call(track.querySelectorAll(".wm-club-slide:not(.wm-club-slide--clone)"));
-    var N = realSlides.length;
     /* Second identical half, so the loop has no seam. Clones are
        inert: no toggle, no tab stop, hidden from assistive tech. */
     realSlides.forEach(function (s) {
@@ -1217,7 +1214,7 @@
     track.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
     var DUR = 16; /* seconds; must match the life-scroll keyframes. */
     var suppressClick = armClickSuppress(strip);
-    var startOffset = 0, dragging = false;
+    var startOffset = 0;
     function halfWidth() { return track.scrollWidth / 2; }
     function currentX() {
       var m = new DOMMatrixReadOnly(window.getComputedStyle(track).transform);
@@ -1280,7 +1277,6 @@
     });
     armDrag(strip,
       function () {
-        dragging = true;
         startOffset = currentX();
         track.style.transform = "translateX(" + startOffset + "px)";
         track.classList.add("wm-dragging");
@@ -1290,7 +1286,6 @@
         track.style.transform = "translateX(" + (startOffset + dx) + "px)";
       },
       function (dx) {
-        dragging = false;
         strip.classList.remove("wm-grabbing");
         resume(startOffset + dx);
         /* The pointer left focus on the card under it, and the settled
