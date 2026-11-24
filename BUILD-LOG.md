@@ -29,3 +29,9 @@ Checks: anchored edits against fetched v109 source, static structural and sizing
 - Task 63: awards autoplay pause/play control; no arrows restored. No-JS awards grid displays all eight genuine photos.
 - Task 235: mobile menu closes when the viewport crosses the desktop breakpoint. Task 230: lock html scroll for dialogs. Task 246: gallery counters and button states update on resize. Task 403: enquiry form no-script fallback uses the school’s published email and phone. Task 163: contrasting lightbox arrow backgrounds. Extensionless route active states fixed.
 - Static anchors, exact asset inventory and old sprite reference checks passed. Live/browser QA and remaining task queue not declared complete.
+
+## v113 — user-directed icon scope correction
+- Remove every illustrated section icon, restoring the original gold heading marker, including above A beacon of excellence in the Dooars.
+- Replace illustrated utility icons with simple functional text glyphs; accessible control labels unchanged. Keep generated illustrations only in the two Core Values rails.
+- Leave the official crest and favicon identity intact. Delete unused v112 section and utility WebP assets. The seven value icons are rejected and still need a lighter, restrained gradient treatment. Icon tasks 37/38/62/64 remain open and are not counted as finished.
+- Static reference scope verified. Live deployment and visual verification remain outstanding.

@@ -1713,12 +1713,8 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
 }
 
 /* DBSO v109: the shared icon family. Decorative marks never replace labels. */
-.dbso-section-mark { display: block; width: 40px; height: 40px; margin: 0 0 var(--space-3); }
 .dbso-value-icon { display: block; flex-shrink: 0; }
-.dbso-utility-icon { display: inline-block; width: 1.1em; height: 1.1em; vertical-align: -0.18em; flex-shrink: 0; }
 .text-link .arrow { display: inline-flex; align-items: center; }
-.pillar-arrow .dbso-utility-icon { width: 24px; height: 24px; }
-@media (max-width: 600px) { .dbso-section-mark { width: 36px; height: 36px; } }
 
 /* v110: tighter content rhythm; retain the established CTA and reveal rules. */
 section[aria-label="Life at Bosco"] { padding-bottom: var(--space-5); }
@@ -1737,8 +1733,11 @@ html:not(.js) .switcher-panel { display: block; margin-block: var(--space-4); }
 html:not(.js) .switcher-tabs, html:not(.js) .pillar-nav, html:not(.js) .awards-hint { display: none; }
 
 /* v112: AI-generated raster icon assets; retain decorative semantics. */
-.dbso-section-mark, .dbso-value-icon, .dbso-utility-icon { object-fit: contain; }
-.tick-list .dbso-utility-icon { width: 24px; height: 24px; flex: 0 0 24px; margin-top: 1px; }
-.lightbox-btn .dbso-utility-icon, .event-prev .dbso-utility-icon, .event-next .dbso-utility-icon { width: 24px; height: 24px; }
 .lightbox-prev, .lightbox-next { background-color: rgba(11,31,49,.70); }
 html:not(.js) #enquiry-form { display: none; }
+
+/* v113: illustrated raster assets belong only to core values. Functional glyphs retain existing button labels and hit areas. */
+.dbso-value-icon { object-fit: contain; }
+.dbso-control-glyph { display: inline-flex; align-items: center; justify-content: center; width: 1.1em; line-height: 1; color: inherit; font-family: var(--font-body, sans-serif); font-weight: 500; flex-shrink: 0; }
+.pillar-arrow .dbso-control-glyph, .lightbox-btn .dbso-control-glyph, .event-prev .dbso-control-glyph, .event-next .dbso-control-glyph { font-size: 1.65rem; }
+.tick-list .dbso-check-glyph { width: 24px; flex: 0 0 24px; color: var(--blue, #1d6fa5); font-size: 1.15rem; align-self: flex-start; line-height: 1.4; }
