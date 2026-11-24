@@ -1885,3 +1885,6 @@ section[aria-label="Uniform"] .container.split > div > h3:first-child,section[ar
   section[aria-label="Transport"] .split > figure { width:100%; max-width:400px; justify-self:center; }
   section[aria-label="Transport"] .split > div { max-width:62ch; }
 }
+
+/* v131 — one-line award labels use the same shared card typography. */
+.award-slide .photo-card-label { font-size:.875rem; line-height:1.5; white-space:nowrap; margin:var(--space-3) 0 0; padding:0; }

@@ -1695,3 +1695,12 @@ section[aria-label="Non-teaching staff"] .nonteach-text h3 { margin-bottom:var(-
   .topper-score,.result-score { grid-area:score; }
   .number-label { font-size:clamp(.76rem,3.6vw,.95rem); white-space:nowrap; }
 }
+
+/* v131 — shared photograph label and loading stage. Short card labels are
+   editorially fitted; full descriptions remain available in the viewer. */
+.photo-card-label { font-size: .875rem; line-height: 1.5; margin: 0; padding: var(--space-3); white-space: nowrap; text-align: left; min-width: 0; }
+.lightbox-media { display: grid; place-items: center; position: relative; min-height: min(42vh, 260px); width: 100%; }
+.lightbox-media img { grid-area: 1 / 1; display: block; width: 100%; height: auto; max-height: 70vh; object-fit: contain; }
+.lightbox-media .lightbox-status { grid-area: 1 / 1; align-self: center; justify-self: center; color: var(--paper); background: rgba(11,31,49,.9); border-radius: var(--radius-soft); padding: var(--space-3); margin: 0; font-size: .875rem; text-align: center; }
+.lightbox-media:has(img) .lightbox-status { align-self: end; margin: var(--space-2); }
+.lightbox figure { max-height: calc(100dvh - 2 * var(--space-4)); overflow-y: auto; }

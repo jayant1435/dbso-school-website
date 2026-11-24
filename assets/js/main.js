@@ -328,10 +328,75 @@
     });
   }
 
+  /* Shared photo loader: never expose a previous image while its replacement
+     is pending. A detached image is decoded before insertion; a monotonically
+     increasing request token makes late responses harmless. */
+  function createPhotoLoader(dialog) {
+    var initial = dialog.querySelector("figure > img");
+    var stage = document.createElement("div");
+    stage.className = "lightbox-media";
+    initial.replaceWith(stage);
+    var generation = 0;
+    function clear() {
+      generation++;
+      stage.replaceChildren();
+      stage.removeAttribute("aria-busy");
+      stage.removeAttribute("data-photo-target");
+      stage.removeAttribute("data-photo-state");
+    }
+    function show(source, alt, thumbnail) {
+      clear();
+      var request = generation;
+      var full = new URL(source, document.baseURI).href;
+      var preview = thumbnail && (thumbnail.currentSrc || thumbnail.src);
+      var state = document.createElement("p");
+      state.className = "lightbox-status";
+      state.setAttribute("role", "status");
+      state.textContent = "Loading photograph…";
+      stage.setAttribute("data-photo-target", full);
+      stage.setAttribute("data-photo-state", "loading");
+      stage.setAttribute("aria-busy", "true");
+      stage.appendChild(state);
+      var fullReady = false;
+      function load(url, onReady, onError) {
+        var img = new Image();
+        img.alt = alt || "";
+        img.decoding = "async";
+        img.onload = function () {
+          var done = function () {
+            if (generation === request && img.naturalWidth) onReady(img);
+          };
+          if (typeof img.decode === "function") img.decode().then(done, done);
+          else done();
+        };
+        img.onerror = function () { if (generation === request && onError) onError(); };
+        img.src = url;
+      }
+      if (preview && preview !== full) {
+        load(preview, function (img) {
+          if (fullReady) return;
+          img.setAttribute("data-photo-preview", "");
+          stage.insertBefore(img, state);
+        });
+      }
+      load(full, function (img) {
+        fullReady = true;
+        stage.replaceChildren(img);
+        stage.removeAttribute("aria-busy");
+        stage.setAttribute("data-photo-state", "ready");
+      }, function () {
+        state.textContent = "Full-size photograph unavailable.";
+        stage.removeAttribute("aria-busy");
+        stage.setAttribute("data-photo-state", "error");
+      });
+    }
+    return { show: show, clear: clear };
+  }
+
   /* Gallery lightbox */
   var lightbox = document.getElementById("lightbox");
   if (lightbox) {
-    var lbImg = lightbox.querySelector("img");
+    var lbPhoto = createPhotoLoader(lightbox);
     lightbox.setAttribute("aria-modal", "true");
     var items = Array.prototype.slice.call(document.querySelectorAll(".gallery-item button"));
     var current = 0;
@@ -339,8 +404,8 @@
     function show(i) {
       current = (i + items.length) % items.length;
       var btn = items[current];
-      lbImg.src = btn.getAttribute("data-full");
-      lbImg.alt = btn.getAttribute("data-alt") || "";
+      if (lightbox.classList.contains("closing")) return;
+      lbPhoto.show(btn.getAttribute("data-full"), btn.getAttribute("data-alt") || "", btn.querySelector("img"));
       preloadLbNeighbours();
     }
     /* Neighbour preload (WGAL7-02): fetch the two adjacent full-res photos
@@ -406,6 +471,7 @@
       clearTimeout(lbTimer);
       lightbox.classList.remove("open", "closing");
       lightbox.setAttribute("aria-hidden", "true");
+      lbPhoto.clear();
       document.documentElement.style.overflow = "";
       setLbBackgroundInert(false);
       if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
@@ -589,7 +655,7 @@
      Full-size image, name/caption, one precise line below it. */
   var viewer = document.getElementById("viewer");
   if (viewer) {
-    var vImg = viewer.querySelector("img");
+    var viewerPhoto = createPhotoLoader(viewer);
     var vCap = document.getElementById("viewer-caption");
     viewer.setAttribute("aria-modal", "true");
     var vDet = document.getElementById("viewer-detail");
@@ -599,8 +665,7 @@
       clearTimeout(vTimer);
       viewer.classList.remove("closing");
       vLastFocus = document.activeElement;
-      vImg.src = el.getAttribute("data-full");
-      vImg.alt = el.getAttribute("data-caption") || "";
+      viewerPhoto.show(el.getAttribute("data-full"), el.getAttribute("data-caption") || "", el.querySelector("img"));
       vCap.textContent = el.getAttribute("data-caption") || "";
       vDet.textContent = el.getAttribute("data-detail") || "";
       vDet.style.display = vDet.textContent ? "" : "none";
@@ -620,6 +685,7 @@
       clearTimeout(vTimer);
       viewer.classList.remove("open", "closing");
       viewer.setAttribute("aria-hidden", "true");
+      viewerPhoto.clear();
       document.documentElement.style.overflow = "";
       if (vLastFocus && vLastFocus.focus) vLastFocus.focus();
     }

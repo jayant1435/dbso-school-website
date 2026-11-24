@@ -811,7 +811,7 @@ html.js .photo-strip.wm-grabbing { scroll-snap-type:none; }
 .news-cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-3); align-items:stretch; border:0; }
 .news-cards .news-item { padding:var(--space-4); border-radius:var(--radius-card); }
 .news-cards .news-item h3 { font-size:1.2rem; }
-.photo-strip .photo-card figcaption { min-height:0; font-size:.95rem; line-height:1.5; padding:var(--space-3); }
+.photo-strip .photo-card .photo-card-label { min-height:0; margin:0; font-size:.875rem; line-height:1.5; padding:var(--space-3); white-space:nowrap; }
 .topper-row { border:1px solid var(--line); border-radius:var(--radius-soft); }
 @media(max-width:600px) { .news-cards { grid-template-columns:minmax(0,1fr); } }
 @media(min-width:861px) and (max-width:1080px) { .pillars:not(.pillars-slider),.pillars.pillars-slider { display:grid; grid-auto-rows:1fr; } }

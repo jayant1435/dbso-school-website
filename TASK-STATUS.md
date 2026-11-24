@@ -405,3 +405,6 @@ Actual v128 screenshots were retrieved and inspected; the reduced-motion values 
 
 ### v130 verification evidence
 - v129 [functional QA](https://github.com/jayant1435/dbso-school-website/actions/runs/45451231587) and [visual audit](https://github.com/jayant1435/dbso-school-website/actions/runs/45451229396) both passed. 24 layouts, 46 screenshots, zero targeted text overflows, zero broken local images or warnings, and 5/5 sampled live hashes. Actual screenshot archive retrieved. Desktop split pairs reviewed via geometry and screenshot crops. #293 refined staff and transport balance plus uniform/rules heading alignment; full cross-width/visual verification remains open. #407 now has a direct retired CSS URL probe in the next audit. #118/#123 receive more actual screenshot evidence but the original repeated independent checks have not been completed. #95/#142: original handover confirms the tasks but lacks the precise A4 findings and complete rule 4 quotation; no fabricated facts.
+
+### v131 user-reported photo regressions
+- Reopened caption consistency and image-viewer behavior; shared implementation and exact line-count/slow-network regression tests now in source. v130 functional and visual workflows passed. The new checks must pass before calling these fixes verified; original external evidence remains open.

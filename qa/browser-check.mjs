@@ -45,6 +45,14 @@ async function check(name,width,mode){
   assert.ok(dom.icons.every(x=>x.includes("/value-")) && dom.iconPlacement,"core value images only");
   assert.ok(dom.cloneAccessibility,"carousel clones hidden from assistive technology");
   assert.equal(await p.locator(".life-strip-pause,.awards-pause,.awards-hint").count(),0,"no unwanted photograph controls");
+  if(name==="index"||name==="about"){
+    const labels=await p.locator(".photo-card-label").evaluateAll(els=>els.map(el=>{
+      const range=document.createRange();range.selectNodeContents(el);
+      return {text:el.textContent,lines:range.getClientRects().length,fits:el.scrollWidth<=el.clientWidth+1};
+    }));
+    assert.equal(labels.length,name==="index"?6:8,"complete photo labels");
+    assert.ok(labels.every(x=>x.lines===1&&x.fits),"every caption is a real, unclipped single line: "+JSON.stringify(labels));
+  }
   if(name==="index"){assert.equal(await p.locator('section[aria-label="Campus"] .home-links a').count(),1,"one campus link");}
   if(name==="index"){
     const cards=p.locator("#wm-houses-stage .wm-house-slide");
@@ -161,10 +169,50 @@ async function check(name,width,mode){
  }catch(e){failures.push({name,width,mode,error:e.message,errors});results.push({name,width,mode,status:"fail"});}
  finally{await ctx.close();}
 }
+async function checkPhotoViewer(name,width,selector,dialogId){
+ const ctx=await browser.newContext({viewport:{width,height:900},reducedMotion:"reduce"});
+ await ctx.route("**/*",route=>route.request().url().startsWith(base)||route.request().url().startsWith("data:")?route.continue():route.abort());
+ const p=await ctx.newPage();let releases=[];
+ try{
+  await p.goto(base+"/"+name+".html",{waitUntil:"load"});
+  const cards=p.locator(selector),dialog=p.locator("#"+dialogId);
+  const target=async i=>await cards.nth(i).evaluate(el=>({full:new URL(el.dataset.full,document.baseURI).href,preview:el.querySelector("img").currentSrc||el.querySelector("img").src}));
+  const first=await target(0),second=await target(1),third=await target(2);
+  async function waitReady(wanted){
+    await p.waitForFunction(({id,url})=>{const el=document.querySelector("#"+id+" .lightbox-media");return el.dataset.photoState==="ready"&&el.querySelector("img")?.currentSrc===url;},{id:dialogId,url:wanted.full},{timeout:10000});
+  }
+  async function verifyNoWrong(wanted){
+    const data=await dialog.locator(".lightbox-media").evaluate(el=>({target:el.dataset.photoTarget,images:[...el.querySelectorAll("img")].map(i=>i.currentSrc||i.src)}));
+    assert.equal(data.target,wanted.full,"selected photo target");
+    assert.ok(data.images.every(url=>url===wanted.full||url===wanted.preview),"no previous or unrelated photograph: "+JSON.stringify(data));
+  }
+  await cards.nth(0).click();await waitReady(first);await dialog.locator(".lightbox-close").click();
+  // Delay full-image downloads. Thumbnails can remain visible if they belong to the selection.
+  await p.route(second.full,async route=>{await new Promise(r=>{releases.push(r);setTimeout(r,1800)});await route.continue().catch(()=>{});});
+  await cards.nth(1).click();await verifyNoWrong(second);await p.waitForTimeout(250);await verifyNoWrong(second);
+  if(dialogId==="lightbox"){
+    await dialog.locator(".lightbox-next").click();
+  }else{
+    await dialog.locator(".lightbox-close").click();await cards.nth(2).click();
+  }
+  await verifyNoWrong(third);await waitReady(third);
+  releases.forEach(r=>r());await p.waitForTimeout(200);await verifyNoWrong(third);
+  await dialog.locator(".lightbox-close").click();
+  assert.equal(await dialog.locator(".lightbox-media img").count(),0,"close clears previous pixels");
+  results.push({name,width,mode:"photo-race",status:"pass"});
+ }catch(e){failures.push({name,width,mode:"photo-race",error:e.message});results.push({name,width,mode:"photo-race",status:"fail"});}
+ finally{releases.forEach(r=>r());await ctx.close();}
+}
 try{
  for(const name of pages){for(const width of sizes)await check(name,width,"normal");await check(name,390,"no-js");await check(name,1440,"reduced");}
  for(const [old,target] of [["staff","about#staff"],["fees","admissions#fees"],["facilities","life#facilities"],["videos","gallery#videos"]]){
   const p=await browser.newPage();try{await p.goto(base+"/"+old+".html");await p.waitForURL(u=>u.pathname.endsWith("/"+target.split("#")[0]+".html")&&u.hash==="#"+target.split("#")[1]);}catch(e){failures.push({name:old,error:e.message});}finally{await p.close();}
+ }
+ for(const width of [390,1440]){
+  await checkPhotoViewer("index",width,".photo-card.js-viewer","viewer");
+  await checkPhotoViewer("about",width,".leader-card.js-viewer","viewer");
+  await checkPhotoViewer("about",width,".award-slide.js-viewer","viewer");
+  await checkPhotoViewer("gallery",width,".gallery-item button","lightbox");
  }
  console.log("SPLIT-AUDIT "+JSON.stringify(splitAudit));
  console.log(JSON.stringify({checks:results.length,passed:results.filter(r=>r.status==="pass").length,failures},null,2));
