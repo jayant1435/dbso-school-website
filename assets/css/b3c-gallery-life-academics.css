@@ -130,6 +130,30 @@
   margin: 0 0 var(--space-3);
 }
 
+/* ---- Syllabus 2026–27 (wsyl, task 120): one select + one action replace
+   the 13 buttons. The .syllabus-groups/.syllabus-grid rules above stay:
+   they now style the <noscript> fallback (all 13 links, JS off).
+   Skills + rules: no-ai-design-slop compact gates (System — reuses the
+   site's .field select + .btn-primary, no new colour/font/radius; Hierarchy
+   — one focal point, the select, then one action; Removal test — the 3
+   group containers and 13 buttons add no meaning the <optgroup> labels +
+   one link don't already carry); design-system (tokens only: --space-*,
+   --radius-btn via .btn, --blue via .btn-primary); better-ui (4px spacing
+   scale; 48px targets from .field select/.btn; focus ring kept from the
+   global :focus-visible); interaction-design (native <select>: arrow keys,
+   type-ahead and touch free; one action, full-width on phones);
+   typography (label is the body face, sentence case, 0.95rem like
+   .field label; button text 1rem/1.2 from .btn); 12-principles-of-animation
+   (swap reuses the site's panel-in: transform + opacity only, 250ms, one
+   easing curve; reduced motion is zeroed by the global rule in style.css);
+   hallmark floor 6/7 (focus-visible instant; content visible with
+   scripting off via the <noscript> list). */
+.syllabus-picker { max-width: 30rem; margin-inline: auto; }
+.syllabus-picker .syllabus-field select { cursor: pointer; }
+.syllabus-action { margin-top: var(--space-5); text-align: center; }
+.syllabus-open { width: 100%; white-space: normal; }
+.syllabus-action.swap { animation: panel-in 0.25s var(--ease-out); }
+
 /* Lightbox: horizontal swipes are handled by JS; let vertical panning through. */
 .lightbox figure { touch-action: pan-y; }
 
