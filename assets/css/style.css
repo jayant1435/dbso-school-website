@@ -1671,3 +1671,45 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
    then. Tokens only, no new values; no visual change except where an
    anchor lands. */
 [id] { scroll-margin-top: calc(var(--header-h) + var(--space-4)); }
+
+/* W-HOME16 (wave 11, Jayant 24 Nov 11:53 IST refinement, task 285):
+   the gold bar is KEPT (site-wide motif — never removed). Only the
+   image-above-bar float is fixed, and ONLY where the split stacks
+   (<=860px, the stack point above) so the image actually sits above
+   the bar — desktop is untouched, exactly as briefed. Cause (measured,
+   static): inside a stacked split the bar sat 48px below the photo
+   (the split grid gap, --space-7) and 24px above its heading
+   (.gold-rule margin-bottom 24px; the h2's top margin is already
+   zeroed by .split > * > h2:first-of-type) — near enough the photo
+   to read as a divider floating between photo and heading.
+   Fix: at <=860px only, margin-top 24px above the bar and
+   margin-bottom 12px below it, so the bar sits 72px from the photo
+   (48px gap + 24px margin) and 12px from its heading — 6x nearer
+   its heading, i.e. attached to the heading. Same values as the
+   already-landed HOME fix for the same pattern (wm-home.css,
+   W-HOME13 task 285: Welcome + Preventive System) — one mobile
+   treatment site-wide. Scoped to the four NON-home sections with
+   this pattern; home is W-HOME13's, already in the live tree.
+   Cases: about From the Principal (photo pulled above the text by
+   .principal-split > figure { order: -1 } at <=860px, details.css),
+   about Coat of arms (crest figure first in DOM), facilities
+   Transport (buses figure first in DOM), life Celebrations and
+   events (auditorium figure first in DOM). Decision: ATTACH, not
+   remove (removal would break the heading-marker motif on mobile
+   only). All other 26 gold-rules need nothing: text-first splits
+   put bar + heading before the photo, and section-head bars sit
+   128px of section padding below any earlier image.
+   (no-ai-design-slop: proximity before containers; Removal Test —
+   deletion would lose the heading marker, so smallest correction;
+   design-taste-frontend §5: splits stack text first, nothing lies
+   on anything else at 390; design-system: tokens only; blue + gold
+   only, no new colour, font or size.) */
+@media (max-width: 860px) {
+  section[aria-label="From the Principal"] .gold-rule,
+  section[aria-label="Coat of arms"] .gold-rule,
+  section[aria-label="Transport"] .gold-rule,
+  section[aria-label="Celebrations and events"] .gold-rule {
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-3);
+  }
+}
