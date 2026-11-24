@@ -636,33 +636,6 @@ figcaption {
   color: var(--blue);
 }
 
-/* ---------- Core values (W-C, v33): logo + word, no descriptions ----------
-   One icon language: every logo 32px, same gap, same row rhythm.
-   Scoped to .value-list so the Leadership .tick-list is untouched. */
-.value-list { list-style: none; padding: 0; margin: 0; }
-.value-list li {
-  display: flex;
-  gap: var(--space-3);
-  align-items: center;
-  padding-top: var(--space-3);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--line);
-  margin: 0;
-}
-.value-list li:last-child { border-bottom: 0; }
-.value-logo {
-  width: 32px;
-  height: 32px;
-  flex-shrink: 0;
-}
-.value-word {
-  font-family: var(--font-display);
-  font-size: 1.25rem; /* 20px, was 17px body — the bigger value word */
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.015em; /* site h-rule */
-  color: var(--ink);
-}
 /* W-AB69 (task 287, 24 Nov 2026): ONE h3 size on About — 1.6rem (25.6px)
    for every main-content h3. Before: 1.6rem only inside "Vision and
    values" (Mission, Core values), 1.45rem / 23.2px everywhere else
@@ -673,11 +646,6 @@ figcaption {
    1.6rem already on the page) + no-ai-design-slop (accidental
    inconsistency, one rule per level). */
 body.page-about main h3 { font-size: 1.6rem; /* 25.6px */ }
-
-@media (max-width: 640px) {
-  .value-logo { width: 28px; height: 28px; }
-  .value-word { font-size: 1.15rem; /* 18.4px */ }
-}
 
 /* ---------- Uniform tiles (v22): equal cells for chip-like lists ----------
    A flex-wrap chip row can never be uniform — the last row always lands
@@ -1740,21 +1708,3 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
     margin-bottom: var(--space-3);
   }
 }
-
-/* ---------- W-AB69 (task 279, 24 Nov 2026): Mission and values — close
-   the right-column void. The .split is align-items: start, so the
-   shorter column ends early: before Vision removal the Core values
-   column ended ~115-167px above the left column at 1024-1440px (model,
-   ESTIMATE-ONLY). Removing Vision alone leaves the columns within
-   ~16-67px; these rules close the rest wherever the left column is
-   still taller: the row stretches to the taller column and the 7 value
-   rows share the leftover space evenly (space-between — rows stay
-   56px, only the gaps grow, ~2-7px each in the 861-1000px band). Where
-   the right column is already taller, or the split stacks (<=860px),
-   the rules are no-ops. No content removed, no new size, tokens only.
-   better-ui (one grid, no element off it) + design-taste-frontend
-   (equal edges, no half-empty column) + audit-ai-design-slop
-   (accidental inconsistency: ragged column ends). */
-section[aria-label="Mission and values"] .split { align-items: stretch; }
-section[aria-label="Mission and values"] .split > div:last-child { display: flex; flex-direction: column; }
-section[aria-label="Mission and values"] .value-list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
