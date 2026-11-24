@@ -297,17 +297,6 @@ section[aria-label="How learning works"] .split > figure { align-self: center; }
 /* W2b Phase B (qa-v29) — about.html only. Coordinator: append to details.css.
    Palette: blue + yellow only, no red. Fonts unchanged. */
 
-/* About awards (v29): three photos in the two-column tablet grid leave the
-   third alone on its row with an empty slot beside it (359px hole at 834).
-   At 601–860px the last photo spans both columns as a wide shot, same 8/3
-   shape as .photo-wide, so the row ends even. Scoped to .awards-row (about
-   only) — .photo-row is shared with facilities / life / staff / home.
-   Desktop (3 cols) and phone (1 col) untouched. */
-@media (min-width: 601px) and (max-width: 860px) {
-  .awards-row figure:last-child { grid-column: span 2; }
-  .awards-row figure:last-child img { aspect-ratio: 8 / 3; }
-}
-
 /* About coat of arms (v29): the square crest fills the whole column once
    the split stacks (786px wide at 834 — a full-viewport poster). Cap it so
    it reads as an emblem. Desktop keeps the 5fr column; phones are narrower
