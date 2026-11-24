@@ -1345,13 +1345,15 @@ section[aria-label="Celebrations and events"] .tick-list li span {
    (covers 320/360) and 861–1200px (covers 1024, where the 3-col card is
    narrowest) — and raise the matching h3 reserve beside it from
    calc(2 * 1.3em) to calc(3 * 1.3em) in the same bands, so rows stay
-   level. The base clamp (style.css:526, site-wide, 2 lines) is untouched;
+   level. The base clamp (style.css:525, site-wide, 2 lines) is untouched;
    this scoped override wins by specificity (.videos-long .card-body h3
    beats .card-body h3) and details.css loads after style.css. The wide
    last card stays excluded from the reserve at ≥601px by the FIX 2 rule
    above (higher specificity), unchanged. Shorts grid untouched (task 132
-   is a separate staged fix). Bands NOT changed — 601–860px and ≥1201px —
-   measured clean (0 clamped), so their heights are byte-identical. */
+   shipped in v79). Band NOT changed — ≥1201px — measured clean
+   (0 clamped), so its heights are byte-identical. The 601–860px band was
+   NOT clean: 8 titles clamp at 601–671px (live task 223); left unchanged
+   here — the fix belongs to task 223. */
 @media (max-width: 600px) {
   .videos-long .card-body h3 { -webkit-line-clamp: 3; min-height: calc(3 * 1.3em); }
 }
