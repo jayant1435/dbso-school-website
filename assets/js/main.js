@@ -788,8 +788,10 @@
      - Houses: crossfading stage, 5s timer, pause on hover/focus.
      - Values: a swipeable rail (W-H3 rebuild), transform-only, clones
        at both ends so neighbours peek; no auto-motion (values are read).
-     - Life strip: its settled 32s CSS animation, frozen + resumed
+     - Life strip: its 16s CSS animation, frozen + resumed
        around a drag (no hover pause — Jayant's words, conflict 17).
+       Task 354: prev/next buttons + counter removed — drag and the
+       arrow keys are the only controls now.
      A drag that moves more than 6px suppresses the click that follows
      it (capture phase, on the container), so dragging never opens a
      modal, a viewer, or toggles a highlight by accident.
@@ -1188,7 +1190,9 @@
   })();
 
   /* ---------- ITEM 7: Life at Bosco strip — drag interrupts the
-     32s CSS auto-scroll, then it resumes from the dragged spot. ----------
+     16s CSS auto-scroll, then it resumes from the dragged spot. ----------
+     Task 354: prev/next buttons + counter removed (markup + CSS +
+     wiring); drag, arrow keys and focus handling unchanged.
      Freeze: read the computed transform, pin it inline, then switch the
      animation off (inline transform set FIRST, so nothing jumps).
      Resume: wrap the offset into one half-loop and restart the
@@ -1198,13 +1202,9 @@
   (function lifeStripDrag() {
     var strip = document.querySelector(".photo-row.photo-strip");
     var track = document.querySelector(".photo-track");
-    var prevBtn = document.getElementById("wm-life-prev");
-    var nextBtn = document.getElementById("wm-life-next");
-    var countEl = document.getElementById("wm-life-count");
-    var lastCount = "";
     if (!strip || !track || reduceMotion) return;
     track.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
-    var DUR = 32; /* seconds; must match the life-scroll keyframes. */
+    var DUR = 16; /* seconds; must match the life-scroll keyframes. */
     var suppressClick = armClickSuppress(strip);
     var startOffset = 0, dragging = false;
     function halfWidth() { return track.scrollWidth / 2; }
@@ -1225,14 +1225,6 @@
       var cs = window.getComputedStyle(card);
       return card.getBoundingClientRect().width + (parseFloat(cs.marginRight) || 0);
     }
-    function showCount(x) {
-      if (!countEl) return;
-      var N = 3; /* real cards; the second half is clones. */
-      var i = Math.floor((-wrap(x) / cardStep()) % N);
-      if (i < 0) i += N;
-      var t = (i + 1) + " of " + N;
-      if (t !== lastCount) { lastCount = t; countEl.textContent = t; }
-    }
     function nudge(dir) {
       /* Keyboard nudge: freeze, shift one card, resume. */
       var x = wrap(currentX() + dir * cardStep());
@@ -1246,15 +1238,12 @@
       track.style.animationDelay = (-frac * DUR) + "s";
       track.style.transform = "";
       track.classList.remove("wm-dragging");
-      showCount(x);
     }
     strip.addEventListener("keydown", function (e) {
       if (e.key === "ArrowLeft") { e.preventDefault(); nudge(1); }
       if (e.key === "ArrowRight") { e.preventDefault(); nudge(-1); }
     });
-    if (prevBtn) prevBtn.addEventListener("click", function () { nudge(1); });
-    if (nextBtn) nextBtn.addEventListener("click", function () { nudge(-1); });
-    /* WR3-O1: a focused card froze wherever the 32s scroll happened
+    /* WR3-O1: a focused card froze wherever the 16s scroll happened
        to be — a card could sit half off-screen left (probed x = -109
        @390) because focus scrolling cannot move a transformed track.
        On focus, shift the track by the smallest amount that brings
