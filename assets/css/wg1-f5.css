@@ -1,7 +1,18 @@
 /* Hallmark: W-G1 F5 — desktop split figures fill the text column on life.html (Clubs 62px short, Celebrations 184px short at 1440px); the image fills, the caption stays below it. */
 @media (min-width: 861px) {
-  section[aria-label="Clubs"] .split > figure,
+  section[aria-label="Clubs"] .split > figure { align-self: stretch; display: flex; flex-direction: column; }
+  section[aria-label="Clubs"] .split > figure img { flex: 1 1 auto; min-height: 0; object-fit: cover; }
+}
+/* WL5-02 (W-LIFE5 P2, scoping correction — not a revert): the F5 fill was
+   measured only at 1440px, where the Celebrations auditorium photo shows
+   62% of its width. At 1024px the same fill stretches the figure to the
+   538px text column and the photo shows only 51% of its width. Cap the
+   Celebrations fill to widths where it was validated (>=1201px); below
+   that the column gap stands, as the stacked layout already does below
+   861px. Clubs is NOT capped: its split already stacks at 861-1200px
+   (details.css), so its figure renders at natural 4:3 (100% visible)
+   at 1024px and the fill only bites at 1440px (85% visible). */
+@media (min-width: 1201px) {
   section[aria-label="Celebrations and events"] .split > figure { align-self: stretch; display: flex; flex-direction: column; }
-  section[aria-label="Clubs"] .split > figure img,
   section[aria-label="Celebrations and events"] .split > figure img { flex: 1 1 auto; min-height: 0; object-fit: cover; }
 }
