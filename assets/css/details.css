@@ -1539,6 +1539,50 @@ body.page-about section[aria-label="Admissions call to action"] {
 }
 body.page-about .site-footer { margin-top: var(--space-4); }
 
+/* ===== v82 W-CTA1 (task 292): CTA-band white gap below the band, site-wide =====
+   INVENTORY (grep .cta-band, all 12 pages): the band sits on 9 pages —
+   index, about, academics, life, news, staff, videos, facilities
+   (aria-label="Admissions call to action") + admissions (aria-label=
+   "Questions", same .cta-band). fees, contact, gallery carry NO band.
+   On ALL 9 the band section is the LAST section in <main>, directly
+   above the footer — no page's band sits above other content, so one
+   rule fits every page with no per-page exception.
+   CAUSE (static, identical at 390/768/834/1440/1536 — no media query
+   touches .section padding-bottom or .site-footer margin-top):
+   below-band gap = CTA section padding-bottom + footer margin-top.
+   Unfixed pages: 64px (.section, style.css:416, --space-8) + 64px
+   (.site-footer, style.css:1106, --space-8) = 128px. Admissions
+   "Questions" was half-fixed already (details.css:536, section bottom
+   24px) = 24 + 64 = 88px. index (home.css:543-551) and about
+   (details.css:1495-1520) were already fixed to 32px total by the
+   same two-value cut and are left untouched.
+   FIX (mirrors the home + About precedent exactly, so the CTA keeps
+   one rhythm site-wide): section padding 64/64 -> 32 top / 16 bottom;
+   footer margin-top 64 -> 16. Below-band total on every band page:
+   16 + 16 = 32px. Above-band total drops 128 -> 96px, same as home/About.
+   Footer cut is scoped to body.page-cta (new class, added to the 7
+   unfixed band pages' <body> only) so fees/contact/gallery — which
+   also load details.css but carry no band — keep their 64px footer
+   margin untouched. Tokens only, 4px steps, no negative margin,
+   no new colour, no new token, no layout change, blue + yellow only.
+   Skills: no-ai-design-slop ("Make relationships visible — Use
+   proximity before containers. Related items sit closer than unrelated
+   items." + Removal Test: the 96px removed performed no job — two
+   defaults stacking, not authored breathing room); design-taste-
+   frontend (§5 Checklist, "One section per screen …
+   [section-gaps, empty-area]": the 128px strip between band and
+   footer is empty area, not section spacing; "One system": token-only
+   values, one spacing rhythm site-wide). */
+section[aria-label="Admissions call to action"] {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-4);
+}
+section[aria-label="Questions"] {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-4);
+}
+body.page-cta .site-footer { margin-top: var(--space-4); }
+
 /* ===== W-AB68 (wave 11, task 281, Jayant's brief 9, 24 Nov 2026) =====
    ABOUT lineage — rebuild as a proper timeline.
    CAUSE (measured BEFORE, static estimate from the live tree, font advances
