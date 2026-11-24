@@ -1366,8 +1366,10 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   .staff-card { padding: var(--space-3); gap: var(--space-3); }
   .staff-photo img { width: 48px; height: 48px; }
   .leader-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  /* Four columns, not three: 20 clubs divide by 4 (five even rows) but
-     not by 3 — three left a 2-tile ragged last row at 834px. Life grids
+  /* Four columns, not three: sized when the school ran 20 clubs, which
+     divide by 4 (five even rows) but not by 3 — three left a 2-tile
+     ragged last row at 834px. The school now runs 18 clubs, which divide
+     by 3, not by 4 — column choice unchanged by this fix. Life grids
      keep their own counts (later min-width rule wins over this one). */
   .tile-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
