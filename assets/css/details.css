@@ -825,6 +825,45 @@ section[aria-label="From the Principal"] .quote-attr strong { font-weight: 600; 
   .hours-card { padding: var(--space-4) var(--space-5); }
 }
 
+/* ---- Task 289 (W-AB71): Leadership and School hours are separate
+   full-width sections, not a 50/50 split ----
+   no-ai-design-slop (Make relationships visible — hierarchy before
+   labels): hours sat as an h3 inside the Leadership section with no
+   gold rule, so it read as a subordinate note of Leadership, not its
+   own subject — same 542px column, one heading level down. Splitting
+   gives each subject its own h2, gold rule and section rhythm.
+   design-taste-frontend (One section per screen; Equal edges): each
+   section now spans the full container with equal left/right edges,
+   and the phone stack order is unchanged (Leadership, then hours).
+   Tokens only; blue + gold; no new colour, font or size. The two
+   column treatments below only fill the freed full width — 4 leaders
+   as 2x2, Summer/Winter side by side in one card — and collapse to
+   the existing single-column stack at <=860px. The h2 margin reset
+   replaces the lost `.split > * > h2:first-of-type` zeroing, so the
+   gold rule still sits tight above each heading. */
+@media (min-width: 861px) {
+  section[aria-label="Leadership"] .leader-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-7);
+  }
+  section[aria-label="Leadership"] .leader-list li:nth-child(n+3) { border-bottom: 0; }
+  section[aria-label="School hours"] .hours-card {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5) var(--space-7);
+  }
+  section[aria-label="School hours"] .hours-card .hours-season + .hours-season {
+    border-top: 0;
+    border-left: 1px solid var(--line);
+    margin-top: 0;
+    padding-top: 0;
+    padding-left: var(--space-6);
+  }
+}
+section[aria-label="Leadership"] h2,
+section[aria-label="School hours"] h2 { margin-top: 0; }
+
 /* ---- Item 12: managing committee — one uniform card per person ----
    ui-ux-pro-max (layout: no ragged last row) + better-ui (one system):
    the old 7-card grid hid three members inside one "Members" card and
