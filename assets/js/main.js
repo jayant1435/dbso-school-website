@@ -946,36 +946,53 @@
     raf = requestAnimationFrame(tick);
   })();
 
-  /* ---------- ITEM 3: houses stage ---------- */
+  /* ---------- ITEM 3: houses stage (286 chrome removal, wave 11) ----------
+     One large photo at a time, fading into the next every 5s; the house
+     name sits on the photo with its house-colour band across the top
+     (the band is house identity = content, the same --house-* tokens the
+     old tiles used). Motion: opacity only, 0.4s ease-out
+     (12-principles budget). No-JS fallback: all four photos visible
+     in a 2-column grid.
+     286: the arrows/dots/counter markup is DELETED from index.html.
+     Mobile (<768px) keeps this stage, chrome-free: the 5s timer still
+     cycles the houses, and swipe/drag-threshold + ArrowLeft/Right on
+     the focusable stage still change them (the reachability path once
+     the buttons are gone). Tablet/desktop (≥768px, gridMq — the same
+     breakpoint as the wm-home.css grid) is the static 2-column grid —
+     the layout the no-JS fallback already uses: all four houses
+     visible at once, the timer stopped, no motion. Tap still opens
+     the house modal (openHouse, untouched); in grid mode all four
+     slides are Tab-reachable buttons. Reduced motion: unchanged —
+     no auto-advance, manual change only, grid ≥768px. */
   (function housesStage() {
     var stage = document.getElementById("wm-houses-stage");
     if (!stage) return;
     var slides = Array.prototype.slice.call(stage.querySelectorAll(".wm-house-slide"));
-    var dots = Array.prototype.slice.call(document.querySelectorAll("#wm-houses-dots .wm-dot"));
-    var countEl = document.getElementById("wm-houses-count");
-    var prevBtn = document.getElementById("wm-houses-prev");
-    var nextBtn = document.getElementById("wm-houses-next");
     var current = 0, timer = null;
     var DELAY = 5000;
+    /* 286: grid breakpoint — one source of truth with wm-home.css
+       (min-width: 768px). */
+    var gridMq = window.matchMedia("(min-width: 768px)");
+    function gridMode() { return gridMq.matches; }
     stage.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
     function show(i) {
       current = (i + slides.length) % slides.length;
       slides.forEach(function (s, j) { s.classList.toggle("is-active", j === current); });
-      dots.forEach(function (d, j) { d.classList.toggle("is-active", j === current); });
-      if (countEl) countEl.textContent = (current + 1) + " of " + slides.length;
     }
     function start() {
-      if (reduceMotion || timer) return;
+      if (reduceMotion || gridMode() || timer) return;
       timer = setInterval(function () { show(current + 1); }, DELAY);
     }
     function stop() { if (timer) { clearInterval(timer); timer = null; } }
     function restart() { stop(); start(); }
-    if (prevBtn) prevBtn.addEventListener("click", function () { show(current - 1); restart(); });
-    if (nextBtn) nextBtn.addEventListener("click", function () { show(current + 1); restart(); });
-    dots.forEach(function (d, i) {
-      d.addEventListener("click", function () { show(i); restart(); });
-    });
+    function applyMode() { if (gridMode()) stop(); else start(); }
+    if (gridMq.addEventListener) gridMq.addEventListener("change", applyMode);
+    else if (gridMq.addListener) gridMq.addListener(applyMode);
+    /* Keyboard: ArrowLeft/Right change the house on a phone. In grid
+       mode the handler returns without preventDefault, so the arrows
+       scroll the page; every house is Tab-reachable anyway. */
     stage.addEventListener("keydown", function (e) {
+      if (gridMode()) return;
       if (e.key === "ArrowLeft") { e.preventDefault(); show(current - 1); restart(); }
       if (e.key === "ArrowRight") { e.preventDefault(); show(current + 1); restart(); }
     });
@@ -994,6 +1011,7 @@
       function () {},
       function () {},
       function (dx) {
+        if (gridMode()) return;
         if (Math.abs(dx) > 48) { show(current + (dx < 0 ? 1 : -1)); restart(); }
         suppressClick(Math.abs(dx) > 6);
       });
@@ -1001,7 +1019,8 @@
     start();
   })();
 
-  /* ---------- ITEM 4: values slider (W-H3 rebuild, wave 10) ----------
+  /* ---------- ITEM 4: values slider (W-H3 rebuild, wave 10; 282
+     chrome removal, wave 11) ----------
      A REAL swipeable rail on the Life-strip pattern (lifeStripDrag) +
      the clubs rail's clone trick: the track holds the 7 real slides
      plus one clone at each end, so a neighbour always peeks at both
@@ -1014,21 +1033,41 @@
      Track positions: 0 = last clone, 1..7 = real slides, 8 = first
      clone. Reduced motion: no track, no clones, no transform — the
      stacked opacity pager stands (its transition is removed by the
-     reduced-motion CSS), and arrows/dots/keyboard/drag-threshold
-     still work. Copy, icons and order are untouched. */
+     reduced-motion CSS), and keyboard/drag-threshold still work.
+     Copy, icons and order are untouched.
+     282: the arrows/dots/counter markup is DELETED from index.html
+     (no dead buttons in the DOM, no tab stops to nowhere, no "N of
+     7" state to keep in sync). Mobile (<768px) keeps this rail,
+     chrome-free: swipe + ArrowLeft/Right on the focusable stage.
+     Tablet/desktop (≥768px, gridMq — the same breakpoint as the
+     wm-home.css grid) is a static grid: the animated class comes
+     off, the track transform is cleared, updateChrome exposes all
+     seven (aria-hidden false) and goTo/keyboard/drag all return
+     early — keyboard users need no paging because every card is
+     already visible, and the arrows are left alone so they scroll
+     the page (interaction-design: keyboard path first; the rail
+     stays focusable without arrows or dots). */
   (function valuesPager() {
     var stage = document.getElementById("wm-values-stage");
     var track = document.getElementById("wm-values-track");
     if (!stage || !track) return;
     var slides = Array.prototype.slice.call(track.querySelectorAll(".wm-value-slide"));
-    var dots = Array.prototype.slice.call(document.querySelectorAll("#wm-values-dots .wm-dot"));
-    var countEl = document.getElementById("wm-values-count");
-    var prevBtn = document.getElementById("wm-values-prev");
-    var nextBtn = document.getElementById("wm-values-next");
     var current = 0;
     var N = slides.length;
+    /* 282: grid breakpoint — one source of truth with wm-home.css
+       (min-width: 768px). */
+    var gridMq = window.matchMedia("(min-width: 768px)");
+    function gridMode() { return gridMq.matches; }
     stage.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
     function updateChrome() {
+      if (gridMode()) {
+        /* Every card visible: expose all seven, no paging state. */
+        slides.forEach(function (s) {
+          s.classList.add("is-active");
+          s.setAttribute("aria-hidden", "false");
+        });
+        return;
+      }
       slides.forEach(function (s, j) {
         s.classList.toggle("is-active", j === current);
         /* Off-screen slides are still in the layout (translated
@@ -1037,46 +1076,14 @@
            does this already — aria-hidden is harmless there. */
         s.setAttribute("aria-hidden", j === current ? "false" : "true");
       });
-      dots.forEach(function (d, j) { d.classList.toggle("is-active", j === current); });
-      if (countEl) countEl.textContent = (current + 1) + " of " + N;
     }
     function show(i) {
       current = ((i % N) + N) % N;
       updateChrome();
     }
-    if (reduceMotion) {
-      if (prevBtn) prevBtn.addEventListener("click", function () { show(current - 1); });
-      if (nextBtn) nextBtn.addEventListener("click", function () { show(current + 1); });
-      dots.forEach(function (d, i) {
-        d.addEventListener("click", function () { show(i); });
-      });
-      stage.addEventListener("keydown", function (e) {
-        if (e.key === "ArrowLeft") { e.preventDefault(); show(current - 1); }
-        if (e.key === "ArrowRight") { e.preventDefault(); show(current + 1); }
-      });
-      armDrag(stage,
-        function () {},
-        function () {},
-        function (dx) {
-          if (Math.abs(dx) > 48) show(current + (dx < 0 ? 1 : -1));
-        });
-      show(0);
-      return;
-    }
-    /* Animated rail. Clones are inert: no tab stop, hidden from
-       assistive tech (the clubs pattern). */
-    stage.classList.add("wm-values--animated");
-    function makeClone(src) {
-      var c = src.cloneNode(true);
-      c.classList.add("wm-value-slide--clone");
-      c.classList.remove("is-active");
-      c.setAttribute("aria-hidden", "true");
-      return c;
-    }
-    var lastClone = makeClone(slides[N - 1]);
-    var firstClone = makeClone(slides[0]);
-    track.insertBefore(lastClone, slides[0]);
-    track.appendChild(firstClone);
+    /* Animated rail state (built once, only while motion is allowed
+       and the viewport is a phone). */
+    var railOn = false, clonesBuilt = false;
     var GAP = 12; /* must match the slide margin-right in wm-home.css */
     var PEEK_BP = 601; /* must match the min-width breakpoint in wm-home.css */
     var cardW = 0, step = 0, pos = 1;
@@ -1084,6 +1091,7 @@
     function peek() { return window.innerWidth >= PEEK_BP ? 48 : 28; }
     function offsetFor(p) { return peek() - p * step; }
     function render(animate) {
+      if (!railOn) return;
       if (!animate) stage.classList.add("wm-dragging");
       track.style.transform = "translateX(" + offsetFor(pos) + "px)";
       if (!animate) { void track.offsetWidth; stage.classList.remove("wm-dragging"); }
@@ -1107,6 +1115,7 @@
       if (e.propertyName === "transform" && snapPending) snapToReal();
     });
     function measure() {
+      if (!railOn) return;
       var stageW = stage.getBoundingClientRect().width;
       cardW = Math.max(200, Math.floor(stageW - 2 * peek()));
       stage.style.setProperty("--values-card-w", cardW + "px");
@@ -1114,10 +1123,14 @@
       render(false);
     }
     /* i is the UNWRAPPED target: arrows/drag pass current +/- 1
-       (N or -1 at the ends = wrap), dots pass their own index. A wrap
-       animates onto the clone, then snaps; a distant dot jump sweeps
-       across the cards in the one 0.32s move. */
+       (N or -1 at the ends = wrap). A wrap animates onto the clone,
+       then snaps; a plain step moves one card in the one 0.32s move.
+       (282: the dot callers are gone; arrows + drag are the only
+       callers now. In grid mode or reduced motion this is a plain
+       show — no rail, no animation.) */
     function goTo(i, animate) {
+      if (gridMode()) return;
+      if (reduceMotion || !railOn) { show(i); return; }
       var target = ((i % N) + N) % N;
       var wrapped = (i !== target);
       current = target;
@@ -1128,18 +1141,54 @@
       else if (wrapped) { pos = 0; render(true); armSnap(); }
       else { pos = current + 1; render(true); }
     }
-    if (prevBtn) prevBtn.addEventListener("click", function () { goTo(current - 1, true); });
-    if (nextBtn) nextBtn.addEventListener("click", function () { goTo(current + 1, true); });
-    dots.forEach(function (d, i) {
-      d.addEventListener("click", function () { goTo(i, true); });
-    });
+    /* Clones are inert: no tab stop, hidden from assistive tech
+       (the clubs pattern). Built once; the grid CSS hides them at
+       ≥768px and applyMode re-shows the rail from them below it. */
+    function makeClone(src) {
+      var c = src.cloneNode(true);
+      c.classList.add("wm-value-slide--clone");
+      c.classList.remove("is-active");
+      c.setAttribute("aria-hidden", "true");
+      return c;
+    }
+    function buildClones() {
+      if (clonesBuilt) return;
+      clonesBuilt = true;
+      var lastClone = makeClone(slides[N - 1]);
+      var firstClone = makeClone(slides[0]);
+      track.insertBefore(lastClone, slides[0]);
+      track.appendChild(firstClone);
+    }
+    function applyMode() {
+      if (gridMode() || reduceMotion) {
+        railOn = false;
+        stage.classList.remove("wm-values--animated", "wm-dragging", "wm-grabbing");
+        stage.style.removeProperty("--values-card-w");
+        track.style.transform = "";
+        updateChrome();
+        return;
+      }
+      railOn = true;
+      buildClones();
+      stage.classList.add("wm-values--animated");
+      measure();
+      updateChrome();
+    }
+    if (gridMq.addEventListener) gridMq.addEventListener("change", applyMode);
+    else if (gridMq.addListener) gridMq.addListener(applyMode);
+    /* Keyboard: the stage stays tabindex="0" — ArrowLeft/Right page
+       the rail on a phone (and the stacked pager under reduced
+       motion). In grid mode the handler returns without
+       preventDefault, so the arrows scroll the page instead. */
     stage.addEventListener("keydown", function (e) {
+      if (gridMode()) return;
       if (e.key === "ArrowLeft") { e.preventDefault(); goTo(current - 1, true); }
       if (e.key === "ArrowRight") { e.preventDefault(); goTo(current + 1, true); }
     });
     var dragStartX = 0;
     armDrag(stage,
       function () {
+        if (!railOn) return;
         /* Freeze the track exactly where it is (Life-strip pattern:
            read the computed transform first, so a grab mid-settle
            never jumps); finish a pending clone snap first so the
@@ -1150,17 +1199,23 @@
         stage.classList.add("wm-dragging", "wm-grabbing");
       },
       function (dx) {
+        if (!railOn) return;
         track.style.transform = "translateX(" + (dragStartX + dx) + "px)";
       },
       function (dx) {
+        if (gridMode()) return;
         stage.classList.remove("wm-dragging", "wm-grabbing");
+        if (reduceMotion || !railOn) {
+          /* Stacked pager (reduced motion): a 48px drag pages. */
+          if (Math.abs(dx) > 48) show(current + (dx < 0 ? 1 : -1));
+          return;
+        }
         if (Math.abs(dx) > 48) goTo(current + (dx < 0 ? 1 : -1), true);
         else render(true); /* snap back to the current card */
       });
-    measure();
     window.addEventListener("resize", measure);
+    applyMode();
     show(0);
-    render(false);
   })();
 
   /* ---------- ITEM 7: Life at Bosco strip — drag interrupts the
