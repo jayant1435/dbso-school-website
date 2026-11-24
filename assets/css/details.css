@@ -297,14 +297,6 @@ section[aria-label="How learning works"] .split > figure { align-self: center; }
 /* W2b Phase B (qa-v29) — about.html only. Coordinator: append to details.css.
    Palette: blue + yellow only, no red. Fonts unchanged. */
 
-/* About coat of arms (v29): the square crest fills the whole column once
-   the split stacks (786px wide at 834 — a full-viewport poster). Cap it so
-   it reads as an emblem. Desktop keeps the 5fr column; phones are narrower
-   than the cap already, so nothing changes there either. */
-@media (max-width: 860px) {
-  .crest-figure { max-width: 420px; margin-inline: auto; }
-}
-
 /* ===== v29 assembly: b3d-skills-audit-ASSEMBLED.css ===== */
 /* v29 ASSEMBLED copy of b3d-skills-audit.css — coordinator edits noted inline
    (strip hover-pause removed; pillar-dot block removed, W4 covers it).
@@ -605,10 +597,6 @@ section[aria-label="Our story"] .lineage-row {
   section[aria-label="Our story"] .lineage-wide {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  /* W-G2 (wave 6): the crest column ends ~400px above the text column at
-     desktop, leaving the warm left column half empty. Centre the figure
-     against the text column; stacked below 861px this rule does nothing. */
-  section[aria-label="Coat of arms"] .split { align-items: center; }
   /* W-AB67 (wave 11, task 283, Jayant's brief 24 Nov 11:50 IST): SUPERSEDES
      the W-L2-1 centring below — centring only halved the void (283px
      above + 283px below the photo at 1440, browser-measured W-R68),
@@ -719,51 +707,6 @@ section[aria-label="From the Principal"] .quote-attr strong { font-weight: 600; 
      ends even — same intent as the v22 tile-grid comment (every row fills
      the same way). Text stays 1 line full-width; height stays 88px. */
   .why-grid .tile:last-child { grid-column: 1 / -1; }
-}
-
-/* ---- Item 9: coat of arms, reworked in place (W-AB5, wave 10) ----
-   DECISION: keep the section, rework it — the crest is the school's own
-   identity mark and the emblem/colour meanings are school-published
-   facts, so removal would delete real content to fix a presentation
-   problem. Wave 6 capped the crest at 320px as an "emblem" and put the
-   meanings in two 4-across card grids — that is exactly what still
-   looked bad: a postage-stamp crest floating in a warm void beside a
-   wall of 8 identical white cards whose ~130px columns wrapped every
-   meaning to 3-4 ragged lines. This rework goes the other way:
-   - the crest fills its column (the 512px source supports ~480px; the
-     v29 420px cap when stacked stays), vertically centred on the text;
-   - the emblems become ONE 2x2 ruled typographic list, no card chrome
-     (impeccable craft-floor: same-size icon+heading+text cards are the
-     lazy container; no-ai-design-slop removal test: the white boxes
-     carried no meaning the type does not carry itself);
-   - the four colour meanings become one prose paragraph, merged with
-     the frame sentence — every fact kept, no second grid, no orphan h3;
-   - the figcaption goes (design-taste house rule 1: no caption under
-     an image; the heading already says what the picture is).
-   Tokens only; blue + gold; no new colour, font or size. */
-@media (min-width: 861px) {
-  section[aria-label="Coat of arms"] .crest-figure { max-width: none; }
-}
-.emblem-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-5) var(--space-6);
-  margin: 0 0 var(--space-5);
-}
-.emblem-list .emblem {
-  border-top: 1px solid var(--line-strong);
-  padding-top: var(--space-3);
-  min-width: 0;
-}
-.emblem-list .emblem dt {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.1rem;
-  line-height: 1.3;
-}
-.emblem-list .emblem dd { margin: var(--space-1) 0 0; color: var(--ink-soft); }
-@media (max-width: 600px) {
-  .emblem-list { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* ---- Item 10: leadership — name line 1, role line 2, uniformly ----
