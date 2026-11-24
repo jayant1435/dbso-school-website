@@ -431,155 +431,11 @@ section[aria-label="The Preventive System"] { padding-top: var(--space-5); }
    the peek doesn't already do; impeccable: refinement preserves,
    incumbent identity/behaviour kept, tokens only.)
    ===================================================================== */
-/* =====================================================================
-   286 (W-HOME14, wave 11 — Jayant 24 Nov 11:50 IST): house-cards
-   slider chrome REMOVED (no arrows, no dots, no "N of 4" counter —
-   the nav markup is deleted from index.html). Mobile (<768px) keeps
-   the existing crossfading stage: one large photo, 5s auto-advance,
-   swipe/drag threshold + keyboard arrows on the focusable stage
-   (the reachability path once the buttons are gone). Tablet/desktop
-   (≥768px) is the static 2-column grid — the layout the no-JS
-   fallback already uses (Hallmark floor 7: content visible with
-   scripting off), all four houses visible at once, no auto-advance,
-   no motion. The stage's own crossfade stays opacity-only, 0.4s
-   var(--ease-out) (12-principles budget; Hallmark floor 2), and the
-   timer is stopped in grid mode (main.js matchMedia, same 768px
-   breakpoint as 282). House colours stay the --house-* content
-   tokens; the removed chrome was blue/gold only. Tap still opens
-   the house modal (main.js openHouse, untouched); in grid mode all
-   four slides are Tab-reachable buttons (interaction-design:
-   keyboard path first). Reduced motion: unchanged — no
-   auto-advance, manual change only, grid ≥768px.
-   ===================================================================== */
-@media (min-width: 768px) {
-  .wm-houses-hint { display: none; } /* all four visible: no instruction needed */
-  .js .wm-houses-stage {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    aspect-ratio: auto;
-    overflow: visible;
-    background: transparent;
-    box-shadow: none;
-    border-radius: 0;
-    touch-action: auto;
-    user-select: auto;
-  }
-  .js .wm-house-slide {
-    position: static;
-    aspect-ratio: 16 / 10;
-    border-radius: var(--home-r-img);
-    opacity: 1;
-    visibility: visible;
-    transition: none;
-  }
-}
-
-/* =====================================================================
-   303 (W-HOME18, wave 11 — Jayant 24 Nov 12:09 IST): Four Houses
-   REDESIGN — the four photos did not match (verified from the files,
-   not the CSS): Red = flag-hoisting wide shot sliced by white poles
-   + red/white canopy + bare dirt foreground; Blue = march-past with a
-   full-width ORANGE canopy band fighting the blue; Green = tight
-   trophy lift against a blue banner whose text is cropped mid-word
-   ("BARI", "25") with out-of-focus hands across the trophy; Yellow =
-   indoor Investiture, dark stage, the yellow flag a flat diagonal
-   slab. Three outdoor daylight Sports Day frames + one dark indoor
-   frame, four distances, four palettes — no crop unifies them, and
-   the archive holds no matched per-house set (other Sports Day
-   frames: trophies table, two captains in one frame, three-house
-   podium, pipe band, empty ground). So the photos are REMOVED
-   (task brief: do not force four mismatched photos) and each card is
-   one uniform design: a flat house-colour banner field (the field IS
-   the flag — the house colour is content, --house-* tokens only)
-   with the house monogram in Bricolage Grotesque 800, centred, plus
-   a fixed white name strip below. Same card shape, same field, same
-   monogram size, same name size/spacing on all four, at every width.
-   Monogram ink: white on Red/Blue/Green (6.64 / 5.43 / 5.07:1);
-   white on gold is 2.42:1, so Yellow uses --ink (5.97:1) — a
-   contrast rule, not a styling exception. Name strip: --ink on
-   --paper, 14.09:1. Grid stays the v83 2x2 >=768px (286); mobile
-   keeps the crossfade stage (same pager JS, untouched — it binds
-   .wm-house-slide[data-house] only; openHouse modal untouched).
-   No new images, no new colours, no new fonts, no slider chrome.
-   no-ai-design-slop: removal test — the photos performed no job the
-   uniform card + modal don't already do, and each photo's subject
-   fought its neighbours; the monogram + colour IS the house's
-   identity, not generic SVG filler. design-taste-frontend: one card
-   style, one radius, equal edges, flat grounds on non-tech, type-led
-   moment, hover lift 2px (rule 5) in grid mode only.
-   impeccable craft-floor: Coverage (all four houses, modal intact),
-   Type (one size for all four names, 1 line each — "Green House" is
-   the longest at ~200px at 1.6rem, fits the narrowest 354px card).
-   ===================================================================== */
-.wm-house-slide { box-shadow: 0 0 0 1px var(--line), var(--shadow-1); }
-.wm-house-field { flex: 1 1 auto; min-height: 0; display: grid; place-items: center; }
-.house-field-red { background: var(--house-red); }
-.house-field-blue { background: var(--house-blue); }
-.house-field-green { background: var(--house-green); }
-.house-field-yellow { background: var(--house-yellow); }
-.wm-house-initial {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(4rem, 20vw, 7rem);
-  line-height: 1;
-  color: var(--paper);
-}
-.house-field-yellow .wm-house-initial { color: var(--ink); }
-@media (min-width: 768px) {
-  .js .wm-house-slide {
-    box-shadow: 0 0 0 1px var(--line), var(--shadow-1);
-    transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
-  }
-  .js .wm-house-slide:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 0 1px var(--line), var(--shadow-2);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .js .wm-house-slide { transition: none; }
-  .js .wm-house-slide:hover { transform: none; box-shadow: 0 0 0 1px var(--line), var(--shadow-1); }
-}
-
-/* =====================================================================
-   433 (W-HOU1, wave 11 — Jayant 24 Nov ~17:04 IST, TOP PRIORITY):
-   Four Houses IMAGES BACK — v95 (303) removed the photos for
-   mismatch; Jayant says the image is missing. One photo per house
-   restored into the v95 card: the photo replaces the colour-field
-   slot (same flex slot, same card shape), the v95 in-flow white name
-   strip stays untouched (same text size/spacing at every width).
-   Photos are the v57-verified set (W-H2 viewed all four): Red =
-   sports-day-2025-17 flag hoisting (weakest red in the archive, kept
-   — no better Red image exists, task 127); Blue =
-   sports-day-2025-20 march-past led by the blue flag; Green =
-   sports-day-2025-04 trophy lift in the green polo; Yellow =
-   investiture-juniors-2026-02 junior leaders with the yellow flag.
-   One crop rule for all four (object-fit: cover, flex fill) so the
-   four cards stay uniform at every width; no band re-added (the
-   pre-v95 absolute band would anchor to the stage, not the card, in
-   the >=768px grid where slides are position: static). No new colour,
-   font, or component; modal + pager JS untouched (they bind
-   .wm-house-slide[data-house] only). The 303 field/monogram rules
-   above are now unused — left for the dead-CSS round, not deleted
-   in this diff. no-ai-design-slop: smallest correction, existing
-   card pattern reused, real school photos only, nothing invented.
-   impeccable craft-floor: Coverage (all four houses show a photo at
-   every width) + Type (name strip untouched, one size, 1 line each).
-   ===================================================================== */
-.wm-house-slide img { flex: 1 1 auto; min-height: 0; width: 100%; display: block; object-fit: cover; }
-
 /* v110: stable text measure at narrow widths and consistent neighbour peek. */
 .js .wm-values-stage.wm-values--animated .wm-value-slide { padding-inline: var(--space-3); padding-block: var(--space-5); }
 .wm-value-slide .value-name { max-width: 100%; }
 @media (max-width: 360px) {
   .js .wm-value-slide .value-name { white-space: normal; overflow-wrap: anywhere; }
-}
-
-/* v111: Four Houses — native, touch-first, bounded scroll-snap rail. */
-@media (max-width: 767px) {
-  .js .wm-houses-stage { display: flex; gap: var(--space-3); padding: 4px 10%; aspect-ratio: auto; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scroll-padding-inline: 10%; scrollbar-width: none; touch-action: pan-x pan-y; background: transparent; box-shadow: none; border-radius: 0; }
-  .js .wm-houses-stage::-webkit-scrollbar { display: none; }
-  .js .wm-house-slide { flex: 0 0 100%; position: relative; inset: auto; aspect-ratio: 16 / 10; border-radius: var(--home-r-img); opacity: 1; visibility: visible; scroll-snap-align: center; transition: none; }
-  .js .wm-house-slide img { pointer-events: none; }
 }
 
 /* v115 — static and reduced-motion club views use complete rows. */
@@ -624,4 +480,69 @@ section[aria-label="Mission and values"] .core-values-block { margin-top:var(--s
 }
 
 /* Selected state: same clear brand-blue outline without extra icon or badge. */
-.wm-club-slide[aria-pressed="true"],.wm-house-slide[aria-pressed="true"] { box-shadow:0 0 0 2px var(--blue),var(--shadow-1); }
+.wm-club-slide[aria-pressed="true"] { box-shadow:0 0 0 2px var(--blue),var(--shadow-1); }
+
+/* v125: Four Houses — one photograph-led component at every breakpoint.
+   House colours are identity accents, not action colours. No generated artwork,
+   badges, overlays or decorative navigation. Anchor cards work without JS. */
+.houses-heading { margin-top:var(--space-6); margin-bottom:var(--space-4); }
+#wm-houses-stage {
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  align-items:stretch; gap:var(--space-4); min-width:0;
+}
+#wm-houses-stage .wm-house-slide {
+  display:flex; flex-direction:column; min-width:0; width:100%;
+  padding:0; overflow:hidden; border:1px solid var(--line);
+  border-radius:var(--radius-card); background:var(--paper);
+  color:var(--ink); text-decoration:none; text-align:left;
+  box-shadow:var(--shadow-1);
+}
+.wm-house-slide[data-house="Red"] { --house-accent:var(--house-red); }
+.wm-house-slide[data-house="Blue"] { --house-accent:var(--house-blue); }
+.wm-house-slide[data-house="Green"] { --house-accent:var(--house-green); }
+.wm-house-slide[data-house="Yellow"] { --house-accent:var(--house-yellow); }
+#wm-houses-stage .wm-house-photo {
+  display:block; width:100%; aspect-ratio:3 / 2; overflow:hidden;
+  background:var(--band);
+}
+#wm-houses-stage .wm-house-photo img {
+  display:block; width:100%; height:100%; object-fit:cover; object-position:center;
+}
+#wm-houses-stage .wm-house-name {
+  display:flex; align-items:center; gap:var(--space-3);
+  flex:1 0 auto; min-width:0; padding:var(--space-4);
+  font-family:var(--font-display); font-weight:700;
+  font-size:clamp(1rem,1.5vw,1.25rem); line-height:1.25;
+  white-space:nowrap; color:var(--ink); background:var(--paper);
+}
+#wm-houses-stage .wm-house-name::before {
+  content:""; width:4px; height:1.15em; flex:0 0 4px;
+  border-radius:2px; background:var(--house-accent,var(--blue));
+}
+#wm-houses-stage .wm-house-slide:focus-visible {
+  outline:2px solid var(--blue); outline-offset:2px;
+}
+@media(min-width:1024px) {
+  #wm-houses-stage { grid-template-columns:repeat(4,minmax(0,1fr)); }
+}
+@media(max-width:767px) {
+  #wm-houses-stage {
+    display:flex; overflow-x:auto; overflow-y:hidden;
+    padding:4px 4px 12px; gap:var(--space-3);
+    scroll-snap-type:x mandatory; scroll-padding-inline:4px;
+    scrollbar-width:thin; touch-action:pan-x pan-y;
+  }
+  #wm-houses-stage .wm-house-slide {
+    flex:0 0 min(84%,360px); width:auto; scroll-snap-align:start;
+  }
+  #wm-houses-stage .wm-house-name { padding:var(--space-3) var(--space-4); font-size:1.15rem; }
+}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  #wm-houses-stage .wm-house-slide { transition:border-color .2s var(--ease-out),box-shadow .2s var(--ease-out); }
+  #wm-houses-stage .wm-house-photo img { transition:transform .45s var(--ease-out); }
+  #wm-houses-stage .wm-house-slide:hover { border-color:var(--blue); box-shadow:var(--shadow-2); }
+  #wm-houses-stage .wm-house-slide:hover .wm-house-photo img { transform:scale(1.025); }
+}
+@media(prefers-reduced-motion:reduce) {
+  #wm-houses-stage .wm-house-slide,#wm-houses-stage .wm-house-photo img { transition:none; }
+}

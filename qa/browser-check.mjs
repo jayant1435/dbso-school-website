@@ -46,6 +46,33 @@ async function check(name,width,mode){
   assert.ok(dom.cloneAccessibility,"carousel clones hidden from assistive technology");
   assert.equal(await p.locator(".life-strip-pause,.awards-pause,.awards-hint").count(),0,"no unwanted photograph controls");
   if(name==="index"){assert.equal(await p.locator('section[aria-label="Campus"] .home-links a').count(),1,"one campus link");}
+  if(name==="index"){
+    const cards=p.locator("#wm-houses-stage .wm-house-slide");
+    assert.equal(await cards.count(),4,"four genuine house cards");
+    const layout=await p.evaluate(()=>{
+      const stage=document.querySelector("#wm-houses-stage");
+      const cards=[...stage.querySelectorAll(".wm-house-slide")];
+      const dims=cards.map(card=>{
+        const r=card.getBoundingClientRect(), photo=card.querySelector(".wm-house-photo"), name=card.querySelector(".wm-house-name");
+        return {w:r.width,h:r.height,top:r.top,photoW:photo.clientWidth,photoH:photo.clientHeight,labelFits:name.scrollWidth<=name.clientWidth+1,radius:parseFloat(getComputedStyle(card).borderTopLeftRadius),link:card.getAttribute("href")};
+      });
+      return {dims,scrollable:stage.scrollWidth>stage.clientWidth+2};
+    });
+    const first=layout.dims[0];
+    assert.ok(layout.dims.every(c=>Math.abs(c.w-first.w)<2&&Math.abs(c.h-first.h)<2&&c.labelFits&&c.radius>=16&&Math.abs(c.photoW/c.photoH-1.5)<.03),"consistent house frames and readable labels");
+    assert.ok(layout.dims.every(c=>c.link==="life.html#houses"),"working no-script links");
+    if(width>=1024)assert.ok(layout.dims.every(c=>Math.abs(c.top-first.top)<2)&&!layout.scrollable,"four cards in desktop row");
+    if(width<768)assert.ok(layout.scrollable,"mobile house rail scrolls");
+    if(mode==="normal"&&[390,1440].includes(width)){
+      await cards.first().click();
+      const dialog=p.locator("#house-modal");
+      assert.equal(await dialog.getAttribute("aria-hidden"),"false","house details open");
+      assert.equal(await p.locator("#house-modal-name").textContent(),"Red House");
+      await p.keyboard.press("Escape");
+      await p.waitForFunction(()=>document.querySelector("#house-modal").getAttribute("aria-hidden")==="true");
+      assert.ok(await cards.first().evaluate(el=>el===document.activeElement),"focus returns to house card");
+    }
+  }
   if(name==="about"){
     const checks=await p.evaluate(()=>{
       const stage=document.querySelector("#about-values-stage");

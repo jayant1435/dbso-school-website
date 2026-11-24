@@ -570,8 +570,10 @@
       if (hmLastFocus && hmLastFocus.focus) hmLastFocus.focus();
     }
     document.querySelectorAll(".wm-house-slide").forEach(function (tile) {
-      tile.addEventListener("click", function () {
-        tile.setAttribute("aria-pressed", "true");
+      tile.setAttribute("aria-haspopup", "dialog");
+      tile.addEventListener("click", function (event) {
+        if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
         openHouse(tile.getAttribute("data-house"));
       });
     });
