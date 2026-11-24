@@ -1245,7 +1245,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .lineage { margin: 0; }
 .lineage-row {
   display: grid;
-  grid-template-columns: 128px minmax(0, 1fr);
   gap: var(--space-4);
   padding: var(--space-3) 0;
   border-top: 1px solid var(--line);
@@ -1255,7 +1254,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .lineage-row p { margin: 0; }
 .lineage-block { margin-top: var(--space-8); }
 .lineage-block h3 { margin-top: 0; margin-bottom: var(--space-4); }
-.lineage-wide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 var(--space-6); border-top: 1px solid var(--line); }
+.lineage-wide { display: grid; gap: 0 var(--space-6); border-top: 1px solid var(--line); }
 .lineage-wide .lineage-row { border-top: 0; border-bottom: 1px solid var(--line); }
 .lineage-wide .lineage-row:last-child { border-bottom: 1px solid var(--line); }
 .award-group + .award-group { margin-top: var(--space-6); }
@@ -1276,15 +1275,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   background: var(--gold);
   border-radius: 50%;
 }
-.meaning-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-  gap: var(--space-4);
-}
-.meaning { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); padding: var(--space-4) var(--space-5); }
-.meaning dt { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; line-height: 1.3; }
-.meaning dd { margin: var(--space-1) 0 0; color: var(--ink-soft); }
 
 /* ---------- Staff ---------- */
 
@@ -1345,7 +1335,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   /* Four stats: two columns at tablet width, no spanning card. */
   .numbers { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .lineage-wide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 }
 
@@ -1424,8 +1413,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   /* Leader roles: one size smaller on phones, so "Principal, Rector and
      Secretary" still fits its two-line budget instead of being cut. */
   .leader-body p { font-size: 0.85rem; }
-  .meaning-grid { grid-template-columns: minmax(0, 1fr); }
-  .lineage-row { grid-template-columns: 104px minmax(0, 1fr); }
 }
 
 /* W-Z3 (wave 8): the fees table still scrolls sideways up to ~1146px
@@ -1477,14 +1464,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 /* ---------- Coat-of-arms / committee cards: the site's card language ----------
    .card, .summary-card, .number-item and .date-item all lift on hover;
    .meaning cards were the one grid that sat dead. Same lift, same timing. */
-.meaning {
-  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
-}
-.meaning:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-1);
-  border-color: var(--line-strong);
-}
 
 /* ---------- Focus: the ring fades in instead of snapping on ----------
    The global :focus-visible rule sets the ring; this adds the transition
