@@ -1873,3 +1873,15 @@ section[aria-label="Our story"] .lineage-years { text-align:left; }
 .facilities-grid .card-body p { display:block; overflow:visible; -webkit-line-clamp:unset; margin:0; }
 @media(min-width:861px) { .facilities-grid { grid-template-columns:repeat(6,minmax(0,1fr)); } .facilities-grid .card { grid-column:span 2; } .facilities-grid .card:nth-last-child(2) { grid-column:2 / span 2; } .facilities-grid .card:last-child { grid-column:4 / span 2; } }
 @media(min-width:601px) and (max-width:860px) { .facilities-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } .facilities-grid .card { grid-column:span 2; } .facilities-grid .card:last-child { grid-column:2 / span 2; } }
+
+/* v130 — visual split review: retain whole group photographs and align the paired text. */
+section[aria-label="Mission and values"] .container > .reveal:first-child > h2 { margin-top:0; }
+section[aria-label="Mission and values"] .container > .reveal:first-child > .gold-rule { margin-bottom:var(--space-3); }
+section[aria-label="Uniform"] .container.split,section[aria-label="School rules at a glance"] .container.split { align-items:start; }
+section[aria-label="Uniform"] .container.split > div > h3:first-child,section[aria-label="School rules at a glance"] .container.split > div > h3:first-child { margin-top:0; }
+@media(min-width:861px) {
+  section[aria-label="Non-teaching staff"] .nonteach-row > figure { width:100%; max-width:480px; justify-self:center; margin:0; }
+  section[aria-label="Transport"] .container.split { grid-template-columns:minmax(0,4fr) minmax(0,7fr); gap:var(--space-6); }
+  section[aria-label="Transport"] .split > figure { width:100%; max-width:400px; justify-self:center; }
+  section[aria-label="Transport"] .split > div { max-width:62ch; }
+}

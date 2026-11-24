@@ -50,14 +50,19 @@ try{
   }
   await ctx.close();
  }
- for(const [path,local] of [["/","index.html"],["/about.html","about.html"],["/assets/css/style.css","assets/css/style.css"],["/assets/css/wm-home.css","assets/css/wm-home.css"],["/assets/js/main.js","assets/js/main.js"]]){
+ const liveFiles=[...pages.map(name=>[name==="index"?"/":"/"+name+".html",name+".html"]),...["style.css","wm-home.css","details.css","home.css","nav.css","b3c-gallery-life-academics.css","wg1-f4.css","fonts.css"].map(name=>["/assets/css/"+name,"assets/css/"+name]),...["main.js","nav.js"].map(name=>["/assets/js/"+name,"assets/js/"+name])];
+ for(const [path,local] of liveFiles){
   try{const resp=await fetch("https://dbso.jayantjaiswal.com"+path,{signal:AbortSignal.timeout(12000),headers:{"Cache-Control":"no-cache"}});
    const hash=b=>createHash("sha256").update(b).digest("hex");
    const remote=hash(Buffer.from(await resp.arrayBuffer())),expected=hash(await readFile(resolve(root,local)));
    report.live.push({path,status:resp.status,match:resp.ok&&remote===expected,remote,expected});
   }catch(e){report.live.push({path,error:e.message});}
  }
+ try{
+  const path="/assets/css/wg1-f6.css",resp=await fetch("https://dbso.jayantjaiswal.com"+path,{signal:AbortSignal.timeout(12000)});
+  report.retiredCss={path,status:resp.status,contentType:resp.headers.get("content-type"),cacheStatus:resp.headers.get("cf-cache-status"),stillServed:resp.ok&&/text\/css/i.test(resp.headers.get("content-type")||"")};
+ }catch(e){report.retiredCss={error:e.message};}
  report.screenshotBytes=bytes;await writeFile(resolve(out,"report.json"),JSON.stringify(report,null,2));
- console.log(JSON.stringify({pages:report.pages.length,screenshots:report.screenshots.length,screenshotBytes:bytes,overflows:report.pages.flatMap(p=>p.overflow.map(o=>({page:p.name,width:p.width,...o}))),broken:report.pages.filter(p=>p.broken.length||p.errors.length).map(p=>({page:p.name,width:p.width,images:p.broken,errors:p.errors})),live:report.live.map(p=>({path:p.path,status:p.status,match:p.match,error:p.error})),warnings:report.warnings},null,2));
+ console.log(JSON.stringify({pages:report.pages.length,screenshots:report.screenshots.length,screenshotBytes:bytes,overflows:report.pages.flatMap(p=>p.overflow.map(o=>({page:p.name,width:p.width,...o}))),broken:report.pages.filter(p=>p.broken.length||p.errors.length).map(p=>({page:p.name,width:p.width,images:p.broken,errors:p.errors})),live:report.live.map(p=>({path:p.path,status:p.status,match:p.match,error:p.error})),retiredCss:report.retiredCss,warnings:report.warnings},null,2));
  if(report.pages.length!==24||report.warnings.length||report.pages.some(p=>p.broken.length||p.errors.length||p.overflow.length||p.documentWidth>p.width+2))process.exitCode=1;
 }finally{await browser.close();await new Promise(r=>server.close(r));}
