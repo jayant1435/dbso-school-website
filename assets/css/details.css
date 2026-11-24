@@ -1134,28 +1134,56 @@ section[aria-label="Celebrations and events"] .tick-list li span {
   .result-name { min-height: calc(2 * 1.3em); }
 }
 
-/* ---- FIX 2 (P2): stream-switcher panels jump height between tabs ----
-   Measured BEFORE (academics.html, Range-rect counts): Science and
-   Commerce panels are exactly equal (208px @390, 184px @768/834) but
-   Humanities is 35-36px taller (243px @390, 220px @768/834), so switching
-   to Humanities shoves "How learning works here" down by that much. The
-   only driver is the subject list: at <=860px it is 1 column
-   (style.css:1383), so 3 subjects = 3 rows (98px @390, 100px @768/834)
-   and 4 subjects = 4 rows (133px @390, 136px @768/834); the entry
-   paragraph is the same line count in all three panels at each width
-   (2 lines @390, 1 line @768/834) and every subject is 1 line.
-   better-ui (align everything to a single grid; accidental inconsistency)
-   + audit-ai-design-slop (established UI failure: a control that moves
-   the content below it, P2) + no-ai-design-slop (smallest correction,
-   existing system): the list reserves the tallest panel's height —
-   min-height 136px at <=860px, the measured 4-row height. All three
-   panels become 246px @390 and 220px @768/834; switching tabs moves
-   nothing below. Scoped to the streams switcher and to <=860px: above
-   that the list is 2 columns (2 rows for every stream) and the panels
-   already match (148/148/152px @1440, the 4px remainder is the entry
-   paragraph's wrap, not the list). No copy change, no font change. */
+/* ---- FIX 2 REWORK (W-F2R, wave 9, 24 Nov 2026) — replaces the v51
+   min-height: 136px reserve, which W-R14 FAILED: it left 36-38px of
+   plainly visible dead space inside the Science/Commerce lists at
+   390/768/834 and pushed the last-subject-to-next-paragraph gap to
+   52-54px vs the normal 16px. The reserve is DELETED (no min-height
+   anywhere on this list now) and the panels are equalised by geometry
+   instead: at <=860px the list keeps the 2 columns it already has
+   above 860px (style.css:787, columns: 2) instead of collapsing to 1
+   (style.css:1400). Every stream then has exactly 2 rows — Science /
+   Commerce 2+1, Humanities 2+2 — so all three lists are the same height
+   with zero reserved space, and the last-subject gap stays the normal
+   16px token on every tab. No copy change, no font change, no new
+   tokens: column-gap stays var(--space-6), max-width stays 34rem.
+   At 601-860px the 2 columns are a grid, not multicol: every subject
+   is 1 line there, so a 2-row grid (flow down column 1, then column 2)
+   gives pixel-exact 64px lists on all three tabs — multicol's column
+   balancer leaves the 4-item list 4px taller than its content (a
+   Chromium balancing artefact, measured: empty 4px at li margins 2/4/8
+   and 12px at 12px, while the 3-item list is exact at every margin —
+   see REPORT.md). At <=600px the list stays multicol, because the
+   2-line "Mathematics or Biology" / "Economics or Mathematics" needs
+   independent columns: a grid would stretch the shared row to 54px and
+   make Science 89px tall. Grid row-gap restates the li margin token
+   (var(--space-2)) and the li margin is zeroed in that scope only, so
+   the visual rhythm is identical to multicol (8px between rows, 32px
+   between columns, 16px to the next paragraph).
+   better-ui (align everything to a single grid; proximity before
+   containers — related items sit closer than unrelated ones) +
+   audit-ai-design-slop (accidental inconsistency in spacing, P2 — the
+   reserve made Science/Commerce spacing differ from Humanities) +
+   no-ai-design-slop (removal test: the reserve performed no job the
+   layout itself cannot do, so it is removed, not resized; smallest
+   correction using the existing system — the 2-column layout the list
+   already uses at desktop). Impeccable craft floor (spacing: read the
+   computed values — verified by probe, not by eye). Above 860px
+   nothing changes: both rules are <=860px only, so 1440 behaviour is
+   untouched. */
 @media (max-width: 860px) {
-  section[aria-label="ISC streams"] .subject-list { min-height: 136px; }
+  section[aria-label="ISC streams"] .subject-list { columns: 2; }
+}
+@media (min-width: 601px) and (max-width: 860px) {
+  section[aria-label="ISC streams"] .subject-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    column-gap: var(--space-6);
+    row-gap: var(--space-2);
+  }
+  section[aria-label="ISC streams"] .subject-list li { margin-bottom: 0; }
 }
 
 /* ---- FIX 3 (P2): fees summary cards skip a heading level ----
