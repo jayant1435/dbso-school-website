@@ -499,82 +499,33 @@ section[aria-label="The Preventive System"] { padding-top: var(--space-5); }
 }
 
 /* =====================================================================
-   282 (W-HOME14, wave 11 — Jayant 24 Nov 11:50 IST, screenshot):
-   core-values slider chrome REMOVED everywhere (no arrows, no dots,
-   no "N of 7" counter — the nav markup is deleted from index.html;
-   the W-R10 ≤480px nav-fit tweak is deleted above with it: dead rules
-   for removed markup). Mobile (<768px) keeps the W-H3 swipe rail,
-   chrome-free: swipe + keyboard arrows on the focusable stage.
-   Tablet/desktop (≥768px) is a static grid showing all seven — no
-   slider at all. Breakpoint rationale (coordinator: worker decides;
-   tablet starts 768px):
-   - 768–1023px: 4 columns (4+3). Content width at 768px is 720px
-     (container 1180px, 24px gutters); 7-across would give ~100px
-     cards against the 120px value icon — the icon would overflow
-     its card (impeccable craft-floor: Coverage/Type — run the real
-     content at every breakpoint). 4-across gives ~171px cards;
-     120px icon + 2×16px padding = 152px, 19px slack.
-   - ≥1024px: 7 columns, one row. Content ≥976px → ~129px cards;
-     icon steps down to 96px (the ≤600px step already in this sheet
-     — design-system: no new size enters the scale) and card side
-     padding to 8px (--space-2): 96 + 2×8 = 112px ≤ 129px.
-   Names wrap (white-space: normal) at 1.35rem (the ≤600px step) —
-   "Respect for Others" cannot fit one line in a 113–139px card at
-   any step in the scale — max 2 lines; grid stretch equalises card
-   heights (better-ui: one grid, line counts constant at the card
-   level; typography: 3–4 sizes only, both steps reused).
+   355 (W-HOME20, wave 11 — Jayant 24 Nov 12:36 IST, CORRECTION that
+   OVERRIDES the 282 grid): the v83 grid is REVERTED, wholesale. His
+   words: the 7 values spread out like that do not fit properly
+   (Self-Discipline, Love of God, Love for Nature, Respect for Others
+   wrap/read badly). So the core-values slider is a SWIPEABLE /
+   SCROLLABLE rail again on desktop and tablet too — exactly the W-H3
+   mobile swipe that was working perfectly before, now at every width.
+   What stays from 282: the chrome stays DELETED (no arrows, no dots,
+   no "N of 7" counter — none of it is re-added here, in CSS or JS).
+   What goes: the whole 282 block below this comment — the 768px
+   4+3 grid, the 1024px 7-in-a-row grid, the hint hiding, the
+   name-wrapping at 1.35rem. With it gone the pre-v83 rail rules
+   above stand at every width: stage max 656px, card = stage − 2×peek
+   (28px <601px, 48px ≥601px), 0.32s var(--ease-out) settle, 1:1
+   pointer follow, clone-snap wrap, keyboard arrows on the focusable
+   stage, stacked pager under reduced motion.
+   Card widths (measured, verify355.py — Bricolage opsz PINNED to px
+   size, wght 700; unpinned sims read ~10% narrow): every value name
+   fits on ONE line (nowrap holds) at every width — worst name
+   "Respect for Others" 197.1px @21.6px (390px) / 232.5px @25.6px (768px+); slack per width: 390 40.9px,
+   768 279.5px, 834 279.5px, 1024 279.5px, 1440 279.5px.
    No-JS: the base 3-column grid above still shows all seven
-   (Hallmark floor 7); the ≥768px columns below apply to it too.
-   Keyboard (interaction-design: keyboard path first): the stage
-   stays tabindex="0"; ArrowLeft/Right still page the rail on
-   mobile (main.js, mode-guarded); in grid mode every card is
-   visible so no paging is needed and arrows scroll the page.
-   Motion (12-principles: 150–400ms, one easing, transform +
-   opacity only): the rail keeps its 0.32s var(--ease-out) settle;
-   the grid has no motion at all. Reduced motion: unchanged —
-   the stacked pager stands on mobile, the grid stands ≥768px.
+   (Hallmark floor 7); reduced motion: stacked pager, unchanged.
+   (no-ai-design-slop: removal test — the grid performed no job the
+   rail doesn't already do, and it broke the names; the rail is the
+   established pattern, restored, not a new invention.)
    ===================================================================== */
-@media (min-width: 768px) {
-  .wm-values-stage { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .wm-values-hint { display: none; } /* all seven visible: no instruction needed */
-  .js .wm-values-stage,
-  .js .wm-values-stage.wm-values--animated {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    justify-content: normal;
-    max-width: none;
-    overflow: visible;
-    cursor: default;
-    touch-action: auto;
-    user-select: auto;
-  }
-  .js .wm-values-stage.wm-values--animated .wm-values-track {
-    display: contents;
-    width: auto;
-    transform: none;
-    transition: none;
-  }
-  .js .wm-values-stage .wm-value-slide,
-  .js .wm-values-stage.wm-values--animated .wm-value-slide {
-    grid-area: auto;
-    flex: none;
-    width: auto;
-    margin-right: 0;
-    opacity: 1;
-    visibility: visible;
-    transition: none;
-  }
-  .wm-value-slide--clone { display: none; } /* rail clones never show in the grid */
-  .wm-value-slide .value-name { white-space: normal; font-size: 1.35rem; }
-}
-@media (min-width: 1024px) {
-  .wm-values-stage { grid-template-columns: repeat(7, minmax(0, 1fr)); }
-  .js .wm-values-stage,
-  .js .wm-values-stage.wm-values--animated { grid-template-columns: repeat(7, minmax(0, 1fr)); }
-  .wm-value-slide img { width: 96px; height: 96px; }
-  .wm-value-slide { padding: var(--space-5) var(--space-2); }
-}
-
 /* =====================================================================
    286 (W-HOME14, wave 11 — Jayant 24 Nov 11:50 IST): house-cards
    slider chrome REMOVED (no arrows, no dots, no "N of 4" counter —
