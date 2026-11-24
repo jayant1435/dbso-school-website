@@ -630,6 +630,19 @@ section[aria-label="Our story"] .lineage-row {
      desktop, leaving the warm left column half empty. Centre the figure
      against the text column; stacked below 861px this rule does nothing. */
   section[aria-label="Coat of arms"] .split { align-items: center; }
+  /* W-L2-1 (wave 12, 24 Nov 2026): the principal photo column ends
+     ~566px above the text column at desktop (text 900px vs figure 334px
+     at 1440/1536; 888 vs 291 at 1024) — ~63% of the right column is empty
+     band, because the row uses align-items: start. Centre the figure
+     against the text column: the same one-line treatment W-G2 used for
+     the coat of arms, in the same ≥861px band. Stacked below 861px this
+     rule does nothing (one column; the figure takes order -1). No token,
+     colour, font or copy change.
+     design-taste-frontend §5 Checklist ("splits stack text first, no row
+     half empty") + no-ai-design-slop Compact Quality Gate "Composition"
+     (alignment, balance and negative space intentional at every
+     viewport) + better-ui ("Align everything to a single grid"). */
+  section[aria-label="From the Principal"] .split { align-items: center; }
 }
 @media (max-width: 860px) {
   section[aria-label="Our story"] .lineage-wide {
