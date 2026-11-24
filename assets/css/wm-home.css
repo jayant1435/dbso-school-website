@@ -71,7 +71,7 @@
    by itself and the visitor can drag it or nudge it with the arrows.
    Motion: transform only, one easing curve (12-principles timing —
    the rail moves at a constant linear rate; card hover is a 0.2s
-   ease-out lift). No-JS fallback: a plain wrapping grid, all 20
+   ease-out lift). No-JS fallback: a plain wrapping grid, all 18
    visible (Hallmark floor 7: content visible with scripting off).
    ===================================================================== */
 
@@ -165,6 +165,10 @@
      houses + values navs stay visible — their manual controls are the
      only way to change slides, and they never auto-move. */
   .js .wm-clubs .wm-slider-nav { display: none; }
+  /* Life strip nav hides for the same reason: under reduced motion the
+     strip is a static 3-card grid and lifeStripDrag never starts, so
+     its buttons/counter would be dead controls. */
+  .js .life-strip-nav { display: none; }
 }
 @media (prefers-reduced-motion: reduce) and (max-width: 860px) {
   .js .wm-clubs-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
