@@ -1422,6 +1422,23 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   /* Leader roles: one size smaller on phones, so "Principal, Rector and
      Secretary" still fits its two-line budget instead of being cut. */
   .leader-body p { font-size: 0.85rem; }
+  /* Task 189 (W-ACA6 N1, refined W-ACA13 §6): the CTA h2 "Admissions open
+     for UKG to Class 11" wraps 3 lines at 320px (192px text column) but 2
+     at 390px. Narrower side padding buys the column room: 24px sides give
+     2 lines from ~336px up (TTF-measured flip: best 2-line split needs
+     255.8px; BG700 opsz 30.4, ls -0.015em). Vertical padding untouched —
+     the band's separation is doing real work, only the sides are tight.
+     [impeccable craft-floor Spacing: read the computed values;
+     no-ai-design-slop: smallest correction, existing tokens only] */
+  .cta-band { padding-inline: var(--space-5); }
+}
+
+/* Task 189 (continued): at 320px the 24px sides above still leave the h2
+   3 lines (240px column vs 255.8px needed), so the narrowest phones get
+   12px sides — 264px column, 8.2px slack. The 360px breakpoint already
+   exists in details.css:445. */
+@media (max-width: 360px) {
+  .cta-band { padding-inline: var(--space-3); }
 }
 
 /* W-Z3 (wave 8): the fees table still scrolls sideways up to ~1146px
