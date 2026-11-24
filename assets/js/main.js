@@ -851,9 +851,6 @@
     if (!viewport || !track) return;
     var realSlides = Array.prototype.slice.call(track.querySelectorAll(".wm-club-slide:not(.wm-club-slide--clone)"));
     var N = realSlides.length;
-    var countEl = document.getElementById("wm-clubs-count");
-    var prevBtn = document.getElementById("wm-clubs-prev");
-    var nextBtn = document.getElementById("wm-clubs-next");
     /* Second identical half, so the loop has no seam. Clones are
        inert: no toggle, no tab stop, hidden from assistive tech. */
     realSlides.forEach(function (s) {
@@ -872,7 +869,7 @@
     if (reduceMotion) return; /* static grid (CSS); no engine, no drag. */
     var offset = 0, dragging = false, paused = false, raf = null, lastTs = null;
     var HALF = 64; /* seconds for one half-loop (18 cards). */
-    var half = 0, lastCount = "";
+    var half = 0;
     function measureHalf() { half = track.scrollWidth / 2; }
     function halfWidth() { return half || track.scrollWidth / 2; }
     function step() {
@@ -889,13 +886,6 @@
       return o;
     }
     function render() { track.style.transform = "translateX(" + offset + "px)"; }
-    function showCount() {
-      if (!countEl) return;
-      var i = Math.floor((-offset / step()) % N);
-      if (i < 0) i += N;
-      var t = (i + 1) + " of " + N;
-      if (t !== lastCount) { lastCount = t; countEl.textContent = t; }
-    }
     function tick(ts) {
       raf = null;
       if (lastTs === null) lastTs = ts;
@@ -904,17 +894,15 @@
       if (!dragging && !paused && !document.hidden) {
         offset = wrap(offset - (halfWidth() / HALF) * dt);
         render();
-        showCount();
       }
       raf = requestAnimationFrame(tick);
     }
+    /* W-HOME15 task 278: the arrow buttons + counter are removed (brief)
+       — nudge() stays: it is the viewport ArrowLeft/Right keyboard path. */
     function nudge(dir) {
       offset = wrap(offset + dir * step());
       render();
-      showCount();
     }
-    if (prevBtn) prevBtn.addEventListener("click", function () { nudge(1); });
-    if (nextBtn) nextBtn.addEventListener("click", function () { nudge(-1); });
     /* Focus pauses the rail — but only keyboard focus. A mouse/touch
        drag focuses the slide under the pointer on the way in; if that
        counted as "focus", the rail would stay frozen after every drag
@@ -938,7 +926,6 @@
         viewport.classList.remove("wm-grabbing");
         offset = wrap(offset);
         render();
-        showCount();
         suppressClick(Math.abs(dx) > 6);
       });
     measureHalf();
