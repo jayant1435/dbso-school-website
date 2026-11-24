@@ -1216,7 +1216,20 @@
   (function lifeStripDrag() {
     var strip = document.querySelector(".photo-row.photo-strip");
     var track = document.querySelector(".photo-track");
-    if (!strip || !track || reduceMotion) return;
+    if (!strip || !track) return;
+    track.querySelectorAll(".photo-card:not([aria-hidden='true'])").forEach(function (card) {
+      card.setAttribute("role", "button"); card.setAttribute("tabindex", "0");
+    });
+    if (reduceMotion) return;
+    strip.setAttribute("tabindex", "0");
+    strip.setAttribute("aria-label", "Life at Bosco photographs — drag or use arrow keys to move the row");
+    var pause = document.querySelector(".life-strip-pause");
+    if (pause) pause.addEventListener("click", function () {
+      var paused = pause.getAttribute("aria-pressed") !== "true";
+      pause.setAttribute("aria-pressed", String(paused));
+      track.classList.toggle("is-paused", paused);
+      pause.textContent = paused ? "Play photographs" : "Pause photographs";
+    });
     track.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
     var DUR = 16; /* seconds; must match the life-scroll keyframes. */
     var suppressClick = armClickSuppress(strip);

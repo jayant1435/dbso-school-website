@@ -173,7 +173,7 @@ figcaption {
 .announce-track {
   display: flex;
   width: max-content;
-  animation: announce-scroll 30s linear infinite;
+  animation: announce-scroll 90s linear infinite;
 }
 .announce-track span {
   display: inline-flex;
@@ -1749,4 +1749,15 @@ html:not(.js) #enquiry-form { display: none; }
   .admissions-cta .cta-band { padding: var(--space-5); }
   .site-footer .footer-col li, .site-footer .footer-col a { white-space: normal; overflow-wrap: anywhere; }
   .site-footer .footer-col ul { min-width: 0; }
+}
+
+/* v116: enough announcement content for wide screens, with a readable static alternative. */
+.announce:focus-visible .announce-track { animation-play-state: paused; }
+html:not(.js) .announce, html:not(.js) .announce-track, html:not(.js) .announce-track span { white-space: normal; }
+html:not(.js) .announce-track { width: auto; animation: none; justify-content: center; text-align: center; }
+html:not(.js) .announce-track span[aria-hidden="true"], html:not(.js) .announce-track span::after { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .announce, .announce-track, .announce-track span { white-space: normal; }
+  .announce-track { width: auto; justify-content: center; text-align: center; }
+  .announce-track span[aria-hidden="true"], .announce-track span::after { display: none; }
 }

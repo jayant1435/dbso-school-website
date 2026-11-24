@@ -717,3 +717,6 @@ html:not(.js) .wm-club-name { white-space: normal; overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) and (min-width: 601px) {
   .js .wm-clubs-track { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+/* v116: fallback value rail uses a single full-width last card rather than an orphan. */
+html:not(.js) .wm-values-stage .wm-value-slide:last-child { grid-column: 1 / -1; }

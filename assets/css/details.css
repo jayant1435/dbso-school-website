@@ -1762,3 +1762,10 @@ section[aria-label="Sports grounds and courts"] > .container > p, section[aria-l
 .news-list .news-item h3 { font-family: var(--font-display); font-size: 1.25rem; margin: 0 0 var(--space-2); }
 section[aria-label="Our story"] .story-banner { margin-block: var(--space-5); }
 @media (max-width: 360px) { .hours-row { grid-template-columns: minmax(0,1fr); gap: var(--space-1); } }
+
+/* v116: align both core-value slider type scales and recognition layout. */
+section[aria-label="Mission and values"] .wm-value-slide .value-name { font-size: 1.45rem; }
+@media (max-width: 600px) { section[aria-label="Mission and values"] .wm-value-slide .value-name { font-size: 1.15rem; } }
+.awards-slider .award-slide--portrait img { object-fit: contain; object-position: center; }
+.awards-hint { margin-bottom: var(--space-5); }
+@media (prefers-reduced-motion: reduce) and (min-width: 601px) { .awards-track { grid-template-columns: repeat(2,minmax(0,1fr)); } }

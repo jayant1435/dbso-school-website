@@ -46,3 +46,8 @@ Checks: anchored edits against fetched v109 source, static structural and sizing
 - 137: combine duplicate lab cards; 250: cap grounds and science body text. 152/305/395: story heading rule, banner placed after intro. 400: Notices heading with rule; notice entries become h3. 206/245: fee heading/region labels consolidated. 201/202/221: responsive fee-table focusability and wider row labels; live width testing pending. 242/262: no-script syllabus groups and list styling.
 - 239: remove home news truncation. 211/261/273: readable club labels and balanced static/reduced-motion club grids. 212/241/248/275/351: shared readable line wrapping. 147/179: narrow hours rows stack where necessary. 408: remove stale section-tight class where present.
 - All school facts, dates, fee amounts, genuine photos and brand assets preserved except duplicate computer-lab card text consolidated. No new decorative icons. Source checks only; live/browser verification and dependent tasks remain open.
+
+## v116 — motion and reading accessibility
+- 61/276: Life photo strip gets a user-controlled pause/play button, a six-photo no-JS grid, and real interactive roles only when the JS viewer is active. No clone exposed to assistive technology.
+- 226/188: announcement track has three repetitions per animation half, sufficient for typical desktop widths; static wrapping text without JavaScript or with reduced motion. Only one announcement is accessible to screen readers.
+- 171: link arrow kept with preceding phrase. 314: same Core Values type scale in both sliders. 249/260/356: portrait centered, eight recognition photos in balanced reduced-motion rows and hint spacing. 261: static value grid handles final card deliberately. These remain subject to visual and runtime QA.
