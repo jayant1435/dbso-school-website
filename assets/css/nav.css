@@ -17,12 +17,6 @@
 .site-header {
   transition: box-shadow 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
 }
-.header-inner {
-  transition: height 0.32s var(--ease-out);
-}
-.brand-crest {
-  transition: width 0.32s var(--ease-out), height 0.32s var(--ease-out);
-}
 .site-header.scrolled {
   --header-h: 56px; /* W-J6 (task 430): resting is now 64px, so scrolled drops a step to 56px — the compact-on-scroll delta is kept */
   box-shadow: var(--shadow-header);

@@ -4,15 +4,64 @@ Original source: the 247 task IDs marked ongoing in the supplied handover tracke
 
 | Status | Count |
 | --- | ---: |
-| Implementation or source correction recorded, visual verification pending | 174 |
+| Implementation or source correction recorded, visual verification pending | 223 |
 | Superseded or stale patch reconciled, verification pending | 7 |
-| Requires additional evidence, real-device/independent QA, or external access | 15 |
-| Still to review or implement | 51 |
+| Requires additional evidence, real-device/independent QA, or external access | 13 |
+| Still to review or implement | 4 |
 | Total | 247 |
 
 No entries are formally signed off yet under the original handover's required independent, live and visual verification protocol. Some implementation entries represent partial fixes.
 
 ## Implemented or addressed, QA pending
+- [ ] #96
+- [ ] #73
+- [ ] #105
+- [ ] #108
+- [ ] #148
+- [ ] #169
+- [ ] #173
+- [ ] #174
+- [ ] #176
+- [ ] #182
+- [ ] #183
+- [ ] #184
+- [ ] #185
+- [ ] #192
+- [ ] #198
+- [ ] #203
+- [ ] #210
+- [ ] #252
+- [ ] #254
+- [ ] #255
+- [ ] #257
+- [ ] #258
+- [ ] #274
+- [ ] #308
+- [ ] #317
+- [ ] #320
+- [ ] #324
+- [ ] #328
+- [ ] #332
+- [ ] #333
+- [ ] #336
+- [ ] #337
+- [ ] #341
+- [ ] #346
+- [ ] #358
+- [ ] #360
+- [ ] #363
+- [ ] #364
+- [ ] #372
+- [ ] #379
+- [ ] #380
+- [ ] #381
+- [ ] #382
+- [ ] #383
+- [ ] #384
+- [ ] #389
+- [ ] #390
+- [ ] #399
+- [ ] #404
 - [ ] #231
 - [ ] #237
 - [ ] #247
@@ -204,11 +253,9 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #55
 - [ ] #57
 - [ ] #68
-- [ ] #73
 - [ ] #74
 - [ ] #77
 - [ ] #95
-- [ ] #96
 - [ ] #118
 - [ ] #123
 - [ ] #127
@@ -217,54 +264,7 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #407
 
 ## Remaining review or implementation
-- [ ] #105
-- [ ] #108
-- [ ] #148
-- [ ] #169
-- [ ] #173
-- [ ] #174
-- [ ] #176
-- [ ] #182
-- [ ] #183
-- [ ] #184
-- [ ] #185
-- [ ] #192
-- [ ] #198
-- [ ] #203
-- [ ] #210
-- [ ] #252
-- [ ] #254
-- [ ] #255
-- [ ] #257
-- [ ] #258
-- [ ] #274
 - [ ] #293
-- [ ] #308
-- [ ] #317
-- [ ] #320
-- [ ] #324
-- [ ] #328
-- [ ] #332
-- [ ] #333
-- [ ] #336
-- [ ] #337
-- [ ] #341
-- [ ] #346
-- [ ] #358
-- [ ] #360
-- [ ] #363
-- [ ] #364
-- [ ] #372
-- [ ] #379
-- [ ] #380
-- [ ] #381
-- [ ] #382
-- [ ] #383
-- [ ] #384
-- [ ] #389
-- [ ] #390
-- [ ] #399
-- [ ] #404
 - [ ] #420
 - [ ] #421
 - [ ] #445
@@ -341,3 +341,55 @@ Browser QA v119: 64/64 checks passed, plus four legacy redirect checks with no f
 
 ### v122 user screenshot corrections
 Reopened earlier implementation IDs for values layout, mobile family tiles, leadership readability, awards image treatment and footer. The latest user brief supersedes the earlier duplicate Home/About values and visible pause controls. This patch preserves the seven actual icons on About only. New browser checks target the screenshot regressions. No additional original IDs signed off solely from these changes.
+
+### v123 — original tracker tasks, source work recorded (QA pending)
+- #73/#96: examined actual handover artwork images; five contained handwritten pupil-identifying details. Omitted them from the current gallery and removed all working-tree image variants; original handover archive preserved. Historical Git objects and CDN caches may still need access-owner remediation.
+- #105: Both poster frames retain matching aspect ratios and a consistent caption grid, without clipping or fixed excessive text reserves.
+- #108: 32 lazy image placements now use existing lower-resolution variants or responsive sources; full viewer images preserved, 7 orphan value PNGs retired. Font preloads and lazy awards were already present. Full performance metrics remain pending.
+- #148: Grouped repeated Telegraph award labels under their dated event names, preserving every award. Longest individual facts remain allowed to wrap.
+- #169: Both video grids use equal-width two-column cards across 861–1200px.
+- #173: On compact phones all ranked cards place rank/score on one row and full name below; no squeezed names.
+- #174: Responsive Auditorium seats label and equal-height stat cards.
+- #176: Anthem uses one column in the 861–1000px squeeze band; verse typography scales to its container.
+- #182: Shorter co-curricular labels and two-column compact tablet/phone grid.
+- #183: v120 already stretches enquiry form to office column; no additional copy or unsupported service added.
+- #184: Fit the sticky class column and an integer number of numeric columns to the viewport, retaining the exact same 12 amount columns; added geometry test.
+- #185: Club grid is 2 columns below 861 and 3 at desktop, labels wrap naturally without box overflow; removed obsolete Gymnastics example.
+- #192: Facility descriptions explicitly unclamped; added browser geometry check.
+- #198: Responsive event heading scale on mobile; long factual labels can wrap rather than truncate.
+- #203: Retired PNG mapping comment replaced and old 20-club reference corrected.
+- #210: Current Home source no longer has the five retired tile selectors; stale comments and old clamp rules removed where actually present.
+- #252: Obsolete meaning-card comment absent in current source; no line-number patch reapplied.
+- #254: Four equal subject slots at narrow widths, with full wording.
+- #255: Corrected outdated 20-club and Gymnastics comments.
+- #257: Wider academic results column in the two-column desktop band; mobile rank layout adjusted.
+- #258: Shortened relationship paragraph while preserving its substance, equal-height desktop pillar rows in squeeze band.
+- #274: Date labels abbreviated without changing any dates, unified cards and grid.
+- #308: Shared gold-rule/heading spacing and heading group bottom margin.
+- #317: 56x4px gold rules in headings, quote and footer; obsolete committee absent.
+- #320: Notices and Home use common bordered card treatment, same title hierarchy.
+- #324: Shared caption type and line height for posters, awards and photo strips.
+- #328: All three Campus activity grids use 2 columns at tablet/phone widths.
+- #332: Ranked results and timeline share card treatment; keep dates and chronological order.
+- #333: Shared date cards across Home and Admissions.
+- #336: 48px minimum small action controls; footer remains plain navigation per original brief.
+- #337: Primary action max-width and wrapping standardized; full-width only when context requires, e.g. form.
+- #341: Consistent blue selected-state ring on tabs, tiles and club/house choices.
+- #346: Shared list spacing and grouped repeated awards, natural content height.
+- #358: Removed the old contradictory <=600px footer design and obsolete overrides; retained the compact grouped phone layout.
+- #360: Removed obsolete measured caption line-count claim.
+- #363: Syllabus comment now explicitly describes no-JS fallback.
+- #364: Same video card widths at intermediate breakpoints; titles unclamped.
+- #372: Compact timeline stacks years/names at 360px and below, preserving full names.
+- #379: Four duplicate descriptions replaced with distinct descriptions after viewing the original photographs.
+- #380: Replaced W4's superseded footer blocks with a single current rule set; canonical grid retained.
+- #381: Deleted superseded 3-column and orphan-span Home notices grid rules.
+- #382: Removed confirmed duplicated tab, note, input, old hours heading and grouped result-row declarations.
+- #383: Removed superseded Home card clamp and obsolete photo-pause declarations; additional exact dead rules may need measured review.
+- #384: Removed result-row from superseded grouped selector; other selectors retained.
+- #389: Removed shadowed nav height/crest transitions.
+- #390: Removed shadowed focus-ring transition.
+- #399: Facilities intro already has shared heading; five merged cards reordered heading/photo/description and final row balanced.
+- #404: Removed fragile single-line-based timeline pseudo-rule; per-row borders now mark each item.
+- #293 remains open for comprehensive split geometry/visual review. Academics longest split now moves its extra copy into a full-width continuation; other splits centered as appropriate. #420/#421/#445 are report-only historical citation corrections, not changes to visible website; original cited QA reports were not included in the handover, so leave them explicitly open.
+- v122 passed 168/168 automated checks at 19 responsive widths, plus legacy redirects. v123 adds fee geometry, video widths and privacy checks. External dependencies still open, including school-confirmed qualifications, prospectus text, real-device checks, new genuine images and live cache.

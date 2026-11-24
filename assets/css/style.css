@@ -1092,7 +1092,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .footer-inner, .footer-bottom { position: relative; z-index: 1; }
 .footer-inner {
   display: grid;
-  grid-template-columns: minmax(0, 4fr) minmax(0, 4fr) minmax(0, 3fr) minmax(0, 4fr);
+  grid-template-columns: minmax(0, 4fr) minmax(0, 3fr) minmax(0, 3fr) minmax(0, 4fr);
   gap: var(--space-5);
   padding-top: var(--space-5);
   padding-bottom: var(--space-5);
@@ -1360,11 +1360,7 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
   .staff-card { padding: var(--space-3); gap: var(--space-3); }
   .staff-photo img { width: 48px; height: 48px; }
   .leader-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  /* Four columns, not three: sized when the school ran 20 clubs, which
-     divide by 4 (five even rows) but not by 3 — three left a 2-tile
-     ragged last row at 834px. The school now runs 18 clubs, which divide
-     by 3, not by 4 — column choice unchanged by this fix. Life grids
-     keep their own counts (later min-width rule wins over this one). */
+  /* Generic tile grid; specific school activity grids define their own counts. */
   .tile-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
@@ -1474,9 +1470,6 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
 /* ---------- Focus: the ring fades in instead of snapping on ----------
    The global :focus-visible rule sets the ring; this adds the transition
    so keyboard focus moves smoothly between controls. */
-:focus-visible {
-  transition: outline-color 0.15s var(--ease-out), outline-offset 0.15s var(--ease-out);
-}
 
 /* ---------- Lightbox / viewer: a closing fade to match the open ----------
    main.js adds .closing and removes .open 180ms later; the open keyframes
@@ -1497,152 +1490,15 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
   .lightbox.closing, .lightbox.closing figure { animation: none; }
 }
 
-/* ===== v29 assembly: w4-style.css ===== */
-/* W4 — footer, final (23 Nov, brief 3). Site-wide: appended after style.css.
-   Brand + Explore (5 links) + Admissions (4 links, plain link) + Contact.
-   The "Forms close…" line is deleted by w4-footer-trim.py, not hidden.
-   Palette: footer tokens only, no red. Fonts: Bricolage + DM Sans.
-   Spacing: space-* tokens only. Touch: no footer button (brief 2,
-   24 Nov); Admissions 2027–28 is a plain link. */
-
-/* Four columns, tighter top/bottom than the old four-column footer. */
-.footer-inner {
-  grid-template-columns: minmax(0, 4fr) minmax(0, 3fr) minmax(0, 3fr) minmax(0, 4fr);
-  padding-top: var(--space-5);
-  padding-bottom: var(--space-4);
-}
-/* The crest carries the identity now the columns are fewer — slightly larger. */
-.footer-brand img { width: var(--space-8); height: var(--space-8); }
-/* Five links in one column: single list again, not the old two-column
-   Explore grid built for eight links. */
-.footer-inner > .footer-col:nth-child(2) ul { display: block; }
-.footer-inner > .footer-col:nth-child(2) li { margin-bottom: var(--space-2); }
-.footer-col li { margin-bottom: var(--space-2); }
-.footer-col li:last-child { margin-bottom: 0; }
-/* Watermark crest: smaller and fainter, it was competing with the columns. */
-.site-footer::after {
-  width: 240px;
-  height: 240px;
-  right: -40px;
-  bottom: -60px;
-  opacity: 0.06;
-}
-.footer-bottom {
-  padding-top: var(--space-3);
-  padding-bottom: var(--space-3);
-}
-
-@media (max-width: 1080px) {
-  /* Two columns, two rows: brand + Explore, Admissions + Contact. */
-  .footer-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-}
-
-@media (max-width: 600px) {
-  /* Compact mobile footer. Brand on top, then Explore's links in one
-     wrapping row and Admissions' links + Apply in one wrapping row — the
-     label stays inline with its links, each link stays on one line
-     (nowrap) and the ROW wraps between links, never inside one. Contact
-     stays a tight block; copyright one short line. */
-  .footer-inner {
-    display: block;
-    padding-top: var(--space-4);
-    padding-bottom: var(--space-4);
-  }
-  .footer-brand-col { margin-bottom: var(--space-3); }
-  .footer-brand img { width: var(--space-7); height: var(--space-7); }
-  .footer-col {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--space-2) var(--space-4);
-    margin-bottom: var(--space-2);
-  }
-  .footer-col h3 { margin: 0; }
-  .footer-inner > .footer-col:nth-child(2) ul,
-  .footer-inner > .footer-col:nth-child(3) ul { display: contents; }
-  .footer-inner > .footer-col:nth-child(2) li,
-  .footer-inner > .footer-col:nth-child(3) li { margin-bottom: 0; }
-  .footer-col li { margin-bottom: 0; white-space: nowrap; }
-  .footer-col a { white-space: nowrap; }
-  /* Contact keeps its block shape, just tighter. */
-  .footer-inner > .footer-col:last-child { display: block; }
-  .footer-inner > .footer-col:last-child p { margin-bottom: var(--space-2); }
-  .footer-inner > .footer-col:last-child p:last-child { margin-bottom: 0; }
-}
-
-/* ===== W-E (23 Nov, new-brief 15): mobile footer strip =====
-   Motto + postal address hidden on mobile ONLY — display:none, the
-   HTML stays untouched so desktop/tablet still show both.
-   Breakpoint ≤768px, not ≤860px: the 834px tablet footer (455px,
-   two-column grid) is a stated regression hold and must stay
-   byte-identical; ≤860px would have changed it. ≤768px covers every
-   phone incl. large phones (601–768px, which use the two-column grid
-   and simply lose the two hidden lines). No HTML change was needed:
-   .footer-motto is already classed, and the address is the Contact
-   column's first <p> (p:first-of-type). Tokens only, no literal
-   colour; footer text links stay ~20px (conflict 16: Jayant's
-   "mobile footer small and compact" wins over interaction-design's
-   44px for running-text links — the Apply button alone keeps 44px). */
-@media (max-width: 768px) {
-  .footer-motto { display: none; }
-  .footer-inner > .footer-col:last-child p:first-of-type { display: none; }
-}
-
-/* =====================================================================
-   ITEM 8 — MOBILE FOOTER, RESTRUCTURED (shared style.css — all 12 pages).
-   Promoted at v44 assembly into shared style.css so every page's
-   footer restructures the same way (was index-only in wm-home.css).
-   The problem: at ≤600px the heading ran INLINE with its links in one
-   wrapping row ("Explore About the school Admissions 2027–28 …") — no
-   group read as a group. The fix: each group is a block again — heading
-   on its own line with a gold marker, links in a clean two-column grid
-   below it, groups divided by hairlines. Links stay ~20px running text
-   (conflict 16: Jayant's "mobile footer small and compact" wins over
-   interaction-design 44px for running-text links; Apply keeps 44px).
-   601–768px keeps its two-column grid; only the gold markers are added
-   there (the 834px tablet footer is a regression hold — untouched).
-   ===================================================================== */
-
-@media (max-width: 768px) {
-  /* Gold marker under every group heading: the token's own use —
-     "accent marks only: rules, dots, separators" (style.css). */
-  .site-footer .footer-col h3::after {
-    content: "";
-    display: block;
-    width: 32px;
-    height: 3px;
-    background: var(--gold);
-    border-radius: 2px;
-    margin-top: var(--space-2);
-  }
-}
-@media (max-width: 600px) {
-  /* Groups stack as blocks, divided by hairlines — no more heading
-     running inline with its links. */
-  .site-footer .footer-inner > * { padding-bottom: var(--space-4); }
-  .site-footer .footer-inner > * + * {
-    border-top: 1px solid var(--footer-line);
-    padding-top: var(--space-4);
-  }
-  .site-footer .footer-inner > :last-child { padding-bottom: 0; }
-  .site-footer .footer-brand-col { margin-bottom: 0; }
-  .site-footer .footer-col {
-    display: block;
-    margin-bottom: 0;
-  }
-  .site-footer .footer-col h3 { margin: 0 0 var(--space-3); }
-  /* Links: a clean two-column grid under the heading. The old
-     display:contents + nowrap row is undone — that row was the
-     unstructured part. Longest link ("Admissions 2027–28", ~130px)
-     fits its ~171px column on one line. */
-  .site-footer .footer-inner > .footer-col:nth-child(2) ul,
-  .site-footer .footer-inner > .footer-col:nth-child(3) ul {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-2) var(--space-4);
-  }
-  .site-footer .footer-col li { margin-bottom: 0; white-space: nowrap; }
-}
+/* Footer: four columns desktop, two at tablet, compact grouped phone layout. */
+.footer-brand img { width:var(--space-8); height:var(--space-8); }
+.footer-col li { margin-bottom:var(--space-2); }
+.footer-col li:last-child { margin-bottom:0; }
+.site-footer::after { width:240px; height:240px; right:-40px; bottom:-60px; opacity:.06; }
+.footer-bottom { padding-bottom:var(--space-3); }
+@media(max-width:1080px) { .footer-inner { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:768px) { .footer-motto { display:none; } }
+@media(max-width:600px) { .footer-brand img { width:var(--space-7); height:var(--space-7); } }
 
 /* ---------- W-K FIX 2 (v41): anchor targets clear the sticky header ----------
    Measured BEFORE: zero scroll-margin-top anywhere in the CSS; an anchor
@@ -1804,4 +1660,38 @@ section[aria-label="Non-teaching staff"] .nonteach-text h3 { margin-bottom:var(-
   .site-footer .footer-inner > .footer-col:nth-child(2) ul,.site-footer .footer-inner > .footer-col:nth-child(3) ul { display:grid; grid-template-columns:minmax(0,1fr); gap:0; }
   .site-footer .footer-col a { display:inline-block; padding-block:var(--space-2); }
   .site-footer .footer-inner > .footer-col:last-child p:first-of-type { display:block; }
+}
+
+/* v123 — shared section headings, dates, ranked rows, lists and controls. */
+.gold-rule { margin-bottom:var(--space-3); }
+.section-head { margin-bottom:var(--space-5); }
+.section-head p { margin-bottom:0; }
+.quote-inline::before { width:56px; height:4px; margin-bottom:var(--space-3); }
+.btn-small { min-height:48px; }
+.btn-primary { max-width:100%; white-space:normal; }
+.date-item,.page-head + .dates-strip .date-item,.page-head + .dates-strip .date-item:first-child,.page-head + .dates-strip .date-item + .date-item { background:var(--paper); border:1px solid var(--line); border-radius:var(--radius-card); padding:var(--space-4); min-width:0; }
+.dates-strip .container,.page-head + .dates-strip .container { align-items:stretch; gap:var(--space-3); }
+.date-label { font-size:.9rem; }
+.date-value { font-size:clamp(1.05rem,2.1vw,1.35rem); font-variant-numeric:tabular-nums; }
+.topper-row,.result-row { border:1px solid var(--line); border-radius:var(--radius-soft); padding:var(--space-3) var(--space-4); }
+.topper-name,.result-name { min-width:0; overflow-wrap:normal; }
+.toppers-list,.results-board { display:grid; gap:var(--space-2); }
+.news-item { border:1px solid var(--line); border-radius:var(--radius-card); background:var(--paper); padding:var(--space-4); margin:0; min-width:0; }
+.news-item h3 { display:block; overflow:visible; -webkit-line-clamp:unset; }
+.news-item p { display:block; overflow:visible; -webkit-line-clamp:unset; }
+.news-item .news-tag { align-self:start; }
+.tile[aria-pressed="true"],.switcher-tab[aria-selected="true"] { border-color:var(--blue); box-shadow:0 0 0 2px var(--blue); }
+.split-continuation { margin-top:var(--space-5); }
+.split-continuation .prose { max-width:none; }
+@media(min-width:861px) { .container.split { align-items:center; } }
+@media(max-width:860px) {
+  .dates-strip .container,.page-head + .dates-strip .container { grid-template-columns:minmax(0,1fr); }
+  .gold-rule { margin-bottom:var(--space-3); }
+}
+@media(max-width:440px) {
+  .topper-row,.result-row { grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"rank score" "name name"; row-gap:var(--space-1); }
+  .topper-pos,.result-pos { grid-area:rank; }
+  .topper-name,.result-name { grid-area:name; font-size:1rem; }
+  .topper-score,.result-score { grid-area:score; }
+  .number-label { font-size:clamp(.76rem,3.6vw,.95rem); white-space:nowrap; }
 }

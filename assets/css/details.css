@@ -18,7 +18,6 @@
 
 /* ---- Body buttons: the base .btn is already 10px site-wide (style.css, v7).
    Only the stream tabs need a local radius here. ---- */
-.switcher-tab { border-radius: var(--radius-btn); }
 
 /* ---- Depth: extremely soft and faint, MGM-style ---- */
 .cta-band { box-shadow: var(--shadow-soft-lg); }
@@ -33,13 +32,11 @@
 .gallery-item button:hover { box-shadow: var(--shadow-soft-lg); }
 
 /* ---- Lists that answer a hover: rows tint, nothing moves ---- */
-.result-row,
 .news-item,
 .lineage-row {
   border-radius: var(--radius-soft);
   transition: background-color 0.2s var(--ease-out);
 }
-.result-row { padding-inline: var(--space-3); margin-inline: calc(-1 * var(--space-3)); }
 .result-row:hover { background: var(--band); }
 .news-item { padding-inline: var(--space-4); margin-inline: calc(-1 * var(--space-4)); }
 .news-item:hover { background: var(--paper-warm); }
@@ -111,10 +108,6 @@
   padding: var(--space-6);
   box-shadow: var(--shadow-soft);
 }
-.field input,
-.field select,
-.field textarea { border-radius: var(--radius-soft); }
-.form-note { border-radius: var(--radius-soft); }
 
 /* v31 (W-D): the gallery jump bar is gone with the albums — the gallery is
    event sections only now. The rules that pinned/collapsed the bar lived here. */
@@ -125,11 +118,7 @@
   .news-item { padding-inline: var(--space-3); margin-inline: calc(-1 * var(--space-3)); }
 }
 
-/* ---- Syllabus 2026-27 (v11, v27): 13 class buttons, centred rows ----
-   13 is prime, so no column count divides it evenly — a grid always leaves
-   an orphan row. Flex with centred wrapping instead: every button the same
-   width, and the short last row sits centred instead of leaving a hole.
-   (7 + 6 at desktop, 5 + 5 + 3 at tablet, 2s + 1 at mobile.) */
+/* Syllabus: equal-width links in the no-JavaScript fallback only. */
 .syllabus-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 .syllabus-grid .btn { flex: 0 1 140px; }
 
@@ -226,7 +215,7 @@
 
 /* Life, Clubs: at 861–1200px the split squeezes the 5-column tile grid
    into ~430–660px, so tiles shrink to 67–83px and single words
-   (Basketball, Gymnastics, Taekwondo, Computer…) spill out of their
+   (Basketball, Taekwondo, Computer…) spill out of their
    boxes. Stack the split in that band, as it already does below 861px,
    so the grid gets the full width and every label fits on one line. */
 @media (min-width: 861px) and (max-width: 1200px) {
@@ -747,7 +736,6 @@ section[aria-label="From the Principal"] .quote-attr strong { font-weight: 600; 
   box-shadow: var(--shadow-soft);
   margin-bottom: var(--space-4);
 }
-.hours-season h4 { margin: 0 0 var(--space-3); font-size: 1.25rem; }
 .hours-season + .hours-season {
   border-top: 1px solid var(--line);
   margin-top: var(--space-5);
@@ -1112,7 +1100,7 @@ section[aria-label="Celebrations and events"] .tick-list li span {
    W-AB7 LEDGER-ONLY (wave 10, task 124, split for v66): the caption
    reserve is deleted, not retargeted — W-AB7 pass-1 measurement proved
    no single reserve value is right at every width (caption line counts
-   [2,2,2]@1440, [2,2,3]@1024, [3,3,4]@768, [3,3,3]@834 and on phones)
+   caption lengths vary by viewport and photograph)
    and a reserve never aligned baselines anyway (text is top-aligned in
    its box). The slider itself is RETAINED per task 115 (v61), so no
    .awards-photos retarget exists. Rules removed so no dead min-height
@@ -1825,3 +1813,63 @@ html.js .awards-track .award-slide { flex:0 0 clamp(200px,25vw,280px); width:cla
   html.js .awards-track { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); width:auto; }
   html.js .awards-track .award-slide { width:auto; }
 }
+
+/* v123 — responsive fit, consistent real-data rows and untruncated titles. */
+.page-about .why-grid { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.page-about .why-grid .tile { min-height:48px; padding:var(--space-2); white-space:normal; }
+@media(max-width:860px) { .page-about .why-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:600px) {
+  .page-about .why-grid { gap:var(--space-2); }
+  .page-about .why-grid .tile { min-height:44px; white-space:nowrap; padding:var(--space-2); font-size:clamp(.72rem,3.15vw,.88rem); }
+  .page-about .leader-card { grid-template-columns:minmax(64px,22%) minmax(0,1fr); align-items:stretch; }
+  .page-about .leader-visual { height:100%; min-height:88px; aspect-ratio:auto; }
+  .page-about .leader-visual img { object-position:center 30%; }
+  .page-about .leader-body { padding:var(--space-2) var(--space-3); align-self:center; }
+  .page-about .leader-body h3 { font-size:clamp(.87rem,3.7vw,1.05rem); }
+  .page-about .leader-body p { font-size:clamp(.75rem,3.15vw,.9rem); }
+  .page-about .leader-body h3,.page-about .leader-body p { white-space:nowrap; }
+}
+.award-group .award-subgroup > ul { margin-top:var(--space-2); }
+.award-group .award-subgroup > ul li { border:0; padding-block:var(--space-1); }
+.award-group .award-subgroup > ul li::before { width:6px; height:6px; top:0.9em; }
+.poster-pair figure { display:grid; grid-template-rows:auto 1fr; align-items:start; }
+.poster-pair figcaption,.award-slide figcaption,.photo-row figcaption { font-size:.95rem; line-height:1.5; }
+.poster-pair figcaption { margin-top:var(--space-3); }
+.page-news .news-list { display:grid; gap:var(--space-3); }
+.page-news .news-list .news-item { border:1px solid var(--line); border-radius:var(--radius-card); background:var(--paper); margin:0; padding:var(--space-4); }
+.page-news .news-list .news-item h3 { display:block; overflow:visible; -webkit-line-clamp:unset; }
+.page-news .news-list .news-item p { max-width:68ch; }
+section[aria-label="Our story"] .lineage-wide { gap:var(--space-2); }
+section[aria-label="Our story"] .lineage-wide::before { content:none; }
+section[aria-label="Our story"] .lineage-row { grid-template-columns:minmax(100px,132px) minmax(0,1fr); column-gap:var(--space-4); border:1px solid var(--line); border-radius:var(--radius-soft); margin:0; padding:var(--space-3) var(--space-4); background:var(--paper); }
+section[aria-label="Our story"] .lineage-row:last-child { border:1px solid var(--line); }
+section[aria-label="Our story"] .lineage-years { text-align:left; }
+@media(max-width:360px) {
+  section[aria-label="Our story"] .lineage-row { grid-template-columns:minmax(0,1fr); gap:var(--space-1); }
+}
+@media(min-width:861px) and (max-width:1000px) { .anthem { grid-template-columns:minmax(0,1fr); } }
+@media(min-width:1001px) { .anthem p { font-size:clamp(.75rem,4.15cqi,1.15rem); } }
+@media(min-width:861px) { section[aria-label="ICSE 2026 results"] .split { grid-template-columns:minmax(0,5fr) minmax(0,7fr); align-items:center; } }
+@media(max-width:480px) {
+  section[aria-label="ISC streams"] .subject-list { display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:repeat(4,minmax(1.65em,auto)); gap:var(--space-1); }
+  section[aria-label="ISC streams"] .subject-list li { margin:0; }
+}
+@media(min-width:861px) and (max-width:1200px) {
+  .videos-long,.videos-shorts { grid-template-columns:repeat(4,minmax(0,1fr)); }
+  .videos-long > .card,.videos-shorts > .card,.videos-long > .card:nth-last-child(2) { grid-column:span 2; }
+  .videos-long > .card:last-child { grid-column:2 / span 2; }
+}
+.videos-long .card-body h3,.videos-shorts .card-body h3 { display:block; overflow:visible; -webkit-line-clamp:unset; }
+.table-wrap[data-fit-columns] .fees { table-layout:fixed; min-width:0; width:var(--fee-table-w); }
+.table-wrap[data-fit-columns] .fee-class-col { width:var(--fee-label-w); }
+.table-wrap[data-fit-columns] .fee-amount-col { width:var(--fee-amount-w); }
+.table-wrap[data-fit-columns] .fees th,.table-wrap[data-fit-columns] .fees td { padding-inline:var(--space-2); }
+.table-wrap[data-fit-columns] .fees th[scope="row"] { min-width:0; }
+.table-wrap[data-fit-columns] .fees thead th { overflow-wrap:normal; }
+.fee-scroll-hint { display:none; }
+.table-card:has(.table-wrap[data-scrollable]) .fee-scroll-hint,html:not(.js) .fee-scroll-hint { display:block; }
+.facilities-grid .facility-card-heading { padding:var(--space-4); }
+.facilities-grid .facility-card-heading h3 { font-size:1.2rem; margin:0; }
+.facilities-grid .card-body p { display:block; overflow:visible; -webkit-line-clamp:unset; margin:0; }
+@media(min-width:861px) { .facilities-grid { grid-template-columns:repeat(6,minmax(0,1fr)); } .facilities-grid .card { grid-column:span 2; } .facilities-grid .card:nth-last-child(2) { grid-column:2 / span 2; } .facilities-grid .card:last-child { grid-column:4 / span 2; } }
+@media(min-width:601px) and (max-width:860px) { .facilities-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } .facilities-grid .card { grid-column:span 2; } .facilities-grid .card:last-child { grid-column:2 / span 2; } }

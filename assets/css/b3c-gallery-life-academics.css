@@ -298,3 +298,11 @@ section[aria-label="From 2023: two events"] .photo-row > figure {
 /* v120 — gallery events use the same heading motif as other page sections. */
 .event-head .gold-rule { margin-bottom:var(--space-3); }
 .event-head h2 { text-wrap:balance; }
+
+/* v123 — compact consistent event headings and tablet activity grids. */
+@media(max-width:600px) { .event-head h2 { font-size:clamp(1.05rem,5.2vw,1.55rem); } }
+@media(max-width:860px) {
+  .page-life .tile-grid--sport,.page-life .tile-grid--clubs,.page-life .tile-grid--cocurr { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .page-life .tile-grid .tile { min-height:44px; height:100%; padding:var(--space-2); font-size:.9rem; }
+}
+@media(min-width:861px) { section[aria-label="Clubs"] .split > figure,section[aria-label="Celebrations and events"] .split > figure,section[aria-label="How learning works"] .split > figure { position:static; align-self:center; } }

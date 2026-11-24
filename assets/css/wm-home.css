@@ -135,108 +135,6 @@
   .js .wm-clubs-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-/* =====================================================================
-   ITEM 3 — HOUSES: a single crossfading stage (treatment 2 of 3).
-   One large photo at a time, fading into the next every 5s; the house
-   name sits in a fixed strip under the photo (433: the photos are
-   back — one per house, restored into the v95 colour-field slot;
-   see the 433 block at end of file. The chrome — arrows, dots,
-   counter — is blue/yellow only). Motion: opacity only, 0.4s ease-out (12-principles budget).
-   No-JS fallback: all four photos visible in a 2-column grid.
-   ===================================================================== */
-
-.wm-houses-stage { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
-.js .wm-houses-stage {
-  display: block;
-  position: relative;
-  aspect-ratio: 16 / 9;
-  border-radius: var(--home-r-img);
-  overflow: clip;
-  background: var(--band);
-  box-shadow: 0 0 0 1px var(--line), var(--shadow-1);
-  touch-action: pan-y;
-  user-select: none;
-  -webkit-user-select: none;
-}
-.wm-house-slide {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  aspect-ratio: 16 / 10;
-  padding: 0;
-  border: 0;
-  border-radius: var(--home-r-img);
-  overflow: clip;
-  background: var(--paper);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-.js .wm-house-slide {
-  position: absolute;
-  inset: 0;
-  /* W-R7 FIX (item 3 — house name clipped at ≥601px): the base rule above
-     sets aspect-ratio: 16/10 for the no-JS in-flow grid. Under .js the
-     slide is absolute with inset: 0, and Chrome lets the aspect-ratio's
-     preferred height (16/10 = 708px at 1132 wide) win over bottom: 0 —
-     the slide rendered 708 tall inside the 637-tall 16/9 stage, and the
-     stage's overflow: clip cut the bottom 71px, which is exactly where
-     the bottom-anchored .wm-house-name sits. The name was in the DOM
-     (textContent checks passed) but never painted at 768/834/1440/1536;
-     only ≤600px (stage 4/3, taller than the slide) showed it.
-     aspect-ratio: auto restores inset: 0 as the sizing rule, so the
-     slide fills the stage exactly and the name paints inside it.
-     Impeccable craft-floor — Coverage (every brief requirement present
-     and findable within seconds) + Type (run the real copy at every
-     breakpoint and fix what overflows). No-JS grid untouched: without
-     .js the 16/10 rule still applies. Tokens/colours/motion untouched. */
-  aspect-ratio: auto;
-  border-radius: 0;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.4s var(--ease-out), visibility 0s linear 0.4s;
-}
-.js .wm-house-slide.is-active {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.4s var(--ease-out), visibility 0s;
-}
-.wm-house-slide:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
-.wm-house-name {
-  flex: 0 0 auto;
-  padding: var(--space-4) var(--space-5);
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.6rem;
-  line-height: 1.15;
-}
-@media (max-width: 600px) {
-  .js .wm-houses-stage { aspect-ratio: 4 / 3; }
-  .wm-house-name { font-size: 1.35rem; }
-  .wm-houses-stage { grid-template-columns: minmax(0, 1fr); }
-}
-/* Reduced motion: no auto-advance (main.js guard); the stage still
-   crossfades instantly on manual control, and the grid fallback shows
-   all four without JS. */
-@media (prefers-reduced-motion: reduce) {
-  .js .wm-house-slide { transition: none; }
-}
-
-/* =====================================================================
-   ITEM 4 — CORE VALUES: a centred reading card, one value at a time
-   (treatment 3 of 3). No auto-motion at all — values are read, not
-   watched. The v33 value PNG (transparent blue line icon + gold dot,
-   navy #1d6fa5 / gold #c9a227) sits large above the name, with the
-   numeral carried over from the old tiles. Paging is by arrows, dots,
-   swipe or keyboard. No-JS fallback: all seven visible in a grid.
-   PNG mapping (home name → v33 file, made for the About-page names):
-   Integrity → value-integrity · Compassion → value-compassion ·
-   Discipline → value-self-discipline · Respect → value-respect-for-others ·
-   Faith → value-love-of-god · Nature → value-love-for-nature ·
-   Spirituality → value-spirituality (7th slide + 7th dot, added v49).
-   ===================================================================== */
 
 .wm-values-stage { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
 .js .wm-values-stage {
@@ -724,3 +622,6 @@ section[aria-label="Mission and values"] .core-values-block { margin-top:var(--s
   #about-values-stage .wm-value-slide,.js #about-values-stage .wm-value-slide { width:auto; }
   #about-values-stage .wm-value-slide--clone { display:none; }
 }
+
+/* Selected state: same clear brand-blue outline without extra icon or badge. */
+.wm-club-slide[aria-pressed="true"],.wm-house-slide[aria-pressed="true"] { box-shadow:0 0 0 2px var(--blue),var(--shadow-1); }

@@ -298,7 +298,6 @@ button.photo-card figcaption { text-align: left; }
    Three cards in a row on desktop, one column on a phone. Every card is
    the same height: heading one line, description two, and the tag sits
    pinned to the bottom edge of every card. */
-.news-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; gap: var(--space-4); border-top: 0; }
 .news-cards .news-item {
   display: flex;
   flex-direction: column;
@@ -338,9 +337,6 @@ button.photo-card figcaption { text-align: left; }
    50-75ch measure kept; better-ui: cut text that wraps to a lonely last
    word — Quiz "to V." orphan gone; audit-ai-design-slop: duplicate
    "Announced on the school homepage" removed, not restyled.) */
-.news-cards .news-item:nth-child(1) p { -webkit-line-clamp: 1; }
-.news-cards .news-item:nth-child(3) p { -webkit-line-clamp: 1; }
-.news-cards .news-item:nth-child(4) p { -webkit-line-clamp: 1; }
 /* nth-child(2) Photography keeps the base clamp 2 (home.css news rule). */
 
 /* ---------- CTA band: softer corners, two actions ---------- */
@@ -365,8 +361,6 @@ button.photo-card figcaption { text-align: left; }
    every heading inside one line and every description in two. The third
    card spans both columns, so no empty cell is left under the second. */
 @media (max-width: 1080px) {
-  .news-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .news-cards .news-item:nth-child(3) { grid-column: 1 / -1; }
 }
 @media (max-width: 860px) {
   .news-cards { grid-template-columns: minmax(0, 1fr); }
@@ -812,3 +806,12 @@ html.js .photo-strip.wm-grabbing { scroll-snap-type:none; }
   html.js .photo-track { display:grid; width:auto; grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr)); }
   html.js .photo-strip .photo-card { width:auto; }
 }
+
+/* v123 — Home and Notices share the same content-card treatment. */
+.news-cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-3); align-items:stretch; border:0; }
+.news-cards .news-item { padding:var(--space-4); border-radius:var(--radius-card); }
+.news-cards .news-item h3 { font-size:1.2rem; }
+.photo-strip .photo-card figcaption { min-height:0; font-size:.95rem; line-height:1.5; padding:var(--space-3); }
+.topper-row { border:1px solid var(--line); border-radius:var(--radius-soft); }
+@media(max-width:600px) { .news-cards { grid-template-columns:minmax(0,1fr); } }
+@media(min-width:861px) and (max-width:1080px) { .pillars:not(.pillars-slider),.pillars.pillars-slider { display:grid; grid-auto-rows:1fr; } }

@@ -1085,6 +1085,17 @@
     var tableWrap = document.querySelector(".table-wrap");
     if (!tableWrap) return;
     function syncOverflow() {
+      // Allocate an integer number of whole numeric columns beside the sticky class label.
+      var viewport = tableWrap.clientWidth;
+      if (viewport > 220) {
+        var label = Math.min(168, Math.max(120, Math.round(viewport * 0.26)));
+        var count = Math.min(12, Math.max(1, Math.floor((viewport - label) / 82)));
+        var amount = (viewport - label) / count;
+        tableWrap.style.setProperty("--fee-label-w", label + "px");
+        tableWrap.style.setProperty("--fee-amount-w", amount + "px");
+        tableWrap.style.setProperty("--fee-table-w", (label + 12 * amount) + "px");
+        tableWrap.setAttribute("data-fit-columns", "");
+      }
       var scrollable = tableWrap.scrollWidth > tableWrap.clientWidth + 1;
       if (scrollable) tableWrap.setAttribute("tabindex", "0");
       else tableWrap.removeAttribute("tabindex");

@@ -56,15 +56,39 @@ async function check(name,width,mode){
       return {stage:stage.clientWidth,container:stage.closest(".container").clientWidth,leaders,labels,awardRects};
     });
     if(width<=600){
-      assert.ok(checks.leaders.every(x=>x.lines===1&&x.fits),"one-line leader names and roles");
-      assert.ok(checks.labels.every(x=>x.lines===1&&x.fits),"one-line reasons");
+      assert.ok(checks.leaders.every(x=>x.lines===1&&x.fits),"one-line leader names and roles: "+JSON.stringify(checks.leaders));
+      assert.ok(checks.labels.every(x=>x.lines===1&&x.fits),"one-line reasons: "+JSON.stringify(checks.labels));
     }
     if(width>=861)assert.ok(checks.stage>=checks.container-50,"full-width core-values stage");
     if(mode==="normal")assert.ok(checks.awardRects.every(x=>Math.abs(x.w-checks.awardRects[0].w)<2&&Math.abs(x.h-checks.awardRects[0].h)<2),"uniform award frames");
   }
   const navText=await p.locator(".main-nav a").allTextContents();
   assert.ok(navText.includes("Campus") && navText.includes("Notices"),"short navigation labels");
-  if(name==="gallery") assert.equal(await p.locator(".event-head .gold-rule").count(),36,"all gallery events use gold heading rule");
+  if(name==="gallery") {
+    assert.equal(await p.locator(".event-head .gold-rule").count(),36,"all gallery events use gold heading rule");
+    assert.equal(await p.locator("#exhibition-2026 .gallery-item").count(),7,"privacy-reviewed exhibition");
+    assert.equal(await p.locator('img[src*="exhibition-2026-07.jpg"]').count(),0,"no exposed handwritten pupil record");
+    if(mode==="normal"&&width>=861&&width<=1200) {
+      const widths=await p.evaluate(()=>[document.querySelector(".videos-long .card").getBoundingClientRect().width,document.querySelector(".videos-shorts .card").getBoundingClientRect().width]);
+      assert.ok(Math.abs(widths[0]-widths[1])<2,"matching video card widths: "+widths);
+    }
+  }
+  if(name==="admissions"&&mode!=="no-js"){
+    const fit=await p.evaluate(()=>{
+      const wrap=document.querySelector(".table-wrap"),table=wrap.querySelector(".fees");
+      wrap.scrollLeft=wrap.scrollWidth-wrap.clientWidth;
+      const row=table.tBodies[0].rows[0],edge=row.cells[0].getBoundingClientRect().right;
+      const partial=[...row.cells].slice(1).filter(c=>{const r=c.getBoundingClientRect();return r.left<edge-2&&r.right>edge+2;}).length;
+      const figures=[...row.cells].slice(1).every(c=>c.scrollWidth<=c.clientWidth+1);
+      return {partial,figures};
+    });
+    assert.equal(fit.partial,0,"no partial fee column at end");
+    assert.ok(fit.figures,"fee figures fit");
+  }
+  if(name==="life"){
+    const facilityText=await p.locator(".facilities-grid .card-body p").evaluateAll(els=>els.every(e=>e.scrollHeight<=e.clientHeight+1));
+    assert.ok(facilityText,"facility descriptions not clipped");
+  }
   if(name==="about") { const staffCopy=await p.locator(".nonteach-text").allTextContents(); assert.equal(staffCopy.length,2,"both staff groups"); assert.ok(staffCopy.every(t=>t.trim().length>180),"staff descriptions expanded"); }
   if(name==="contact") assert.equal(await p.locator('button[type="submit"]').count(),1,"enquiry button");
   assert.ok(dom.width<=dom.viewport+2,"horizontal overflow: "+dom.width+" > "+dom.viewport);
