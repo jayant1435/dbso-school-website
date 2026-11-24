@@ -780,3 +780,6 @@ section[aria-label="Admissions call to action"] {
 @media (max-width: 360px) {
   .news-cards .news-item h3 { font-size: 1.05rem; }
 }
+
+/* v115 — keep news titles and descriptions readable; no clipped event information. */
+.news-cards .news-item h3, .news-cards .news-item p { display: block; -webkit-line-clamp: unset; overflow: visible; }

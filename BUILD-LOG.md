@@ -39,3 +39,10 @@ Checks: anchored edits against fetched v109 source, static structural and sizing
 ## v114 — replace rejected core-values artwork
 - Replaced all seven v112 dark metallic value images with selected AI-generated pale-blue/cream gradient art. Correct original seven symbols, no new artwork outside the two value sliders. Native image dimensions corrected to 144px. Asset hashes recorded in ICON-SHEET.md.
 - Tasks 37/38/62/64 revised to reflect the latest user direction; live visual approval remains open.
+
+## v115 — shared structure and readable content
+- 129/130/156: remove stale deadline from CTA bands; canonical admissions CTA on seven primary pages, existing Questions CTA on Admissions. Existing dated news and announcement facts retained. 304/309/311/321: shared CTA spacing and action sizing; visual confirmation required.
+- 155: add Gallery to Explore across all eight pages. 135/218: distinct ISC tablist and no-script nav accessible labels. 195: Class XI in announcements. 194/199/213/272/406: wrap mobile footer links and keep the hamburger round; narrow-screen brand sizing. 350/359/361: remove shadowed footer declarations.
+- 137: combine duplicate lab cards; 250: cap grounds and science body text. 152/305/395: story heading rule, banner placed after intro. 400: Notices heading with rule; notice entries become h3. 206/245: fee heading/region labels consolidated. 201/202/221: responsive fee-table focusability and wider row labels; live width testing pending. 242/262: no-script syllabus groups and list styling.
+- 239: remove home news truncation. 211/261/273: readable club labels and balanced static/reduced-motion club grids. 212/241/248/275/351: shared readable line wrapping. 147/179: narrow hours rows stack where necessary. 408: remove stale section-tight class where present.
+- All school facts, dates, fee amounts, genuine photos and brand assets preserved except duplicate computer-lab card text consolidated. No new decorative icons. Source checks only; live/browser verification and dependent tasks remain open.

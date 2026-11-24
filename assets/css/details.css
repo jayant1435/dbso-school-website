@@ -1748,3 +1748,17 @@ html:not(.js) .awards-track { display: grid; grid-template-columns: repeat(auto-
 html:not(.js) .award-slide { width: auto; margin: 0; }
 html:not(.js) .award-slide[aria-hidden="true"] { display: none; }
 @media (prefers-reduced-motion: reduce) { html.js .awards-pause { display: none; } }
+
+/* v115 — fee table, no-script syllabus and combined-page reading rhythm. */
+section[aria-label="ISC streams"] .subject-list { list-style: none; padding-left: 0; }
+html:not(.js) .syllabus-picker { max-width: none; }
+html:not(.js) .syllabus-groups { display: grid; gap: var(--space-5); }
+@media (min-width: 861px) { html:not(.js) .syllabus-groups { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.fees th[scope="row"] { min-width: 9rem; }
+.table-wrap { overscroll-behavior-inline: contain; }
+section[aria-label="Sports grounds and courts"] > .container > p, section[aria-label="Science laboratories"] > .container > p { max-width: 65ch; }
+.facilities-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+.facilities-grid .card-body p { min-height: 0; }
+.news-list .news-item h3 { font-family: var(--font-display); font-size: 1.25rem; margin: 0 0 var(--space-2); }
+section[aria-label="Our story"] .story-banner { margin-block: var(--space-5); }
+@media (max-width: 360px) { .hours-row { grid-template-columns: minmax(0,1fr); gap: var(--space-1); } }

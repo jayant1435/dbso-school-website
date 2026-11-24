@@ -1122,10 +1122,8 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   letter-spacing: 0;
 }
 .footer-col ul { list-style: none; padding: 0; margin: 0; }
-.footer-col li { margin-bottom: 6px; font-size: 0.92rem; line-height: 1.45; }
+.footer-col li { font-size: 0.92rem; line-height: 1.45; }
 /* Explore has 8 links — two columns so it stops being the tallest column. */
-.footer-inner > .footer-col:nth-child(2) ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px var(--space-4); }
-.footer-inner > .footer-col:nth-child(2) li { margin-bottom: 0; }
 .footer-col a { color: var(--footer-ink); text-decoration: none; transition: color 0.15s var(--ease-out); }
 .footer-col a:hover { color: var(--paper); text-decoration: underline; }
 .footer-col p { color: var(--footer-mute); font-size: 0.92rem; line-height: 1.5; margin-bottom: var(--space-3); }
@@ -1741,3 +1739,14 @@ html:not(.js) #enquiry-form { display: none; }
 .dbso-control-glyph { display: inline-flex; align-items: center; justify-content: center; width: 1.1em; line-height: 1; color: inherit; font-family: var(--font-body, sans-serif); font-weight: 500; flex-shrink: 0; }
 .pillar-arrow .dbso-control-glyph, .lightbox-btn .dbso-control-glyph, .event-prev .dbso-control-glyph, .event-next .dbso-control-glyph { font-size: 1.65rem; }
 .tick-list .dbso-check-glyph { width: 24px; flex: 0 0 24px; color: var(--blue, #1d6fa5); font-size: 1.15rem; align-self: flex-start; line-height: 1.4; }
+
+/* v115 — shared admissions and mobile footer rhythm. */
+.admissions-cta.section { padding-block: var(--space-5); }
+.admissions-cta .cta-band { padding: var(--space-6); }
+.admissions-cta .btn { justify-self: start; }
+.principal-priorities li, .check-list li, .hours-list li, .rule-list li, .tick-list li { text-wrap: pretty; }
+@media (max-width: 600px) {
+  .admissions-cta .cta-band { padding: var(--space-5); }
+  .site-footer .footer-col li, .site-footer .footer-col a { white-space: normal; overflow-wrap: anywhere; }
+  .site-footer .footer-col ul { min-width: 0; }
+}

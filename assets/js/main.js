@@ -1386,3 +1386,23 @@
       });
   })();
 })();
+
+/* v115: expose the fee-table region to keyboard users only when it scrolls. */
+(function () {
+  "use strict";
+  function initFeeTable() {
+    var tableWrap = document.querySelector(".table-wrap");
+    if (!tableWrap) return;
+    function syncOverflow() {
+      var scrollable = tableWrap.scrollWidth > tableWrap.clientWidth + 1;
+      if (scrollable) tableWrap.setAttribute("tabindex", "0");
+      else tableWrap.removeAttribute("tabindex");
+      tableWrap.toggleAttribute("data-scrollable", scrollable);
+    }
+    syncOverflow();
+    window.addEventListener("resize", syncOverflow, { passive: true });
+    if ("ResizeObserver" in window) { var observer = new ResizeObserver(syncOverflow); observer.observe(tableWrap); if (tableWrap.firstElementChild) observer.observe(tableWrap.firstElementChild); }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncOverflow);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initFeeTable, { once: true }); else initFeeTable();
+})();
