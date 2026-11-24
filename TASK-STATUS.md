@@ -408,3 +408,6 @@ Actual v128 screenshots were retrieved and inspected; the reduced-motion values 
 
 ### v131 user-reported photo regressions
 - Reopened caption consistency and image-viewer behavior; shared implementation and exact line-count/slow-network regression tests now in source. v130 functional and visual workflows passed. The new checks must pass before calling these fixes verified; original external evidence remains open.
+
+### v132 photo regression follow-up
+- v131 [browser QA](https://github.com/jayant1435/dbso-school-website/actions/runs/45465721493): 175/176 passed. Fixed Gallery Next control stacking after the mobile click failure. Stronger cache-busted delayed-load tests and visual audit on every site-source change. v130 live sample 17/18 matched; About returned HTTP 500 and retired CSS was still cached, so #407 remains open. Canonical routes and retries are now checked by the visual audit.

@@ -50,9 +50,14 @@ try{
   }
   await ctx.close();
  }
- const liveFiles=[...pages.map(name=>[name==="index"?"/":"/"+name+".html",name+".html"]),...["style.css","wm-home.css","details.css","home.css","nav.css","b3c-gallery-life-academics.css","wg1-f4.css","fonts.css"].map(name=>["/assets/css/"+name,"assets/css/"+name]),...["main.js","nav.js"].map(name=>["/assets/js/"+name,"assets/js/"+name])];
+ const liveFiles=[...pages.map(name=>[name==="index"?"/":"/"+name,name+".html"]),...["style.css","wm-home.css","details.css","home.css","nav.css","b3c-gallery-life-academics.css","wg1-f4.css","fonts.css"].map(name=>["/assets/css/"+name,"assets/css/"+name]),...["main.js","nav.js"].map(name=>["/assets/js/"+name,"assets/js/"+name])];
  for(const [path,local] of liveFiles){
-  try{const resp=await fetch("https://dbso.jayantjaiswal.com"+path,{signal:AbortSignal.timeout(12000),headers:{"Cache-Control":"no-cache"}});
+  try{let resp;
+   for(let attempt=0;attempt<3;attempt++){
+    resp=await fetch("https://dbso.jayantjaiswal.com"+path,{signal:AbortSignal.timeout(12000),headers:{"Cache-Control":"no-cache"}});
+    if(resp.status<500)break;
+    await new Promise(r=>setTimeout(r,1000));
+   }
    const hash=b=>createHash("sha256").update(b).digest("hex");
    const remote=hash(Buffer.from(await resp.arrayBuffer())),expected=hash(await readFile(resolve(root,local)));
    report.live.push({path,status:resp.status,match:resp.ok&&remote===expected,remote,expected});

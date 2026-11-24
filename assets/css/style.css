@@ -894,6 +894,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 .lightbox-detail { color: var(--footer-ink); opacity: 0.85; text-align: center; margin: var(--space-2) 0 0; }
 .lightbox-btn {
   position: absolute;
+  z-index: 2;
   width: 48px;
   height: 48px;
   border-radius: 50%;

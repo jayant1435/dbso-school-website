@@ -176,20 +176,34 @@ async function checkPhotoViewer(name,width,selector,dialogId){
  try{
   await p.goto(base+"/"+name+".html",{waitUntil:"load"});
   const cards=p.locator(selector),dialog=p.locator("#"+dialogId);
-  const target=async i=>await cards.nth(i).evaluate(el=>({full:new URL(el.dataset.full,document.baseURI).href,preview:el.querySelector("img").currentSrc||el.querySelector("img").src}));
+  // Add test-only cache-busting query strings to guarantee that the selected
+  // full-resolution resources are distinct from any page/preloaded thumbnail.
+  const target=async i=>await cards.nth(i).evaluate((el,i)=>{
+    const u=new URL(el.dataset.full,document.baseURI);u.searchParams.set("qa-photo-race",String(i));
+    el.dataset.full=u.href;
+    const im=el.querySelector("img"), previews=[im.src,im.currentSrc].filter(Boolean);
+    (im.getAttribute("srcset")||"").split(",").map(x=>x.trim().split(/\s+/)[0]).filter(Boolean).forEach(x=>previews.push(new URL(x,document.baseURI).href));
+    return {full:u.href,previews};
+  },i);
   const first=await target(0),second=await target(1),third=await target(2);
+  let delayedRequests=0;
+  await p.route(url=>url.href===second.full,async route=>{
+    delayedRequests++;
+    await new Promise(r=>{releases.push(r);setTimeout(r,10000)});
+    await route.continue().catch(()=>{});
+  });
   async function waitReady(wanted){
     await p.waitForFunction(({id,url})=>{const el=document.querySelector("#"+id+" .lightbox-media");return el.dataset.photoState==="ready"&&el.querySelector("img")?.currentSrc===url;},{id:dialogId,url:wanted.full},{timeout:10000});
   }
   async function verifyNoWrong(wanted){
     const data=await dialog.locator(".lightbox-media").evaluate(el=>({target:el.dataset.photoTarget,images:[...el.querySelectorAll("img")].map(i=>i.currentSrc||i.src)}));
     assert.equal(data.target,wanted.full,"selected photo target");
-    assert.ok(data.images.every(url=>url===wanted.full||url===wanted.preview),"no previous or unrelated photograph: "+JSON.stringify(data));
+    assert.ok(data.images.every(url=>url===wanted.full||wanted.previews.includes(url)),"no previous or unrelated photograph: "+JSON.stringify(data));
   }
   await cards.nth(0).click();await waitReady(first);await dialog.locator(".lightbox-close").click();
-  // Delay full-image downloads. Thumbnails can remain visible if they belong to the selection.
-  await p.route(second.full,async route=>{await new Promise(r=>{releases.push(r);setTimeout(r,1800)});await route.continue().catch(()=>{});});
   await cards.nth(1).click();await verifyNoWrong(second);await p.waitForTimeout(250);await verifyNoWrong(second);
+  assert.ok(delayedRequests>0,"full-resolution download really delayed");
+  assert.equal(await dialog.locator(".lightbox-media").getAttribute("data-photo-state"),"loading","viewer remains loading while requested image is held");
   if(dialogId==="lightbox"){
     await dialog.locator(".lightbox-next").click();
   }else{

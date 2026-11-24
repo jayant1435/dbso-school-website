@@ -3,6 +3,9 @@ on:
   push:
     branches: [main]
     paths:
+      - '*.html'
+      - 'assets/css/**'
+      - 'assets/js/**'
       - 'qa/visual-audit.mjs'
       - '.github/workflows/visual-audit.yml'
   workflow_dispatch:
