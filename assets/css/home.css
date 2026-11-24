@@ -274,7 +274,7 @@ button.photo-card figcaption { text-align: left; }
 .photo-track {
   display: flex;
   width: max-content;
-  animation: life-scroll 32s linear infinite;
+  animation: life-scroll 16s linear infinite;
   will-change: transform;
 }
 @keyframes life-scroll {
@@ -289,6 +289,17 @@ button.photo-card figcaption { text-align: left; }
   width: 340px;
   margin-right: var(--space-4);
 }
+/* WL5-01 (W-LIFE5, browser-measured): a 2-line caption budget on strip
+   figcaptions, so all six cards share one height with uniform reserved
+   space. Task 354 extended it from <=600px to every width: the new
+   taekwondo caption wraps to 2 lines at every width (322px at 14px)
+   and the auditorium caption to 2 lines at <=860px (271px), so the old
+   "all captions 1 line above 600px" no longer holds (W-LIFE21
+   measure21.py, both models agreeing). The reserve is the 2-line
+   border-box height: 2 lines x 21px (0.875rem / 1.5) + padding 12 + 16
+   — a bare calc(2 * 1.5em) would be a no-op under border-box (the
+   1-line figcaption is already 49px tall). No copy touched. */
+.photo-strip .photo-card figcaption { min-height: calc(2 * 1.5em + var(--space-3) + var(--space-4)); }
 
 @media (max-width: 860px) {
   .photo-strip .photo-card {
@@ -302,21 +313,9 @@ button.photo-card figcaption { text-align: left; }
     width: 264px;
     margin-right: var(--space-3);
   }
-  /* WL5-01 (W-LIFE5, browser-measured 5/5 passes): at <=600px the
-     basketball caption wraps to 2 lines while football/dance stay on 1,
-     so the two 1-line cards carry a 21px blank band under their captions
-     (card 280px; 1-line content 259px = img 198 + margin-top 12 +
-     figcaption 49). Reserve a 2-line caption budget on strip
-     figcaptions only, so all three cards share one height with uniform
-     reserved space. The reserve is the 2-line border-box height: 2 lines
-     x 21px (0.875rem / 1.5) + padding 12 + 16 — a bare
-     calc(2 * 1.5em) would be a no-op under border-box (the 1-line
-     figcaption is already 49px tall). No copy touched; off above 600px,
-     where all captions are 1 line. */
-  .photo-strip .photo-card figcaption { min-height: calc(2 * 1.5em + var(--space-3) + var(--space-4)); }
 }
 
-/* Reduced motion: a static 3-card grid, duplicates hidden. */
+/* Reduced motion: a static 6-card grid, duplicates hidden. */
 @media (prefers-reduced-motion: reduce) {
   .photo-row.photo-strip { overflow: visible; }
   .photo-track {
