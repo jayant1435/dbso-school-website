@@ -286,6 +286,15 @@
         var i = list.indexOf(tab);
         if (e.key === "ArrowRight") { var n = list[(i + 1) % list.length]; n.focus(); n.click(); }
         if (e.key === "ArrowLeft") { var p = list[(i - 1 + list.length) % list.length]; p.focus(); p.click(); }
+        /* Task 190 (W-ACA6 F2): Home/End jump to first/last tab, per the
+           tabs pattern this handler already follows (roving tabindex,
+           aria-selected, arrow keys). preventDefault only here: Home/End
+           natively scroll the page to top/bottom, arrows do not scroll a
+           button. [audit-ai-design-slop: established UI failure — keyboard
+           focus; impeccable craft-floor States: keyboard focus is a
+           first-class state] */
+        if (e.key === "Home") { e.preventDefault(); var f = list[0]; f.focus(); f.click(); }
+        if (e.key === "End") { e.preventDefault(); var l = list[list.length - 1]; l.focus(); l.click(); }
       });
     });
   }
