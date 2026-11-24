@@ -267,6 +267,31 @@
     });
   }
 
+  /* Syllabus picker (Academics page, wsyl task 120): one native select
+     drives the single "open syllabus" link. Native <select> keeps arrow
+     keys, type-ahead and touch free — no custom key handling. The change
+     swaps the link href + label to the chosen option's PDF; the action
+     replays the site's panel-in (transform + opacity only) so the swap
+     reads as a state change. No-JS is covered in markup (<noscript> list),
+     not here; if this script fails to load, the link still opens the
+     default (UKG) PDF. */
+  var syllabusSelect = document.getElementById("syllabus-select");
+  var syllabusOpen = document.getElementById("syllabus-open");
+  var syllabusAction = document.querySelector(".syllabus-action");
+  if (syllabusSelect && syllabusOpen) {
+    syllabusSelect.addEventListener("change", function () {
+      var opt = syllabusSelect.options[syllabusSelect.selectedIndex];
+      if (!opt) return;
+      syllabusOpen.href = opt.value;
+      syllabusOpen.textContent = "Open " + opt.text + " syllabus (PDF)";
+      if (syllabusAction) {
+        syllabusAction.classList.remove("swap");
+        void syllabusAction.offsetWidth;
+        syllabusAction.classList.add("swap");
+      }
+    });
+  }
+
   /* Gallery lightbox */
   var lightbox = document.getElementById("lightbox");
   if (lightbox) {
