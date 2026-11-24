@@ -936,7 +936,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
    the generic .back-link ("Home", above every detail-page title) measured
    25px tall at 390px — a standalone navigation control, not running text.
    better-ui ("one spacing system", "4px steps"): reuses the contact
-   page's own solved pattern (.page-contact .back-link, details.css:465) —
+   page's own solved pattern (.page-contact .back-link, details.css) —
    12px block padding inside a -12px block margin, so the visible gap
    above/below the link does not move: before, 25px box + 20px bottom
    margin = 45px total; after, -12px margin + 49px box + 8px margin = 45px
@@ -1119,7 +1119,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
 }
 .footer-col ul { list-style: none; padding: 0; margin: 0; }
 .footer-col li { font-size: 0.92rem; line-height: 1.45; }
-/* Explore has 8 links — two columns so it stops being the tallest column. */
 .footer-col a { color: var(--footer-ink); text-decoration: none; transition: color 0.15s var(--ease-out); }
 .footer-col a:hover { color: var(--paper); text-decoration: underline; }
 .footer-col p { color: var(--footer-mute); font-size: 0.92rem; line-height: 1.5; margin-bottom: var(--space-3); }
@@ -1285,7 +1284,7 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
    every column carries content at every width. Tokens only; blue + gold
    palette untouched, no new colour, font or size. Figcaptions go
    (design-taste house rule 1: no caption under an image — the h3 already
-   says what the picture is; precedent details.css:703). Image keeps its
+   says what the picture is; precedent details.css). Image keeps its
    native 3 / 2 so no group face is cropped (the old .photo-row forced
    4 / 3). Flip row puts the second photo on the right; on phones both
    rows stack photo-first, so the photograph — the whole record here,
@@ -1386,9 +1385,7 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
   .photo-row { grid-template-columns: minmax(0, 1fr); }
   .gallery-grid { grid-template-columns: minmax(0, 1fr); }
   .pillar { grid-template-columns: 52px minmax(0, 1fr); gap: var(--space-4); }
-  .pillar-numeral { font-size: 1.9rem; }
   .summary-grid { grid-template-columns: minmax(0, 1fr); }
-  .lineage-wide { grid-template-columns: minmax(0, 1fr); }
   /* v24: the name column was 117px against a ~117px name — one rounding
      pixel wrapped it to two lines. Narrower position + padding + gap and a
      1rem name give every topper ~20px of slack at 360px. */
@@ -1423,7 +1420,7 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
 /* Task 189 (continued): at 320px the 24px sides above still leave the h2
    3 lines (240px column vs 255.8px needed), so the narrowest phones get
    12px sides — 264px column, 8.2px slack. The 360px breakpoint already
-   exists in details.css:445. */
+   exists in details.css. */
 @media (max-width: 360px) {
   .cta-band { padding-inline: var(--space-3); }
 }
@@ -1608,7 +1605,7 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
 
 @media (max-width: 768px) {
   /* Gold marker under every group heading: the token's own use —
-     "accent marks only: rules, dots, separators" (style.css:19). */
+     "accent marks only: rules, dots, separators" (style.css). */
   .site-footer .footer-col h3::after {
     content: "";
     display: block;

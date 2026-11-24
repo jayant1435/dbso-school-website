@@ -337,7 +337,7 @@ section[aria-label="How learning works"] .split > figure { align-self: center; }
 
 /* ---------- 44px targets, 8px gaps: interaction-design, taste tap-size ----------
    .btn-small was 42px; album pills + toggles 26-33px; footer links 20px.
-   B3-E v36 (P3-1): .btn-small 44px deleted here — base style.css:301
+   B3-E v36 (P3-1): .btn-small 44px deleted here — base style.css
    already carries it; the duplicate misled the next editor. */
 /* ASSEMBLY EDIT 23 Nov (v30): footer-link 44px rule REMOVED — B3-D's
    `.footer-col a { display: block; padding: var(--space-3) 0; }` rebuilt
@@ -999,7 +999,7 @@ section[aria-label="Documents needed"] .home-links .btn:active {
 /* ---------- W-K FIX 1 (v41): Celebrations split on mobile ----------
    Measured BEFORE (life.html, section[aria-label="Celebrations and
    events"]): overflowX 0 at every width; the split ALREADY stacks to one
-   358px column at <=860px (style.css:1376, incumbent — left untouched);
+   358px column at <=860px (style.css, incumbent — left untouched);
    figure 358x272, img 358x239, no clipping, no wide descendants. What
    was awkward: h2 "Celebrations and events" 30.4px fills 341px of the
    358px column at 390px (17px slack — one narrower phone wraps it to a
@@ -1009,22 +1009,17 @@ section[aria-label="Documents needed"] .home-links .btn:active {
    typography (2px type-scale steps): 30.4px -> 28px (1.75rem) at
    <=600px, so the heading is ~314px wide — fits 390px with 44px slack
    and 360px with 14px. (text-wrap: balance + overflow-wrap on headings
-   are already site-wide, style.css:106 — not re-declared here.)
+   are already site-wide, style.css — not re-declared here.)
    better-ui (cut text that wraps to a lonely last word): text-wrap:
    pretty on this section's tick spans at ALL widths — the site already
-   uses text-wrap: pretty on body copy (style.css:118), so this extends
+   uses text-wrap: pretty on body copy (style.css), so this extends
    the incumbent language, it does not introduce one. No copy changed,
    no new colours, fonts or spacing. Desktop split untouched (the size
    rule is <=600px only). */
 section[aria-label="Celebrations and events"] .tick-list li span {
   text-wrap: pretty;
 }
-@media (max-width: 600px) {
-  section[aria-label="Celebrations and events"] h2 {
-    font-size: 1.75rem;
-    line-height: 1.2;
-  }
-}
+
 
 /* ===== W-X2 (wave 7, 23 Nov 2026) =====
    Hallmark · patch: two tablet-only alignment fixes · system: incumbent
@@ -1045,7 +1040,7 @@ section[aria-label="Celebrations and events"] .tick-list li span {
    in spacing) + audit-ai-design-slop (established UI failure: visual
    hierarchy that contradicts task importance): the strip stacks to one
    column at 601-860px, exactly the layout already proven at <=600px
-   (style.css:1404-1405, same gap + divider tokens) — every label and
+   (style.css, same gap + divider tokens) — every label and
    value is 1 line and all three values align. Scoped with
    .page-head + .dates-strip so the home strip (which follows a section,
    not .page-head) keeps its 3 columns at tablet widths. Desktop
@@ -1057,13 +1052,13 @@ section[aria-label="Celebrations and events"] .tick-list li span {
 
 /* ---- FIX 2 (P2): facilities photo row orphan at 601-860px ----
    Measured BEFORE (facilities.html, 768px + 834px): .photo-row is 2
-   columns at <=860px (style.css:1378) but holds 3 photos, so the chess
+   columns at <=860px (style.css) but holds 3 photos, so the chess
    photo sits alone in row 2 with a 352px empty slot at its right
    (768px: football + basketball row 1, chess alone row 2).
    better-ui (align everything to a single grid) + audit-ai-design-slop
    (accidental inconsistency; ragged last row): the row is 3 columns at
    601-860px, so all three photos share one even row — the site's own
-   established answer to an orphan (staff-grid comment, style.css:1386:
+   established answer to an orphan (staff-grid comment, style.css:
    "three columns leaves no orphan card on the last row"). No crop
    change, no new aspect: the 4/3 frames stay 4/3, just narrower
    (229px at 768px, 251px at 834px). Scoped to the Grounds section so
@@ -1173,8 +1168,8 @@ section[aria-label="Celebrations and events"] .tick-list li span {
    52-54px vs the normal 16px. The reserve is DELETED (no min-height
    anywhere on this list now) and the panels are equalised by geometry
    instead: at <=860px the list keeps the 2 columns it already has
-   above 860px (style.css:787, columns: 2) instead of collapsing to 1
-   (style.css:1400). Every stream then has exactly 2 rows — Science /
+   above 860px (style.css, columns: 2) instead of collapsing to 1
+   (style.css). Every stream then has exactly 2 rows — Science /
    Commerce 2+1, Humanities 2+2 — so all three lists are the same height
    with zero reserved space, and the last-subject gap stays the normal
    16px token on every tab. No copy change, no font change, no new
@@ -1268,9 +1263,7 @@ section[aria-label="Celebrations and events"] .tick-list li span {
    the column never widens past 542px, so the ≥861px branch never needs an
    upper bound. Scoped to the "How to apply" section so the Documents /
    Uniform / rules check-lists (all 1 line everywhere) are untouched. */
-@media (max-width: 769px), (min-width: 861px) {
-  .section[aria-label="How to apply"] .check-list > li { min-height: calc(2 * 1.65em + var(--space-2)); }
-}
+
 
 /* ---- FIX 2 (P2, A8 F2): videos long-grid rows uneven — PARTIAL ----
    Measured BEFORE (videos.html, v54): within every row the spread is 0
@@ -1322,7 +1315,7 @@ section[aria-label="Celebrations and events"] .tick-list li span {
    (covers 320/360) and 861–1200px (covers 1024, where the 3-col card is
    narrowest) — and raise the matching h3 reserve beside it from
    calc(2 * 1.3em) to calc(3 * 1.3em) in the same bands, so rows stay
-   level. The base clamp (style.css:525, site-wide, 2 lines) is untouched;
+   level. The base clamp (style.css, site-wide, 2 lines) is untouched;
    this scoped override wins by specificity (.videos-long .card-body h3
    beats .card-body h3) and details.css loads after style.css. The wide
    last card stays excluded from the reserve at ≥601px by the FIX 2 rule
@@ -1351,7 +1344,7 @@ section[aria-label="Celebrations and events"] .tick-list li span {
    inconsistency, P3) + better-ui (one spacing system): the first item
    gets the identical divider box — a transparent top border (no visible
    line added above the first row) plus the same padding-top — in both
-   stacked bands (≤600px, style.css:1404–1405; 601–860px, details.css
+   stacked bands (≤600px, style.css; 601–860px, details.css
    FIX 1 above), so all three rows are exactly 67px. Scoped with
    .page-head + .dates-strip so the home strip is untouched. */
 @media (max-width: 600px) {
@@ -1528,11 +1521,11 @@ html.js .awards-nav {
 /* ===== v59+ W-AB6 (task 121): About CTA white gap below the band =====
    CAUSE (measured BEFORE, all widths): 128px of page-background white
    below the band = the CTA section's own 64px bottom padding
-   (.section, style.css:416, --space-8) PLUS the footer's 64px top margin
-   (.site-footer, style.css:1119, --space-8), stacked. No min-height
+   (.section, style.css, --space-8) PLUS the footer's 64px top margin
+   (.site-footer, style.css, --space-8), stacked. No min-height
    reserve, no removed element, no reveal artefact — a plain spacing
    stack. About does not load home.css, so home's identical W4 fix
-   (home.css:532-538, same 128px stack -> 32px total) never reached it.
+   (home.css, same 128px stack -> 32px total) never reached it.
    FIX (mirrors home exactly, so the CTA keeps one rhythm site-wide):
    section padding 64/64 -> 32 top / 16 bottom; footer margin-top
    64 -> 16. Below-band total: 16 + 16 = 32px. Above-band total:
@@ -1563,11 +1556,11 @@ body.page-about .site-footer { margin-top: var(--space-4); }
    CAUSE (static, identical at 390/768/834/1440/1536 — no media query
    touches .section padding-bottom or .site-footer margin-top):
    below-band gap = CTA section padding-bottom + footer margin-top.
-   Unfixed pages: 64px (.section, style.css:416, --space-8) + 64px
-   (.site-footer, style.css:1106, --space-8) = 128px. Admissions
-   "Questions" was half-fixed already (details.css:536, section bottom
-   24px) = 24 + 64 = 88px. index (home.css:543-551) and about
-   (details.css:1495-1520) were already fixed to 32px total by the
+   Unfixed pages: 64px (.section, style.css, --space-8) + 64px
+   (.site-footer, style.css, --space-8) = 128px. Admissions
+   "Questions" was half-fixed already (details.css, section bottom
+   24px) = 24 + 64 = 88px. index (home.css) and about
+   (details.css) were already fixed to 32px total by the
    same two-value cut and are left untouched.
    FIX (mirrors the home + About precedent exactly, so the CTA keeps
    one rhythm site-wide): section padding 64/64 -> 32 top / 16 bottom;

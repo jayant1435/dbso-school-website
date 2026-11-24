@@ -431,12 +431,12 @@ section[aria-label="The Preventive System"] { padding-top: var(--space-5); }
 /* W-HOME13 task 285 (wave 11, Jayant 24 Nov 11:53 IST refinement):
    the gold bar is KEPT (site-wide motif — never removed). Only the
    image-above-bar float is fixed, and ONLY where the split stacks
-   (<=860px, style.css:1342) so the image actually sits above the bar —
+   (<=860px, style.css) so the image actually sits above the bar —
    desktop is untouched, exactly as briefed. Cause (measured, static):
    inside a stacked split the bar sat 8px below the figure (Preventive:
    figure margin-bottom 8px; beacon: figure margin 0) and 24px above its
    heading (.gold-rule margin-bottom 24px; the h2's 64px top margin is
-   already zeroed by .split > * > h2:first-of-type, style.css:433) —
+   already zeroed by .split > * > h2:first-of-type, style.css) —
    nearer the photo than its heading, so it read as part of the photo.
    Fix: at <=860px only, margin-top 24px above the bar and margin-bottom
    12px below it. Margins collapse to max(8, 24) = 24px above the bar
@@ -695,3 +695,9 @@ html:not(.js) .wm-club-name { white-space: normal; overflow-wrap: anywhere; }
 
 /* v116: fallback value rail uses a single full-width last card rather than an orphan. */
 html:not(.js) .wm-values-stage .wm-value-slide:last-child { grid-column: 1 / -1; }
+
+/* Keep the welcome heading and introduction ahead of its portrait on stacked layouts. */
+@media (max-width: 860px) {
+  section[aria-label="Welcome from the school"] .split > .reveal:first-child { order: 2; }
+  section[aria-label="Welcome from the school"] .gold-rule { margin-top: 0; }
+}

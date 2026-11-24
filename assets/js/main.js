@@ -1076,7 +1076,7 @@
         var minCard = window.innerWidth >= PEEK_BP ? 232 : 200;
         var desired = halfMode
           ? Math.floor((stageW - Math.max(minCard, Math.floor((stageW - 32) / 2))) / 2)
-          : window.innerWidth >= PEEK_BP ? 112 : 44;
+          : (parseFloat(window.getComputedStyle(stage).getPropertyValue("--values-peek")) || (window.innerWidth >= PEEK_BP ? 112 : 44));
         return Math.max(0, Math.min(desired, Math.floor((stageW - minCard) / 2)));
       }
       function offsetFor(p) { return peek() - p * step; }

@@ -4,15 +4,32 @@ Original source: the 247 task IDs marked ongoing in the supplied handover tracke
 
 | Status | Count |
 | --- | ---: |
-| Implementation or source correction recorded, visual verification pending | 157 |
+| Implementation or source correction recorded, visual verification pending | 174 |
 | Superseded or stale patch reconciled, verification pending | 7 |
 | Requires additional evidence, real-device/independent QA, or external access | 15 |
-| Still to review or implement | 68 |
+| Still to review or implement | 51 |
 | Total | 247 |
 
 No entries are formally signed off yet under the original handover's required independent, live and visual verification protocol. Some implementation entries represent partial fixes.
 
 ## Implemented or addressed, QA pending
+- [ ] #231
+- [ ] #237
+- [ ] #247
+- [ ] #256
+- [ ] #313
+- [ ] #347
+- [ ] #357
+- [ ] #388
+- [ ] #393
+- [ ] #394
+- [ ] #410
+- [ ] #411
+- [ ] #412
+- [ ] #413
+- [ ] #415
+- [ ] #422
+- [ ] #444
 - [ ] #37
 - [ ] #38
 - [ ] #61
@@ -215,19 +232,14 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #198
 - [ ] #203
 - [ ] #210
-- [ ] #231
-- [ ] #237
-- [ ] #247
 - [ ] #252
 - [ ] #254
 - [ ] #255
-- [ ] #256
 - [ ] #257
 - [ ] #258
 - [ ] #274
 - [ ] #293
 - [ ] #308
-- [ ] #313
 - [ ] #317
 - [ ] #320
 - [ ] #324
@@ -238,8 +250,6 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #337
 - [ ] #341
 - [ ] #346
-- [ ] #347
-- [ ] #357
 - [ ] #358
 - [ ] #360
 - [ ] #363
@@ -251,22 +261,12 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #382
 - [ ] #383
 - [ ] #384
-- [ ] #388
 - [ ] #389
 - [ ] #390
-- [ ] #393
-- [ ] #394
 - [ ] #399
 - [ ] #404
-- [ ] #410
-- [ ] #411
-- [ ] #412
-- [ ] #413
-- [ ] #415
 - [ ] #420
 - [ ] #421
-- [ ] #422
-- [ ] #444
 - [ ] #445
 
 ## Verification
@@ -334,3 +334,7 @@ The initial v118 browser run reported 52/64 passing, with 12 failures due to cou
 - #401: principal figure after quote and attribution on mobile in v119.
 - #409: house-modal link ends with nonbreaking arrow.
 Browser QA v119: 64/64 checks passed, plus four legacy redirect checks with no failures. Run: https://github.com/jayant1435/dbso-school-website/actions/runs/45425918565. New v120 assertions extend those checks; no visual sign-off yet.
+
+### v121 source reconciliation
+- Addressed IDs: #231, #237, #247, #256, #313, #347, #357, #388, #393, #394, #410, #411, #412, #413, #415, #422, #444. Removed obsolete rules and stale line-number references rather than retaining fragile line citations; corrected the award caption using the handover's photo evidence; connected the slider peek setting to CSS; restored consistent heading sizes and natural checklist heights; reordered the stacked welcome section. Visual verification remains pending.
+- v120: 64/64 automated checks passed (Actions run 45426603182); v121 extends the breakpoint matrix. This is not independent visual or live deployment sign-off.

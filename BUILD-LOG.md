@@ -72,3 +72,8 @@ Checks: anchored edits against fetched v109 source, static structural and sizing
 - 36 gallery headings use the shared gold rule. Remove eight exact repeated video descriptions; preserve meaningful descriptions, videos, thumbnails and links. Replace heavy placeholder image with transparent placeholder. Video grids keep normal image ratio and balanced final row.
 - Shared content card gap, title type, readable names/descriptions, hover treatment and 48px pillar controls; footer and syllabus headings use display font. Tile grid stretches equal-height rows. Fee table gets a small-screen scroll hint; enquiry form stretches to available height on desktop. Preserve all fee values and official school facts.
 - Reconcile 35 further task entries in the public ledger, including older tasks superseded by merges. All need task-specific visual QA or confirmation, no formal sign-off. Gallery mosaic intentionally preserved. Keep the published admission deadline in notices and ticker while applicable.
+
+## v121 — responsive cleanup and broader QA
+- Retired shadowed layout rules and stale CSS line citations, made the values slider consume its declared peek size, normalized the celebrations heading and admissions list rhythm, and placed the welcome copy before its portrait on stacked layouts.
+- Clarified the 2026 Telegraph award caption based on the original handover's photo evidence.
+- Expanded browser coverage to 14 widths; v120 baseline passed 64/64 checks. v121 verification pending.

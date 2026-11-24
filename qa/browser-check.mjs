@@ -5,7 +5,7 @@ import { resolve, extname, sep } from "node:path";
 import assert from "node:assert/strict";
 const root = process.cwd();
 const pages = ["index","about","academics","admissions","life","gallery","news","contact"];
-const sizes = [320,390,768,834,1440,1536];
+const sizes = [320,360,390,601,650,768,834,861,890,960,1024,1100,1440,1536];
 const types = {".html":"text/html; charset=utf-8",".css":"text/css",".js":"text/javascript",".webp":"image/webp",".jpg":"image/jpeg",".jpeg":"image/jpeg",".png":"image/png",".svg":"image/svg+xml",".woff2":"font/woff2",".ico":"image/x-icon"};
 const server = createServer(async (req,res)=>{
   try {
