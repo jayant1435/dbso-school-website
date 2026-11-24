@@ -305,6 +305,45 @@
       var btn = items[current];
       lbImg.src = btn.getAttribute("data-full");
       lbImg.alt = btn.getAttribute("data-alt") || "";
+      preloadLbNeighbours();
+    }
+    /* Neighbour preload (WGAL7-02): fetch the two adjacent full-res photos
+       while the current one is on screen, so Next/Prev never shows a dark
+       box on a slow connection. Runs on open and on every photo change. */
+    function preloadLbNeighbours() {
+      [current - 1, current + 1].forEach(function (i) {
+        var n = (i + items.length) % items.length;
+        var img = new Image();
+        img.src = items[n].getAttribute("data-full");
+      });
+    }
+    /* Background inerting (WGAL7-01): while the viewer is open the page
+       behind it is inert, so a screen reader's virtual cursor cannot wander
+       into the 263-photo page — the Tab trap alone does not stop browse
+       mode. The viewer itself lives inside <main>, so main is NOT inerted
+       whole: its other children are, plus the header, footer, and the
+       body-level controls (announce bar, mobile menu, back-to-top). */
+    var lbBackground = [
+      document.querySelector(".announce"),
+      header,
+      document.querySelector(".site-footer"),
+      document.getElementById("menu-backdrop"),
+      document.getElementById("mobile-menu"),
+      document.querySelector(".to-top")
+    ];
+    function setLbBackgroundInert(on) {
+      lbBackground.forEach(function (el) {
+        if (!el) return;
+        if (on) el.setAttribute("inert", "");
+        else el.removeAttribute("inert");
+      });
+      var mainEl = document.getElementById("main");
+      if (!mainEl) return;
+      Array.prototype.slice.call(mainEl.children).forEach(function (child) {
+        if (child === lightbox) return;
+        if (on) child.setAttribute("inert", "");
+        else child.removeAttribute("inert");
+      });
     }
     var lbTimer = null;
     function openLb(i) {
@@ -315,6 +354,7 @@
       lightbox.classList.add("open");
       lightbox.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
+      setLbBackgroundInert(true);
       lightbox.querySelector(".lightbox-close").focus();
     }
     /* Close fades out (CSS .closing, 180ms) instead of vanishing — the
@@ -331,6 +371,7 @@
       lightbox.classList.remove("open", "closing");
       lightbox.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
+      setLbBackgroundInert(false);
       if (lbLastFocus && lbLastFocus.focus) lbLastFocus.focus();
     }
     items.forEach(function (btn) {
