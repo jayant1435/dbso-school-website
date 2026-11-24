@@ -441,3 +441,49 @@ section[aria-label="The Preventive System"] .split > div:first-child figure { ma
   .wm-values .wm-dots { gap: 4px; }
   .wm-values .wm-dot { width: 24px; min-width: 0; } /* height stays 44px */
 }
+
+/* W-HOME13 task 284 (wave 11, Jayant 24 Nov 11:50 IST): close the
+   values→photo gap. Cause (measured, static): the gap is pure section
+   padding — .section padding-bottom 64px (Clubs section) + .section
+   padding-top 64px (Preventive section) = 128px at EVERY width, no
+   breakpoint touches .section padding; the values nav adds 0px to it
+   (nav row is 16px margin-top + 44px tall, and sits above the padding)
+   and no height is reserved anywhere (JS measure() sets only
+   --values-card-w; no min-height on the stage in either path).
+   Scoped to these two sections only — the 64px site rhythm is untouched
+   elsewhere. 24 + 24 = 48px total, the site's own inter-block step
+   (.section-head margin-bottom is also 48px). No markup, no JS, no
+   slider chrome (W-HOME14 owns the chrome), no clubs (W-HOME15).
+   (better-ui: 4px spacing scale, one rhythm; no-ai-design-slop:
+   proximity — the photo now follows the values container instead of
+   floating a section-break away; design-system: tokens only.) */
+section[aria-label="Clubs, houses and values"] { padding-bottom: var(--space-5); }
+section[aria-label="The Preventive System"] { padding-top: var(--space-5); }
+
+/* W-HOME13 task 285 (wave 11, Jayant 24 Nov 11:53 IST refinement):
+   the gold bar is KEPT (site-wide motif — never removed). Only the
+   image-above-bar float is fixed, and ONLY where the split stacks
+   (<=860px, style.css:1342) so the image actually sits above the bar —
+   desktop is untouched, exactly as briefed. Cause (measured, static):
+   inside a stacked split the bar sat 8px below the figure (Preventive:
+   figure margin-bottom 8px; beacon: figure margin 0) and 24px above its
+   heading (.gold-rule margin-bottom 24px; the h2's 64px top margin is
+   already zeroed by .split > * > h2:first-of-type, style.css:433) —
+   nearer the photo than its heading, so it read as part of the photo.
+   Fix: at <=860px only, margin-top 24px above the bar and margin-bottom
+   12px below it. Margins collapse to max(8, 24) = 24px above the bar
+   and 12px below it — the bar now sits 2x nearer its heading than the
+   image, i.e. attached to the heading. Scoped to the two HOME sections
+   with this pattern (Welcome/beacon figure + Preventive photo); every
+   other image-above-bar spot site-wide belongs to W-HOME16.
+   Decision: ATTACH, not remove (refinement left the choice to the
+   worker; removal would break the motif on mobile only).
+   (no-ai-design-slop: proximity before containers; better-ui: 4px
+   spacing scale; design-system: tokens only; Hallmark floor 1.) */
+@media (max-width: 860px) {
+  section[aria-label="Welcome from the school"] .gold-rule,
+  section[aria-label="The Preventive System"] .gold-rule {
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-3);
+  }
+}
