@@ -414,7 +414,6 @@ figcaption {
 /* ---------- Sections ---------- */
 
 .section { padding-top: var(--space-8); padding-bottom: var(--space-8); }
-.section-tight { padding-top: var(--space-8); padding-bottom: var(--space-8); }
 .section-band { background: var(--band); }
 .section-warm { background: var(--paper-warm); }
 
