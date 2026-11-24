@@ -1203,7 +1203,7 @@
     }
   })();
 
-  /* ---------- ITEM 7: Life at Bosco strip — drag interrupts the
+  /* ---------- ITEM 7: Campus strip — drag interrupts the
      16s CSS auto-scroll, then it resumes from the dragged spot. ----------
      Task 354: prev/next buttons + counter removed (markup + CSS +
      wiring); drag, arrow keys and focus handling unchanged.
@@ -1222,7 +1222,7 @@
     });
     if (reduceMotion) return;
     strip.setAttribute("tabindex", "0");
-    strip.setAttribute("aria-label", "Life at Bosco photographs — drag or use arrow keys to move the row");
+    strip.setAttribute("aria-label", "Campus photographs — drag or use arrow keys to move the row");
     var pause = document.querySelector(".life-strip-pause");
     if (pause) pause.addEventListener("click", function () {
       var paused = pause.getAttribute("aria-pressed") !== "true";

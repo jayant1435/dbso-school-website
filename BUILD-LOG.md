@@ -60,3 +60,9 @@ Checks: anchored edits against fetched v109 source, static structural and sizing
 ## v118 — verification infrastructure
 - Reconciled all 247 original ongoing IDs in TASK-STATUS.md, with implementation, superseded, evidence-dependent and remaining categories. No false completion claims.
 - Added browser QA for all eight pages at six viewport widths, no-JS and reduced-motion modes, mobile menu and photo-strip controls, and legacy redirects. Runs in GitHub Actions; no production dependency introduced. Results are not yet confirmed.
+
+## v119 — concise navigation, fuller staff profiles and QA repair
+- Rename Life at Bosco to Campus and News & Notices to Notices, including navigation, footer, page headings and matching CSS/JS labels. Keep original routes and school crest.
+- Expand Office and Support Staff descriptions without inventing personnel or unsupported school-specific duties; equal-width photo/text pairs on desktop and natural stacking on smaller screens.
+- Readability, control sizes, text wrapping, field/tab tokens, photo balance and video duration/link improvements. Ledger records 22 additional addressed/reconciled IDs, all pending verification.
+- Fix QA's false icon-count failure caused by two legitimate aria-hidden clones, retaining scope and accessibility assertions. Previous run 52/64. No release sign-off yet.

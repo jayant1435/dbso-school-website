@@ -1461,7 +1461,7 @@ section[aria-label="Celebrations and events"] .tick-list li span {
    (component tokens: --blue/--paper/--line-strong, --space-* steps):
    the strip keeps its settled 36s auto-scroll, and the visitor can
    also drive it by hand — pointer drag, prev/next buttons, or arrow
-   keys — exactly like the Life at Bosco strip (home.css .photo-strip
+   keys — exactly like the Campus strip (home.css .photo-strip
    + main.js lifeStripDrag). Drag freezes the animation at its current
    offset (JS reads the computed transform first, so there is no
    jump); release resumes it from the dragged spot via a negative
@@ -1767,3 +1767,10 @@ section[aria-label="Mission and values"] .wm-value-slide .value-name { font-size
 .awards-slider .award-slide--portrait img { object-fit: contain; object-position: center; }
 .awards-hint { margin-bottom: var(--space-5); }
 @media (prefers-reduced-motion: reduce) and (min-width: 601px) { .awards-track { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+
+/* v119: keep merged gallery video labels readable at intermediate widths. */
+.videos-long .card-link, .videos-shorts .card-link { display:flex; flex-wrap:wrap; align-items:center; gap:var(--space-2); }
+.videos-long .card-link a, .videos-shorts .card-link a { min-width:0; }
+.videos-long .card-body > p:not(.card-link), .videos-shorts .card-body > p:not(.card-link) { overflow:visible; display:block; -webkit-line-clamp:unset; }
+section[aria-label="Our story"] .lineage-row { min-width:0; }
+section[aria-label="Contact details and enquiry form"] button[type="submit"] { width:100%; }

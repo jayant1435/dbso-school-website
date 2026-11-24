@@ -4,10 +4,10 @@ Original source: the 247 task IDs marked ongoing in the supplied handover tracke
 
 | Status | Count |
 | --- | ---: |
-| Implementation or source correction recorded, visual verification pending | 100 |
+| Implementation or source correction recorded, visual verification pending | 122 |
 | Superseded or stale patch reconciled, verification pending | 7 |
 | Requires additional evidence, real-device/independent QA, or external access | 15 |
-| Still to review or implement | 125 |
+| Still to review or implement | 103 |
 | Total | 247 |
 
 No entries are formally signed off yet under the original handover's required independent, live and visual verification protocol. Some implementation entries represent partial fixes.
@@ -114,6 +114,29 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #442
 - [ ] #443
 
+- [ ] #94
+- [ ] #134
+- [ ] #143
+- [ ] #168
+- [ ] #181
+- [ ] #197
+- [ ] #205
+- [ ] #222
+- [ ] #225
+- [ ] #291
+- [ ] #315
+- [ ] #335
+- [ ] #339
+- [ ] #340
+- [ ] #342
+- [ ] #343
+- [ ] #344
+- [ ] #345
+- [ ] #365
+- [ ] #371
+- [ ] #374
+- [ ] #402
+
 ## Superseded or stale patch reconciled, QA pending
 - [ ] #417
 - [ ] #418
@@ -143,44 +166,35 @@ No entries are formally signed off yet under the original handover's required in
 ## Remaining review or implementation
 - [ ] #56
 - [ ] #72
-- [ ] #94
 - [ ] #105
 - [ ] #106
 - [ ] #108
-- [ ] #134
 - [ ] #138
-- [ ] #143
 - [ ] #146
 - [ ] #148
 - [ ] #149
 - [ ] #157
 - [ ] #158
 - [ ] #167
-- [ ] #168
 - [ ] #169
 - [ ] #173
 - [ ] #174
 - [ ] #175
 - [ ] #176
 - [ ] #177
-- [ ] #181
 - [ ] #182
 - [ ] #183
 - [ ] #184
 - [ ] #185
 - [ ] #192
 - [ ] #193
-- [ ] #197
 - [ ] #198
 - [ ] #203
 - [ ] #204
-- [ ] #205
 - [ ] #207
 - [ ] #210
 - [ ] #216
 - [ ] #220
-- [ ] #222
-- [ ] #225
 - [ ] #231
 - [ ] #234
 - [ ] #237
@@ -192,14 +206,12 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #257
 - [ ] #258
 - [ ] #274
-- [ ] #291
 - [ ] #293
 - [ ] #306
 - [ ] #307
 - [ ] #308
 - [ ] #312
 - [ ] #313
-- [ ] #315
 - [ ] #316
 - [ ] #317
 - [ ] #320
@@ -215,17 +227,10 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #332
 - [ ] #333
 - [ ] #334
-- [ ] #335
 - [ ] #336
 - [ ] #337
 - [ ] #338
-- [ ] #339
-- [ ] #340
 - [ ] #341
-- [ ] #342
-- [ ] #343
-- [ ] #344
-- [ ] #345
 - [ ] #346
 - [ ] #347
 - [ ] #357
@@ -233,10 +238,7 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #360
 - [ ] #363
 - [ ] #364
-- [ ] #365
-- [ ] #371
 - [ ] #372
-- [ ] #374
 - [ ] #379
 - [ ] #380
 - [ ] #381
@@ -253,7 +255,6 @@ No entries are formally signed off yet under the original handover's required in
 - [ ] #398
 - [ ] #399
 - [ ] #401
-- [ ] #402
 - [ ] #404
 - [ ] #409
 - [ ] #410
@@ -269,3 +270,28 @@ No entries are formally signed off yet under the original handover's required in
 
 ## Verification
 At v117, repository-source inspection checked 13 HTML files, 1,265 local references, 30 fragments, image alt attributes, unique IDs and ARIA references; no errors were found in those checks. JavaScript syntax was validated. Seven generated value assets and no old sprite remain. These are static results, not live browser sign-off.
+
+### v119 implementation/reconciliation notes (QA pending)
+- #94: legacy routes redirect to merged sections.
+- #134: mobile footer layout superseded by v115.
+- #143: portrait containment and slider already implemented.
+- #168: 65ch stacked split paragraphs.
+- #181: center curriculum figure.
+- #197: existing lazy lightbox placeholder.
+- #205: shortened club instructions.
+- #222: duration labels never wrap internally.
+- #225: eight primary pages have active navigation; four legacy redirects.
+- #291: existing eight-reason balanced grid from earlier brief.
+- #315: gold heading rule already present in merged fee section.
+- #335: Managing Committee removed per brief.
+- #339: 44px pillar dot tap targets.
+- #340: video links underline.
+- #342: full-width form submit.
+- #343: shared field radius.
+- #344: shared tab radius.
+- #345: 8px award markers.
+- #365: shortened stationery copy.
+- #371: avoid priority item column breaks.
+- #374: science slide uses existing seminar photo instead of square poster.
+- #402: facilities merged on current source rather than stale patch.
+The initial v118 browser run reported 52/64 passing, with 12 failures due to counting the two intentional core-value carousel clones. The updated test distinguishes original slides, checks that clones are aria-hidden, and checks every illustrated image remains inside a value slide. New run not yet verified.

@@ -172,7 +172,7 @@
   .pillar-count { font-size: 0.9rem; color: var(--ink-soft); font-weight: 600; white-space: nowrap; }
 }
 
-/* ---------- Life at Bosco: captioned photo cards ---------- */
+/* ---------- Campus: captioned photo cards ---------- */
 
 .photo-card {
   margin: 0;
@@ -198,15 +198,15 @@ button.photo-card figcaption { text-align: left; }
 .photo-card img { border-radius: 0; }
 .photo-card img:hover { box-shadow: none; }
 .photo-card figcaption { padding: var(--space-3) var(--space-4) var(--space-4); }
-/* W2 PATCH — Life at Bosco infinite scroll (qa-v28).
+/* W2 PATCH — Campus infinite scroll (qa-v28).
    INSERT INTO: site/assets/css/home.css, directly after the
    ".photo-card figcaption { ... }" rule at the end of the
-   "Life at Bosco: captioned photo cards" block (home.css ~line 255).
+   "Campus: captioned photo cards" block (home.css ~line 255).
    No existing rule is changed; everything below is scoped to
    .photo-row.photo-strip, so the shared .photo-row grid on the other
    pages is untouched. Colours: blue + gold tokens only, no red. */
 
-/* ---------- Life at Bosco: infinite photo scroll ---------- */
+/* ---------- Campus: infinite photo scroll ---------- */
 
 /* The row becomes the viewport; the track inside carries two identical
    halves and slides -50%, so the loop has no seam. No pause on hover —
@@ -546,7 +546,7 @@ section[aria-label="Admissions call to action"] {
   .news-cards { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* ---------- 4. Life at Bosco: softer photo shadows ----------
+/* ---------- 4. Campus: softer photo shadows ----------
    The old ring + shadow-1 read as a hard dark edge on the warm band.
    No ring, lower opacity, larger blur. Animation and markup untouched.
    Shadow values live in tokens (Hallmark floor: no literal colour past
@@ -791,3 +791,8 @@ html:not(.js) .photo-strip .photo-card[aria-hidden="true"] { display: none; }
 @media (max-width: 860px) { html:not(.js) .photo-track { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media (max-width: 600px) { html:not(.js) .photo-track { grid-template-columns: minmax(0,1fr); } }
 @media (prefers-reduced-motion: reduce) { html.js .life-strip-pause { display: none; } }
+
+/* v119: fit the core carousel controls without reducing their tap target. */
+.pillar-dots { gap:0; }
+.pillar-dot, .pillar-dot.is-active { min-width:44px; width:44px; height:44px; flex:0 0 44px; }
+@media(max-width:360px) { .pillar-nav { flex-wrap:wrap; } .pillar-dots { flex:1 1 132px; } .number-label { text-wrap:balance; } }

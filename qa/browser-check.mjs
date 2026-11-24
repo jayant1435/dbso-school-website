@@ -36,13 +36,14 @@ async function check(name,width,mode){
   await p.evaluate(()=>document.fonts&&document.fonts.ready);
   const dom=await p.evaluate(()=>{
    const ids=[...document.querySelectorAll("[id]")].map(e=>e.id);
-   return {h1:document.querySelectorAll("h1").length,duplicates:ids.filter((x,i)=>ids.indexOf(x)!==i),width:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth,icons:[...document.querySelectorAll('img[src*="/ai-icons/"]')].map(e=>e.getAttribute("src")),alt:[...document.images].filter(e=>!e.hasAttribute("alt")).length};
+   return {h1:document.querySelectorAll("h1").length,duplicates:ids.filter((x,i)=>ids.indexOf(x)!==i),width:document.documentElement.scrollWidth,viewport:document.documentElement.clientWidth,icons:[...document.querySelectorAll('img[src*="/ai-icons/"]')].filter(e=>!e.closest(".wm-value-slide--clone")).map(e=>e.getAttribute("src")),iconPlacement:[...document.querySelectorAll('img[src*="/ai-icons/"]')].every(e=>!!e.closest(".wm-value-slide")),cloneAccessibility:[...document.querySelectorAll(".wm-value-slide--clone")].every(e=>e.getAttribute("aria-hidden")==="true"),alt:[...document.images].filter(e=>!e.hasAttribute("alt")).length};
   });
   assert.equal(dom.h1,1,"one page H1");
   assert.equal(dom.duplicates.length,0,"unique IDs");
   assert.equal(dom.alt,0,"image alt attributes");
   assert.equal(dom.icons.length,["index","about"].includes(name)?7:0,"illustrated icon scope");
-  assert.ok(dom.icons.every(x=>x.includes("/value-")),"core value images only");
+  assert.ok(dom.icons.every(x=>x.includes("/value-")) && dom.iconPlacement,"core value images only");
+  assert.ok(dom.cloneAccessibility,"carousel clones hidden from assistive technology");
   assert.ok(dom.width<=dom.viewport+2,"horizontal overflow: "+dom.width+" > "+dom.viewport);
   if(mode==="no-js"&&name==="academics")for(const panel of ["panel-science","panel-commerce","panel-humanities"])assert.ok(await p.locator("#"+panel).isVisible(),"no-JS stream "+panel);
   if(mode==="normal"&&name==="index"&&width===390){
