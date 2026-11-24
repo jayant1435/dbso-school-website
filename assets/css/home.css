@@ -302,6 +302,18 @@ button.photo-card figcaption { text-align: left; }
     width: 264px;
     margin-right: var(--space-3);
   }
+  /* WL5-01 (W-LIFE5, browser-measured 5/5 passes): at <=600px the
+     basketball caption wraps to 2 lines while football/dance stay on 1,
+     so the two 1-line cards carry a 21px blank band under their captions
+     (card 280px; 1-line content 259px = img 198 + margin-top 12 +
+     figcaption 49). Reserve a 2-line caption budget on strip
+     figcaptions only, so all three cards share one height with uniform
+     reserved space. The reserve is the 2-line border-box height: 2 lines
+     x 21px (0.875rem / 1.5) + padding 12 + 16 — a bare
+     calc(2 * 1.5em) would be a no-op under border-box (the 1-line
+     figcaption is already 49px tall). No copy touched; off above 600px,
+     where all captions are 1 line. */
+  .photo-strip .photo-card figcaption { min-height: calc(2 * 1.5em + var(--space-3) + var(--space-4)); }
 }
 
 /* Reduced motion: a static 3-card grid, duplicates hidden. */
