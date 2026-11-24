@@ -75,6 +75,13 @@
     gap: var(--space-4);
     margin-top: var(--space-3);
   }
+  /* WGAL-01 (qa-v31/wgal, 24 Nov 2026): a one-photo event has no slider —
+     both buttons disabled + a "1 / 1" counter is dead chrome (audit-ai-design-slop:
+     established UI failure, controls that do nothing; no-ai-design-slop removal test:
+     removing the nav loses nothing). Hide the whole nav; it reappears on its own
+     if a second photo is ever added. Specificity (0,3,0) beats html.js .event-nav
+     (0,2,1), so no !important. Desktop unaffected (.event-nav is display:none there). */
+  .event:has(.gallery-item:only-child) .event-nav { display: none; }
   .event-prev,
   .event-next {
     width: 48px;
