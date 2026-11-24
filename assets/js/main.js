@@ -1007,7 +1007,7 @@
   })();
 
   /* ---------- ITEM 4: values slider (W-H3 rebuild, wave 10; 282
-     chrome removal, wave 11) ----------
+     chrome removal, wave 11; 355 grid REVERT, wave 11) ----------
      A REAL swipeable rail on the Life-strip pattern (lifeStripDrag) +
      the clubs rail's clone trick: the track holds the 7 real slides
      plus one clone at each end, so a neighbour always peeks at both
@@ -1024,16 +1024,16 @@
      Copy, icons and order are untouched.
      282: the arrows/dots/counter markup is DELETED from index.html
      (no dead buttons in the DOM, no tab stops to nowhere, no "N of
-     7" state to keep in sync). Mobile (<768px) keeps this rail,
-     chrome-free: swipe + ArrowLeft/Right on the focusable stage.
-     Tablet/desktop (≥768px, gridMq — the same breakpoint as the
-     wm-home.css grid) is a static grid: the animated class comes
-     off, the track transform is cleared, updateChrome exposes all
-     seven (aria-hidden false) and goTo/keyboard/drag all return
-     early — keyboard users need no paging because every card is
-     already visible, and the arrows are left alone so they scroll
-     the page (interaction-design: keyboard path first; the rail
-     stays focusable without arrows or dots). */
+     7" state to keep in sync) — and 355 keeps that deletion: no
+     chrome is re-added anywhere.
+     355 (Jayant 24 Nov 12:36 IST, overriding 282): the 282 grid is
+     REVERTED — the rail below runs at EVERY width, desktop and
+     tablet included, exactly the W-H3 mobile swipe: swipe/drag +
+     ArrowLeft/Right on the focusable stage, 0.32s settle, clone-snap
+     wrap. The gridMq/gridMode branch is deleted wholesale (no
+     breakpoint mode exists any more); applyMode now only gates on
+     reduced motion. Card widths fit every name on one line
+     (verify355.py, opsz-pinned). */
   (function valuesPager() {
     var stage = document.getElementById("wm-values-stage");
     var track = document.getElementById("wm-values-track");
@@ -1041,20 +1041,8 @@
     var slides = Array.prototype.slice.call(track.querySelectorAll(".wm-value-slide"));
     var current = 0;
     var N = slides.length;
-    /* 282: grid breakpoint — one source of truth with wm-home.css
-       (min-width: 768px). */
-    var gridMq = window.matchMedia("(min-width: 768px)");
-    function gridMode() { return gridMq.matches; }
     stage.querySelectorAll("img").forEach(function (im) { im.draggable = false; });
     function updateChrome() {
-      if (gridMode()) {
-        /* Every card visible: expose all seven, no paging state. */
-        slides.forEach(function (s) {
-          s.classList.add("is-active");
-          s.setAttribute("aria-hidden", "false");
-        });
-        return;
-      }
       slides.forEach(function (s, j) {
         s.classList.toggle("is-active", j === current);
         /* Off-screen slides are still in the layout (translated
@@ -1069,7 +1057,7 @@
       updateChrome();
     }
     /* Animated rail state (built once, only while motion is allowed
-       and the viewport is a phone). */
+       — at every width since 355). */
     var railOn = false, clonesBuilt = false;
     var GAP = 12; /* must match the slide margin-right in wm-home.css */
     var PEEK_BP = 601; /* must match the min-width breakpoint in wm-home.css */
@@ -1113,10 +1101,9 @@
        (N or -1 at the ends = wrap). A wrap animates onto the clone,
        then snaps; a plain step moves one card in the one 0.32s move.
        (282: the dot callers are gone; arrows + drag are the only
-       callers now. In grid mode or reduced motion this is a plain
-       show — no rail, no animation.) */
+       callers now. In reduced motion this is a plain show — no rail,
+       no animation.) */
     function goTo(i, animate) {
-      if (gridMode()) return;
       if (reduceMotion || !railOn) { show(i); return; }
       var target = ((i % N) + N) % N;
       var wrapped = (i !== target);
@@ -1129,8 +1116,8 @@
       else { pos = current + 1; render(true); }
     }
     /* Clones are inert: no tab stop, hidden from assistive tech
-       (the clubs pattern). Built once; the grid CSS hides them at
-       ≥768px and applyMode re-shows the rail from them below it. */
+       (the clubs pattern). Built once; applyMode re-shows the rail
+       from them on every mode change. */
     function makeClone(src) {
       var c = src.cloneNode(true);
       c.classList.add("wm-value-slide--clone");
@@ -1147,7 +1134,7 @@
       track.appendChild(firstClone);
     }
     function applyMode() {
-      if (gridMode() || reduceMotion) {
+      if (reduceMotion) {
         railOn = false;
         stage.classList.remove("wm-values--animated", "wm-dragging", "wm-grabbing");
         stage.style.removeProperty("--values-card-w");
@@ -1161,14 +1148,10 @@
       measure();
       updateChrome();
     }
-    if (gridMq.addEventListener) gridMq.addEventListener("change", applyMode);
-    else if (gridMq.addListener) gridMq.addListener(applyMode);
     /* Keyboard: the stage stays tabindex="0" — ArrowLeft/Right page
-       the rail on a phone (and the stacked pager under reduced
-       motion). In grid mode the handler returns without
-       preventDefault, so the arrows scroll the page instead. */
+       the rail at every width (and the stacked pager under reduced
+       motion). */
     stage.addEventListener("keydown", function (e) {
-      if (gridMode()) return;
       if (e.key === "ArrowLeft") { e.preventDefault(); goTo(current - 1, true); }
       if (e.key === "ArrowRight") { e.preventDefault(); goTo(current + 1, true); }
     });
@@ -1190,7 +1173,6 @@
         track.style.transform = "translateX(" + (dragStartX + dx) + "px)";
       },
       function (dx) {
-        if (gridMode()) return;
         stage.classList.remove("wm-dragging", "wm-grabbing");
         if (reduceMotion || !railOn) {
           /* Stacked pager (reduced motion): a 48px drag pages. */
