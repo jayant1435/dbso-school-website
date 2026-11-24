@@ -1146,7 +1146,6 @@ table.fees td.total, table.fees th.total { font-weight: 700; }
   color: var(--footer-ink);
   margin: var(--space-2) 0 0;
 }
-.footer-cta { margin-top: var(--space-3); }
 .footer-col h3 {
   font-family: var(--font-body);
   font-size: 0.95rem;
@@ -1538,10 +1537,11 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
 
 /* ===== v29 assembly: w4-style.css ===== */
 /* W4 — footer, final (23 Nov, brief 3). Site-wide: appended after style.css.
-   Brand + Explore (5 links) + Admissions (3 links + Apply button) + Contact.
+   Brand + Explore (5 links) + Admissions (4 links, plain link) + Contact.
    The "Forms close…" line is deleted by w4-footer-trim.py, not hidden.
    Palette: footer tokens only, no red. Fonts: Bricolage + DM Sans.
-   Spacing: space-* tokens only. Touch: Apply button is 44px tall. */
+   Spacing: space-* tokens only. Touch: no footer button (brief 2,
+   24 Nov); Admissions 2027–28 is a plain link. */
 
 /* Four columns, tighter top/bottom than the old four-column footer. */
 .footer-inner {
@@ -1557,8 +1557,6 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
 .footer-inner > .footer-col:nth-child(2) li { margin-bottom: var(--space-2); }
 .footer-col li { margin-bottom: var(--space-2); }
 .footer-col li:last-child { margin-bottom: 0; }
-/* Apply button: breathing room above it, 44px touch target. */
-.footer-cta { margin-top: var(--space-3); min-height: 44px; }
 /* Watermark crest: smaller and fainter, it was competing with the columns. */
 .site-footer::after {
   width: 240px;
@@ -1604,12 +1602,6 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
   .footer-inner > .footer-col:nth-child(3) li { margin-bottom: 0; }
   .footer-col li { margin-bottom: 0; white-space: nowrap; }
   .footer-col a { white-space: nowrap; }
-  /* W-E (23 Nov, new-brief 15): Apply gets its own line with breathing
-     room above it, instead of sitting inline mid-row after "News and
-     notices" — better-ui: breathing room around the primary action.
-     Full-width row (flex-basis 100%) matches the site's own ≤600px
-     button pattern; min-height 44px from the base rule is kept. */
-  .footer-cta { margin-top: var(--space-2); flex-basis: 100%; }
   /* Contact keeps its block shape, just tighter. */
   .footer-inner > .footer-col:last-child { display: block; }
   .footer-inner > .footer-col:last-child p { margin-bottom: var(--space-2); }
@@ -1688,14 +1680,6 @@ section[aria-label="Non-teaching staff"] .nonteach-text p { margin-bottom: 0; co
     gap: var(--space-2) var(--space-4);
   }
   .site-footer .footer-col li { margin-bottom: 0; white-space: nowrap; }
-  /* Apply: its own full-width line under the Admissions links (W-E's
-     flex-basis no longer applies once the column is a block). */
-  .site-footer .footer-cta {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    margin-top: var(--space-3);
-  }
 }
 
 /* ---------- W-K FIX 2 (v41): anchor targets clear the sticky header ----------
