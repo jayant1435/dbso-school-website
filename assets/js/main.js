@@ -144,7 +144,7 @@
     }
   });
 
-  /* Reveals: observer plus a sweep, so a fast scroll cannot leave a section hidden. */
+  /* Reveals: observer plus sweeps, so a fast scroll cannot leave a section hidden. */
   var revealEls = document.querySelectorAll(".reveal");
   /* Strip helper: once a reveal has finished, drop the reveal classes so
      hover transforms on cards are not overridden by the reveal end-state.
@@ -170,7 +170,15 @@
       if (!el.classList.contains("reveal")) return; /* stripped already = revealed */
       if (el.classList.contains("in")) return;
       var r = el.getBoundingClientRect();
-      if (r.top < vh * 0.94 && r.bottom > 0) { el.classList.add("in"); scheduleStrip(el); }
+      /* In view, or already scrolled past: a fast fling can carry an
+         element through the viewport between IO callbacks, and once it
+         sits above the viewport the in-view test never fires for it
+         again. Revealing passed elements is the safety net — they were
+         due to reveal on the way down, and they must be visible when
+         the reader scrolls back or a capture reads the page. r.top < 0
+         (not just r.bottom <= 0) keeps display:none elements out: a
+         hidden element reports a zero rect at 0,0. */
+      if ((r.top < vh * 0.94 && r.bottom > 0) || (r.top < 0 && r.bottom <= 0)) { el.classList.add("in"); scheduleStrip(el); }
     });
   }
   if (revealEls.length && !reduceMotion && "IntersectionObserver" in window) {
@@ -193,7 +201,23 @@
     window.addEventListener("scroll", onScrollReveal, { passive: true });
     window.addEventListener("resize", onScrollReveal);
     window.addEventListener("load", revealSweep);
-    setTimeout(revealSweep, 2500);
+    /* Recurring timed sweep (W-VID5 P3 / task 153): the old single
+       setTimeout(revealSweep, 2500) fired once, during the fling, and
+       never again — 13/13 reveals on videos stayed hidden after a fast
+       scroll-through. Re-run every 1000ms until no .reveal remains
+       (elements lose .reveal when stripped after revealing, so the
+       timer stops itself once the page is fully revealed). The sweep
+       is idempotent — see the guards in revealSweep — so a tick can
+       never double-fire a reveal. */
+    var revealTimer = setInterval(function () {
+      revealSweep();
+      var pending = false;
+      revealEls.forEach(function (el) { if (el.classList.contains("reveal")) pending = true; });
+      if (!pending) clearInterval(revealTimer);
+    }, 1000);
+    /* A hidden tab throttles IO; sweep again the moment it is visible
+       so nothing is left stranded by a scroll that happened while hidden. */
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) revealSweep(); });
     revealSweep();
   } else {
     revealEls.forEach(function (el) { el.classList.add("in"); scheduleStrip(el); });
