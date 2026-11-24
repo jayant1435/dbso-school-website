@@ -8,36 +8,13 @@
 /* =====================================================================
    SHARED SLIDER CONTROLS — one system (better-ui: one radius, one
    spacing scale; interaction-design: 44px targets, 8px gaps).
-   All three sliders share this nav language; the SLIDES themselves are
-   three different treatments (see below). Arrows 44px, dots 44px hit
-   area with a 10px visible dot (W4 pillar-dot pattern), counter text.
+   Task 354 removed the last slider nav (Life prev/next + counter):
+   the clubs nav went in v84 (task 278), the houses/values navs in
+   v83 (task 286), so no .wm-slider-nav markup remains anywhere.
+   The .wm-arrow/.wm-count rules are deleted with it; the .wm-dot
+   rules below are pre-existing dead CSS, left for the dead-CSS round.
    ===================================================================== */
 
-.wm-slider-nav {
-  display: none; /* needs JS; shown below */
-  align-items: center;
-  gap: var(--space-3);
-  margin-top: var(--space-4);
-}
-.js .wm-slider-nav { display: flex; }
-.wm-arrow {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  border: 1px solid var(--line-strong);
-  background: var(--paper);
-  font-size: 1.5rem;
-  line-height: 1;
-  color: var(--ink);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
-}
-.wm-arrow:hover { border-color: var(--ink); box-shadow: var(--shadow-1); }
-.wm-arrow:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
 .wm-dots { display: flex; gap: var(--space-2); flex: 1; justify-content: center; }
 .wm-dot {
   width: 44px;
@@ -63,7 +40,6 @@
 }
 .wm-dot.is-active::after { background: var(--blue); transform: translate(-50%, -50%) scaleX(2.6); }
 .wm-dot:focus-visible { outline: 3px solid var(--blue); outline-offset: -2px; }
-.wm-count { font-size: 0.9rem; color: var(--ink-soft); font-weight: 600; white-space: nowrap; }
 
 /* =====================================================================
    ITEM 2 — CLUBS: an infinite moving rail (treatment 1 of 3).
@@ -182,10 +158,9 @@
   .js .wm-clubs-track { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: auto; }
   .js .wm-club-slide { flex: none; width: auto; margin-right: 0; }
   .wm-club-slide[aria-hidden="true"] { display: none; }
-  /* Life strip nav hides for the same reason: under reduced motion the
-     strip is a static 3-card grid and lifeStripDrag never starts, so
-     its buttons/counter would be dead controls. */
-  .js .life-strip-nav { display: none; }
+  /* Life strip: under reduced motion the strip is a static 6-card grid
+     and lifeStripDrag never starts (task 354 removed its nav entirely,
+     so there are no buttons/counter left to hide). */
 }
 @media (prefers-reduced-motion: reduce) and (max-width: 860px) {
   .js .wm-clubs-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -430,15 +405,16 @@ section[aria-label="The Preventive System"] .split > div:first-child figure { ma
 .pillars-slider .pillar-clone { opacity: 1 !important; transform: none !important; }
 
 /* =====================================================================
-   ITEM 7 — LIFE AT BOSCO DRAG: the strip keeps its settled 32s linear
+   ITEM 7 — LIFE AT BOSCO DRAG: the strip keeps its settled 16s linear
    auto-scroll exactly (Jayant's words win over taste loop-pause: NO
-   hover pause). Dragging freezes the animation at its current offset
-   (JS reads the computed transform first, so there is no jump), and
-   releasing resumes it from the dragged position via a negative
+   hover pause; task 354 doubled the speed from 32s and doubled the
+   cards from 3 to 6). Dragging freezes the animation at its current
+   offset (JS reads the computed transform first, so there is no jump),
+   and releasing resumes it from the dragged position via a negative
    animation-delay. touch-action: pan-y keeps vertical page scroll
    native while horizontal drags belong to the strip
-   (interaction-design: swipe where users expect it, buttons as well —
-   the cards themselves stay the tap targets; arrow keys nudge the row).
+   (interaction-design: swipe where users expect it — the cards
+   themselves stay the tap targets; arrow keys nudge the row).
    ===================================================================== */
 
 .photo-strip { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
