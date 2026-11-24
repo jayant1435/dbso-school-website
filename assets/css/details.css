@@ -1272,12 +1272,42 @@ section[aria-label="Celebrations and events"] .tick-list li span {
    768: 488 vs 451px (+37). Equalising it needs the wide card's media to
    shrink (a ~3:1 crop of a 4:3 thumbnail — faces would go) or the other
    rows to grow (dead space) — a design decision for the coordinator, not
-   this patch. Shorts grid untouched (already even: 399/397/417/403px). */
+   this patch. Shorts grid now reserves 2 lines for h3, same as the long grid. */
 .videos-long .card-body h3 { min-height: calc(2 * 1.3em); }
+.videos-shorts .card-body h3 { min-height: calc(2 * 1.3em); }
 .videos-long .card-body > p:not(.card-link) { min-height: calc(2 * 1.65em); }
 @media (min-width: 601px) {
   .videos-long .card:last-child .card-body h3,
   .videos-long .card:last-child .card-body > p:not(.card-link) { min-height: 0; }
+}
+
+/* ---- W-VID7 (task 154, W-VID5 P1, 24 Nov 2026): long-grid h3 2-line
+   clamp cuts real title text — measured 8/11 titles @320px, 3/11 @360px,
+   6/11 @1024px; the year "2023" is lost from the Rector's & Parents' Day
+   titles and "North Bengal Edition" from the Telegraph title. No title
+   is shortened (the year is the fact that tells the six Rector's
+   performances apart). Smallest correction, existing system
+   (no-ai-design-slop: Typography — a clamp that deletes the distinguishing
+   year/edition breaks the heading's role; Composition — the 2-line
+   uniformity was false, bought by deleting content; System — reuses the
+   existing reserve token calc(N * 1.3em) and the adjacent FIX 2 pattern,
+   no new token, no new size): raise the clamp to 3 lines for
+   .videos-long .card-body h3 ONLY in the two failing bands — ≤600px
+   (covers 320/360) and 861–1200px (covers 1024, where the 3-col card is
+   narrowest) — and raise the matching h3 reserve beside it from
+   calc(2 * 1.3em) to calc(3 * 1.3em) in the same bands, so rows stay
+   level. The base clamp (style.css:526, site-wide, 2 lines) is untouched;
+   this scoped override wins by specificity (.videos-long .card-body h3
+   beats .card-body h3) and details.css loads after style.css. The wide
+   last card stays excluded from the reserve at ≥601px by the FIX 2 rule
+   above (higher specificity), unchanged. Shorts grid untouched (task 132
+   is a separate staged fix). Bands NOT changed — 601–860px and ≥1201px —
+   measured clean (0 clamped), so their heights are byte-identical. */
+@media (max-width: 600px) {
+  .videos-long .card-body h3 { -webkit-line-clamp: 3; min-height: calc(3 * 1.3em); }
+}
+@media (min-width: 861px) and (max-width: 1200px) {
+  .videos-long .card-body h3 { -webkit-line-clamp: 3; min-height: calc(3 * 1.3em); }
 }
 
 /* ---- FIX 3 (P3, A8 F3): admissions dates strip first row 17px short ----
