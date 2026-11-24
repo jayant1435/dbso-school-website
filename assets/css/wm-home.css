@@ -137,12 +137,6 @@
   line-height: 1.2;
   white-space: nowrap;
 }
-/* Gap clubs (no suitable real photo on file — see report): an honest
-   blue tile with the name, never a faked or stock photo
-   (no-ai-design-slop: product truth; design-taste: no stock passed off
-   as the school's own). Same size and name position as photo cards. */
-.wm-club-slide--gap { background: var(--blue); }
-.wm-club-slide--gap .wm-club-name { background: none; color: var(--paper); }
 @media (max-width: 860px) {
   .js .wm-club-slide { flex-basis: 248px; width: 248px; }
 }
