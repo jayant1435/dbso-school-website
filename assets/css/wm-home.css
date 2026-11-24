@@ -431,16 +431,9 @@ section[aria-label="The Preventive System"] .split > div:first-child figure { ma
 
 /* ITEM 8 mobile-footer rules: promoted to shared style.css at v44 (all 12 pages). */
 
-/* W-R10 prescribed correction (qa-v31/wr10f): at phone widths the 7-dot
-   values nav overflows the container — shrink the values dots' hit width
-   (visual dot is a centred 10px ::after, so the look is unchanged) and
-   tighten the nav/dots gaps so prev + 7 dots + counter + next all fit.
-   Values nav only; houses/clubs navs fit and are untouched. */
-@media (max-width: 480px) {
-  .wm-values .wm-slider-nav { gap: 8px; }
-  .wm-values .wm-dots { gap: 4px; }
-  .wm-values .wm-dot { width: 24px; min-width: 0; } /* height stays 44px */
-}
+/* 282 (W-HOME14): the W-R10 ≤480px values-nav fit tweak is deleted with
+   the nav it fitted — the values arrows/dots/counter markup is gone from
+   index.html, so these rules targeted nothing. */
 
 /* W-HOME13 task 284 (wave 11, Jayant 24 Nov 11:50 IST): close the
    values→photo gap. Cause (measured, static): the gap is pure section
@@ -485,5 +478,125 @@ section[aria-label="The Preventive System"] { padding-top: var(--space-5); }
   section[aria-label="The Preventive System"] .gold-rule {
     margin-top: var(--space-5);
     margin-bottom: var(--space-3);
+  }
+}
+
+/* =====================================================================
+   282 (W-HOME14, wave 11 — Jayant 24 Nov 11:50 IST, screenshot):
+   core-values slider chrome REMOVED everywhere (no arrows, no dots,
+   no "N of 7" counter — the nav markup is deleted from index.html;
+   the W-R10 ≤480px nav-fit tweak is deleted above with it: dead rules
+   for removed markup). Mobile (<768px) keeps the W-H3 swipe rail,
+   chrome-free: swipe + keyboard arrows on the focusable stage.
+   Tablet/desktop (≥768px) is a static grid showing all seven — no
+   slider at all. Breakpoint rationale (coordinator: worker decides;
+   tablet starts 768px):
+   - 768–1023px: 4 columns (4+3). Content width at 768px is 720px
+     (container 1180px, 24px gutters); 7-across would give ~100px
+     cards against the 120px value icon — the icon would overflow
+     its card (impeccable craft-floor: Coverage/Type — run the real
+     content at every breakpoint). 4-across gives ~171px cards;
+     120px icon + 2×16px padding = 152px, 19px slack.
+   - ≥1024px: 7 columns, one row. Content ≥976px → ~129px cards;
+     icon steps down to 96px (the ≤600px step already in this sheet
+     — design-system: no new size enters the scale) and card side
+     padding to 8px (--space-2): 96 + 2×8 = 112px ≤ 129px.
+   Names wrap (white-space: normal) at 1.35rem (the ≤600px step) —
+   "Respect for Others" cannot fit one line in a 113–139px card at
+   any step in the scale — max 2 lines; grid stretch equalises card
+   heights (better-ui: one grid, line counts constant at the card
+   level; typography: 3–4 sizes only, both steps reused).
+   No-JS: the base 3-column grid above still shows all seven
+   (Hallmark floor 7); the ≥768px columns below apply to it too.
+   Keyboard (interaction-design: keyboard path first): the stage
+   stays tabindex="0"; ArrowLeft/Right still page the rail on
+   mobile (main.js, mode-guarded); in grid mode every card is
+   visible so no paging is needed and arrows scroll the page.
+   Motion (12-principles: 150–400ms, one easing, transform +
+   opacity only): the rail keeps its 0.32s var(--ease-out) settle;
+   the grid has no motion at all. Reduced motion: unchanged —
+   the stacked pager stands on mobile, the grid stands ≥768px.
+   ===================================================================== */
+@media (min-width: 768px) {
+  .wm-values-stage { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .wm-values-hint { display: none; } /* all seven visible: no instruction needed */
+  .js .wm-values-stage,
+  .js .wm-values-stage.wm-values--animated {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    justify-content: normal;
+    max-width: none;
+    overflow: visible;
+    cursor: default;
+    touch-action: auto;
+    user-select: auto;
+  }
+  .js .wm-values-stage.wm-values--animated .wm-values-track {
+    display: contents;
+    width: auto;
+    transform: none;
+    transition: none;
+  }
+  .js .wm-values-stage .wm-value-slide,
+  .js .wm-values-stage.wm-values--animated .wm-value-slide {
+    grid-area: auto;
+    flex: none;
+    width: auto;
+    margin-right: 0;
+    opacity: 1;
+    visibility: visible;
+    transition: none;
+  }
+  .wm-value-slide--clone { display: none; } /* rail clones never show in the grid */
+  .wm-value-slide .value-name { white-space: normal; font-size: 1.35rem; }
+}
+@media (min-width: 1024px) {
+  .wm-values-stage { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .js .wm-values-stage,
+  .js .wm-values-stage.wm-values--animated { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .wm-value-slide img { width: 96px; height: 96px; }
+  .wm-value-slide { padding: var(--space-5) var(--space-2); }
+}
+
+/* =====================================================================
+   286 (W-HOME14, wave 11 — Jayant 24 Nov 11:50 IST): house-cards
+   slider chrome REMOVED (no arrows, no dots, no "N of 4" counter —
+   the nav markup is deleted from index.html). Mobile (<768px) keeps
+   the existing crossfading stage: one large photo, 5s auto-advance,
+   swipe/drag threshold + keyboard arrows on the focusable stage
+   (the reachability path once the buttons are gone). Tablet/desktop
+   (≥768px) is the static 2-column grid — the layout the no-JS
+   fallback already uses (Hallmark floor 7: content visible with
+   scripting off), all four houses visible at once, no auto-advance,
+   no motion. The stage's own crossfade stays opacity-only, 0.4s
+   var(--ease-out) (12-principles budget; Hallmark floor 2), and the
+   timer is stopped in grid mode (main.js matchMedia, same 768px
+   breakpoint as 282). House colours stay the --house-* content
+   tokens; the removed chrome was blue/gold only. Tap still opens
+   the house modal (main.js openHouse, untouched); in grid mode all
+   four slides are Tab-reachable buttons (interaction-design:
+   keyboard path first). Reduced motion: unchanged — no
+   auto-advance, manual change only, grid ≥768px.
+   ===================================================================== */
+@media (min-width: 768px) {
+  .wm-houses-hint { display: none; } /* all four visible: no instruction needed */
+  .js .wm-houses-stage {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    aspect-ratio: auto;
+    overflow: visible;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    touch-action: auto;
+    user-select: auto;
+  }
+  .js .wm-house-slide {
+    position: static;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--home-r-img);
+    opacity: 1;
+    visibility: visible;
+    transition: none;
   }
 }
